@@ -1,0 +1,3 @@
+[submodule "submodule/Elevation"]
+	path = submodule/Elevation
+	url = ../../developers/map/elevation
