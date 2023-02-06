@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QVector>
+#include <QList>
 #include <QPointF>
 #include <QGeoPath>
 
@@ -14,6 +15,7 @@ class ElevationChart : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QGeoPath geopath READ geopath WRITE setGeopath NOTIFY geopathChanged)
+    Q_PROPERTY(QList<QPointF> pathData READ pathData WRITE setPathData NOTIFY pathDataChanged)
     Q_PROPERTY(bool logging READ logging WRITE setLogging NOTIFY loggingChanged)
 
     Q_PROPERTY(qreal pixelWidth READ pixelWidth WRITE setPixelWidth NOTIFY pixelWidthChanged)
@@ -45,6 +47,7 @@ signals:
 
 
     void geopathChanged();
+    void pathDataChanged();
     void loggingChanged();
     void pixelWidthChanged();
     void pixelHeightChanged();
@@ -61,7 +64,6 @@ signals:
     void scaleStepXChanged();
     void scaleStepYChanged();
 
-
 private:
     void update(bool vectorChanged = false);
 
@@ -69,6 +71,7 @@ private:
 
     QVector<QPointF> points;
     QGeoPath m_geopath;
+    QList<QPointF> m_pathData;
     bool m_logging = false;
     struct Axes
     {
@@ -98,6 +101,7 @@ private:
     }; Iterator iterator;
 
     QGeoPath geopath() const;                       void setGeopath(const QGeoPath &path);
+    QList<QPointF> pathData() const;                void setPathData(QList<QPointF> data);
     bool logging() const;                           void setLogging(bool state);
 
     qreal pixelWidth() const;                       void setPixelWidth(qreal value);

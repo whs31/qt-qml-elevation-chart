@@ -52,6 +52,9 @@ Rectangle {
 	color: "#121617";
 	property alias path: backend.geopath;
 	property alias logging: backend.logging;
+	property alias chartColor: graph.color;
+	property alias chartVerticalStretch: graph.verticalStretch;
+	property color flightPathColor: "#c4bb4b";
 
 	focus: true;
 	clip: true;
@@ -206,8 +209,9 @@ Rectangle {
 			ctx.lineJoin = "round";
 
 			ctx.setTransform(backend.zoomX, 0, 0, 1, wheelHandler.zoomTranslation, 0); //scaleX : 0 : 0 : scaleY : translateX : translateY
-			ctx.moveTo(0, height);
 
+			// draw elevation profile
+			ctx.moveTo(0, height);
 			var p0 = Qt.point(0, 0);
 			while(1)
 			{
@@ -223,11 +227,10 @@ Rectangle {
 					ctx.lineTo(p.x, height);
 					ctx.lineTo(p.x, height - p.y);
 				}
-				ctx.closePath();
+				//ctx.closePath();
 				ctx.fill();
 				p0 = p;
 			}
-
 			ctx.stroke();
 		}
 	}
@@ -237,6 +240,7 @@ Rectangle {
 		id: grid;
 		anchors.fill: graph;
 		property color color: Qt.darker(legend.color, 2); // can be overriden
+		property real flightPointSize: 15;
 
 		onPaint:
 		{
@@ -318,7 +322,29 @@ Rectangle {
 				interval /= 5;
 			}
 
+			// draw flight path
+			ctx.strokeStyle = flightPathColor;
+			ctx.lineWidth = 5;
+			ctx.moveTo(0, 0);
+			ctx.beginPath();
+			for(let f = 0; f < backend.pathData.length; f++)
+			{
+				ctx.strokeStyle = flightPathColor;
+				ctx.fillStyle = flightPathColor;
+				ctx.lineTo(backend.pathData[f].x * (backend.zoomX), height - backend.pathData[f].y);
+				ctx.ellipse(backend.pathData[f].x * (backend.zoomX) - flightPointSize / 2,
+							height - backend.pathData[f].y - flightPointSize / 2, flightPointSize, flightPointSize);
+
+			}
+			ctx.closePath();
+			ctx.fill();
+			ctx.stroke();
+			ctx.strokeStyle = grid.color;
+			ctx.fillStyle = legend.color;
+
+			// non-scrolling part
 			ctx.setTransform(1, 0, 0, 1, 0, 0);
+
 			// OY scales
 			context.moveTo(0, height);
 			for(let k = 1; k < backend.scaleCountY; k++)

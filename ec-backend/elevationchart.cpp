@@ -24,6 +24,16 @@ void ElevationChart::update(bool vectorChanged)
         if(axes.y.max < point.y())
             axes.y.max = point.y();
     }
+    if(m_logging) qDebug() << "МАКСИМАЛЬНАЯ ВЫСОТА НА ПРОФИЛЕ ВЫСОТ: " << axes.y.max << "м";
+    for(QGeoCoordinate coord : m_geopath.path())
+    {
+        if(coord.altitude() > axes.y.max)
+        {
+            axes.y.max = coord.altitude();
+            if(m_logging) qInfo() << "НАЙДЕНА НАИВЫСШАЯ ТОЧКА: " << axes.y.max << "м";
+        }
+    }
+
     axes.x.power = axes.x.max > 0 ? (int) log10 ((float) axes.x.max) : 1;
     axes.y.power = axes.y.max > 0 ? (int) log10 ((float) axes.y.max) : 1;
     while(axes.x.roundmax < axes.x.max)
@@ -43,6 +53,21 @@ void ElevationChart::update(bool vectorChanged)
     setScaleStepX((axes.x.pixelsize - 15) / axes.x.scalecount);
     setScaleStepY((axes.y.pixelsize - 15)/ axes.y.scalecount);
 
+    QList<QPointF> data;
+    qreal previous_distance = 0;
+    for(size_t i = 0; i < m_geopath.path().length(); i++)
+    {
+        QPointF point;
+        qreal current_distance = 0;
+        point.setY(m_geopath.path()[i].altitude() * axes.y.pixelsize / (axes.y.roundmax * axes.stretch));
+        if(i > 0)
+            current_distance = m_geopath.path()[i].distanceTo(m_geopath.path()[i-1]);
+        previous_distance += current_distance;
+        point.setX(previous_distance * axes.x.pixelsize / axes.x.max);
+        data.append(point);
+    }
+    setPathData(data);
+
     emit requestRedraw();
 
     if(m_logging)
@@ -52,7 +77,6 @@ void ElevationChart::update(bool vectorChanged)
         qInfo() << "ПИКСЕЛЬНАЯ ШИРИНА ВИДЖЕТА: " << axes.x.pixelsize << "px";
         qInfo() << "ПИКСЕЛЬНАЯ ВЫСОТА ВИДЖЕТА: " << axes.y.pixelsize << "px";
         qDebug() << "МАКСИМАЛЬНОЕ РАССТОЯНИЕ: " << axes.x.max << "м";
-        qDebug() << "МАКСИМАЛЬНАЯ ВЫСОТА: " << axes.y.max << "м";
         qDebug() << "ПОРЯДОК ОСИ РАССТОЯНИЯ: " << axes.x.power;
         qDebug() << "ПОРЯДОК ОСИ ВЫСОТЫ: " << axes.y.power;
         qDebug() << "ДЛИНА ГОРИЗОНТАЛЬНОЙ ОСИ: " << axes.x.roundmax << "м";
@@ -134,6 +158,16 @@ void ElevationChart::setGeopath(const QGeoPath &path)
     emit geopathChanged();
 
     if(axes.x.pixelsize > 0) update(true);
+}
+
+QList<QPointF> ElevationChart::pathData() const { return m_pathData; }
+void ElevationChart::setPathData(QList<QPointF> data)
+{
+    if(m_pathData == data)
+        return;
+    if(m_logging) qDebug() << "ПУТЬ БПЛА: " << m_pathData;
+    m_pathData = data;
+    emit pathDataChanged();
 }
 
 bool ElevationChart::logging() const { return m_logging; }
