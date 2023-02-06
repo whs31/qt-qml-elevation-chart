@@ -82,7 +82,10 @@ Rectangle {
 			if(zoomX > wheelHandler.maxZoom)
 				zoomX = wheelHandler.maxZoom;
 			if(zoomX < 1)
+			{
 				zoomX = 1;
+				horizontalScrollBar.position = 0;
+			}
 			legend.requestPaint();
 			graph.requestPaint();
 			grid.requestPaint();
@@ -120,7 +123,7 @@ Rectangle {
 		property real zoomConstInteger: 0;
 		readonly property real zoom_sensivity: 3;
 		property real zoompixelwidth: graph.width * (backend.zoomX);
-		property real zoomTranslation: (graph.width / 2 - zoompixelwidth / 2) * horizontalScrollBar.scrollCoeff; // 0 = left border | 1 = center | 2 = right border
+		property real zoomTranslation: (1 - backend.zoomX) * horizontalScrollBar.scrollCoeff * graph.width / 2; // 0 = left border | 1 = center | 2 = right border
 		property bool shiftPressed: false;
 
 		onWheel: (event) =>
@@ -140,11 +143,11 @@ Rectangle {
 					 {
 						 if(event.angleDelta.y > 0 && mouseArea.containsMouse && horizontalScrollBar.position < 1 - horizontalScrollBar.size / 2)
 						 {
-							 horizontalScrollBar.position += 0.01 * horizontalScrollBar.size;
+							 horizontalScrollBar.position += 0.03 * horizontalScrollBar.size;
 						 }
 						 else if(event.angleDelta.y < 0 && mouseArea.containsMouse && horizontalScrollBar.position > -0.1)
 						 {
-							 horizontalScrollBar.position -= 0.01 * horizontalScrollBar.size;
+							 horizontalScrollBar.position -= 0.03 * horizontalScrollBar.size;
 						 }
 					 }
 				 }
@@ -264,38 +267,42 @@ Rectangle {
 					if(mod5++ % 5 == 0)
 					{
 						// grid on major scales ( /= 5 )
+						ctx.globalAlpha = 0.5;
 						ctx.font = "bold 12px sans-serif";
-						ctx.strokeStyle = Qt.darker(legend.color, 2.5);
+						ctx.strokeStyle = Qt.darker(legend.color, 1.25);
 						ctx.lineWidth = 1;
 						ctx.setLineDash([16, 16]);
 						ctx.beginPath();
 						ctx.moveTo(inner_interval, 0);
 						ctx.lineTo(inner_interval, height);
-						let val = (backend.scaleValueX * (mod5 - 1) / 5) / Math.pow(5, wheelHandler.zoomConstInteger - 2);
-						let txt = val >= 10000 ? Number(val / 1000).toFixed(1) + " км" : Number(val).toFixed(0) + " м";
-						ctx.fillStyle = legend.color;
-						ctx.fillText(txt, inner_interval + 4, graph.height - 5);
-						ctx.fillStyle = graph.color;
 						ctx.stroke();
+						ctx.globalAlpha = 1;
 
 						// scales itself
 						ctx.setLineDash([4000, 1]);
 						ctx.lineWidth = 3;
 						ctx.strokeStyle = legend.color;
 						ctx.beginPath();
+						let val = (backend.scaleValueX * (mod5 - 1) / 5) / Math.pow(5, wheelHandler.zoomConstInteger - 2);
+						let txt = val >= 10000 ? Number(val / 1000).toFixed(1) + " км" : Number(val).toFixed(0) + " м";
+						ctx.fillStyle = legend.color;
+						ctx.fillText(txt, inner_interval + 4, graph.height - 5);
+						ctx.fillStyle = graph.color;
 						ctx.moveTo(inner_interval, height);
 						ctx.lineTo(inner_interval, height - 15);
 
 					} else {
 						// grid on minor scales
+						ctx.globalAlpha = 0.5;
 						ctx.font = "bold 10px sans-serif";
-						ctx.strokeStyle = Qt.darker(legend.color, 3);
+						ctx.strokeStyle = Qt.darker(legend.color, 1.5);
 						ctx.lineWidth = 0.75;
 						ctx.setLineDash([8, 16]);
 						ctx.beginPath();
 						ctx.moveTo(inner_interval, 0);
 						ctx.lineTo(inner_interval, height);
 						ctx.stroke();
+						ctx.globalAlpha = 1;
 
 						// minor scales itself
 						ctx.setLineDash([4000, 1]);
@@ -319,25 +326,27 @@ Rectangle {
 				if(k % 5 == 0)
 				{
 					// grid
+					ctx.globalAlpha = 0.5;
 					ctx.font = "bold 12px sans-serif";
-					ctx.strokeStyle = Qt.darker(legend.color, 3);
+					ctx.strokeStyle = Qt.darker(legend.color, 1.5);
 					ctx.lineWidth = 0.75;
 					ctx.setLineDash([8, 16]);
 					ctx.beginPath();
 					ctx.moveTo(0, height - k * backend.scaleStepY);
 					ctx.lineTo(width, height - k * backend.scaleStepY);
-					let val = backend.scaleValueY * k;
-					let txt = Number(val).toFixed(0) + " м";
-					ctx.fillStyle = legend.color;
-					ctx.fillText(txt, 4, height - k * backend.scaleStepY - 4);
-					ctx.fillStyle = graph.color;
 					ctx.stroke();
+					ctx.globalAlpha = 1;
 
 					// scales itself
 					ctx.setLineDash([4000, 1]);
 					ctx.lineWidth = 3;
 					ctx.strokeStyle = legend.color;
 					ctx.beginPath();
+					let val = backend.scaleValueY * k;
+					let txt = Number(val).toFixed(0) + " м";
+					ctx.fillStyle = legend.color;
+					ctx.fillText(txt, 4, height - k * backend.scaleStepY - 4);
+					ctx.fillStyle = graph.color;
 					ctx.moveTo(0, height - k * backend.scaleStepY);
 					ctx.lineTo(40, height - k * backend.scaleStepY);
 				}
@@ -388,5 +397,6 @@ Rectangle {
 			graph.requestPaint();
 			grid.requestPaint();
 		}
+		Behavior on position { NumberAnimation { duration: 100; } }
 	}
 }
