@@ -3,11 +3,20 @@
 #include <QDebug>
 #include <cmath>
 #include "Elevation/elevation.h"
-
+//#include "RouteTools/elevationtools.h"
 ElevationChart::ElevationChart(QObject *parent)
     : QObject{parent}
 {
     heightmapParser = new Elevation::Elevation(this);
+    //routeParser = new Elevation::ElevationTools(this);
+}
+
+void ElevationChart::changeFlightPointAltitude(int index, int direction)
+{
+    QGeoCoordinate coord = m_geopath.coordinateAt(index);
+    coord.setAltitude(coord.altitude() + direction >= 0 ? coord.altitude() + direction : 0);
+    m_geopath.replaceCoordinate(index, coord);
+    setGeopath(m_geopath);
 }
 
 void ElevationChart::update(bool vectorChanged)
@@ -19,6 +28,8 @@ void ElevationChart::update(bool vectorChanged)
     iterator.rangeSet = false;
 
     axes.x.max = points.last().x();
+    axes.y.max = 0;
+    axes.y.roundmax = 0;
     for(QPointF point : points)
     {
         if(axes.y.max < point.y())
@@ -50,8 +61,8 @@ void ElevationChart::update(bool vectorChanged)
     setScaleValueY(pow(10, axes.y.power));
     setScaleCountX((float)axes.x.max / (float)axes.x.scalevalue);
     setScaleCountY((float)axes.y.roundmax * axes.stretch / (float)axes.y.scalevalue);
-    setScaleStepX((axes.x.pixelsize - 15) / axes.x.scalecount);
-    setScaleStepY((axes.y.pixelsize - 15)/ axes.y.scalecount);
+    setScaleStepX((axes.x.pixelsize) / axes.x.scalecount);
+    setScaleStepY((axes.y.pixelsize)/ axes.y.scalecount);
 
     QList<QPointF> data;
     qreal previous_distance = 0;
@@ -84,6 +95,11 @@ void ElevationChart::update(bool vectorChanged)
         qCritical() << "УРОВЕНЬ ЗУМА ПО ОХ: " << zoomX() + 1;
     }
 }
+
+//void ElevationChart::intersectCalculationFinished(quint8 progress, const QVector<Elevation::Point> &resultPath)
+//{
+
+//}
 
 QPointF ElevationChart::iterateSimple(void)
 {
@@ -143,7 +159,6 @@ QPointF ElevationChart::iterateOverRange(float rangeStart, float rangeStop)
     } else {
         iterator.range = 0;
         iterator.rangeSet = false;
-        if(m_logging) qInfo() << "ОТРИСОВКА ГРАФИКА ЗАВЕРШЕНА";
         return QPointF(-1, -1);
     }
 }
@@ -151,8 +166,6 @@ QPointF ElevationChart::iterateOverRange(float rangeStart, float rangeStop)
 QGeoPath ElevationChart::geopath() const { return m_geopath; }
 void ElevationChart::setGeopath(const QGeoPath &path)
 {
-    if (m_geopath == path)
-        return;
     m_geopath = path;
     if(m_logging) qInfo() << "ПОЛУЧЕНО НА ВХОД: " << m_geopath.path();
     emit geopathChanged();
@@ -163,8 +176,6 @@ void ElevationChart::setGeopath(const QGeoPath &path)
 QList<QPointF> ElevationChart::pathData() const { return m_pathData; }
 void ElevationChart::setPathData(QList<QPointF> data)
 {
-    if(m_pathData == data)
-        return;
     if(m_logging) qDebug() << "ПУТЬ БПЛА: " << m_pathData;
     m_pathData = data;
     emit pathDataChanged();

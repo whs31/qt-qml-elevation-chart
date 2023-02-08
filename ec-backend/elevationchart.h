@@ -9,6 +9,8 @@
 
 namespace Elevation {
     class Elevation;
+    //class Point;
+    //class ElevationTools;
 }
 
 class ElevationChart : public QObject
@@ -40,7 +42,10 @@ public:
     Q_INVOKABLE float getMaxRange(void) const { return (float)axes.x.max; }
     Q_INVOKABLE QPointF iterateSimple(void);
     Q_INVOKABLE QPointF iterateOverRange(float rangeStart, float rangeStop);
+    Q_INVOKABLE void changeFlightPointAltitude(int index, int direction);
 
+public slots:
+    //void intersectCalculationFinished(quint8 progress, const QVector<Elevation::Point> &resultPath);
 
 signals:
     void requestRedraw();
@@ -68,6 +73,7 @@ private:
     void update(bool vectorChanged = false);
 
     Elevation::Elevation* heightmapParser;
+    //Elevation::ElevationTools* routeParser;
 
     QVector<QPointF> points;
     QGeoPath m_geopath;
