@@ -1,47 +1,3 @@
-/*										Elevation Chart Widget
- * ПАРАМЕТРЫ КОМПОНЕНТА:
- *
- *
- * path: QGeoPath
-	- путь, который будет отображен на графике
-	(должен быть Q_PROPERTY с сигналом NOTIFY,
-	чтобы динамически обновляться)
-
- * color: color
-	- цвет фона виджета
-
- * legend.color: color
-	- цвет легенды графика
-	(оси, текст)
-
- * legend.offset: int
-	- отступ графика от нижнего края виджета
-
- * graph.color: color
-	- цвет графика
-
- * graph.verticalStretch: real
-	- растяжение графика по высоте
-	(1 означает, что максимальная высота на графике будет
-	равняться высоте оси Y. При коэффициентах более 1 ось
-	Y будет выше максимальной возвышенности на графике в N
-	раз, при коэффициентах менее 1 - часть графика будет
-	выше оси Y)
-
-
-
- * ВСПОМОГАТЕЛЬНЫЕ ПАРАМЕТРЫ:
- *
- *
- * logging: bool
-	- флаг вывода логов виджета в консоль отладки
-
- * grid.color: color
-	- цвет сетки
-	(по умолчанию равен цвету легенды,
-	затемненному в 3 раза)
-*/
-
 import QtQuick 2.15
 import QtPositioning 5.12
 import QtQuick.Controls 2.15
@@ -49,12 +5,14 @@ import ElevationChart 1.0
 
 Rectangle {
 	id: base;
-	color: "#121617";
+	color: "#222831";
 	property alias path: backend.geopath;
 	property alias logging: backend.logging;
 	property alias chartColor: graph.color;
 	property alias chartVerticalStretch: graph.verticalStretch;
 	property color flightPathColor: "#c4bb4b";
+	property color successColor: "#7FD962";
+	property color errorColor: "#D95757";
 
 	focus: true;
 	clip: true;
@@ -62,99 +20,157 @@ Rectangle {
 	Connections {
 		target: backend;
 		function onRequestRedraw() {
-			if(backend.logging)
-				console.error("Requesting redraw");
-			legend.requestPaint();
-			graph.requestPaint();
-			grid.requestPaint();
+			if(backend.logging) console.error("Backend requesting update.");
+			requestAll();
 		}
 	}
+
 	ElevationChart
 	{
 		id: backend;
 		geopath: QtPositioning.path([QtPositioning.coordinate(60, 30), QtPositioning.coordinate(60.2, 30.2)], 2);
 		logging: true;
-		offset: 30;
-		pixelWidth: graph.width;
-		pixelHeight: graph.height;
+		offset: 0;
+		pixelWidth: base.width;
+		pixelHeight: base.height;
 		zoomX: 1;
 		verticalStretch: 1.5;
 
-		Behavior on zoomX { NumberAnimation { duration: 100; easing.type: Easing.InOutCubic; } }
+		Behavior on zoomX { NumberAnimation { duration: 100; } }
 		onZoomXChanged: {
 			if(zoomX > wheelHandler.maxZoom)
 				zoomX = wheelHandler.maxZoom;
 			if(zoomX < 1)
 			{
 				zoomX = 1;
-				horizontalScrollBar.position = 0;
+				//horizontalScrollBar.position = 0;
 			}
-			legend.requestPaint();
-			graph.requestPaint();
-			grid.requestPaint();
+			overheadTimer.restart();
 		}
 	}
 
-	MouseArea
+
+	//this timer prevents overupdating when zooming and etc
+	Timer { id: overheadTimer; interval: 500; running: false; repeat: false; onTriggered: requestAll(); }
+	function requestAll()
 	{
-		//property real cursorRelativePositionX: 0;
+		if(backend.logging) console.warn("Updating all.");
+		graph.requestPaint();
+		legend.requestPaint();
+		//grid.requestPaint();
+	}
 
-		id: mouseArea;
+	ListModel { id: pathModel; }
+	Flickable
+	{
+		id: view;
 		anchors.fill: parent;
-		propagateComposedEvents: true;
-		hoverEnabled: true;
-//		onMouseXChanged:
-//		{
-//			cursorRelativePositionX = mouseX / (graph.width);
-//		}
-	}
+		contentWidth: backend.pixelWidth * backend.zoomX;
+		contentHeight: backend.pixelHeight;
+		flickableDirection: Flickable.HorizontalAndVerticalFlick;
+		interactive: true;
+		boundsMovement: Flickable.StopAtBounds
+		clip: true;
+		pixelAligned: true;
 
-	Keys.onPressed: {
-		if (event.key === Qt.Key_Shift) {
-			wheelHandler.shiftPressed = true
+		onMovementEnded:
+		{
+			requestAll();
+		}
+
+		Canvas
+		{
+			id: graph;
+			property color color: "#43a1ca";
+			property alias verticalStretch: backend.verticalStretch;
+			property real flightPointSize: 15;
+			width: backend.pixelWidth * backend.zoomX;
+			height: backend.pixelHeight;
+
+			clip: true;
+			onPaint:
+			{
+				let ctx = getContext('2d');
+
+				ctx.clearRect(0, 0, graph.width * backend.zoomX, graph.height);
+				ctx.strokeStyle = graph.color;
+				ctx.fillStyle = graph.color;
+				ctx.lineWidth = 2;
+				ctx.lineCap = "round";
+				ctx.lineJoin = "round";
+
+				// draw elevation profile
+				ctx.moveTo(0, height);
+				var p0 = Qt.point(0, 0);
+				while(1)
+				{
+					let p = backend.iterateOverRange(0, 1);
+					if(p === Qt.point(-1, -1))
+						break;
+					ctx.beginPath();
+					ctx.lineTo(p.x * backend.zoomX, height - p.y);
+					if(p0.x !== 0 && p0.y !== 0)
+					{
+						ctx.lineTo(p0.x * backend.zoomX - 0.3, height - p0.y);
+						ctx.lineTo(p0.x * backend.zoomX - 0.7, height);
+						ctx.lineTo(p.x * backend.zoomX, height);
+						ctx.lineTo(p.x * backend.zoomX, height - p.y);
+					}
+					//ctx.closePath();
+					ctx.fill();
+					p0 = p;
+				}
+
+				// draw flight path
+				ctx.strokeStyle = flightPathColor;
+				ctx.lineWidth = 5;
+				ctx.moveTo(0, 0);
+				ctx.beginPath();
+				if(backend.pathData.length !== pathModel.count)
+				{
+					pathModel.clear();
+				}
+				for(let f = 0; f < backend.pathData.length; f++)
+				{
+					ctx.strokeStyle = flightPathColor;
+					ctx.fillStyle = flightPathColor;
+					ctx.lineTo(backend.pathData[f].x * (backend.zoomX), height - backend.pathData[f].y);
+					ctx.stroke();
+					if(pathModel.count < backend.pathData.length)
+					{
+						pathModel.append({	"m_x": backend.pathData[f].x * (backend.zoomX) - flightPointSize / 2,
+											"m_y": height - backend.pathData[f].y - flightPointSize / 2, flightPointSize, flightPointSize,
+											"m_width": flightPointSize,
+											"m_color": String(flightPathColor),
+											"m_ui_color": String(legend.color),
+											"m_ui_background_color": String(Qt.lighter(base.color, 2)),
+											"m_success_color": String(base.successColor),
+											"m_error_color": String(base.errorColor),
+											"m_distance": backend.pathData[f].x / backend.pixelWidth * backend.realWidth,
+											"m_elevation": backend.pathData[f].y / backend.pixelHeight * backend.realHeight * backend.verticalStretch
+										})
+					}
+					else
+					{
+						pathModel.setProperty(f, "m_x", backend.pathData[f].x * (backend.zoomX) - flightPointSize / 2);
+						pathModel.setProperty(f, "m_y", height - backend.pathData[f].y - flightPointSize / 2, flightPointSize, flightPointSize);
+						pathModel.setProperty(f, "m_distance", backend.pathData[f].x / backend.pixelWidth * backend.realWidth);
+						pathModel.setProperty(f, "m_elevation", backend.pathData[f].y / backend.pixelHeight * backend.realHeight * backend.verticalStretch);
+					}
+				}
+				ctx.closePath();
+
+				ctx.fillStyle = legend.color;
+			}
+
+			Repeater
+			{
+				model: pathModel;
+				delegate: FlightPoint { }
+			}
 		}
 	}
-	Keys.onReleased: {
-		if (event.key === Qt.Key_Shift) {
-			wheelHandler.shiftPressed = false
-		}
-	}
 
-	WheelHandler {
-		id: wheelHandler;
-		property real maxZoom: backend.realWidth;
-		property real zoomConstInteger: 0;
-		readonly property real zoom_sensivity: 3;
-		property real zoompixelwidth: graph.width * (backend.zoomX);
-		property real zoomTranslation: (1 - backend.zoomX) * horizontalScrollBar.scrollCoeff * graph.width / 2; // 0 = left border | 1 = center | 2 = right border
-		property bool shiftPressed: false;
-
-		onWheel: (event) =>
-				 {
-					 if(!shiftPressed)
-					 {
-						 if(event.angleDelta.y > 0 && mouseArea.containsMouse && backend.zoomX <= maxZoom)
-						 {
-							 backend.zoomX += (1 / zoom_sensivity) * backend.zoomX;
-						 }
-						 else if(event.angleDelta.y < 0 && mouseArea.containsMouse && backend.zoomX >= 1)
-						 {
-							 backend.zoomX -= (1 / zoom_sensivity) * backend.zoomX;
-						 }
-					 }
-					 else
-					 {
-						 if(event.angleDelta.y > 0 && mouseArea.containsMouse && horizontalScrollBar.position < 1 - horizontalScrollBar.size / 2)
-						 {
-							 horizontalScrollBar.position += 0.03 * horizontalScrollBar.size;
-						 }
-						 else if(event.angleDelta.y < 0 && mouseArea.containsMouse && horizontalScrollBar.position > -0.1)
-						 {
-							 horizontalScrollBar.position -= 0.03 * horizontalScrollBar.size;
-						 }
-					 }
-				 }
-	}
 	Canvas
 	{
 		id: legend;
@@ -162,188 +178,21 @@ Rectangle {
 		property alias offset: backend.offset;
 
 		z: 1;
-		anchors.fill: parent;
+		anchors.fill: view;
 		onPaint:
 		{
 			let ctx = getContext('2d');
+			ctx.clearRect(0, 0, legend.width, legend.height);
 
 			ctx.strokeStyle = legend.color;
-			ctx.lineWidth = 2;
+			ctx.lineWidth = 5;
 
 			ctx.beginPath();
-			ctx.moveTo(1, 0);
-			ctx.lineTo(1, height - legend.offset);
+			ctx.moveTo(0, 0);
+			ctx.lineTo(0, height - legend.offset);
 			ctx.lineTo(width, height - legend.offset);
 
 			ctx.stroke();
-		}
-		Rectangle { color: legend.color; width: 90; height: 15; anchors.top: legend.top; anchors.left: legend.left;
-					Text { color: base.color; anchors.fill: parent; text: "ВЫСОТА, м"; font.bold: true;
-						   horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter; } }
-		Rectangle { color: legend.color; width: 100; height: 15; anchors.bottom: legend.bottom; anchors.right: legend.right;
-					anchors.bottomMargin: legend.offset;
-					Text { color: base.color; anchors.fill: parent; text: "РАССТОЯНИЕ"; font.bold: true;
-						   horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter; } }
-	}
-
-	Canvas
-	{
-		id: graph;
-		property color color: "#43a1ca";
-		property alias verticalStretch: backend.verticalStretch;
-
-		anchors.fill: legend;
-		anchors.bottomMargin: legend.offset;
-
-		antialiasing: true;
-		smooth: true;
-		onPaint:
-		{
-			let ctx = getContext('2d');
-
-			ctx.clearRect(0, 0, graph.width, graph.height);
-			ctx.strokeStyle = graph.color;
-			ctx.fillStyle = graph.color;
-			ctx.lineWidth = 2;
-			ctx.lineCap = "round";
-			ctx.lineJoin = "round";
-
-			ctx.setTransform(backend.zoomX, 0, 0, 1, wheelHandler.zoomTranslation, 0); //scaleX : 0 : 0 : scaleY : translateX : translateY
-
-			// draw elevation profile
-			ctx.moveTo(0, height);
-			var p0 = Qt.point(0, 0);
-			while(1)
-			{
-				let p = backend.iterateOverRange(0, 1);
-				if(p === Qt.point(-1, -1))
-					break;
-				ctx.beginPath();
-				ctx.lineTo(p.x, height - p.y);
-				if(p0.x !== 0 && p0.y !== 0)
-				{
-					ctx.lineTo(p0.x - 0.3, height - p0.y);
-					ctx.lineTo(p0.x - 0.7, height);
-					ctx.lineTo(p.x, height);
-					ctx.lineTo(p.x, height - p.y);
-				}
-				//ctx.closePath();
-				ctx.fill();
-				p0 = p;
-			}
-			ctx.stroke();
-		}
-	}
-
-	Canvas
-	{
-		id: grid;
-		anchors.fill: graph;
-		property color color: Qt.darker(legend.color, 2); // can be overriden
-		property real flightPointSize: 15;
-
-		onPaint:
-		{
-			let ctx = getContext('2d');
-
-			ctx.clearRect(-wheelHandler.zoompixelwidth / 2, 0, wheelHandler.zoompixelwidth * 2, grid.height);
-			ctx.strokeStyle = grid.color;
-			ctx.fillStyle = legend.color;
-			ctx.lineWidth = 1;
-			ctx.lineCap = "round";
-			ctx.lineJoin = "round";
-
-			ctx.setTransform(1, 0, 0, 1, wheelHandler.zoomTranslation, 0);
-
-			// OX scales (recursive)
-			ctx.moveTo(0, height);
-			let interval = backend.scaleStepX * backend.zoomX;
-			wheelHandler.zoomConstInteger = 0;
-			while(interval >= 80)
-			{
-				wheelHandler.zoomConstInteger++;
-				let mod5 = 0;
-				for(let inner_interval = 0; inner_interval < wheelHandler.zoompixelwidth * Math.min(horizontalScrollBar.position + horizontalScrollBar.size, 1); inner_interval += interval)
-				{
-					if(inner_interval < wheelHandler.zoompixelwidth * horizontalScrollBar.position)
-					{ mod5++; continue; }
-
-					if(mod5++ % 5 == 0)
-					{
-						// grid on major scales ( /= 5 )
-						ctx.globalAlpha = 0.5;
-						ctx.font = "bold 12px sans-serif";
-						ctx.strokeStyle = Qt.darker(legend.color, 1.25);
-						ctx.lineWidth = 1;
-						ctx.setLineDash([16, 16]);
-						ctx.beginPath();
-						ctx.moveTo(inner_interval, 0);
-						ctx.lineTo(inner_interval, height);
-						ctx.stroke();
-						ctx.globalAlpha = 1;
-
-						// scales itself
-						ctx.setLineDash([4000, 1]);
-						ctx.lineWidth = 3;
-						ctx.strokeStyle = legend.color;
-						ctx.beginPath();
-						let val = (backend.scaleValueX * (mod5 - 1) / 5) / Math.pow(5, wheelHandler.zoomConstInteger - 2);
-						let txt = val >= 10000 ? Number(val / 1000).toFixed(1) + " км" : Number(val).toFixed(0) + " м";
-						ctx.fillStyle = legend.color;
-						ctx.fillText(txt, inner_interval + 4, graph.height - 5);
-						ctx.fillStyle = graph.color;
-						ctx.moveTo(inner_interval, height);
-						ctx.lineTo(inner_interval, height - 15);
-
-					} else {
-						// grid on minor scales
-						ctx.globalAlpha = 0.5;
-						ctx.font = "bold 10px sans-serif";
-						ctx.strokeStyle = Qt.darker(legend.color, 1.5);
-						ctx.lineWidth = 0.75;
-						ctx.setLineDash([8, 16]);
-						ctx.beginPath();
-						ctx.moveTo(inner_interval, 0);
-						ctx.lineTo(inner_interval, height);
-						ctx.stroke();
-						ctx.globalAlpha = 1;
-
-						// minor scales itself
-						ctx.setLineDash([4000, 1]);
-						ctx.lineWidth = 2;
-						ctx.strokeStyle = legend.color;
-						ctx.beginPath();
-						ctx.moveTo(inner_interval, height);
-						ctx.lineTo(inner_interval, height - 10);
-					}
-					ctx.stroke();
-					ctx.setLineDash([4000, 1]);
-				}
-				interval /= 5;
-			}
-
-			// draw flight path
-			ctx.strokeStyle = flightPathColor;
-			ctx.lineWidth = 5;
-			ctx.moveTo(0, 0);
-			ctx.beginPath();
-			for(let f = 0; f < backend.pathData.length; f++)
-			{
-				ctx.strokeStyle = flightPathColor;
-				ctx.fillStyle = flightPathColor;
-				ctx.lineTo(backend.pathData[f].x * (backend.zoomX), height - backend.pathData[f].y);
-				ctx.ellipse(backend.pathData[f].x * (backend.zoomX) - flightPointSize / 2,
-							height - backend.pathData[f].y - flightPointSize / 2, flightPointSize, flightPointSize);
-
-			}
-			ctx.closePath();
-			ctx.fill();
-			ctx.stroke();
-			ctx.strokeStyle = grid.color;
-			ctx.fillStyle = legend.color;
-
-			// non-scrolling part
-			ctx.setTransform(1, 0, 0, 1, 0, 0);
 
 			// OY scales
 			context.moveTo(0, height);
@@ -356,7 +205,7 @@ Rectangle {
 					ctx.font = "bold 12px sans-serif";
 					ctx.strokeStyle = Qt.darker(legend.color, 1.5);
 					ctx.lineWidth = 0.75;
-					ctx.setLineDash([8, 16]);
+					ctx.setLineDash([16, 16]);
 					ctx.beginPath();
 					ctx.moveTo(0, height - k * backend.scaleStepY);
 					ctx.lineTo(width, height - k * backend.scaleStepY);
@@ -378,6 +227,18 @@ Rectangle {
 				}
 				else
 				{
+					// grid
+					ctx.globalAlpha = 0.4;
+					ctx.font = "bold 12px sans-serif";
+					ctx.strokeStyle = Qt.darker(legend.color, 1.5);
+					ctx.lineWidth = 0.5;
+					ctx.setLineDash([8, 16]);
+					ctx.beginPath();
+					ctx.moveTo(0, height - k * backend.scaleStepY);
+					ctx.lineTo(width, height - k * backend.scaleStepY);
+					ctx.stroke();
+					ctx.globalAlpha = 1;
+
 					// text on minor scales
 					ctx.font = "bold 10px sans-serif";
 					let val = backend.scaleValueY * k;
@@ -397,32 +258,128 @@ Rectangle {
 				ctx.stroke();
 			}
 		}
+		Rectangle { color: legend.color; width: 70; height: 15; anchors.top: legend.top; anchors.left: legend.left;
+					Text { color: base.color; anchors.fill: parent; text: "ВЫСОТА"; font.bold: true;
+						   horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter; } }
+		Rectangle { color: legend.color; width: 100; height: 15; anchors.bottom: legend.bottom; anchors.right: legend.right;
+					anchors.bottomMargin: legend.offset;
+					Text { color: base.color; anchors.fill: parent; text: "РАССТОЯНИЕ"; font.bold: true;
+						   horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter; } }
 	}
 
-	ScrollBar {
-		property real scrollCoeff: (position + size * (position + size / 2)) * 2;
+	Keys.onPressed: { if (event.key === Qt.Key_Shift) { wheelHandler.shiftPressed = true } }
+	Keys.onReleased: { if (event.key === Qt.Key_Shift) { wheelHandler.shiftPressed = false } }
+	WheelHandler {
+		id: wheelHandler;
+		property real maxZoom: backend.realWidth / 1000;
+		property real zoomConstInteger: 0;
+		readonly property real zoom_sensivity: 3;
+		property bool shiftPressed: false;
 
-		id: horizontalScrollBar;
-		hoverEnabled: true;
-		active: true;
-		orientation: Qt.Horizontal;
-		size: graph.width / wheelHandler.zoompixelwidth;
-		policy: ScrollBar.AlwaysOn;
-		anchors.left: parent.left;
-		anchors.right: parent.right;
-		anchors.bottom: parent.bottom;
-
-		contentItem: Rectangle {
-			implicitWidth: 6;
-			color: graph.color;
-			radius: 5;
-		}
-		onScrollCoeffChanged:
-		{
-			legend.requestPaint();
-			graph.requestPaint();
-			grid.requestPaint();
-		}
-		Behavior on position { NumberAnimation { duration: 100; } }
+		onWheel: (event) =>
+				 {
+					 if(!shiftPressed)
+					 {
+						 if(event.angleDelta.y > 0 && backend.zoomX <= maxZoom)
+						 {
+							 backend.zoomX += (1 / zoom_sensivity) * backend.zoomX;
+						 }
+						 else if(event.angleDelta.y < 0 && backend.zoomX >= 1)
+						 {
+							 backend.zoomX -= (1 / zoom_sensivity) * backend.zoomX;
+						 }
+					 }
+					 else
+					 {
+						 if(event.angleDelta.y > 0)
+						 {
+							 view.flick(500, 0);
+						 }
+						 else if(event.angleDelta.y < 0)
+						 {
+							 view.flick(-500, 0);
+						 }
+					 }
+				 }
 	}
+
+
+
+
+
+
+
+
+
+
 }
+/*
+ctx.setTransform(1, 0, 0, 1, wheelHandler.zoomTranslation, 0);
+
+// OX scales (recursive)
+ctx.moveTo(0, height);
+let interval = backend.scaleStepX * backend.zoomX;
+wheelHandler.zoomConstInteger = 0;
+while(interval >= 80)
+{
+	wheelHandler.zoomConstInteger++;
+	let mod5 = 0;
+	for(let inner_interval = 0; inner_interval < wheelHandler.zoompixelwidth * Math.min(horizontalScrollBar.position + horizontalScrollBar.size, 1); inner_interval += interval)
+	{
+		if(inner_interval < wheelHandler.zoompixelwidth * horizontalScrollBar.position)
+		{ mod5++; continue; }
+
+		if(mod5++ % 5 == 0)
+		{
+			// grid on major scales ( /= 5 )
+			ctx.globalAlpha = 0.5;
+			ctx.font = "bold 12px sans-serif";
+			ctx.strokeStyle = Qt.darker(legend.color, 1.25);
+			ctx.lineWidth = 1;
+			ctx.setLineDash([16, 16]);
+			ctx.beginPath();
+			ctx.moveTo(inner_interval, 0);
+			ctx.lineTo(inner_interval, height);
+			ctx.stroke();
+			ctx.globalAlpha = 1;
+
+			// scales itself
+			ctx.setLineDash([4000, 1]);
+			ctx.lineWidth = 3;
+			ctx.strokeStyle = legend.color;
+			ctx.beginPath();
+			let val = (backend.scaleValueX * (mod5 - 1) / 5) / Math.pow(5, wheelHandler.zoomConstInteger - 2);
+			let txt = val >= 10000 ? Number(val / 1000).toFixed(1) + " км" : Number(val).toFixed(0) + " м";
+			ctx.fillStyle = legend.color;
+			ctx.fillText(txt, inner_interval + 4, graph.height - 5);
+			ctx.fillStyle = graph.color;
+			ctx.moveTo(inner_interval, height);
+			ctx.lineTo(inner_interval, height - 15);
+
+			} else {
+			// grid on minor scales
+			ctx.globalAlpha = 0.5;
+			ctx.font = "bold 10px sans-serif";
+			ctx.strokeStyle = Qt.darker(legend.color, 1.5);
+			ctx.lineWidth = 0.75;
+			ctx.setLineDash([8, 16]);
+			ctx.beginPath();
+			ctx.moveTo(inner_interval, 0);
+			ctx.lineTo(inner_interval, height);
+			ctx.stroke();
+			ctx.globalAlpha = 1;
+
+			// minor scales itself
+			ctx.setLineDash([4000, 1]);
+			ctx.lineWidth = 2;
+			ctx.strokeStyle = legend.color;
+			ctx.beginPath();
+			ctx.moveTo(inner_interval, height);
+			ctx.lineTo(inner_interval, height - 10);
+		}
+			ctx.stroke();
+			ctx.setLineDash([4000, 1]);
+	}
+	interval /= 5;
+}
+*/
