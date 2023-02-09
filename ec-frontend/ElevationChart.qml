@@ -138,7 +138,8 @@ Rectangle {
 					ctx.stroke();
 					if(pathModel.count < backend.pathData.length)
 					{
-						pathModel.append({	"m_x": backend.pathData[f].x * (backend.zoomX) - flightPointSize / 2,
+						pathModel.append({
+											"m_x": backend.pathData[f].x * (backend.zoomX) - flightPointSize / 2,
 											"m_y": height - backend.pathData[f].y - flightPointSize / 2, flightPointSize, flightPointSize,
 											"m_width": flightPointSize,
 											"m_color": String(flightPathColor),
