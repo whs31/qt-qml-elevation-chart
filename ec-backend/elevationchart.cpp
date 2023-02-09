@@ -14,10 +14,7 @@ ElevationChart::ElevationChart(QObject *parent)
 void ElevationChart::changeFlightPointAltitude(int index, qreal delta)
 {
     QGeoCoordinate coord = m_geopath.coordinateAt(index);
-    if(coord.altitude() < 1000)
-        coord.setAltitude(coord.altitude() + delta / 10 );
-    else
-        coord.setAltitude(coord.altitude() + delta / 5 );
+        coord.setAltitude(coord.altitude() + delta * (0.1 + coord.altitude() / (axes.y.max * 20)));
     if(coord.altitude() <= 0)
         coord.setAltitude(0);
     m_geopath.replaceCoordinate(index, coord);
@@ -61,11 +58,11 @@ void ElevationChart::update(bool vectorChanged)
         axes.y.roundmax += pow(10, axes.y.power);
     }
     setRealWidth(axes.x.max);
-    setRealHeight(axes.y.roundmax);
+    setRealHeight(axes.y.max);
     setScaleValueX(pow(10, axes.x.power));
     setScaleValueY(pow(10, axes.y.power));
     setScaleCountX((float)axes.x.max / (float)axes.x.scalevalue);
-    setScaleCountY((float)axes.y.roundmax * axes.stretch / (float)axes.y.scalevalue);
+    setScaleCountY((float)axes.y.max * axes.stretch / (float)axes.y.scalevalue);
     setScaleStepX((axes.x.pixelsize) / axes.x.scalecount);
     setScaleStepY((axes.y.pixelsize)/ axes.y.scalecount);
 
@@ -75,7 +72,7 @@ void ElevationChart::update(bool vectorChanged)
     {
         QPointF point;
         qreal current_distance = 0;
-        point.setY(m_geopath.path()[i].altitude() * axes.y.pixelsize / (axes.y.roundmax * axes.stretch));
+        point.setY(m_geopath.path()[i].altitude() * axes.y.pixelsize / (axes.y.max * axes.stretch));
         if(i > 0)
             current_distance = m_geopath.path()[i].distanceTo(m_geopath.path()[i-1]);
         previous_distance += current_distance;
@@ -88,16 +85,16 @@ void ElevationChart::update(bool vectorChanged)
 
     if(m_logging)
     {
-        qWarning() << "Вычисление значений вертикальной и горизонтальной оси графика: ";
+        qDebug() << "Вычисление значений вертикальной и горизонтальной оси графика: ";
         qDebug() << "РАЗМЕР ВЫЧИСЛЕННОГО МАССИВА ТОЧЕК: " << points.length() << "точек";
-        qInfo() << "ПИКСЕЛЬНАЯ ШИРИНА ВИДЖЕТА: " << axes.x.pixelsize << "px";
-        qInfo() << "ПИКСЕЛЬНАЯ ВЫСОТА ВИДЖЕТА: " << axes.y.pixelsize << "px";
+        qDebug() << "ПИКСЕЛЬНАЯ ШИРИНА ВИДЖЕТА: " << axes.x.pixelsize << "px";
+        qDebug() << "ПИКСЕЛЬНАЯ ВЫСОТА ВИДЖЕТА: " << axes.y.pixelsize << "px";
         qDebug() << "МАКСИМАЛЬНОЕ РАССТОЯНИЕ: " << axes.x.max << "м";
         qDebug() << "ПОРЯДОК ОСИ РАССТОЯНИЯ: " << axes.x.power;
         qDebug() << "ПОРЯДОК ОСИ ВЫСОТЫ: " << axes.y.power;
         qDebug() << "ДЛИНА ГОРИЗОНТАЛЬНОЙ ОСИ: " << axes.x.roundmax << "м";
-        qDebug() << "ДЛИНА ВЕРТИКАЛЬНОЙ ОСИ: " << axes.y.roundmax << "м";
-        qCritical() << "УРОВЕНЬ ЗУМА ПО ОХ: " << zoomX() + 1;
+        qDebug() << "ДЛИНА ВЕРТИКАЛЬНОЙ ОСИ: " << axes.y.max << "м";
+        qDebug() << "УРОВЕНЬ ЗУМА ПО ОХ: " << zoomX() + 1;
     }
 }
 
@@ -113,7 +110,7 @@ QPointF ElevationChart::iterateSimple(void)
     {
         QPointF ret = points.at(iterator.simple);
         ret.setX(ret.x() * pixelWidth() / axes.x.max);
-        ret.setY(ret.y() * pixelHeight() / axes.y.roundmax);
+        ret.setY(ret.y() * pixelHeight() / axes.y.max);
         return ret;
     } else {
         iterator.simple = 0;
@@ -160,7 +157,7 @@ QPointF ElevationChart::iterateOverRange(float rangeStart, float rangeStop)
     if(iterator.range < iterator.rangeMax)
     {
         return QPointF(points[iterator.range].x() * axes.x.pixelsize / axes.x.max,
-                       points[iterator.range].y() * axes.y.pixelsize / (axes.y.roundmax * axes.stretch));
+                       points[iterator.range].y() * axes.y.pixelsize / (axes.y.max * axes.stretch));
     } else {
         iterator.range = 0;
         iterator.rangeSet = false;
@@ -203,7 +200,7 @@ void ElevationChart::setPixelWidth(qreal value)
     axes.x.pixelsize = value;
     emit pixelWidthChanged();
 
-    if(m_logging) qWarning() << "Изменена ширина виджета.";
+    if(m_logging) qDebug() << "Изменена ширина виджета.";
     if(!m_geopath.isEmpty() && axes.y.pixelsize > 0) update(false);
 }
 
@@ -215,7 +212,7 @@ void ElevationChart::setPixelHeight(qreal value)
     axes.y.pixelsize = value;
     emit pixelHeightChanged();
 
-    if(m_logging) qWarning() << "Изменена высота виджета.";
+    if(m_logging) qDebug() << "Изменена высота виджета.";
     if(!m_geopath.isEmpty() && axes.x.pixelsize > 0) update(false);
 }
 

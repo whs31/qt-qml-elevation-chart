@@ -15,7 +15,7 @@ Rectangle {
 		anchors.margins: 20;
 		anchors.topMargin: 50;
 
-		logging: false;
+		logging: true;
 		path: QtPositioning.path([
 					QtPositioning.coordinate(60, 30, 60),
 					QtPositioning.coordinate(60.1, 30.1, 20),
@@ -29,8 +29,8 @@ Rectangle {
 		chartColor: "#6C5980";
 		flightPathColor: "#E6B450";
 		successColor: "#7FD962";
-		errorColor: "#D95757";
-		chartVerticalStretch: 2;
+		errorColor: "#FFDFB3"; //"#D95757";
+		chartVerticalStretch: 1.2;
 	}
 
 	Slider

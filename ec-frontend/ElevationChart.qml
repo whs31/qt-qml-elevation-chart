@@ -20,7 +20,7 @@ Rectangle {
 	Connections {
 		target: backend;
 		function onRequestRedraw() {
-			if(backend.logging) console.error("Backend requesting update.");
+			if(backend.logging) console.info("Backend requesting update.");
 			requestAll();
 		}
 	}
@@ -63,7 +63,7 @@ Rectangle {
 	Timer { id: overheadTimer; interval: 500; running: false; repeat: false; onTriggered: requestAll(); }
 	function requestAll()
 	{
-		if(backend.logging) console.warn("Updating all.");
+		if(backend.logging) console.info("Updating all.");
 		graph.requestPaint();
 		legend.requestPaint();
 		//grid.requestPaint();
@@ -287,42 +287,23 @@ Rectangle {
 		property bool shiftPressed: false;
 
 		onWheel: (event) =>
-				 {
-					 if(!shiftPressed)
-					 {
-						 if(event.angleDelta.y > 0 && backend.zoomX <= maxZoom)
-						 {
-							 backend.zoomX += (1 / zoom_sensivity) * backend.zoomX;
-						 }
-						 else if(event.angleDelta.y < 0 && backend.zoomX >= 1)
-						 {
-							 backend.zoomX -= (1 / zoom_sensivity) * backend.zoomX;
-						 }
-					 }
-					 else
-					 {
-						 if(event.angleDelta.y > 0)
-						 {
-							 view.flick(500, 0);
-						 }
-						 else if(event.angleDelta.y < 0)
-						 {
-							 view.flick(-500, 0);
-						 }
-					 }
-				 }
+		{
+			if(!shiftPressed) {
+				if(event.angleDelta.y > 0 && backend.zoomX <= maxZoom)
+					backend.zoomX += (1 / zoom_sensivity) * backend.zoomX;
+				else if(event.angleDelta.y < 0 && backend.zoomX >= 1)
+					backend.zoomX -= (1 / zoom_sensivity) * backend.zoomX;
+			} else {
+				if(event.angleDelta.y > 0)
+					view.flick(500, 0);
+				else if(event.angleDelta.y < 0)
+					view.flick(-500, 0);
+			}
+		}
 	}
-
-
-
-
-
-
-
-
-
-
 }
+
+
 /*
 ctx.setTransform(1, 0, 0, 1, wheelHandler.zoomTranslation, 0);
 
