@@ -1,4 +1,4 @@
-#include "integrationexample.h"
+#include "example.h"
 
 #include <QApplication>
 

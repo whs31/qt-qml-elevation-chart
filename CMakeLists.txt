@@ -12,14 +12,18 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets Core)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets QuickWidgets)
 
-set(PROJECT_SOURCES
-        main.cpp
-        integrationexample.cpp
-        integrationexample.h
-        integrationexample.ui
+include_directories(src)
 
-        ec-frontend/ec-frontend.qrc
-        ec-backend/elevationchart.h            ec-backend/elevationchart.cpp
+set(PROJECT_SOURCES
+	examples/main.cpp
+	examples/example.cpp
+	examples/example.h
+	examples/example.ui
+
+	js/QPlot.qrc
+	src/elevationchart.hpp
+	src/elevationchart.cpp
+	examples/QPlot-example.qrc
 )
 
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})

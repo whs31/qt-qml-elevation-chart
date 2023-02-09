@@ -1,7 +1,7 @@
-#include "integrationexample.h"
-#include "./ui_integrationexample.h"
+#include "example.h"
+#include "./ui_example.h"
 #include <qqml.h>
-#include "ec-backend/elevationchart.h"
+#include "elevationchart.hpp"
 
 
 IntegrationExample::IntegrationExample(QWidget *parent)

@@ -1,4 +1,4 @@
-#include "elevationchart.h"
+#include "elevationchart.hpp"
 
 #include <QDebug>
 #include <cmath>
