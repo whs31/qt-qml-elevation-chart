@@ -30,7 +30,7 @@ Rectangle {
 		flightPathColor: "#E6B450";
 		successColor: "#7FD962";
 		errorColor: "#D95757";
-		chartVerticalStretch: 1.5;
+		chartVerticalStretch: 2;
 	}
 
 	Slider

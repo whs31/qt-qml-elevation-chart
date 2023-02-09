@@ -11,10 +11,15 @@ ElevationChart::ElevationChart(QObject *parent)
     //routeParser = new Elevation::ElevationTools(this);
 }
 
-void ElevationChart::changeFlightPointAltitude(int index, int direction)
+void ElevationChart::changeFlightPointAltitude(int index, qreal delta)
 {
     QGeoCoordinate coord = m_geopath.coordinateAt(index);
-    coord.setAltitude(coord.altitude() + direction >= 0 ? coord.altitude() + direction : 0);
+    if(coord.altitude() < 1000)
+        coord.setAltitude(coord.altitude() + delta / 10 );
+    else
+        coord.setAltitude(coord.altitude() + delta / 5 );
+    if(coord.altitude() <= 0)
+        coord.setAltitude(0);
     m_geopath.replaceCoordinate(index, coord);
     setGeopath(m_geopath);
 }

@@ -42,7 +42,7 @@ public:
     Q_INVOKABLE float getMaxRange(void) const { return (float)axes.x.max; }
     Q_INVOKABLE QPointF iterateSimple(void);
     Q_INVOKABLE QPointF iterateOverRange(float rangeStart, float rangeStop);
-    Q_INVOKABLE void changeFlightPointAltitude(int index, int direction);
+    Q_INVOKABLE void changeFlightPointAltitude(int index, qreal delta);
 
 public slots:
     //void intersectCalculationFinished(quint8 progress, const QVector<Elevation::Point> &resultPath);

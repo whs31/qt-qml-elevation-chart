@@ -50,6 +50,15 @@ Rectangle {
 	}
 
 
+	MouseArea { id: globalMouseArea;
+		signal stopDrag();
+		acceptedButtons: Qt.LeftButton | Qt.RightButton;
+		anchors.fill: parent;
+		hoverEnabled: true;
+		propagateComposedEvents: true;
+		onClicked: stopDrag();
+	}
+
 	//this timer prevents overupdating when zooming and etc
 	Timer { id: overheadTimer; interval: 500; running: false; repeat: false; onTriggered: requestAll(); }
 	function requestAll()
