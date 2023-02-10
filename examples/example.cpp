@@ -13,7 +13,7 @@ IntegrationExample::IntegrationExample(QWidget *parent)
     qmlRegisterType<ElevationChart>("ElevationChart", 1, 0, "ElevationChart");
 
     ui->setupUi(this);
-    ui->quickWidget->setSource(QUrl("qrc:/IntegrationExample.qml"));
+    ui->quickWidget->setSource(QUrl("qrc:/example.qml"));
     ui->quickWidget->show();
 }
 

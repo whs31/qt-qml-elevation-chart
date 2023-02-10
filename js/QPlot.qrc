@@ -1,7 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>ElevationChart.qml</file>
-        <file>IntegrationExample.qml</file>
         <file>FlightPoint.qml</file>
     </qresource>
 </RCC>

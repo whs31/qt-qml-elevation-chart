@@ -8,8 +8,8 @@ Rectangle {
 	color: "#222831";
 	property alias path: backend.geopath;
 	property alias logging: backend.logging;
+	property bool showIndex: false;
 	property alias chartColor: graph.color;
-	property alias chartVerticalStretch: graph.verticalStretch;
 	property color flightPathColor: "#c4bb4b";
 	property color successColor: "#7FD962";
 	property color errorColor: "#D95757";
@@ -20,7 +20,7 @@ Rectangle {
 	Connections {
 		target: backend;
 		function onRequestRedraw() {
-			if(backend.logging) console.info("Backend requesting update.");
+			if(backend.logging) console.info("<qplot-js> backend requesting redraw");
 			requestAll();
 		}
 	}
@@ -34,7 +34,7 @@ Rectangle {
 		pixelWidth: base.width;
 		pixelHeight: base.height;
 		zoomX: 1;
-		verticalStretch: 1.5;
+		verticalStretch: 1.2; // do not touch <!>
 
 		Behavior on zoomX { NumberAnimation { duration: 100; } }
 		onZoomXChanged: {
@@ -63,7 +63,7 @@ Rectangle {
 	Timer { id: overheadTimer; interval: 500; running: false; repeat: false; onTriggered: requestAll(); }
 	function requestAll()
 	{
-		if(backend.logging) console.info("Updating all.");
+		if(backend.logging) console.info("<qplot-js> redrawing all");
 		graph.requestPaint();
 		legend.requestPaint();
 		//grid.requestPaint();
@@ -91,7 +91,6 @@ Rectangle {
 		{
 			id: graph;
 			property color color: "#43a1ca";
-			property alias verticalStretch: backend.verticalStretch;
 			property real flightPointSize: 15;
 			width: backend.pixelWidth * backend.zoomX;
 			height: backend.pixelHeight;
@@ -151,11 +150,6 @@ Rectangle {
 											"m_x": backend.pathData[f].x * (backend.zoomX) - flightPointSize / 2,
 											"m_y": height - backend.pathData[f].y - flightPointSize / 2, flightPointSize, flightPointSize,
 											"m_width": flightPointSize,
-											"m_color": String(flightPathColor),
-											"m_ui_color": String(legend.color),
-											"m_ui_background_color": String(Qt.lighter(base.color, 2)),
-											"m_success_color": String(base.successColor),
-											"m_error_color": String(base.errorColor),
 											"m_distance": backend.pathData[f].x / backend.pixelWidth * backend.realWidth,
 											"m_elevation": backend.pathData[f].y / backend.pixelHeight * backend.realHeight * backend.verticalStretch
 										})

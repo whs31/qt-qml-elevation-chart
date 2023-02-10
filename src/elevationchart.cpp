@@ -14,6 +14,7 @@ ElevationChart::ElevationChart(QObject *parent)
 void ElevationChart::changeFlightPointAltitude(int index, qreal delta)
 {
     QGeoCoordinate coord = m_geopath.coordinateAt(index);
+    if(abs(delta) > 2.5)
         coord.setAltitude(coord.altitude() + delta * (0.1 + coord.altitude() / (axes.y.max * 20)));
     if(coord.altitude() <= 0)
         coord.setAltitude(0);
@@ -37,13 +38,13 @@ void ElevationChart::update(bool vectorChanged)
         if(axes.y.max < point.y())
             axes.y.max = point.y();
     }
-    if(m_logging) qDebug() << "МАКСИМАЛЬНАЯ ВЫСОТА НА ПРОФИЛЕ ВЫСОТ: " << axes.y.max << "м";
+    if(m_logging) qDebug() << "<qplot> profile max elevation:" << axes.y.max << "m";
     for(QGeoCoordinate coord : m_geopath.path())
     {
         if(coord.altitude() > axes.y.max)
         {
             axes.y.max = coord.altitude();
-            if(m_logging) qInfo() << "НАЙДЕНА НАИВЫСШАЯ ТОЧКА: " << axes.y.max << "м";
+            if(m_logging) qInfo() << "<qplot> flightpath max elevation" << axes.y.max << "m";
         }
     }
 
@@ -85,16 +86,15 @@ void ElevationChart::update(bool vectorChanged)
 
     if(m_logging)
     {
-        qDebug() << "Вычисление значений вертикальной и горизонтальной оси графика: ";
-        qDebug() << "РАЗМЕР ВЫЧИСЛЕННОГО МАССИВА ТОЧЕК: " << points.length() << "точек";
-        qDebug() << "ПИКСЕЛЬНАЯ ШИРИНА ВИДЖЕТА: " << axes.x.pixelsize << "px";
-        qDebug() << "ПИКСЕЛЬНАЯ ВЫСОТА ВИДЖЕТА: " << axes.y.pixelsize << "px";
-        qDebug() << "МАКСИМАЛЬНОЕ РАССТОЯНИЕ: " << axes.x.max << "м";
-        qDebug() << "ПОРЯДОК ОСИ РАССТОЯНИЯ: " << axes.x.power;
-        qDebug() << "ПОРЯДОК ОСИ ВЫСОТЫ: " << axes.y.power;
-        qDebug() << "ДЛИНА ГОРИЗОНТАЛЬНОЙ ОСИ: " << axes.x.roundmax << "м";
-        qDebug() << "ДЛИНА ВЕРТИКАЛЬНОЙ ОСИ: " << axes.y.max << "м";
-        qDebug() << "УРОВЕНЬ ЗУМА ПО ОХ: " << zoomX() + 1;
+        qInfo() << "<qplot> calculating values <><> ";
+        qDebug() << "<qplot> profile list size: " << points.length() << "pts";
+        qDebug() << "<qplot> pixelsize x: " << axes.x.pixelsize << "px";
+        qDebug() << "<qplot> pixelsize y: " << axes.y.pixelsize << "px";
+        qDebug() << "<qplot> max value x: " << axes.x.max << "m";
+        qDebug() << "<qplot> max value y: " << axes.y.max << "m";
+        qDebug() << "<qplot> roundmax value x: " << axes.x.roundmax << "m";
+        qDebug() << "<qplot> roundmax value y: " << axes.y.roundmax << "m";
+        qDebug() << "<qplot> zoom level x: " << zoomX() + 1;
     }
 }
 
@@ -114,7 +114,7 @@ QPointF ElevationChart::iterateSimple(void)
         return ret;
     } else {
         iterator.simple = 0;
-        if(m_logging) qInfo() << "ОТРИСОВКА ГРАФИКА ЗАВЕРШЕНА";
+        if(m_logging) qInfo() << "<qplot> redraw finished";
         return QPointF(-1, -1);
     }
 }
@@ -147,9 +147,9 @@ QPointF ElevationChart::iterateOverRange(float rangeStart, float rangeStop)
                     iterator.rangeMax = i < points.length() - 1 ? i + 1 : i;
             }
         }
-        Q_ASSERT_X(iterator.rangeMax != -1, "range assignment", "upper range not found in vector");
-        Q_ASSERT_X(iterator.rangeMax < points.length(), "bounds", "rangeMax out of bounds");
-        Q_ASSERT_X(iterator.rangeMin >= 0, "bounds", "rangeMin lower than 0");
+        Q_ASSERT_X(iterator.rangeMax != -1, "<qplot> range assignment", "upper range not found in vector");
+        Q_ASSERT_X(iterator.rangeMax < points.length(), "<qplot> bounds", "rangeMax out of bounds");
+        Q_ASSERT_X(iterator.rangeMin >= 0, "<qplot> bounds", "rangeMin lower than 0");
         iterator.rangeSet = true;
         iterator.range = iterator.rangeMin;
     }
@@ -169,7 +169,7 @@ QGeoPath ElevationChart::geopath() const { return m_geopath; }
 void ElevationChart::setGeopath(const QGeoPath &path)
 {
     m_geopath = path;
-    if(m_logging) qInfo() << "ПОЛУЧЕНО НА ВХОД: " << m_geopath.path();
+    if(m_logging) qInfo() << "<qplot> got new path: " << m_geopath.path();
     emit geopathChanged();
 
     if(axes.x.pixelsize > 0) update(true);
@@ -178,7 +178,7 @@ void ElevationChart::setGeopath(const QGeoPath &path)
 QList<QPointF> ElevationChart::pathData() const { return m_pathData; }
 void ElevationChart::setPathData(QList<QPointF> data)
 {
-    if(m_logging) qDebug() << "ПУТЬ БПЛА: " << m_pathData;
+    if(m_logging) qDebug() << "<qplot> uav path: " << m_pathData;
     m_pathData = data;
     emit pathDataChanged();
 }
@@ -200,7 +200,7 @@ void ElevationChart::setPixelWidth(qreal value)
     axes.x.pixelsize = value;
     emit pixelWidthChanged();
 
-    if(m_logging) qDebug() << "Изменена ширина виджета.";
+    if(m_logging) qDebug() << "<qplot> pixelwidth changed <>";
     if(!m_geopath.isEmpty() && axes.y.pixelsize > 0) update(false);
 }
 
@@ -212,7 +212,7 @@ void ElevationChart::setPixelHeight(qreal value)
     axes.y.pixelsize = value;
     emit pixelHeightChanged();
 
-    if(m_logging) qDebug() << "Изменена высота виджета.";
+    if(m_logging) qDebug() << "<qplot> pixelheight changed <>";
     if(!m_geopath.isEmpty() && axes.x.pixelsize > 0) update(false);
 }
 
