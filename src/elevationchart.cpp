@@ -15,7 +15,7 @@ void ElevationChart::changeFlightPointAltitude(int index, qreal delta)
 {
     QGeoCoordinate coord = m_geopath.coordinateAt(index);
     if(abs(delta) > 2.5)
-        coord.setAltitude(coord.altitude() + delta * (0.1 + coord.altitude() / (axes.y.max * 20)));
+        coord.setAltitude(coord.altitude() + delta * (0.1 + coord.altitude() / (axes.y.max * 40)));
     if(coord.altitude() <= 0)
         coord.setAltitude(0);
     m_geopath.replaceCoordinate(index, coord);

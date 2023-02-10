@@ -6,7 +6,7 @@ Rectangle
 	property real distance: m_distance;
 	property real elevation: m_elevation;
 
-	width: m_width;
+	width: pointSize;
 	height: width;
 	color: flightPathColor;
 	radius: width / 2;

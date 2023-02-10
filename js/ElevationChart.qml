@@ -5,17 +5,27 @@ import ElevationChart 1.0
 
 Rectangle {
 	id: base;
-	color: "#222831";
+
+	// geopath
 	property alias path: backend.geopath;
+
+	// settings
 	property alias logging: backend.logging;
 	property bool showIndex: false;
+
+	// colors
+	property alias backgroundColor: base.color;
 	property alias chartColor: graph.color;
 	property color flightPathColor: "#c4bb4b";
 	property color successColor: "#7FD962";
 	property color errorColor: "#D95757";
 
+	// tweaks
+	property alias pointSize: graph.flightPointSize;
+
 	focus: true;
 	clip: true;
+	color: "#222831";
 
 	Connections {
 		target: backend;
@@ -149,7 +159,6 @@ Rectangle {
 						pathModel.append({
 											"m_x": backend.pathData[f].x * (backend.zoomX) - flightPointSize / 2,
 											"m_y": height - backend.pathData[f].y - flightPointSize / 2, flightPointSize, flightPointSize,
-											"m_width": flightPointSize,
 											"m_distance": backend.pathData[f].x / backend.pixelWidth * backend.realWidth,
 											"m_elevation": backend.pathData[f].y / backend.pixelHeight * backend.realHeight * backend.verticalStretch
 										})

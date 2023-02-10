@@ -50,20 +50,24 @@ Rectangle { id: root;
 		anchors.bottom: parent.bottom;
 		anchors.top: parent.verticalCenter;
 
-		logging: true;
-		showIndex: checkbox1.checked;
 		path: QtPositioning.path([
-									 QtPositioning.coordinate(60, 30, 60),
-									 QtPositioning.coordinate(60.1, 30.1, 20),
-									 QtPositioning.coordinate(60.15, 30.1, 40),
-									 QtPositioning.coordinate(coord1, coord2, 35),
-									 QtPositioning.coordinate(coord1+0.05, coord2, 0),
-									 QtPositioning.coordinate(60.05, 30.05, 11)
-								 ]);
-		color: "#1F2430";
+					QtPositioning.coordinate(60, 30, 60),
+					QtPositioning.coordinate(60.1, 30.1, 20),
+					QtPositioning.coordinate(60.15, 30.1, 40),
+					QtPositioning.coordinate(coord1, coord2, 35),
+					QtPositioning.coordinate(coord1+0.05, coord2, 0),
+					QtPositioning.coordinate(60.05, 30.05, 11)
+		]);
+
+		logging: false;
+		showIndex: checkbox1.checked;
+
+		backgroundColor: "#1F2430";
 		chartColor: "#707A8C";
 		flightPathColor: "#E6B450";
 		successColor: "#87D96C";
 		errorColor: "#FF6666";
+
+		pointSize: 15;
 	}
 }
