@@ -68,19 +68,35 @@ void ElevationChart::update(bool vectorChanged)
     setScaleStepY((axes.y.pixelsize)/ axes.y.scalecount);
 
     QList<QPointF> data;
+    QList<QPointF> errorData;
     qreal previous_distance = 0;
     for(size_t i = 0; i < m_geopath.path().length(); i++)
     {
         QPointF point;
-        qreal current_distance = 0;
+        qreal deltaS = 0;
         point.setY(m_geopath.path()[i].altitude() * axes.y.pixelsize / (axes.y.max * axes.stretch));
         if(i > 0)
-            current_distance = m_geopath.path()[i].distanceTo(m_geopath.path()[i-1]);
-        previous_distance += current_distance;
+            deltaS = m_geopath.path()[i].distanceTo(m_geopath.path()[i-1]);
+        previous_distance += deltaS;
         point.setX(previous_distance * axes.x.pixelsize / axes.x.max);
         data.append(point);
+
+        // error list
+        if(i > 0)
+        {
+            qreal deltaH = m_geopath.path()[i].altitude() - m_geopath.path()[i-1].altitude();
+            qreal deltaHmin = variometer.RoD * deltaS / variometer.hV;
+            qreal deltaHmax = variometer.RoC * deltaS / variometer.hV;
+            if(deltaH > qMin(deltaHmin, deltaHmax))
+            {
+                errorData.append(data[i-1]);
+                errorData.append(data[i]);
+            }
+        }
     }
+
     setPathData(data);
+    setPathErrorList(errorData);
 
     emit requestRedraw();
 
@@ -174,140 +190,67 @@ void ElevationChart::setGeopath(const QGeoPath &path)
 
     if(axes.x.pixelsize > 0) update(true);
 }
-
 QList<QPointF> ElevationChart::pathData() const { return m_pathData; }
 void ElevationChart::setPathData(QList<QPointF> data)
-{
-    if(m_logging) qDebug() << "<qplot> uav path: " << m_pathData;
-    m_pathData = data;
-    emit pathDataChanged();
-}
+{ if(m_logging) qDebug() << "<qplot> uav path: " << m_pathData;
+  m_pathData = data; emit pathDataChanged(); }
+QList<QPointF> ElevationChart::pathErrorList() const { return m_pathErrorList; }
+void ElevationChart::setPathErrorList(const QList<QPointF> &newPathErrorList)
+{ if (m_pathErrorList == newPathErrorList) return; m_pathErrorList = newPathErrorList; emit pathErrorListChanged(); }
 
 bool ElevationChart::logging() const { return m_logging; }
 void ElevationChart::setLogging(bool state)
-{
-    if (m_logging == state)
-        return;
-    m_logging = state;
-    emit loggingChanged();
-}
+{ if (m_logging == state) return; m_logging = state; emit loggingChanged(); }
 
 qreal ElevationChart::pixelWidth() const { return axes.x.pixelsize; }
 void ElevationChart::setPixelWidth(qreal value)
-{
-    if (qFuzzyCompare(axes.x.pixelsize, value))
-        return;
-    axes.x.pixelsize = value;
-    emit pixelWidthChanged();
-
-    if(m_logging) qDebug() << "<qplot> pixelwidth changed <>";
-    if(!m_geopath.isEmpty() && axes.y.pixelsize > 0) update(false);
-}
-
+{ if (qFuzzyCompare(axes.x.pixelsize, value)) return; axes.x.pixelsize = value; emit pixelWidthChanged();
+  if(m_logging) qDebug() << "<qplot> pixelwidth changed <>"; if(!m_geopath.isEmpty() && axes.y.pixelsize > 0) update(false); }
 qreal ElevationChart::pixelHeight() const { return axes.y.pixelsize; }
 void ElevationChart::setPixelHeight(qreal value)
-{
-    if (qFuzzyCompare(axes.y.pixelsize, value))
-        return;
-    axes.y.pixelsize = value;
-    emit pixelHeightChanged();
-
-    if(m_logging) qDebug() << "<qplot> pixelheight changed <>";
-    if(!m_geopath.isEmpty() && axes.x.pixelsize > 0) update(false);
-}
+{ if (qFuzzyCompare(axes.y.pixelsize, value)) return; axes.y.pixelsize = value; emit pixelHeightChanged();
+  if(m_logging) qDebug() << "<qplot> pixelheight changed <>"; if(!m_geopath.isEmpty() && axes.x.pixelsize > 0) update(false); }
 
 qreal ElevationChart::offset() const { return axes.offset; }
 void ElevationChart::setOffset(qreal value)
-{
-    if (qFuzzyCompare(axes.offset, value))
-        return;
-    axes.offset = value;
-    emit offsetChanged();
-}
-
+{ if (qFuzzyCompare(axes.offset, value)) return; axes.offset = value; emit offsetChanged(); }
 qreal ElevationChart::verticalStretch() const { return axes.stretch; }
 void ElevationChart::setVerticalStretch(qreal value)
-{
-    if (qFuzzyCompare(axes.stretch, value))
-        return;
-    axes.stretch = value;
-    emit verticalStretchChanged();
-}
-
+{ if (qFuzzyCompare(axes.stretch, value)) return; axes.stretch = value; emit verticalStretchChanged(); }
 qreal ElevationChart::zoomX() const { return axes.x.zoom; }
 void ElevationChart::setZoomX(qreal value)
-{
-    if (qFuzzyCompare(axes.x.zoom, value))
-        return;
-    axes.x.zoom = value;
-    emit zoomXChanged();
-}
+{ if (qFuzzyCompare(axes.x.zoom, value)) return; axes.x.zoom = value; emit zoomXChanged(); }
 
 qreal ElevationChart::realHeight() const { return axes.y.max; }
-void ElevationChart::setRealHeight(qreal value)
-{
-    axes.y.max = value;
-    emit realHeightChanged();
-}
-
+void ElevationChart::setRealHeight(qreal value) { axes.y.max = value; emit realHeightChanged(); }
 qreal ElevationChart::realWidth() const { return axes.x.max; }
-void ElevationChart::setRealWidth(qreal value)
-{
-    axes.x.max = value;
-    emit realWidthChanged();
-}
+void ElevationChart::setRealWidth(qreal value) { axes.x.max = value; emit realWidthChanged(); }
 
 int ElevationChart::scaleValueX() const { return axes.x.scalevalue; }
 void ElevationChart::setScaleValueX(int value)
-{
-    if (axes.x.scalevalue == value)
-        return;
-    axes.x.scalevalue = value;
-    emit scaleValueXChanged();
-}
-
+{ if (axes.x.scalevalue == value) return; axes.x.scalevalue = value; emit scaleValueXChanged(); }
 int ElevationChart::scaleValueY() const { return axes.y.scalevalue; }
 void ElevationChart::setScaleValueY(int value)
-{
-    if (axes.y.scalevalue == value)
-        return;
-    axes.y.scalevalue = value;
-    emit scaleValueYChanged();
-}
-
+{ if (axes.y.scalevalue == value) return; axes.y.scalevalue = value; emit scaleValueYChanged(); }
 qreal ElevationChart::scaleCountX() const { return axes.x.scalecount; }
 void ElevationChart::setScaleCountX(qreal count)
-{
-    if (axes.x.scalecount == count)
-        return;
-    axes.x.scalecount = count;
-    emit scaleCountXChanged();
-}
-
+{ if (axes.x.scalecount == count) return; axes.x.scalecount = count; emit scaleCountXChanged(); }
 qreal ElevationChart::scaleCountY() const { return axes.y.scalecount; }
 void ElevationChart::setScaleCountY(qreal count)
-{
-    if (axes.y.scalecount == count)
-        return;
-    axes.y.scalecount = count;
-    emit scaleCountYChanged();
-}
-
+{ if (axes.y.scalecount == count) return; axes.y.scalecount = count; emit scaleCountYChanged(); }
 qreal ElevationChart::scaleStepX() const { return axes.x.scalepixelwidth; }
 void ElevationChart::setScaleStepX(qreal value)
-{
-    if (qFuzzyCompare(axes.x.scalepixelwidth, value))
-        return;
-    axes.x.scalepixelwidth = value;
-    emit scaleStepXChanged();
-}
-
+{ if (qFuzzyCompare(axes.x.scalepixelwidth, value)) return; axes.x.scalepixelwidth = value; emit scaleStepXChanged(); }
 qreal ElevationChart::scaleStepY() const { return axes.y.scalepixelwidth; }
 void ElevationChart::setScaleStepY(qreal value)
-{
-    if (qFuzzyCompare(axes.y.scalepixelwidth, value))
-        return;
-    axes.y.scalepixelwidth = value;
-    emit scaleStepYChanged();
-}
+{ if (qFuzzyCompare(axes.y.scalepixelwidth, value)) return; axes.y.scalepixelwidth = value; emit scaleStepYChanged(); }
 
+qreal ElevationChart::variometerHV() const { return variometer.hV; }
+void ElevationChart::setVariometerHV(qreal value)
+{ if (qFuzzyCompare(variometer.hV, value)) return; variometer.hV = value; emit variometerHVChanged(); update(false); }
+qreal ElevationChart::variometerROC() const { return variometer.RoC; }
+void ElevationChart::setVariometerROC(qreal value)
+{ if (qFuzzyCompare(variometer.RoC, value)) return; variometer.RoC = value; emit variometerROCChanged(); update(false); }
+qreal ElevationChart::variometerROD() const { return variometer.RoD; }
+void ElevationChart::setVariometerROD(qreal value)
+{ if (qFuzzyCompare(variometer.RoD, value)) return; variometer.RoD = value; emit variometerRODChanged(); update(false); }

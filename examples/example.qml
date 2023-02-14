@@ -42,6 +42,27 @@ Rectangle { id: root;
 			checked: false;
 			text: "Показать номера точек";
 		}
+		TextField { id: textField1;
+			validator: IntValidator {bottom: 1; top: 10000;}
+			text: "75";
+			anchors.top: checkbox1.bottom;
+			anchors.left: parent.left;
+			anchors.right: parent.right;
+		}
+		TextField { id: textField2;
+			validator: IntValidator {bottom: 1; top: 10000;}
+			text: "15";
+			anchors.top: textField1.bottom;
+			anchors.left: parent.left;
+			anchors.right: parent.right;
+		}
+		TextField { id: textField3;
+			validator: IntValidator {bottom: 1; top: 10000;}
+			text: "25";
+			anchors.top: textField2.bottom;
+			anchors.left: parent.left;
+			anchors.right: parent.right;
+		}
 	}
 
 	ElevationChart { id: elevationChart;
@@ -58,6 +79,9 @@ Rectangle { id: root;
 					QtPositioning.coordinate(coord1+0.05, coord2, 0),
 					QtPositioning.coordinate(60.05, 30.05, 11)
 		]);
+		horizontalVelocity: parseInt(textField1.text);
+		rateOfClimb: parseInt(textField2.text);
+		rateOfDescend: parseInt(textField3.text);
 
 		logging: false;
 		showIndex: checkbox1.checked;

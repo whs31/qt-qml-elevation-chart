@@ -6,21 +6,24 @@ import ElevationChart 1.0
 Rectangle {
 	id: base;
 
-	// geopath
+	// ❮❮❮ input ❯❯❯
 	property alias path: backend.geopath;
+	property alias horizontalVelocity: backend.variometerHV;
+	property alias rateOfClimb: backend.variometerROC;
+	property alias rateOfDescend: backend.variometerROD;
 
-	// settings
+	// ❮❮❮ settings ❯❯❯
 	property alias logging: backend.logging;
 	property bool showIndex: false;
 
-	// colors
+	// ❮❮❮ colors ❯❯❯
 	property alias backgroundColor: base.color;
 	property alias chartColor: graph.color;
 	property color flightPathColor: "#c4bb4b";
 	property color successColor: "#7FD962";
 	property color errorColor: "#D95757";
 
-	// tweaks
+	// ❮❮❮ tweaks ❯❯❯
 	property alias pointSize: graph.flightPointSize;
 
 	focus: true;
@@ -44,16 +47,17 @@ Rectangle {
 		pixelWidth: base.width;
 		pixelHeight: base.height;
 		zoomX: 1;
-		verticalStretch: 1.2; // do not touch <!>
+		verticalStretch: 1.2; // ❮❮❮ ⚠⚠⚠ do not touch ⚠⚠⚠ ❯❯❯
+		variometerHV: 155; // ❮❮❮ m\s ❯❯❯
+		variometerROC: 10; // ❮❮❮ m\s ❯❯❯
+		variometerROD: 10; // ❮❮❮ m\s ❯❯❯
 
-		Behavior on zoomX { NumberAnimation { duration: 100; } }
 		onZoomXChanged: {
 			if(zoomX > wheelHandler.maxZoom)
 				zoomX = wheelHandler.maxZoom;
 			if(zoomX < 1)
 			{
 				zoomX = 1;
-				//horizontalScrollBar.position = 0;
 			}
 			overheadTimer.restart();
 		}
@@ -69,7 +73,7 @@ Rectangle {
 		onClicked: stopDrag();
 	}
 
-	//this timer prevents overupdating when zooming and etc
+	// ❮❮❮ this timer prevents overupdating when zooming and etc ❯❯❯
 	Timer { id: overheadTimer; interval: 500; running: false; repeat: false; onTriggered: requestAll(); }
 	function requestAll()
 	{
@@ -117,7 +121,7 @@ Rectangle {
 				ctx.lineCap = "round";
 				ctx.lineJoin = "round";
 
-				// draw elevation profile
+				// ❮❮❮ draw elevation profile ❯❯❯
 				ctx.moveTo(0, height);
 				var p0 = Qt.point(0, 0);
 				while(1)
@@ -139,7 +143,7 @@ Rectangle {
 					p0 = p;
 				}
 
-				// draw flight path
+				// ❮❮❮ draw flight path ❯❯❯
 				ctx.strokeStyle = flightPathColor;
 				ctx.lineWidth = 5;
 				ctx.moveTo(0, 0);
@@ -172,6 +176,16 @@ Rectangle {
 					}
 				}
 				ctx.closePath();
+
+				// variometer error display
+				ctx.strokeStyle = errorColor;
+				ctx.fillStyle = errorColor;
+				ctx.beginPath();
+				for(let e = 0; e < backend.pathErrorList.length; e++)
+				{
+					ctx.lineTo(backend.pathErrorList[e].x * (backend.zoomX), height - backend.pathErrorList[e].y);
+					ctx.stroke();
+				}
 
 				ctx.fillStyle = legend.color;
 			}
@@ -207,13 +221,13 @@ Rectangle {
 
 			ctx.stroke();
 
-			// OY scales
+			// ❮❮❮ OY scales ❯❯❯
 			context.moveTo(0, height);
 			for(let k = 1; k < backend.scaleCountY; k++)
 			{
 				if(k % 5 == 0)
 				{
-					// grid
+					// ❮❮❮ grid ❯❯❯
 					ctx.globalAlpha = 0.5;
 					ctx.font = "bold 12px sans-serif";
 					ctx.strokeStyle = Qt.darker(legend.color, 1.5);
@@ -225,7 +239,7 @@ Rectangle {
 					ctx.stroke();
 					ctx.globalAlpha = 1;
 
-					// scales itself
+					// ❮❮❮ scales itself ❯❯❯
 					ctx.setLineDash([4000, 1]);
 					ctx.lineWidth = 3;
 					ctx.strokeStyle = legend.color;
@@ -240,7 +254,7 @@ Rectangle {
 				}
 				else
 				{
-					// grid
+					// ❮❮❮ grid ❯❯❯
 					ctx.globalAlpha = 0.4;
 					ctx.font = "bold 12px sans-serif";
 					ctx.strokeStyle = Qt.darker(legend.color, 1.5);
@@ -252,7 +266,7 @@ Rectangle {
 					ctx.stroke();
 					ctx.globalAlpha = 1;
 
-					// text on minor scales
+					// ❮❮❮ text on minor scales ❯❯❯
 					ctx.font = "bold 10px sans-serif";
 					let val = backend.scaleValueY * k;
 					let txt = Number(val).toFixed(0) + " м";
@@ -260,7 +274,7 @@ Rectangle {
 					ctx.fillText(txt, 4, height - k * backend.scaleStepY - 4);
 					ctx.fillStyle = graph.color;
 
-					// scales itself
+					// ❮❮❮ scales itself ❯❯❯
 					ctx.setLineDash([4000, 1]);
 					ctx.lineWidth = 2;
 					ctx.strokeStyle = legend.color;
