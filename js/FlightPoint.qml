@@ -8,13 +8,14 @@ Rectangle
 
 	width: pointSize;
 	height: width;
-	color: flightPathColor;
+	color: invalid ? base.errorColor : flightPathColor;
 	radius: width / 2;
 	x: m_x;
 	y: m_y;
 	border.width: 3;
-	border.color: Qt.lighter(flightPathColor, 1.2);
+	border.color: invalid ? Qt.lighter(base.errorColor, 1.2) : Qt.lighter(flightPathColor, 1.2);
 	property real delta: y - globalMouseArea.mouseY;
+	property bool invalid: m_invalid;
 
 	Timer { id: updateTimer; repeat: true; running: false; interval: 25;
 			onTriggered: backend.changeFlightPointAltitude(index, delta); }
@@ -38,7 +39,7 @@ Rectangle
 
 	Rectangle { id: indexUI;
 		visible: base.showIndex;
-		width: 31; height: 17; radius: height / 2; opacity: 1; color: flightPathColor;
+		width: 31; height: 17; radius: height / 2; opacity: 1; color: invalid ? base.errorColor : flightPathColor;
 		anchors.horizontalCenter: parent.horizontalCenter; anchors.verticalCenter: parent.verticalCenter;
 		anchors.horizontalCenterOffset: m_x / base.width > 0.5 ? -width / 2 - 7 : width / 2 + 7;
 		Text {

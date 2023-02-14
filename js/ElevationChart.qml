@@ -161,28 +161,14 @@ Rectangle {
 					ctx.closePath();
 					ctx.stroke();
 
-					// variometer error display
-					console.log(backend.pathErrorList.length, backend.pathData.length)
-					if(backend.pathErrorList[f])
-					{
-						ctx.beginPath();
-						ctx.strokeStyle = errorColor;
-						ctx.fillStyle = errorColor;
-						ctx.lineWidth = 5;
-
-						if(f > 0) ctx.moveTo(backend.pathData[f-1].x * (backend.zoomX), height - backend.pathData[f-1].y);
-						ctx.lineTo(backend.pathData[f].x * (backend.zoomX), height - backend.pathData[f].y);
-						ctx.closePath();
-						ctx.stroke();
-					}
-
 					if(pathModel.count < backend.pathData.length)
 					{
 						pathModel.append({
 											"m_x": backend.pathData[f].x * (backend.zoomX) - flightPointSize / 2,
 											"m_y": height - backend.pathData[f].y - flightPointSize / 2, flightPointSize, flightPointSize,
 											"m_distance": backend.pathData[f].x / backend.pixelWidth * backend.realWidth,
-											"m_elevation": backend.pathData[f].y / backend.pixelHeight * backend.realHeight * backend.verticalStretch
+											"m_elevation": backend.pathData[f].y / backend.pixelHeight * backend.realHeight * backend.verticalStretch,
+											"m_invalid": false
 										})
 					}
 					else
@@ -192,6 +178,24 @@ Rectangle {
 						pathModel.setProperty(f, "m_distance", backend.pathData[f].x / backend.pixelWidth * backend.realWidth);
 						pathModel.setProperty(f, "m_elevation", backend.pathData[f].y / backend.pixelHeight * backend.realHeight * backend.verticalStretch);
 					}
+
+					// variometer error display
+					if(backend.pathErrorList[f])
+					{
+						ctx.beginPath();
+						ctx.strokeStyle = errorColor;
+						ctx.fillStyle = errorColor;
+						ctx.setLineDash([16, 16]);
+						ctx.lineWidth = 1.5;
+
+						if(f > 0) ctx.moveTo(backend.pathData[f-1].x * (backend.zoomX), height - backend.pathData[f-1].y);
+						ctx.lineTo(backend.pathData[f].x * (backend.zoomX), height - backend.pathErrorValueList[f]);
+						ctx.lineTo(backend.pathData[f].x * (backend.zoomX), height - backend.pathData[f]);
+						ctx.closePath();
+						ctx.stroke();
+						ctx.setLineDash([4000, 1]);
+						pathModel.setProperty(f, "m_invalid", true);
+					} else { pathModel.setProperty(f, "m_invalid", false); }
 				}
 				ctx.closePath();
 				ctx.fillStyle = legend.color;

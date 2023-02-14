@@ -19,7 +19,7 @@ class ElevationChart : public QObject
     Q_PROPERTY(QGeoPath geopath READ geopath WRITE setGeopath NOTIFY geopathChanged)
     Q_PROPERTY(QList<QPointF> pathData READ pathData WRITE setPathData NOTIFY pathDataChanged)
     Q_PROPERTY(QList<bool> pathErrorList READ pathErrorList WRITE setPathErrorList NOTIFY pathErrorListChanged)
-    //Q_PROPERTY(QList<QPointF> )
+    Q_PROPERTY(QList<float> pathErrorValueList READ pathErrorValueList WRITE setPathErrorValueList NOTIFY pathErrorValueListChanged)
     Q_PROPERTY(bool logging READ logging WRITE setLogging NOTIFY loggingChanged)
 
     Q_PROPERTY(qreal pixelWidth READ pixelWidth WRITE setPixelWidth NOTIFY pixelWidthChanged)
@@ -56,13 +56,14 @@ public slots:
 signals:
     void requestRedraw();
 
-    void geopathChanged();          void pathDataChanged();         void pathErrorListChanged();
-    void loggingChanged();          void pixelWidthChanged();       void pixelHeightChanged();
-    void offsetChanged();           void verticalStretchChanged();  void zoomXChanged();
-    void zoomYChanged();            void realHeightChanged();       void realWidthChanged();
-    void scaleValueXChanged();      void scaleValueYChanged();      void scaleCountXChanged();
-    void scaleCountYChanged();      void scaleStepXChanged();       void scaleStepYChanged();
-    void variometerHVChanged();     void variometerROCChanged();    void variometerRODChanged();
+    void geopathChanged();              void pathDataChanged();         void pathErrorListChanged();
+    void loggingChanged();              void pixelWidthChanged();       void pixelHeightChanged();
+    void offsetChanged();               void verticalStretchChanged();  void zoomXChanged();
+    void zoomYChanged();                void realHeightChanged();       void realWidthChanged();
+    void scaleValueXChanged();          void scaleValueYChanged();      void scaleCountXChanged();
+    void scaleCountYChanged();          void scaleStepXChanged();       void scaleStepYChanged();
+    void variometerHVChanged();         void variometerROCChanged();    void variometerRODChanged();
+    void pathErrorValueListChanged();
 
 private:
     void update(bool vectorChanged = false);
@@ -74,6 +75,7 @@ private:
     QGeoPath m_geopath;
     QList<QPointF> m_pathData;
     QList<bool> m_pathErrorList;
+    QList<float> m_pathErrorValueList;
     bool m_logging = false;
     struct Axes
     {
@@ -111,7 +113,8 @@ private:
 
     QGeoPath geopath() const;                       void setGeopath(const QGeoPath &path);
     QList<QPointF> pathData() const;                void setPathData(QList<QPointF> data);
-    QList<bool> pathErrorList() const;           void setPathErrorList(const QList<bool> &newPathErrorList);
+    QList<bool> pathErrorList() const;              void setPathErrorList(const QList<bool> &newPathErrorList);
+    QList<float> pathErrorValueList() const;        void setPathErrorValueList(const QList<float> &newPathErrorList);
 
     bool logging() const;                           void setLogging(bool state);
 

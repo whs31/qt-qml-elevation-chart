@@ -69,8 +69,10 @@ void ElevationChart::update(bool vectorChanged)
 
     QList<QPointF> data;
     QList<bool> errorData;
+    QList<float> errorDeltas;
     qreal previous_distance = 0;
     errorData.append(false);
+    errorDeltas.append(0);
     for(size_t i = 0; i < m_geopath.path().length(); i++)
     {
         QPointF point;
@@ -89,16 +91,26 @@ void ElevationChart::update(bool vectorChanged)
             qreal deltaHmin = variometer.RoD * deltaS / variometer.hV;
             qreal deltaHmax = variometer.RoC * deltaS / variometer.hV;
             if(deltaH > 0 && deltaH > deltaHmax)
+            {
                 errorData.append(true);
+                errorDeltas.append((m_geopath.path()[i-1].altitude() + deltaHmax) * axes.y.pixelsize / (axes.y.max * axes.stretch));
+            }
             else if(deltaH < 0 && abs(deltaH) > deltaHmin)
+            {
                 errorData.append(true);
-            else errorData.append(false);
+                errorDeltas.append((m_geopath.path()[i-1].altitude() - deltaHmin) * axes.y.pixelsize / (axes.y.max * axes.stretch));
+            }
+            else {
+                errorData.append(false);
+                errorDeltas.append(0);
+            }
+
         }
     }
 
     setPathData(data);
     setPathErrorList(errorData);
-
+    setPathErrorValueList(errorDeltas);
     emit requestRedraw();
 
     if(m_logging)
@@ -198,6 +210,9 @@ void ElevationChart::setPathData(QList<QPointF> data)
 QList<bool> ElevationChart::pathErrorList() const { return m_pathErrorList; }
 void ElevationChart::setPathErrorList(const QList<bool> &newPathErrorList)
 { if (m_pathErrorList == newPathErrorList) return; m_pathErrorList = newPathErrorList; emit pathErrorListChanged(); }
+QList<float> ElevationChart::pathErrorValueList() const { return m_pathErrorValueList; }
+void ElevationChart::setPathErrorValueList(const QList<float> &newPathErrorList)
+{ if (m_pathErrorValueList == newPathErrorList) return; m_pathErrorValueList = newPathErrorList; emit pathErrorValueListChanged(); }
 
 bool ElevationChart::logging() const { return m_logging; }
 void ElevationChart::setLogging(bool state)
