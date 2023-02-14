@@ -18,7 +18,8 @@ class ElevationChart : public QObject
     Q_OBJECT
     Q_PROPERTY(QGeoPath geopath READ geopath WRITE setGeopath NOTIFY geopathChanged)
     Q_PROPERTY(QList<QPointF> pathData READ pathData WRITE setPathData NOTIFY pathDataChanged)
-    Q_PROPERTY(QList<QPointF> pathErrorList READ pathErrorList WRITE setPathErrorList NOTIFY pathErrorListChanged)
+    Q_PROPERTY(QList<bool> pathErrorList READ pathErrorList WRITE setPathErrorList NOTIFY pathErrorListChanged)
+    //Q_PROPERTY(QList<QPointF> )
     Q_PROPERTY(bool logging READ logging WRITE setLogging NOTIFY loggingChanged)
 
     Q_PROPERTY(qreal pixelWidth READ pixelWidth WRITE setPixelWidth NOTIFY pixelWidthChanged)
@@ -72,7 +73,7 @@ private:
     QVector<QPointF> points;
     QGeoPath m_geopath;
     QList<QPointF> m_pathData;
-    QList<QPointF> m_pathErrorList;
+    QList<bool> m_pathErrorList;
     bool m_logging = false;
     struct Axes
     {
@@ -110,7 +111,7 @@ private:
 
     QGeoPath geopath() const;                       void setGeopath(const QGeoPath &path);
     QList<QPointF> pathData() const;                void setPathData(QList<QPointF> data);
-    QList<QPointF> pathErrorList() const;           void setPathErrorList(const QList<QPointF> &newPathErrorList);
+    QList<bool> pathErrorList() const;           void setPathErrorList(const QList<bool> &newPathErrorList);
 
     bool logging() const;                           void setLogging(bool state);
 

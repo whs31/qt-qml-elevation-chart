@@ -144,20 +144,38 @@ Rectangle {
 				}
 
 				// ❮❮❮ draw flight path ❯❯❯
-				ctx.strokeStyle = flightPathColor;
-				ctx.lineWidth = 5;
 				ctx.moveTo(0, 0);
-				ctx.beginPath();
+
 				if(backend.pathData.length !== pathModel.count)
 				{
 					pathModel.clear();
 				}
 				for(let f = 0; f < backend.pathData.length; f++)
 				{
+					ctx.beginPath();
 					ctx.strokeStyle = flightPathColor;
+					ctx.lineWidth = 4;
 					ctx.fillStyle = flightPathColor;
+					if(f > 0) ctx.moveTo(backend.pathData[f-1].x * (backend.zoomX), height - backend.pathData[f-1].y);
 					ctx.lineTo(backend.pathData[f].x * (backend.zoomX), height - backend.pathData[f].y);
+					ctx.closePath();
 					ctx.stroke();
+
+					// variometer error display
+					console.log(backend.pathErrorList.length, backend.pathData.length)
+					if(backend.pathErrorList[f])
+					{
+						ctx.beginPath();
+						ctx.strokeStyle = errorColor;
+						ctx.fillStyle = errorColor;
+						ctx.lineWidth = 5;
+
+						if(f > 0) ctx.moveTo(backend.pathData[f-1].x * (backend.zoomX), height - backend.pathData[f-1].y);
+						ctx.lineTo(backend.pathData[f].x * (backend.zoomX), height - backend.pathData[f].y);
+						ctx.closePath();
+						ctx.stroke();
+					}
+
 					if(pathModel.count < backend.pathData.length)
 					{
 						pathModel.append({
@@ -176,17 +194,6 @@ Rectangle {
 					}
 				}
 				ctx.closePath();
-
-				// variometer error display
-				ctx.strokeStyle = errorColor;
-				ctx.fillStyle = errorColor;
-				ctx.beginPath();
-				for(let e = 0; e < backend.pathErrorList.length; e++)
-				{
-					ctx.lineTo(backend.pathErrorList[e].x * (backend.zoomX), height - backend.pathErrorList[e].y);
-					ctx.stroke();
-				}
-
 				ctx.fillStyle = legend.color;
 			}
 

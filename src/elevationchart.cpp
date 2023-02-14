@@ -68,8 +68,9 @@ void ElevationChart::update(bool vectorChanged)
     setScaleStepY((axes.y.pixelsize)/ axes.y.scalecount);
 
     QList<QPointF> data;
-    QList<QPointF> errorData;
+    QList<bool> errorData;
     qreal previous_distance = 0;
+    errorData.append(false);
     for(size_t i = 0; i < m_geopath.path().length(); i++)
     {
         QPointF point;
@@ -87,11 +88,11 @@ void ElevationChart::update(bool vectorChanged)
             qreal deltaH = m_geopath.path()[i].altitude() - m_geopath.path()[i-1].altitude();
             qreal deltaHmin = variometer.RoD * deltaS / variometer.hV;
             qreal deltaHmax = variometer.RoC * deltaS / variometer.hV;
-            if(deltaH > qMin(deltaHmin, deltaHmax))
+            if(abs(deltaH) > qMin(deltaHmin, deltaHmax))
             {
-                errorData.append(data[i-1]);
-                errorData.append(data[i]);
+                errorData.append(true);
             }
+            else errorData.append(false);
         }
     }
 
@@ -194,8 +195,8 @@ QList<QPointF> ElevationChart::pathData() const { return m_pathData; }
 void ElevationChart::setPathData(QList<QPointF> data)
 { if(m_logging) qDebug() << "<qplot> uav path: " << m_pathData;
   m_pathData = data; emit pathDataChanged(); }
-QList<QPointF> ElevationChart::pathErrorList() const { return m_pathErrorList; }
-void ElevationChart::setPathErrorList(const QList<QPointF> &newPathErrorList)
+QList<bool> ElevationChart::pathErrorList() const { return m_pathErrorList; }
+void ElevationChart::setPathErrorList(const QList<bool> &newPathErrorList)
 { if (m_pathErrorList == newPathErrorList) return; m_pathErrorList = newPathErrorList; emit pathErrorListChanged(); }
 
 bool ElevationChart::logging() const { return m_logging; }
