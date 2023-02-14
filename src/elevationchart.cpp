@@ -88,10 +88,10 @@ void ElevationChart::update(bool vectorChanged)
             qreal deltaH = m_geopath.path()[i].altitude() - m_geopath.path()[i-1].altitude();
             qreal deltaHmin = variometer.RoD * deltaS / variometer.hV;
             qreal deltaHmax = variometer.RoC * deltaS / variometer.hV;
-            if(abs(deltaH) > qMin(deltaHmin, deltaHmax))
-            {
+            if(deltaH > 0 && deltaH > deltaHmax)
                 errorData.append(true);
-            }
+            else if(deltaH < 0 && abs(deltaH) > deltaHmin)
+                errorData.append(true);
             else errorData.append(false);
         }
     }

@@ -3,7 +3,7 @@ import QtPositioning 5.15
 import QtQuick.Controls 2.15
 
 Rectangle { id: root;
-	color: "#000000";
+	color: "#11151C";
 	property real coord1: 60.1;
 	property real coord2: 30.15;
 
@@ -11,8 +11,8 @@ Rectangle { id: root;
 		anchors.right: parent.right;
 		anchors.top: parent.top;
 		anchors.bottom: parent.bottom;
-		width: 150;
-		color: "#171B24";
+		width: 250;
+		color: "#11151C";
 
 		Slider { id: slider1;
 			anchors.top: parent.top;
@@ -42,24 +42,45 @@ Rectangle { id: root;
 			checked: false;
 			text: "Показать номера точек";
 		}
-		TextField { id: textField1;
-			validator: IntValidator {bottom: 1; top: 10000;}
-			text: "75";
+		Text { id: label1;
 			anchors.top: checkbox1.bottom;
 			anchors.left: parent.left;
 			anchors.right: parent.right;
+			text: "Горизонтальная скорость";
+			color: "#FAFAFA";
+		}
+		TextField { id: textField1;
+			validator: IntValidator {bottom: 1; top: 10000;}
+			text: "75";
+			anchors.top: label1.bottom;
+			anchors.left: parent.left;
+			anchors.right: parent.right;
+		}
+		Text { id: label2;
+			anchors.top: textField1.bottom;
+			anchors.left: parent.left;
+			anchors.right: parent.right;
+			text: "Скороподъемность";
+			color: "#FAFAFA";
 		}
 		TextField { id: textField2;
 			validator: IntValidator {bottom: 1; top: 10000;}
 			text: "15";
-			anchors.top: textField1.bottom;
+			anchors.top: label2.bottom;
 			anchors.left: parent.left;
 			anchors.right: parent.right;
+		}
+		Text { id: label3;
+			anchors.top: textField2.bottom;
+			anchors.left: parent.left;
+			anchors.right: parent.right;
+			text: "Скорость спуска";
+			color: "#FAFAFA";
 		}
 		TextField { id: textField3;
 			validator: IntValidator {bottom: 1; top: 10000;}
 			text: "25";
-			anchors.top: textField2.bottom;
+			anchors.top: label3.bottom;
 			anchors.left: parent.left;
 			anchors.right: parent.right;
 		}
@@ -86,11 +107,11 @@ Rectangle { id: root;
 		logging: false;
 		showIndex: checkbox1.checked;
 
-		backgroundColor: "#1F2430";
-		chartColor: "#707A8C";
-		flightPathColor: "#E6B450";
-		successColor: "#87D96C";
-		errorColor: "#FF6666";
+		backgroundColor: "#0B0E14";
+		chartColor: "#6C5980";
+		flightPathColor: "#E6BA7E";
+		successColor: "#86B300";
+		errorColor: "#E65050";
 
 		pointSize: 15;
 	}

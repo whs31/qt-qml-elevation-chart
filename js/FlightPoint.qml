@@ -42,7 +42,7 @@ Rectangle
 		anchors.horizontalCenter: parent.horizontalCenter; anchors.verticalCenter: parent.verticalCenter;
 		anchors.horizontalCenterOffset: m_x / base.width > 0.5 ? -width / 2 - 7 : width / 2 + 7;
 		Text {
-			id: label1; color: legend.color; width: 31; height: 15;
+			id: label1; color: base.color; width: 31; height: 15;
 			text: "<b>" + Number(index) + "</b>";
 			anchors.centerIn: parent; horizontalAlignment: Text.AlignHCenter;
 			verticalAlignment: Text.AlignVCenter; font.pointSize: 10;
