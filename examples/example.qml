@@ -7,6 +7,21 @@ Rectangle { id: root;
 	property real coord1: 60.1;
 	property real coord2: 30.15;
 
+	property real random_dist: 0;
+	function getRandomVec1()
+	{
+		var now = new Date();
+		var seed = now.getSeconds();
+		var num = (100 * Math.random(seed));
+		return num;
+	}
+	Timer { id: timer1; running: true; repeat: true; interval: 750; onTriggered: {
+			var p = []; p = scrollingSeries1.points; p.splice(1, 1);  p.push(getRandomVec1());
+			scrollingSeries1.points = p;  } }
+	Timer { id: timer2; running: true; repeat: true; interval: 100; onTriggered: {
+			var p = []; p = scrollingSeries2.points; p.splice(1, 1);  p.push(getRandomVec1());
+			scrollingSeries2.points = p; } }
+
 	Rectangle { id: exampleToolPanel;
 		anchors.right: parent.right;
 		anchors.top: parent.top;
@@ -122,8 +137,22 @@ Rectangle { id: root;
 		anchors.left: elevationChart.left;
 		anchors.right: parent.horizontalCenter;
 		anchors.top: parent.top;
+		anchors.bottomMargin: 5;
+
+		pointsCount: 100;
 
 		backgroundColor: "#2f363d";
+		graphColor: "#ec6cb9";
+		legendColor: "#dae1e5";
+
+		Component.onCompleted: {
+			var p = [];
+			for(let i = 0; i < 1000; i++)
+			{
+				p.push(getRandomVec1());
+			}
+			scrollingSeries1.points = p;
+		}
 	}
 
 	ScrollSeries { id: scrollingSeries2;
@@ -131,7 +160,21 @@ Rectangle { id: root;
 		anchors.left: parent.horizontalCenter;
 		anchors.right: exampleToolPanel.left;
 		anchors.top: parent.top;
+		anchors.bottomMargin: 5;
+
+		pointsCount: 30;
 
 		backgroundColor: "#2f363d";
+		graphColor: "#34d058";
+		legendColor: "#dae1e5";
+
+		Component.onCompleted: {
+			var p = [];
+			for(let i = 0; i < 1000; i++)
+			{
+				p.push(getRandomVec1());
+			}
+			scrollingSeries2.points = p;
+		}
 	}
 }

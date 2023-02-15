@@ -49,6 +49,7 @@ Rectangle { id: base;
 		variometerROC: 10; // ❮❮❮ m\s ❯❯❯
 		variometerROD: 10; // ❮❮❮ m\s ❯❯❯
 
+		Behavior on zoomX { NumberAnimation { duration: 250; } }
 		onZoomXChanged: {
 			if(zoomX > wheelHandler.maxZoom)
 				zoomX = wheelHandler.maxZoom;
