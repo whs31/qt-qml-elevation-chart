@@ -2,7 +2,6 @@
 
 #include <QDebug>
 #include <cmath>
-#include "macro.hpp"
 #include "Elevation/elevation.h"
 #include <QMetaType>
 
@@ -139,11 +138,11 @@ void ElevationChart::update(bool vectorChanged)
 
 void ElevationChart::intersectCalculationFinished(quint8 progress, const QVector<Elevation::Point> &resultPath)
 {
-    qDebug() << "Slot called";
-    for(Elevation::Point p : resultPath)
-    {
-        qWarning() << p.altitude() << p.isBase() << p.orientation();
-    }
+//    qDebug() << "Slot called";
+//    for(size_t i = 0; i < resultPath.length(); i++)
+//    {
+//        if(resultPath[i].orientation() != 0) qCritical() << "yay!";
+//    }
 }
 
 QPointF ElevationChart::iterateSimple(void)
@@ -207,41 +206,3 @@ QPointF ElevationChart::iterateOverRange(float rangeStart, float rangeStop)
         return QPointF(-1, -1);
     }
 }
-
-QGeoPath ElevationChart::geopath() const { return m_geopath; }
-void ElevationChart::setGeopath(const QGeoPath &path)
-{
-    m_geopath = path;
-    if(m_logging) qInfo() << "<qplot> got new path: " << m_geopath.path();
-    emit geopathChanged();
-
-    if(axes.x.pixelsize > 0) update(true);
-}
-QList<QPointF> ElevationChart::pathData() const { return m_pathData; }
-void ElevationChart::setPathData(QList<QPointF> data)
-{ if(m_logging) qDebug() << "<qplot> uav path: " << m_pathData;
-  m_pathData = data; emit pathDataChanged(); }
-QList<bool> ElevationChart::pathErrorList() const { return m_pathErrorList; }
-void ElevationChart::setPathErrorList(const QList<bool> &newPathErrorList)
-{ if (m_pathErrorList == newPathErrorList) return; m_pathErrorList = newPathErrorList; emit pathErrorListChanged(); }
-QList<float> ElevationChart::pathErrorValueList() const { return m_pathErrorValueList; }
-void ElevationChart::setPathErrorValueList(const QList<float> &newPathErrorList)
-{ if (m_pathErrorValueList == newPathErrorList) return; m_pathErrorValueList = newPathErrorList; emit pathErrorValueListChanged(); }
-
-P_BOOLEAN(logging, m_logging, setLogging, loggingChanged)
-P_QREAL_UPDATE(pixelWidth, axes.x.pixelsize, setPixelWidth, pixelWidthChanged)
-P_QREAL_UPDATE(pixelHeight, axes.y.pixelsize, setPixelHeight, pixelHeightChanged)
-P_QREAL(offset, axes.offset, setOffset, offsetChanged)
-P_QREAL(verticalStretch, axes.stretch, setVerticalStretch, verticalStretchChanged)
-P_QREAL(zoomX, axes.x.zoom, setZoomX, zoomXChanged)
-P_QREAL_NOCHECK(realWidth, axes.x.max, setRealWidth, realWidthChanged)
-P_QREAL_NOCHECK(realHeight, axes.y.max, setRealHeight, realHeightChanged)
-P_INT(scaleValueX, axes.x.scalevalue, setScaleValueX, scaleValueXChanged)
-P_INT(scaleValueY, axes.y.scalevalue, setScaleValueY, scaleValueYChanged)
-P_QREAL(scaleCountX, axes.x.scalecount, setScaleCountX, scaleCountXChanged)
-P_QREAL(scaleCountY, axes.y.scalecount, setScaleCountY, scaleCountYChanged)
-P_QREAL(scaleStepX, axes.x.scalepixelwidth, setScaleStepX, scaleStepXChanged)
-P_QREAL(scaleStepY, axes.y.scalepixelwidth, setScaleStepY, scaleStepYChanged)
-P_QREAL_UPDATE(variometerHV, variometer.hV, setVariometerHV, variometerHVChanged)
-P_QREAL_UPDATE(variometerROC, variometer.RoC, setVariometerROC, variometerROCChanged)
-P_QREAL_UPDATE(variometerROD, variometer.RoD, setVariometerROD, variometerRODChanged)

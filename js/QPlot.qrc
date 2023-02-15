@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>ElevationChart.qml</file>
         <file>FlightPoint.qml</file>
+        <file>ScrollSeries.qml</file>
     </qresource>
 </RCC>

@@ -116,4 +116,22 @@ Rectangle { id: root;
 
 		pointSize: 15;
 	}
+
+	ScrollSeries { id: scrollingSeries1;
+		anchors.bottom: elevationChart.top;
+		anchors.left: elevationChart.left;
+		anchors.right: parent.horizontalCenter;
+		anchors.top: parent.top;
+
+		backgroundColor: "#2f363d";
+	}
+
+	ScrollSeries { id: scrollingSeries2;
+		anchors.bottom: elevationChart.top;
+		anchors.left: parent.horizontalCenter;
+		anchors.right: exampleToolPanel.left;
+		anchors.top: parent.top;
+
+		backgroundColor: "#2f363d";
+	}
 }

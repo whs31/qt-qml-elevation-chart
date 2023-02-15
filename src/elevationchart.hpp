@@ -6,6 +6,7 @@
 #include <QList>
 #include <QPointF>
 #include <QGeoPath>
+#include "macro.hpp"
 
 #include "RouteTools/elevationtools.h" // по неизвестным науке причинам я не могу сделать
                                        // forward declaration этого класса =(
@@ -21,6 +22,7 @@ class ElevationChart : public QObject
     Q_OBJECT
     Q_PROPERTY(QGeoPath geopath READ geopath WRITE setGeopath NOTIFY geopathChanged)
     Q_PROPERTY(QList<QPointF> pathData READ pathData WRITE setPathData NOTIFY pathDataChanged)
+    Q_PROPERTY(QList<QPointF> intersectList READ intersectList WRITE setIntersectList NOTIFY intersectListChanged)
     Q_PROPERTY(QList<bool> pathErrorList READ pathErrorList WRITE setPathErrorList NOTIFY pathErrorListChanged)
     Q_PROPERTY(QList<float> pathErrorValueList READ pathErrorValueList WRITE setPathErrorValueList NOTIFY pathErrorValueListChanged)
     Q_PROPERTY(bool logging READ logging WRITE setLogging NOTIFY loggingChanged)
@@ -68,6 +70,8 @@ signals:
     void variometerHVChanged();         void variometerROCChanged();    void variometerRODChanged();
     void pathErrorValueListChanged();
 
+    void intersectListChanged();
+
 private:
     void update(bool vectorChanged = false);
 
@@ -75,28 +79,6 @@ private:
     Elevation::ElevationTools* routeParser;
 
     QVector<QPointF> points;
-    QGeoPath m_geopath;
-    QList<QPointF> m_pathData;
-    QList<bool> m_pathErrorList;
-    QList<float> m_pathErrorValueList;
-    bool m_logging = false;
-    struct Axes
-    {
-        struct Axis
-        {
-            int max = 0;
-            int power = 0;
-            int roundmax = 0;
-            qreal pixelsize = 0;
-            qreal zoom = 1;
-            int scalevalue = 0;
-            qreal scalecount = 0;
-            qreal scalepixelwidth = 0;
-        }; Axis x; Axis y;
-
-        qreal offset = 20;
-        qreal stretch = 1.5;
-    }; Axes axes;
 
     struct Iterator
     {
@@ -107,6 +89,46 @@ private:
         bool rangeSet = false;
     }; Iterator iterator;
 
+    QGeoPath m_geopath;                 QPR_GET(QGeoPath, geopath)                  QPR_SET_NOCHECK_U(QGeoPath, geopath, setGeopath)
+    QList<QPointF> m_pathData;          QPR_GET(QList<QPointF>, pathData)           QPR_SET_NOCHECK(QList<QPointF>, pathData, setPathData)
+    QPR(QList<QPointF>, intersectList, setIntersectList)
+    QPR(QList<bool>, pathErrorList, setPathErrorList)
+    QPR(QList<float>, pathErrorValueList, setPathErrorValueList)
+
+    QPR(bool, logging, setLogging)
+    struct Axes
+    {
+        struct Axis
+        {
+            qreal pixelsize = 0;
+            int max = 0;
+            int power = 0;
+            int roundmax = 0;
+            qreal zoom = 1;
+            int scalevalue = 0;
+            qreal scalecount = 0;
+            qreal scalestep = 0;
+        }; Axis x; Axis y;
+
+        qreal offset = 20;
+        qreal stretch = 1.5;
+    }; Axes axes;
+
+    /* x.pixelsize */   QPR_M_UPDATE(qreal, pixelWidth, setPixelWidth, axes.x.pixelsize)
+    /* y.pixelsize */   QPR_M_UPDATE(qreal, pixelHeight, setPixelHeight, axes.y.pixelsize)
+    /* x.max */         QPR_GET_M(qreal, realWidth, axes.x.max)           QPR_SET_M_NOCHECK(qreal, realWidth, setRealWidth, axes.x.max)
+    /* y.max */         QPR_GET_M(qreal, realHeight, axes.y.max)          QPR_SET_M_NOCHECK(qreal, realHeight, setRealHeight, axes.y.max)
+    /* x.zoom */        QPR_M(qreal, zoomX, setZoomX, axes.x.zoom)
+    /* x.scaleValue */  QPR_M(int, scaleValueX, setScaleValueX, axes.x.scalevalue)
+    /* y.scaleValue */  QPR_M(int, scaleValueY, setScaleValueY, axes.y.scalevalue)
+    /* x.scalecount */  QPR_M(qreal, scaleCountX, setScaleCountX, axes.x.scalecount)
+    /* y.scalecount */  QPR_M(qreal, scaleCountY, setScaleCountY, axes.y.scalecount)
+    /* x.scalestep */   QPR_M(qreal, scaleStepX, setScaleStepX, axes.x.scalestep)
+    /* y.scalestep */   QPR_M(qreal, scaleStepY, setScaleStepY, axes.y.scalestep)
+
+    /* offset */        QPR_M(qreal, offset, setOffset, axes.offset)
+    /* stretch */       QPR_M(qreal, verticalStretch, setVerticalStretch, axes.stretch)
+
     struct Variometer
     {
         qreal hV = 0;   // horizontal velocity
@@ -114,29 +136,9 @@ private:
         qreal RoD = 0;  // rate of descend
     }; Variometer variometer;
 
-    QGeoPath geopath() const;                       void setGeopath(const QGeoPath &path);
-    QList<QPointF> pathData() const;                void setPathData(QList<QPointF> data);
-    QList<bool> pathErrorList() const;              void setPathErrorList(const QList<bool> &newPathErrorList);
-    QList<float> pathErrorValueList() const;        void setPathErrorValueList(const QList<float> &newPathErrorList);
-
-    bool logging() const;                           void setLogging(bool state);
-
-    qreal pixelWidth() const;                       void setPixelWidth(qreal value);
-    qreal pixelHeight() const;                      void setPixelHeight(qreal value);
-    qreal offset() const;                           void setOffset(qreal value);
-    qreal verticalStretch() const;                  void setVerticalStretch(qreal value);
-    qreal zoomX() const;                            void setZoomX(qreal value);
-    qreal realHeight() const;                       void setRealHeight(qreal value);
-    qreal realWidth() const;                        void setRealWidth(qreal value);
-    int scaleValueX() const;                        void setScaleValueX(int value);
-    int scaleValueY() const;                        void setScaleValueY(int value);
-    qreal scaleCountX() const;                      void setScaleCountX(qreal count);
-    qreal scaleCountY() const;                      void setScaleCountY(qreal count);
-    qreal scaleStepX() const;                       void setScaleStepX(qreal value);
-    qreal scaleStepY() const;                       void setScaleStepY(qreal value);
-    qreal variometerHV() const;                     void setVariometerHV(qreal value);
-    qreal variometerROC() const;                    void setVariometerROC(qreal value);
-    qreal variometerROD() const;                    void setVariometerROD(qreal value);
+    /* hV */            QPR_M_UPDATE(qreal, variometerHV, setVariometerHV, variometer.hV)
+    /* RoC */           QPR_M_UPDATE(qreal, variometerROC, setVariometerROC, variometer.RoC)
+    /* RoD */           QPR_M_UPDATE(qreal, variometerROD, setVariometerROD, variometer.RoD)
 };
 
 #endif // ELEVATIONCHART_H

@@ -1,10 +1,8 @@
 import QtQuick 2.15
 import QtPositioning 5.12
-import QtQuick.Controls 2.15
 import ElevationChart 1.0
 
-Rectangle {
-	id: base;
+Rectangle { id: base;
 
 	// ❮❮❮ input ❯❯❯
 	property alias path: backend.geopath;
@@ -39,9 +37,7 @@ Rectangle {
 		}
 	}
 
-	ElevationChart
-	{
-		id: backend;
+	ElevationChart { id: backend;
 		geopath: QtPositioning.path([QtPositioning.coordinate(60, 30), QtPositioning.coordinate(60.2, 30.2)], 2);
 		logging: true;
 		offset: 0;
@@ -85,9 +81,7 @@ Rectangle {
 	}
 
 	ListModel { id: pathModel; }
-	Flickable
-	{
-		id: view;
+	Flickable { id: view;
 		anchors.fill: parent;
 		contentWidth: backend.pixelWidth * backend.zoomX;
 		contentHeight: backend.pixelHeight;
@@ -97,14 +91,9 @@ Rectangle {
 		clip: true;
 		pixelAligned: true;
 
-		onMovementEnded:
-		{
-			requestAll();
-		}
+		onMovementEnded: { requestAll(); }
 
-		Canvas
-		{
-			id: graph;
+		Canvas { id: graph;
 			property color color: "#43a1ca";
 			property real flightPointSize: 15;
 			width: backend.pixelWidth * backend.zoomX;
@@ -215,9 +204,7 @@ Rectangle {
 		}
 	}
 
-	Canvas
-	{
-		id: legend;
+	Canvas { id: legend;
 		property color color: "#dae1e5";
 		property alias offset: backend.offset;
 
@@ -313,8 +300,7 @@ Rectangle {
 
 	Keys.onPressed: { if (event.key === Qt.Key_Shift) { wheelHandler.shiftPressed = true } }
 	Keys.onReleased: { if (event.key === Qt.Key_Shift) { wheelHandler.shiftPressed = false } }
-	WheelHandler {
-		id: wheelHandler;
+	WheelHandler { id: wheelHandler;
 		property real maxZoom: backend.realWidth / 1000;
 		property real zoomConstInteger: 0;
 		readonly property real zoom_sensivity: 3;
