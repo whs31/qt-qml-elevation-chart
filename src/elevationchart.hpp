@@ -77,9 +77,7 @@ private:
 
     Elevation::Elevation* heightmapParser;
     Elevation::ElevationTools* routeParser;
-
     QVector<QPointF> points;
-
     struct Iterator
     {
         int simple = 0;
@@ -96,6 +94,7 @@ private:
     QPR(QList<float>, pathErrorValueList, setPathErrorValueList)
 
     QPR(bool, logging, setLogging)
+
     struct Axes
     {
         struct Axis
@@ -113,21 +112,15 @@ private:
         qreal offset = 20;
         qreal stretch = 1.5;
     }; Axes axes;
-
-    /* x.pixelsize */   QPR_M_UPDATE(qreal, pixelWidth, setPixelWidth, axes.x.pixelsize)
-    /* y.pixelsize */   QPR_M_UPDATE(qreal, pixelHeight, setPixelHeight, axes.y.pixelsize)
-    /* x.max */         QPR_GET_M(qreal, realWidth, axes.x.max)           QPR_SET_M_NOCHECK(qreal, realWidth, setRealWidth, axes.x.max)
-    /* y.max */         QPR_GET_M(qreal, realHeight, axes.y.max)          QPR_SET_M_NOCHECK(qreal, realHeight, setRealHeight, axes.y.max)
-    /* x.zoom */        QPR_M(qreal, zoomX, setZoomX, axes.x.zoom)
-    /* x.scaleValue */  QPR_M(int, scaleValueX, setScaleValueX, axes.x.scalevalue)
-    /* y.scaleValue */  QPR_M(int, scaleValueY, setScaleValueY, axes.y.scalevalue)
-    /* x.scalecount */  QPR_M(qreal, scaleCountX, setScaleCountX, axes.x.scalecount)
-    /* y.scalecount */  QPR_M(qreal, scaleCountY, setScaleCountY, axes.y.scalecount)
-    /* x.scalestep */   QPR_M(qreal, scaleStepX, setScaleStepX, axes.x.scalestep)
-    /* y.scalestep */   QPR_M(qreal, scaleStepY, setScaleStepY, axes.y.scalestep)
-
-    /* offset */        QPR_M(qreal, offset, setOffset, axes.offset)
-    /* stretch */       QPR_M(qreal, verticalStretch, setVerticalStretch, axes.stretch)
+    QPR_M_UPDATE(qreal, pixelWidth, setPixelWidth, axes.x.pixelsize) QPR_M_UPDATE(qreal, pixelHeight, setPixelHeight, axes.y.pixelsize)
+    /* x.max */         QPR_GET_M(qreal, realWidth, axes.x.max)      QPR_SET_M_NOCHECK(qreal, realWidth, setRealWidth, axes.x.max)
+    /* y.max */         QPR_GET_M(qreal, realHeight, axes.y.max)     QPR_SET_M_NOCHECK(qreal, realHeight, setRealHeight, axes.y.max)
+    QPR_M(qreal, zoomX, setZoomX, axes.x.zoom)
+    QPR_M(int, scaleValueX, setScaleValueX, axes.x.scalevalue)       QPR_M(int, scaleValueY, setScaleValueY, axes.y.scalevalue)
+    QPR_M(qreal, scaleCountX, setScaleCountX, axes.x.scalecount)     QPR_M(qreal, scaleCountY, setScaleCountY, axes.y.scalecount)
+    QPR_M(qreal, scaleStepX, setScaleStepX, axes.x.scalestep)        QPR_M(qreal, scaleStepY, setScaleStepY, axes.y.scalestep)
+    QPR_M(qreal, offset, setOffset, axes.offset)
+    QPR_M(qreal, verticalStretch, setVerticalStretch, axes.stretch)
 
     struct Variometer
     {
@@ -135,10 +128,9 @@ private:
         qreal RoC = 0;  // rate of climb
         qreal RoD = 0;  // rate of descend
     }; Variometer variometer;
-
-    /* hV */            QPR_M_UPDATE(qreal, variometerHV, setVariometerHV, variometer.hV)
-    /* RoC */           QPR_M_UPDATE(qreal, variometerROC, setVariometerROC, variometer.RoC)
-    /* RoD */           QPR_M_UPDATE(qreal, variometerROD, setVariometerROD, variometer.RoD)
+    QPR_M_UPDATE(qreal, variometerHV, setVariometerHV, variometer.hV)
+    QPR_M_UPDATE(qreal, variometerROC, setVariometerROC, variometer.RoC)
+    QPR_M_UPDATE(qreal, variometerROD, setVariometerROD, variometer.RoD)
 };
 
 #endif // ELEVATIONCHART_H

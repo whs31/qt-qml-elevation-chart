@@ -138,11 +138,17 @@ void ElevationChart::update(bool vectorChanged)
 
 void ElevationChart::intersectCalculationFinished(quint8 progress, const QVector<Elevation::Point> &resultPath)
 {
-//    qDebug() << "Slot called";
-//    for(size_t i = 0; i < resultPath.length(); i++)
-//    {
-//        if(resultPath[i].orientation() != 0) qCritical() << "yay!";
-//    }
+    QList<QPointF> _intersectList;
+    for(size_t i = 0; i < resultPath.length(); i++)
+    {
+        if(resultPath[i].isBase())
+            continue;
+        QPointF _point(resultPath[i].distance() * axes.x.pixelsize / axes.x.max,
+                       resultPath[i].altitude() * axes.y.pixelsize / (axes.y.max * axes.stretch));
+        _intersectList.append(_point);
+    }
+    setIntersectList(_intersectList);
+    //emit requestRedraw();
 }
 
 QPointF ElevationChart::iterateSimple(void)

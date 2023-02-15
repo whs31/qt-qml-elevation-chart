@@ -77,7 +77,7 @@ Rectangle { id: base;
 		if(backend.logging) console.info("<qplot-js> redrawing all");
 		graph.requestPaint();
 		legend.requestPaint();
-		//grid.requestPaint();
+		intersects.requestPaint();
 	}
 
 	ListModel { id: pathModel; }
@@ -194,6 +194,33 @@ Rectangle { id: base;
 				}
 				ctx.closePath();
 				ctx.fillStyle = legend.color;
+			}
+
+			Canvas { id: intersects;
+				width: backend.pixelWidth * backend.zoomX;
+				height: backend.pixelHeight;
+
+				clip: true;
+				onPaint:
+				{
+					let ctx = getContext('2d');
+
+					ctx.clearRect(0, 0, graph.width * backend.zoomX, graph.height);
+					ctx.fill();
+					ctx.strokeStyle = errorColor;
+					ctx.fillStyle = errorColor;
+					ctx.lineWidth = 1;
+					ctx.lineCap = "round";
+					ctx.lineJoin = "round";
+					ctx.moveTo(backend.intersectList[0].x * (backend.zoomX), height - backend.intersectList[0].y);
+
+					for(let f = 0; f < backend.intersectList.length; f++)
+					{
+						if(f > 0) ctx.moveTo(backend.intersectList[f-1].x * (backend.zoomX), height - backend.intersectList[f-1].y);
+						ctx.lineTo(backend.intersectList[f].x * (backend.zoomX), height - backend.intersectList[f].y);
+					}
+					ctx.stroke();
+				}
 			}
 
 			Repeater
