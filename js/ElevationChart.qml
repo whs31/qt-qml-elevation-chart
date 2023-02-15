@@ -205,19 +205,24 @@ Rectangle { id: base;
 				{
 					let ctx = getContext('2d');
 
-					ctx.clearRect(0, 0, graph.width * backend.zoomX, graph.height);
-					ctx.fill();
+					ctx.clearRect(0, 0, intersects.width * backend.zoomX, intersects.height);
 					ctx.strokeStyle = errorColor;
 					ctx.fillStyle = errorColor;
-					ctx.lineWidth = 1;
+					ctx.lineWidth = 5;
 					ctx.lineCap = "round";
 					ctx.lineJoin = "round";
 					ctx.moveTo(backend.intersectList[0].x * (backend.zoomX), height - backend.intersectList[0].y);
-
-					for(let f = 0; f < backend.intersectList.length; f++)
+					ctx.beginPath();
+					if(backend.intersectList.length > 0)
 					{
-						if(f > 0) ctx.moveTo(backend.intersectList[f-1].x * (backend.zoomX), height - backend.intersectList[f-1].y);
-						ctx.lineTo(backend.intersectList[f].x * (backend.zoomX), height - backend.intersectList[f].y);
+						for(let f = 0; f < backend.intersectList.length; f++)
+						{
+							if(f % 2 === 1)
+							{
+								if(f > 0) ctx.moveTo(backend.intersectList[f-1].x * (backend.zoomX), height - backend.intersectList[f-1].y);
+								ctx.lineTo(backend.intersectList[f].x * (backend.zoomX), height - backend.intersectList[f].y);
+							}
+						}
 					}
 					ctx.stroke();
 				}

@@ -148,7 +148,7 @@ void ElevationChart::intersectCalculationFinished(quint8 progress, const QVector
         _intersectList.append(_point);
     }
     setIntersectList(_intersectList);
-    //emit requestRedraw();
+    emit requestRedraw();
 }
 
 QPointF ElevationChart::iterateSimple(void)
