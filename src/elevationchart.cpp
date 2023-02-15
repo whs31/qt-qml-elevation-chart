@@ -4,19 +4,21 @@
 #include <cmath>
 #include "macro.hpp"
 #include "Elevation/elevation.h"
-//#include "RouteTools/elevationtools.h"
+#include <QMetaType>
+
 ElevationChart::ElevationChart(QObject *parent)
     : QObject{parent}
 {
     heightmapParser = new Elevation::Elevation(this);
-    //routeParser = new Elevation::ElevationTools(this);
+    routeParser = new Elevation::ElevationTools(this);
+    connect(routeParser, &Elevation::ElevationTools::progressTestRouteIntersectGround, this, &ElevationChart::intersectCalculationFinished);
 }
 
 void ElevationChart::changeFlightPointAltitude(int index, qreal delta)
 {
     QGeoCoordinate coord = m_geopath.coordinateAt(index);
     if(abs(delta) > 2.5)
-        coord.setAltitude(coord.altitude() + delta * (0.2));
+        coord.setAltitude(coord.altitude() + delta * (0.15));
     if(coord.altitude() <= 0)
         coord.setAltitude(0);
     m_geopath.replaceCoordinate(index, coord);
@@ -25,12 +27,14 @@ void ElevationChart::changeFlightPointAltitude(int index, qreal delta)
 
 void ElevationChart::update(bool vectorChanged)
 {
+    // ███  build profile if necessary + reset iterators   ███
     if(vectorChanged || points.isEmpty())
         points = heightmapParser->buildGroundProfileForChart(geopath());
     iterator.simple = 0;
     iterator.range = 0;
     iterator.rangeSet = false;
 
+    // ███  axes calculation  ███
     axes.x.max = points.last().x();
     axes.y.max = 0;
     axes.y.roundmax = 0;
@@ -68,6 +72,8 @@ void ElevationChart::update(bool vectorChanged)
     setScaleStepX((axes.x.pixelsize) / axes.x.scalecount);
     setScaleStepY((axes.y.pixelsize)/ axes.y.scalecount);
 
+
+    // ███  flight path & variometer values ███
     QList<QPointF> data;
     QList<bool> errorData;
     QList<float> errorDeltas;
@@ -85,7 +91,7 @@ void ElevationChart::update(bool vectorChanged)
         point.setX(previous_distance * axes.x.pixelsize / axes.x.max);
         data.append(point);
 
-        // error list
+        // ███   variometer error list   ███
         if(i > 0)
         {
             qreal deltaH = m_geopath.path()[i].altitude() - m_geopath.path()[i-1].altitude();
@@ -105,18 +111,20 @@ void ElevationChart::update(bool vectorChanged)
                 errorData.append(false);
                 errorDeltas.append(0);
             }
-
         }
     }
-
     setPathData(data);
     setPathErrorList(errorData);
     setPathErrorValueList(errorDeltas);
-    emit requestRedraw();
 
+    // ███   intersections calculation  ███
+    routeParser->testRouteIntersectGround(geopath());
+
+    // ███   logging values for debug and requesting canvas update   ███
+    emit requestRedraw();
     if(m_logging)
     {
-        qInfo() << "<qplot> calculating values <><> ";
+        qInfo()  << "<qplot> calculating values <><> ";
         qDebug() << "<qplot> profile list size: " << points.length() << "pts";
         qDebug() << "<qplot> pixelsize x: " << axes.x.pixelsize << "px";
         qDebug() << "<qplot> pixelsize y: " << axes.y.pixelsize << "px";
@@ -128,10 +136,11 @@ void ElevationChart::update(bool vectorChanged)
     }
 }
 
-//void ElevationChart::intersectCalculationFinished(quint8 progress, const QVector<Elevation::Point> &resultPath)
-//{
-
-//}
+void ElevationChart::intersectCalculationFinished(quint8 progress, const QVector<Elevation::Point> &resultPath)
+{
+    qDebug() << "Slot called";
+    qCritical() << resultPath.first().altitude();
+}
 
 QPointF ElevationChart::iterateSimple(void)
 {

@@ -194,6 +194,7 @@ Rectangle {
 						ctx.lineTo(backend.pathData[f].x * (backend.zoomX), height - backend.pathData[f].y);
 						ctx.moveTo(backend.pathData[f].x * (backend.zoomX), height - backend.pathErrorValueList[f]);
 						ctx.closePath();
+						ctx.globalAlpha = 0.5;
 						ctx.stroke();
 						ctx.globalAlpha = 0.25;
 						ctx.fill();

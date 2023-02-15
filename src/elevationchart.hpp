@@ -7,6 +7,9 @@
 #include <QPointF>
 #include <QGeoPath>
 
+#include "RouteTools/elevationtools.h" // по неизвестным науке причинам я не могу сделать
+                                       // forward declaration этого класса =(
+
 namespace Elevation {
     class Elevation;
     //class Point;
@@ -51,7 +54,7 @@ public:
     Q_INVOKABLE void changeFlightPointAltitude(int index, qreal delta);
 
 public slots:
-    //void intersectCalculationFinished(quint8 progress, const QVector<Elevation::Point> &resultPath);
+    void intersectCalculationFinished(quint8 progress, const QVector<Elevation::Point> &resultPath);
 
 signals:
     void requestRedraw();
@@ -69,7 +72,7 @@ private:
     void update(bool vectorChanged = false);
 
     Elevation::Elevation* heightmapParser;
-    //Elevation::ElevationTools* routeParser;
+    Elevation::ElevationTools* routeParser;
 
     QVector<QPointF> points;
     QGeoPath m_geopath;

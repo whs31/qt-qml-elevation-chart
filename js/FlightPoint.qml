@@ -13,7 +13,7 @@ Rectangle
 	x: m_x;
 	y: m_y;
 	border.width: 3;
-	border.color: invalid ? Qt.lighter(base.errorColor, 1.2) : Qt.lighter(flightPathColor, 1.2);
+	border.color: invalid ? Qt.lighter(base.warningColor, 1.2) : Qt.lighter(flightPathColor, 1.2);
 	property real delta: y - globalMouseArea.mouseY;
 	property bool invalid: m_invalid;
 
