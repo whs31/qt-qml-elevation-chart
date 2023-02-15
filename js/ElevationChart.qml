@@ -208,23 +208,34 @@ Rectangle { id: base;
 					ctx.clearRect(0, 0, intersects.width * backend.zoomX, intersects.height);
 					ctx.strokeStyle = errorColor;
 					ctx.fillStyle = errorColor;
-					ctx.lineWidth = 5;
+					ctx.lineWidth = 6;
 					ctx.lineCap = "round";
 					ctx.lineJoin = "round";
 					ctx.moveTo(backend.intersectList[0].x * (backend.zoomX), height - backend.intersectList[0].y);
-					ctx.beginPath();
 					if(backend.intersectList.length > 0)
 					{
 						for(let f = 0; f < backend.intersectList.length; f++)
 						{
+							ctx.beginPath();
 							if(f % 2 === 1)
 							{
 								if(f > 0) ctx.moveTo(backend.intersectList[f-1].x * (backend.zoomX), height - backend.intersectList[f-1].y);
 								ctx.lineTo(backend.intersectList[f].x * (backend.zoomX), height - backend.intersectList[f].y);
+								ctx.closePath();
+								ctx.globalAlpha = 1;
+								ctx.stroke();
+								ctx.beginPath();
+								ctx.lineTo(backend.intersectList[f].x * (backend.zoomX), height - backend.intersectList[f].y);
+								ctx.lineTo(backend.intersectList[f].x * (backend.zoomX), height);
+								ctx.lineTo(backend.intersectList[f-1].x * (backend.zoomX), height);
+								ctx.lineTo(backend.intersectList[f-1].x * (backend.zoomX), height - backend.intersectList[f-1].y);
+								ctx.closePath();
+								ctx.globalAlpha = 0.5;
+								ctx.fill();
 							}
 						}
 					}
-					ctx.stroke();
+
 				}
 			}
 
