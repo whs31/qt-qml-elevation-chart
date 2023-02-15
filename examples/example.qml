@@ -3,7 +3,7 @@ import QtPositioning 5.15
 import QtQuick.Controls 2.15
 
 Rectangle { id: root;
-	color: "#11151C";
+	color: "#1b1f23";
 	property real coord1: 60.1;
 	property real coord2: 30.15;
 
@@ -12,7 +12,7 @@ Rectangle { id: root;
 		anchors.top: parent.top;
 		anchors.bottom: parent.bottom;
 		width: 250;
-		color: "#11151C";
+		color: "#24292e";
 
 		Slider { id: slider1;
 			anchors.top: parent.top;
@@ -65,7 +65,7 @@ Rectangle { id: root;
 		}
 		TextField { id: textField2;
 			validator: IntValidator {bottom: 1; top: 10000;}
-			text: "15";
+			text: "1";
 			anchors.top: label2.bottom;
 			anchors.left: parent.left;
 			anchors.right: parent.right;
@@ -79,7 +79,7 @@ Rectangle { id: root;
 		}
 		TextField { id: textField3;
 			validator: IntValidator {bottom: 1; top: 10000;}
-			text: "25";
+			text: "1";
 			anchors.top: label3.bottom;
 			anchors.left: parent.left;
 			anchors.right: parent.right;
@@ -107,11 +107,12 @@ Rectangle { id: root;
 		logging: false;
 		showIndex: checkbox1.checked;
 
-		backgroundColor: "#0B0E14";
-		chartColor: "#6C5980";
-		flightPathColor: "#E6BA7E";
-		successColor: "#86B300";
-		errorColor: "#E65050";
+		backgroundColor: "#2f363d";
+		chartColor: "#586069";
+		flightPathColor: "#f9c513";
+		successColor: "#22863a";
+		warningColor: "#e36209";
+		errorColor: "#cb2431";
 
 		pointSize: 15;
 	}

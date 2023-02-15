@@ -21,6 +21,7 @@ Rectangle {
 	property alias chartColor: graph.color;
 	property color flightPathColor: "#c4bb4b";
 	property color successColor: "#7FD962";
+	property color warningColor: "#e36209";
 	property color errorColor: "#D95757";
 
 	// ❮❮❮ tweaks ❯❯❯
@@ -183,17 +184,21 @@ Rectangle {
 					if(backend.pathErrorList[f])
 					{
 						ctx.beginPath();
-						ctx.strokeStyle = errorColor;
-						ctx.fillStyle = errorColor;
+						ctx.strokeStyle = warningColor;
+						ctx.fillStyle = warningColor;
 						ctx.setLineDash([16, 16]);
 						ctx.lineWidth = 1.5;
 
 						if(f > 0) ctx.moveTo(backend.pathData[f-1].x * (backend.zoomX), height - backend.pathData[f-1].y);
 						ctx.lineTo(backend.pathData[f].x * (backend.zoomX), height - backend.pathErrorValueList[f]);
-						ctx.lineTo(backend.pathData[f].x * (backend.zoomX), height - backend.pathData[f]);
+						ctx.lineTo(backend.pathData[f].x * (backend.zoomX), height - backend.pathData[f].y);
+						ctx.moveTo(backend.pathData[f].x * (backend.zoomX), height - backend.pathErrorValueList[f]);
 						ctx.closePath();
 						ctx.stroke();
+						ctx.globalAlpha = 0.25;
+						ctx.fill();
 						ctx.setLineDash([4000, 1]);
+						ctx.globalAlpha = 1;
 						pathModel.setProperty(f, "m_invalid", true);
 					} else { pathModel.setProperty(f, "m_invalid", false); }
 				}

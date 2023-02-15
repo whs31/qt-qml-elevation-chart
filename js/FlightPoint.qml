@@ -8,7 +8,7 @@ Rectangle
 
 	width: pointSize;
 	height: width;
-	color: invalid ? base.errorColor : flightPathColor;
+	color: invalid ? base.warningColor : flightPathColor;
 	radius: width / 2;
 	x: m_x;
 	y: m_y;
@@ -39,7 +39,7 @@ Rectangle
 
 	Rectangle { id: indexUI;
 		visible: base.showIndex;
-		width: 31; height: 17; radius: height / 2; opacity: 1; color: invalid ? base.errorColor : flightPathColor;
+		width: 31; height: 17; radius: height / 2; opacity: 1; color: invalid ? base.warningColor : flightPathColor;
 		anchors.horizontalCenter: parent.horizontalCenter; anchors.verticalCenter: parent.verticalCenter;
 		anchors.horizontalCenterOffset: m_x / base.width > 0.5 ? -width / 2 - 7 : width / 2 + 7;
 		Text {
