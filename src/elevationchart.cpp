@@ -11,6 +11,7 @@ ElevationChart::ElevationChart(QObject *parent)
 {
     heightmapParser = new Elevation::Elevation(this);
     routeParser = new Elevation::ElevationTools(this);
+    qRegisterMetaType<QVector<Elevation::Point>>("QVector<Point>");
     connect(routeParser, &Elevation::ElevationTools::progressTestRouteIntersectGround, this, &ElevationChart::intersectCalculationFinished);
 }
 
@@ -139,7 +140,10 @@ void ElevationChart::update(bool vectorChanged)
 void ElevationChart::intersectCalculationFinished(quint8 progress, const QVector<Elevation::Point> &resultPath)
 {
     qDebug() << "Slot called";
-    qCritical() << resultPath.first().altitude();
+    for(Elevation::Point p : resultPath)
+    {
+        qWarning() << p.altitude() << p.isBase() << p.orientation();
+    }
 }
 
 QPointF ElevationChart::iterateSimple(void)
