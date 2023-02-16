@@ -64,10 +64,6 @@ Rectangle { id: base;
 			ctx.stroke();
 
 			ctx.globalAlpha = 0.7;
-//			ctx.shadowOffsetX    = 10;
-//			ctx.shadowOffsetY    = -15;
-//			ctx.shadowBlur    = 1;
-			ctx.shadowColor    = "rgba(0,0,0,0.2)";
 			ctx.fillStyle = graphColor;
 			for(let pp = 0; pp < points.length; pp++)
 			{

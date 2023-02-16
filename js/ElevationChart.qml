@@ -16,7 +16,7 @@ Rectangle { id: base;
 
 	// ❮❮❮ colors ❯❯❯
 	property alias backgroundColor: base.color;
-	property alias chartColor: graph.color;
+	property alias chartColor: elevationProfile.color;
 	property color flightPathColor: "#c4bb4b";
 	property color successColor: "#7FD962";
 	property color warningColor: "#e36209";
@@ -34,6 +34,15 @@ Rectangle { id: base;
 		function onRequestRedraw() {
 			if(backend.logging) console.info("<qplot-js> backend requesting redraw");
 			requestAll();
+		}
+		function onRequestRedrawIntersects() {
+			intersects.requestPaint();
+		}
+
+		function onRequestRedrawPath() {
+			graph.requestPaint();
+			legend.requestPaint();
+			//elevationProfile.requestPaint(); // this is causing lag!
 		}
 	}
 
@@ -57,8 +66,8 @@ Rectangle { id: base;
 			{
 				zoomX = 1;
 			}
-			overheadTimer.restart();
 		}
+		onScaleStepYChanged: { elevationProfile.requestPaint(); }
 	}
 
 
@@ -71,14 +80,12 @@ Rectangle { id: base;
 		onClicked: stopDrag();
 	}
 
-	// ❮❮❮ this timer prevents overupdating when zooming and etc ❯❯❯
-	Timer { id: overheadTimer; interval: 500; running: false; repeat: false; onTriggered: requestAll(); }
 	function requestAll()
 	{
 		if(backend.logging) console.info("<qplot-js> redrawing all");
 		graph.requestPaint();
 		legend.requestPaint();
-		intersects.requestPaint();
+		elevationProfile.requestPaint();
 	}
 
 	ListModel { id: pathModel; }
@@ -94,9 +101,8 @@ Rectangle { id: base;
 
 		onMovementEnded: { requestAll(); }
 
-		Canvas { id: graph;
+		Canvas { id: elevationProfile;
 			property color color: "#43a1ca";
-			property real flightPointSize: 15;
 			width: backend.pixelWidth * backend.zoomX;
 			height: backend.pixelHeight;
 
@@ -105,9 +111,9 @@ Rectangle { id: base;
 			{
 				let ctx = getContext('2d');
 
-				ctx.clearRect(0, 0, graph.width * backend.zoomX, graph.height);
-				ctx.strokeStyle = graph.color;
-				ctx.fillStyle = graph.color;
+				ctx.clearRect(0, 0, width * backend.zoomX, height);
+				ctx.strokeStyle = chartColor;
+				ctx.fillStyle = chartColor;
 				ctx.lineWidth = 2;
 				ctx.lineCap = "round";
 				ctx.lineJoin = "round";
@@ -132,6 +138,26 @@ Rectangle { id: base;
 					ctx.stroke();
 					ctx.fill();
 				}
+			}
+		}
+
+		Canvas { id: graph;
+			property real flightPointSize: 15;
+			width: backend.pixelWidth * backend.zoomX;
+			height: backend.pixelHeight;
+
+			clip: true;
+
+			onPaint:
+			{
+				let ctx = getContext('2d');
+
+				ctx.clearRect(0, 0, graph.width * backend.zoomX, graph.height);
+				ctx.strokeStyle = chartColor;
+				ctx.fillStyle = chartColor;
+				ctx.lineWidth = 2;
+				ctx.lineCap = "round";
+				ctx.lineJoin = "round";
 
 				// ❮❮❮ draw flight path ❯❯❯
 				ctx.moveTo(0, 0);

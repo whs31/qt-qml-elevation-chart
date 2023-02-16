@@ -17,8 +17,8 @@ ElevationChart::ElevationChart(QObject *parent)
 void ElevationChart::changeFlightPointAltitude(int index, qreal delta)
 {
     QGeoCoordinate coord = m_geopath.coordinateAt(index);
-    if(delta != 0)
-        coord.setAltitude(coord.altitude() + delta * (0.15));
+    qDebug() << delta;
+    coord.setAltitude(coord.altitude() + delta * (0.05));
     if(coord.altitude() <= 0)
         coord.setAltitude(0);
     m_geopath.replaceCoordinate(index, coord);
@@ -121,7 +121,10 @@ void ElevationChart::update(bool vectorChanged)
     routeParser->testRouteIntersectGround(geopath());
 
     // ███   logging values for debug and requesting canvas update   ███
-    emit requestRedraw();
+    if(vectorChanged || points.isEmpty())
+        emit requestRedraw();
+    else
+        emit requestRedrawPath();
     if(m_logging)
     {
         qInfo()  << "<qplot> calculating values <><> ";
@@ -148,7 +151,7 @@ void ElevationChart::intersectCalculationFinished(quint8 progress, const QVector
     }
     //setIntersectList(_intersectList);
     intersectListSet(_intersectList);
-    emit requestRedraw();
+    emit requestRedrawIntersects();
 }
 
 QPointF ElevationChart::iterateSimple(void)

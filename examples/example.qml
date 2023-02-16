@@ -12,14 +12,24 @@ Rectangle { id: root;
 	{
 		var now = new Date();
 		var seed = now.getSeconds();
-		var num = (100 * Math.random(seed));
+		var num = (Math.random(seed));
 		return num;
 	}
+
+	function getRandomGeoCoordinate()
+	{
+		var now = new Date();
+		var seed = now.getSeconds();
+		var num = (Math.random(seed));
+		var a = QtPositioning.coordinate(60 + num / 25, 30 + num / 25, num * 100);
+		return a;
+	}
+
 	Timer { id: timer1; running: true; repeat: true; interval: 750; onTriggered: {
-			var p = []; p = scrollingSeries1.points; p.splice(1, 1);  p.push(getRandomVec1());
+			var p = []; p = scrollingSeries1.points; p.splice(1, 1);  p.push(5500 * getRandomVec1());
 			scrollingSeries1.points = p; } }
 	Timer { id: timer2; running: true; repeat: true; interval: 50; onTriggered: {
-			var p = []; p = scrollingSeries2.points; p.splice(1, 1);  p.push(getRandomVec1());
+			var p = []; p = scrollingSeries2.points; p.splice(1, 1);  p.push(1000 * getRandomVec1());
 			scrollingSeries2.points = p; } }
 
 	Rectangle { id: exampleToolPanel;
@@ -108,16 +118,21 @@ Rectangle { id: root;
 		anchors.top: parent.verticalCenter;
 
 		path: QtPositioning.path([
-									 QtPositioning.coordinate(60, 30, 1),
-									 QtPositioning.coordinate(60.001, 30.001, 2),
-									 QtPositioning.coordinate(60.02, 30.02, 52),
-									 QtPositioning.coordinate(60.03, 30.03, 50),
-									 QtPositioning.coordinate(60.04, 30.04, 45),
-									 QtPositioning.coordinate(60.05, 30.05, 40),
-									 QtPositioning.coordinate(60.06, 30.06, 35),
-									 QtPositioning.coordinate(60.07, 30.07, 30),
-									 QtPositioning.coordinate(60.08, 30.08, 25),
-									 QtPositioning.coordinate(60.09, 30.09, 22),
+									 getRandomGeoCoordinate(),
+									 getRandomGeoCoordinate(),
+									 getRandomGeoCoordinate(),
+									 getRandomGeoCoordinate(),
+									 getRandomGeoCoordinate(),
+									 getRandomGeoCoordinate(),
+									 getRandomGeoCoordinate(),
+									 getRandomGeoCoordinate(),
+									 getRandomGeoCoordinate(),
+									 getRandomGeoCoordinate(),
+									 getRandomGeoCoordinate(),
+									 getRandomGeoCoordinate(),
+									 getRandomGeoCoordinate(),
+									 getRandomGeoCoordinate(),
+									 getRandomGeoCoordinate()
 		]);
 		horizontalVelocity: parseInt(textField1.text);
 		rateOfClimb: parseInt(textField2.text);
@@ -153,7 +168,7 @@ Rectangle { id: root;
 			var p = [];
 			for(let i = 0; i < 1000; i++)
 			{
-				p.push(getRandomVec1());
+				p.push(5500 * getRandomVec1());
 			}
 			scrollingSeries1.points = p;
 		}
@@ -176,7 +191,7 @@ Rectangle { id: root;
 			var p = [];
 			for(let i = 0; i < 1000; i++)
 			{
-				p.push(getRandomVec1());
+				p.push(1000 * getRandomVec1());
 			}
 			scrollingSeries2.points = p;
 		}

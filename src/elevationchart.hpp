@@ -33,11 +33,13 @@ public slots:
 
 signals:
     void requestRedraw();
+    void requestRedrawPath();
+    void requestRedrawIntersects();
 
 private:
     void update(bool vectorChanged = false);
 
-    PROPERTY_NOCOMPARE_SET_ARGS(QGeoPath, geopath) if(pixelWidth() > 0) update(true); } EMIT geopathChanged END
+    PROPERTY_NOCOMPARE_SET_ARGS(QGeoPath, geopath) if(pixelWidth() > 0) { update(false); } } EMIT geopathChanged END
     PROPERTY(QList<QPointF>, pathData) EMIT pathDataChanged END
     PROPERTY(QList<QPointF>, intersectList) EMIT intersectListChanged END
     PROPERTY(QList<bool>, pathErrorList) EMIT pathErrorListChanged END
@@ -47,8 +49,8 @@ private:
 
     PROPERTY_SET_ARGS(qreal, pixelWidth) if(!geopath().isEmpty() && pixelWidth() > 0) update(false); } EMIT pixelWidthChanged END
     PROPERTY_SET_ARGS(qreal, pixelHeight) if(!geopath().isEmpty() && pixelWidth() > 0) update(false); } EMIT pixelHeightChanged END
-    PROPERTY_NOCOMPARE(qreal, realWidth) EMIT realWidthChanged END
-    PROPERTY_NOCOMPARE(qreal, realHeight) EMIT realHeightChanged END
+    PROPERTY(qreal, realWidth) EMIT realWidthChanged END
+    PROPERTY(qreal, realHeight) EMIT realHeightChanged END
     PROPERTY(qreal, zoomX) EMIT zoomXChanged END
     PROPERTY(int, scaleValueX) EMIT scaleValueXChanged END
     PROPERTY(int, scaleValueY) EMIT scaleValueYChanged END
