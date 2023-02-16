@@ -35,6 +35,9 @@ Rectangle { id: base;
 	clip: true;
 	color: "#222831";
 
+	Component.onCompleted: { updatePath(); startTimer.start(); }
+	Timer { id: startTimer; running: false; repeat: false; interval: 500; onTriggered: updatePath(); }
+
 	Connections {
 		target: backend;
 		function onRequestRedraw() {
@@ -178,26 +181,26 @@ Rectangle { id: base;
 					ctx.strokeStyle = flightPathColor;
 					ctx.lineWidth = 4;
 					ctx.fillStyle = flightPathColor;
-					if(f > 0) ctx.moveTo(backend.pathData[f-1].x * (backend.zoomX), height - backend.pathData[f-1].y);
-					ctx.lineTo(backend.pathData[f].x * (backend.zoomX), height - backend.pathData[f].y);
+					if(f > 0) ctx.moveTo(backend.pathData[f-1].x * (backend.zoomX), backend.pathData[f-1].y);
+					ctx.lineTo(backend.pathData[f].x * (backend.zoomX), backend.pathData[f].y);
 					ctx.stroke();
 
 					if(pathModel.count < backend.pathData.length)
 					{
 						pathModel.append({
 											"m_x": backend.pathData[f].x * (backend.zoomX) - flightPointSize / 2,
-											"m_y": height - backend.pathData[f].y - flightPointSize / 2, flightPointSize, flightPointSize,
+											"m_y": backend.pathData[f].y - flightPointSize / 2, flightPointSize, flightPointSize,
 											"m_distance": backend.pathData[f].x / backend.pixelWidth * backend.realWidth,
-											"m_elevation": backend.pathData[f].y / backend.pixelHeight * backend.realHeight * backend.verticalStretch,
+											"m_elevation": backend.realHeight * backend.verticalStretch - backend.pathData[f].y / backend.pixelHeight * backend.realHeight * backend.verticalStretch,
 											"m_invalid": false
 										})
 					}
 					else
 					{
 						pathModel.setProperty(f, "m_x", backend.pathData[f].x * (backend.zoomX) - flightPointSize / 2);
-						pathModel.setProperty(f, "m_y", height - backend.pathData[f].y - flightPointSize / 2, flightPointSize, flightPointSize);
+						pathModel.setProperty(f, "m_y", backend.pathData[f].y - flightPointSize / 2, flightPointSize, flightPointSize);
 						pathModel.setProperty(f, "m_distance", backend.pathData[f].x / backend.pixelWidth * backend.realWidth);
-						pathModel.setProperty(f, "m_elevation", backend.pathData[f].y / backend.pixelHeight * backend.realHeight * backend.verticalStretch);
+						pathModel.setProperty(f, "m_elevation", backend.realHeight * backend.verticalStretch - backend.pathData[f].y / backend.pixelHeight * backend.realHeight * backend.verticalStretch);
 					}
 
 					// variometer error display
@@ -209,10 +212,10 @@ Rectangle { id: base;
 						ctx.setLineDash([16, 16]);
 						ctx.lineWidth = 1.5;
 
-						if(f > 0) ctx.moveTo(backend.pathData[f-1].x * (backend.zoomX), height - backend.pathData[f-1].y);
-						ctx.lineTo(backend.pathData[f].x * (backend.zoomX), height - backend.pathErrorValueList[f]);
-						ctx.lineTo(backend.pathData[f].x * (backend.zoomX), height - backend.pathData[f].y);
-						ctx.moveTo(backend.pathData[f].x * (backend.zoomX), height - backend.pathErrorValueList[f]);
+						if(f > 0) ctx.moveTo(backend.pathData[f-1].x * (backend.zoomX), backend.pathData[f-1].y);
+						ctx.lineTo(backend.pathData[f].x * (backend.zoomX), backend.pathErrorValueList[f]);
+						ctx.lineTo(backend.pathData[f].x * (backend.zoomX), backend.pathData[f].y);
+						ctx.moveTo(backend.pathData[f].x * (backend.zoomX), backend.pathErrorValueList[f]);
 						ctx.closePath();
 						ctx.globalAlpha = 0.5;
 						ctx.stroke();
@@ -250,16 +253,16 @@ Rectangle { id: base;
 							if(f % 2 === 1)
 							{
 								ctx.beginPath();
-								if(f > 0) ctx.moveTo(backend.intersectList[f-1].x * (backend.zoomX), height - backend.intersectList[f-1].y);
-								ctx.lineTo(backend.intersectList[f].x * (backend.zoomX), height - backend.intersectList[f].y);
+								if(f > 0) ctx.moveTo(backend.intersectList[f-1].x * (backend.zoomX), backend.intersectList[f-1].y);
+								ctx.lineTo(backend.intersectList[f].x * (backend.zoomX), backend.intersectList[f].y);
 								ctx.closePath();
 								ctx.globalAlpha = 1;
 								ctx.stroke();
 								ctx.beginPath();
-								ctx.lineTo(backend.intersectList[f].x * (backend.zoomX), height - backend.intersectList[f].y);
+								ctx.lineTo(backend.intersectList[f].x * (backend.zoomX), backend.intersectList[f].y);
 								ctx.lineTo(backend.intersectList[f].x * (backend.zoomX), height);
 								ctx.lineTo(backend.intersectList[f-1].x * (backend.zoomX), height);
-								ctx.lineTo(backend.intersectList[f-1].x * (backend.zoomX), height - backend.intersectList[f-1].y);
+								ctx.lineTo(backend.intersectList[f-1].x * (backend.zoomX), backend.intersectList[f-1].y);
 								ctx.closePath();
 								ctx.globalAlpha = 0.5;
 								ctx.fill();

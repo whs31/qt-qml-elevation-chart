@@ -83,12 +83,12 @@ void ElevationChart::update(bool vectorChanged)
     QList<float> errorDeltas;
     qreal previous_distance = 0;
     errorData.append(false);
-    errorDeltas.append(0);
+    errorDeltas.append(pixelHeight());
     for(size_t i = 0; i < m_geopath.path().length(); i++)
     {
         QPointF point;
         qreal deltaS = 0;
-        point.setY(m_geopath.path()[i].altitude() * pixelHeight() / (realHeight() * verticalStretch()));
+        point.setY(pixelHeight() - m_geopath.path()[i].altitude() * pixelHeight() / (realHeight() * verticalStretch()));
         if(i > 0)
             deltaS = m_geopath.path()[i].distanceTo(m_geopath.path()[i-1]);
         previous_distance += deltaS;
@@ -104,16 +104,16 @@ void ElevationChart::update(bool vectorChanged)
             if(deltaH > 0 && deltaH > deltaHmax)
             {
                 errorData.append(true);
-                errorDeltas.append((m_geopath.path()[i-1].altitude() + deltaHmax) * pixelHeight() / (realHeight() * verticalStretch()));
+                errorDeltas.append(pixelHeight() - (m_geopath.path()[i-1].altitude() + deltaHmax) * pixelHeight() / (realHeight() * verticalStretch()));
             }
             else if(deltaH < 0 && abs(deltaH) > deltaHmin)
             {
                 errorData.append(true);
-                errorDeltas.append((m_geopath.path()[i-1].altitude() - deltaHmin) * pixelHeight() / (realHeight() * verticalStretch()));
+                errorDeltas.append(pixelHeight() - (m_geopath.path()[i-1].altitude() - deltaHmin) * pixelHeight() / (realHeight() * verticalStretch()));
             }
             else {
                 errorData.append(false);
-                errorDeltas.append(0);
+                errorDeltas.append(pixelHeight());
             }
         }
     }
@@ -150,7 +150,7 @@ void ElevationChart::intersectCalculationFinished(quint8 progress, const QVector
         if(resultPath[i].isBase())
             continue;
         QPointF _point(resultPath[i].distance() * pixelWidth() / realWidth(),
-                       resultPath[i].altitude() * pixelHeight() / (realHeight() * verticalStretch()));
+                       pixelHeight() - resultPath[i].altitude() * pixelHeight() / (realHeight() * verticalStretch()));
         _intersectList.append(_point);
     }
     //setIntersectList(_intersectList);

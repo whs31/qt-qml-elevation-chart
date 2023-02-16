@@ -21,7 +21,7 @@ Rectangle { id: root;
 		var now = new Date();
 		var seed = now.getSeconds();
 		var num = (Math.random(seed));
-		var a = QtPositioning.coordinate(60 + num / 25, 30 + num / 25, num * 100);
+		var a = QtPositioning.coordinate(60 + num / 25, 30 + num / 25, 50 + (num - 0.5) * 50);
 		return a;
 	}
 
