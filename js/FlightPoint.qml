@@ -17,13 +17,13 @@ Rectangle
 	property real delta: y - globalMouseArea.mouseY;
 	property bool invalid: m_invalid;
 
-	Timer { id: updateTimer; repeat: true; running: false; interval: 25;
+	Timer { id: updateTimer; repeat: true; running: false; interval: 16;
 			onTriggered: backend.changeFlightPointAltitude(index, delta); }
 	MouseArea { id: pointMouseArea;
 		//propagateComposedEvents: true;
 		hoverEnabled: false;
 		anchors.fill: parent;
-		anchors.margins: -20;
+		anchors.margins: -1;
 		onDoubleClicked: { updateTimer.start(); ui.opacity = 0.9; }
 		onClicked: { updateTimer.stop(); ui.opacity = 0; }
 	}

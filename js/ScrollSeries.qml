@@ -42,11 +42,10 @@ Rectangle { id: base;
 			ctx.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
 
 			ctx.beginPath();
-			ctx.globalAlpha = 0.5;
+			ctx.globalAlpha = 0.25;
 			ctx.font = "bold 12px sans-serif";
 			ctx.strokeStyle = Qt.darker(legendColor, 1.5);
 			ctx.lineWidth = 0.75;
-			ctx.setLineDash([16, 8]);
 			ctx.lineCap = "round";
 			ctx.lineJoin = "round";
 			ctx.moveTo(0, 0);
@@ -64,15 +63,15 @@ Rectangle { id: base;
 			}
 			ctx.stroke();
 
-			ctx.beginPath();
 			ctx.globalAlpha = 0.7;
 //			ctx.shadowOffsetX    = 10;
 //			ctx.shadowOffsetY    = -15;
 //			ctx.shadowBlur    = 1;
-//			ctx.shadowColor    = "rgba(0,0,0,0.2)";
+			ctx.shadowColor    = "rgba(0,0,0,0.2)";
 			ctx.fillStyle = graphColor;
 			for(let pp = 0; pp < points.length; pp++)
 			{
+				ctx.beginPath();
 				if(pp > 0) ctx.moveTo((pp-1) / pointsCount * mainCanvas.width, height - (points[pp-1] / yMax * mainCanvas.height));
 				ctx.lineTo((pp) / pointsCount * mainCanvas.width, height - (points[pp] / yMax * mainCanvas.height));
 				if(pp > 0)
@@ -83,9 +82,8 @@ Rectangle { id: base;
 				}
 
 				if(pp > pointsCount) break;
+				ctx.fill();
 			}
-
-			ctx.fill();
 		}
 	}
 }

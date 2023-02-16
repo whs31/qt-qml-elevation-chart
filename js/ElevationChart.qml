@@ -129,6 +129,7 @@ Rectangle { id: base;
 						ctx.lineTo(p0.x * backend.zoomX, height);
 					}
 					p0 = p;
+					ctx.stroke();
 					ctx.fill();
 				}
 
@@ -147,7 +148,6 @@ Rectangle { id: base;
 					ctx.fillStyle = flightPathColor;
 					if(f > 0) ctx.moveTo(backend.pathData[f-1].x * (backend.zoomX), height - backend.pathData[f-1].y);
 					ctx.lineTo(backend.pathData[f].x * (backend.zoomX), height - backend.pathData[f].y);
-					ctx.closePath();
 					ctx.stroke();
 
 					if(pathModel.count < backend.pathData.length)
@@ -215,9 +215,10 @@ Rectangle { id: base;
 					{
 						for(let f = 0; f < backend.intersectList.length; f++)
 						{
-							ctx.beginPath();
+
 							if(f % 2 === 1)
 							{
+								ctx.beginPath();
 								if(f > 0) ctx.moveTo(backend.intersectList[f-1].x * (backend.zoomX), height - backend.intersectList[f-1].y);
 								ctx.lineTo(backend.intersectList[f].x * (backend.zoomX), height - backend.intersectList[f].y);
 								ctx.closePath();
@@ -234,7 +235,6 @@ Rectangle { id: base;
 							}
 						}
 					}
-
 				}
 			}
 
@@ -274,11 +274,10 @@ Rectangle { id: base;
 				if(k % 5 == 0)
 				{
 					// ❮❮❮ grid ❯❯❯
-					ctx.globalAlpha = 0.5;
+					ctx.globalAlpha = 0.35;
 					ctx.font = "bold 12px sans-serif";
 					ctx.strokeStyle = Qt.darker(legend.color, 1.5);
-					ctx.lineWidth = 0.75;
-					ctx.setLineDash([16, 16]);
+					ctx.lineWidth = 0.6;
 					ctx.beginPath();
 					ctx.moveTo(0, height - k * backend.scaleStepY);
 					ctx.lineTo(width, height - k * backend.scaleStepY);
@@ -286,7 +285,6 @@ Rectangle { id: base;
 					ctx.globalAlpha = 1;
 
 					// ❮❮❮ scales itself ❯❯❯
-					ctx.setLineDash([4000, 1]);
 					ctx.lineWidth = 3;
 					ctx.strokeStyle = legend.color;
 					ctx.beginPath();
@@ -301,11 +299,10 @@ Rectangle { id: base;
 				else
 				{
 					// ❮❮❮ grid ❯❯❯
-					ctx.globalAlpha = 0.4;
+					ctx.globalAlpha = 0.3;
 					ctx.font = "bold 12px sans-serif";
 					ctx.strokeStyle = Qt.darker(legend.color, 1.5);
-					ctx.lineWidth = 0.5;
-					ctx.setLineDash([8, 16]);
+					ctx.lineWidth = 0.4;
 					ctx.beginPath();
 					ctx.moveTo(0, height - k * backend.scaleStepY);
 					ctx.lineTo(width, height - k * backend.scaleStepY);
@@ -321,7 +318,6 @@ Rectangle { id: base;
 					ctx.fillStyle = graph.color;
 
 					// ❮❮❮ scales itself ❯❯❯
-					ctx.setLineDash([4000, 1]);
 					ctx.lineWidth = 2;
 					ctx.strokeStyle = legend.color;
 					ctx.beginPath();

@@ -54,7 +54,7 @@ Rectangle { id: root;
 			anchors.left: parent.left;
 			anchors.right: parent.right;
 			anchors.margins: 5;
-			checked: false;
+			checked: true;
 			text: "Показать номера точек";
 		}
 		Text { id: label1;
@@ -108,12 +108,16 @@ Rectangle { id: root;
 		anchors.top: parent.verticalCenter;
 
 		path: QtPositioning.path([
-					QtPositioning.coordinate(60, 30, 60),
-					QtPositioning.coordinate(60.1, 30.1, 20),
-					QtPositioning.coordinate(60.15, 30.1, 40),
-					QtPositioning.coordinate(coord1, coord2, 35),
-					QtPositioning.coordinate(coord1+0.05, coord2, 0),
-					QtPositioning.coordinate(60.05, 30.05, 11)
+									 QtPositioning.coordinate(60, 30, 1),
+									 QtPositioning.coordinate(60.001, 30.001, 2),
+									 QtPositioning.coordinate(60.02, 30.02, 52),
+									 QtPositioning.coordinate(60.03, 30.03, 50),
+									 QtPositioning.coordinate(60.04, 30.04, 45),
+									 QtPositioning.coordinate(60.05, 30.05, 40),
+									 QtPositioning.coordinate(60.06, 30.06, 35),
+									 QtPositioning.coordinate(60.07, 30.07, 30),
+									 QtPositioning.coordinate(60.08, 30.08, 25),
+									 QtPositioning.coordinate(60.09, 30.09, 22),
 		]);
 		horizontalVelocity: parseInt(textField1.text);
 		rateOfClimb: parseInt(textField2.text);
@@ -122,12 +126,12 @@ Rectangle { id: root;
 		logging: false;
 		showIndex: checkbox1.checked;
 
-		backgroundColor: "#2f363d";
+		backgroundColor: "#24292e";
 		chartColor: "#586069";
-		flightPathColor: "#f9c513";
-		successColor: "#22863a";
-		warningColor: "#e36209";
-		errorColor: "#cb2431";
+		flightPathColor: "#ffab70";
+		successColor: "#34d058";
+		warningColor: "#f66a0a";
+		errorColor: "#ea4a5a";
 
 		pointSize: 15;
 	}
@@ -141,9 +145,9 @@ Rectangle { id: root;
 
 		pointsCount: 30;
 
-		backgroundColor: "#2f363d";
-		graphColor: "#79b8ff";
-		legendColor: "#dae1e5";
+		backgroundColor: "#24292e";
+		graphColor: "#ffab70";
+		legendColor: "#fafbfc";
 
 		Component.onCompleted: {
 			var p = [];
@@ -164,9 +168,9 @@ Rectangle { id: root;
 
 		pointsCount: 150;
 
-		backgroundColor: "#2f363d";
-		graphColor: "#f692ce";
-		legendColor: "#dae1e5";
+		backgroundColor: "#24292e";
+		graphColor: "#34d058";
+		legendColor: "#fafbfc";
 
 		Component.onCompleted: {
 			var p = [];
