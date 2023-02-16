@@ -20,11 +20,9 @@ Rectangle
 	Timer { id: updateTimer; repeat: true; running: false; interval: 10;
 			onTriggered: backend.changeFlightPointAltitude(index, delta); }
 	MouseArea { id: pointMouseArea;
-		//propagateComposedEvents: true;
-		hoverEnabled: false;
 		anchors.fill: parent;
-		onDoubleClicked: { updateTimer.start(); ui.opacity = 0.9; }
-		onClicked: { updateTimer.stop(); ui.opacity = 0; }
+		onDoubleClicked: { mouse.accepted = false; updateTimer.start(); ui.opacity = 0.9; }
+		onClicked: { mouse.accepted = false; updateTimer.stop(); ui.opacity = 0; }
 	}
 	Connections
 	{

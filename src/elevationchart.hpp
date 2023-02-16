@@ -8,13 +8,12 @@
 #include <QGeoPath>
 #include "macro.hpp"
 
-#include "RouteTools/elevationtools.h" // по неизвестным науке причинам я не могу сделать
-                                       // forward declaration этого класса =(
+// по неизвестным науке причинам я не могу сделать forward declaration этого класса =(
+#include "RouteTools/elevationtools.h"
+
 
 namespace Elevation {
     class Elevation;
-    //class Point;
-    //class ElevationTools;
 }
 
 class ElevationChart : public QObject

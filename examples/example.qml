@@ -10,19 +10,13 @@ Rectangle { id: root;
 	property real random_dist: 0;
 	function getRandomVec1()
 	{
-		var now = new Date();
-		var seed = now.getSeconds();
-		var num = (Math.random(seed));
-		return num;
+		return Math.random(new Date().getSeconds());
 	}
 
 	function getRandomGeoCoordinate()
 	{
-		var now = new Date();
-		var seed = now.getSeconds();
-		var num = (Math.random(seed));
-		var a = QtPositioning.coordinate(60 + num / 25, 30 + num / 25, 50 + (num - 0.5) * 50);
-		return a;
+		var num = (Math.random(new Date().getSeconds()));
+		return QtPositioning.coordinate(60 + num / 25, 30 + num / 25, 50 + (num - 0.5) * 50);
 	}
 
 	Timer { id: timer1; running: true; repeat: true; interval: 750; onTriggered: {

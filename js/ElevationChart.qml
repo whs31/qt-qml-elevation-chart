@@ -79,16 +79,6 @@ Rectangle { id: base;
 		onScaleStepYChanged: { elevationProfile.requestPaint(); }
 	}
 
-
-	MouseArea { id: globalMouseArea;
-		signal stopDrag();
-		acceptedButtons: Qt.LeftButton | Qt.RightButton;
-		anchors.fill: parent;
-		hoverEnabled: true;
-		propagateComposedEvents: true;
-		onClicked: stopDrag();
-	}
-
 	function requestAll()
 	{
 		if(backend.logging) console.info("<qplot-js> redrawing all");
@@ -103,10 +93,11 @@ Rectangle { id: base;
 		contentWidth: backend.pixelWidth * backend.zoomX;
 		contentHeight: backend.pixelHeight;
 		flickableDirection: Flickable.HorizontalAndVerticalFlick;
-		interactive: true;
+		interactive: false;
 		boundsMovement: Flickable.StopAtBounds
 		clip: true;
 		pixelAligned: true;
+
 
 		onMovementEnded: { requestAll(); }
 
@@ -361,6 +352,26 @@ Rectangle { id: base;
 				ctx.stroke();
 			}
 		}
+
+		Canvas { id: mouseCross;
+			z: 1;
+			anchors.fill: parent;
+			onPaint: {
+				// ❮❮❮ Mouse cross ❯❯❯
+				let ctx = getContext('2d');
+
+				ctx.clearRect(0, 0, legend.width, legend.height);
+				ctx.beginPath();
+				ctx.strokeStyle = Qt.darker(legend.color, 1.5);
+				ctx.lineWidth = 1;
+				ctx.globalAlpha = 0.5;
+				ctx.moveTo(globalMouseArea.trueMouseX, 0);
+				ctx.lineTo(globalMouseArea.trueMouseX, height);
+				ctx.moveTo(0, globalMouseArea.trueMouseY);
+				ctx.lineTo(width, globalMouseArea.trueMouseY);
+				ctx.stroke();
+			}
+		}
 		Rectangle { color: legend.color; width: 70; height: 15; anchors.top: legend.top; anchors.left: legend.left;
 					Text { color: base.color; anchors.fill: parent; text: "ВЫСОТА"; font.bold: true;
 						   horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter; } }
@@ -393,7 +404,24 @@ Rectangle { id: base;
 			}
 		}
 	}
+	MouseArea { id: globalMouseArea;
+		signal stopDrag();
+		acceptedButtons: Qt.RightButton;
+		anchors.fill: parent;
+		hoverEnabled: true;
+		onClicked: { stopDrag(); }
+		onPositionChanged:
+		{
+			mouseCross.requestPaint();
+			trueMouseX = mouse.x;
+			trueMouseY = mouse.y;
+		}
+
+		property real trueMouseX: 0;
+		property real trueMouseY: 0;
+	}
 }
+
 
 
 /*

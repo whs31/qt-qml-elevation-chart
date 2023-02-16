@@ -17,7 +17,7 @@ ElevationChart::ElevationChart(QObject *parent)
 void ElevationChart::changeFlightPointAltitude(int index, qreal delta)
 {
     QGeoCoordinate coord = m_geopath.coordinateAt(index);
-    coord.setAltitude(coord.altitude() + delta * (0.05));
+    coord.setAltitude(coord.altitude() + delta * (0.10));
     if(coord.altitude() <= 0)
         coord.setAltitude(0);
     m_geopath.replaceCoordinate(index, coord);
