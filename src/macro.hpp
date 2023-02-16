@@ -15,13 +15,8 @@
             }   \
         Q_PROPERTY(type name READ name WRITE name##Set NOTIFY name##Changed) \
 
-#define COMMA __S__
-#define COMMA_BR __ENDARGS_S__
-#define END __ENDPR
-
-#define __S__ Q_SIGNALS: void
-#define __ENDARGS_S__ } Q_SIGNALS: void
-#define __ENDPR (); private:
+#define EMIT Q_SIGNALS: void
+#define END (); private:
 
 // more precise types:
 #define PROPERTY_NOCOMPARE(type, name) \

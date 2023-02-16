@@ -121,17 +121,15 @@ Rectangle { id: base;
 					if(p === Qt.point(-1, -1))
 						break;
 					ctx.beginPath();
+					ctx.moveTo(p0.x * backend.zoomX, height - p0.y);
 					ctx.lineTo(p.x * backend.zoomX, height - p.y);
 					if(p0.x !== 0 && p0.y !== 0)
 					{
-						ctx.lineTo(p0.x * backend.zoomX - 0.3, height - p0.y);
-						ctx.lineTo(p0.x * backend.zoomX - 0.7, height);
 						ctx.lineTo(p.x * backend.zoomX, height);
-						ctx.lineTo(p.x * backend.zoomX, height - p.y);
+						ctx.lineTo(p0.x * backend.zoomX, height);
 					}
-					//ctx.closePath();
-					ctx.fill();
 					p0 = p;
+					ctx.fill();
 				}
 
 				// ❮❮❮ draw flight path ❯❯❯

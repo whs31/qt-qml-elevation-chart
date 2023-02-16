@@ -27,7 +27,7 @@ void ElevationChart::changeFlightPointAltitude(int index, qreal delta)
 
 void ElevationChart::update(bool vectorChanged)
 {
-    // ███  build profile if necessary + reset iterators   ███
+    // ███  build profile if necessary + reset iterators ███
     if(vectorChanged || points.isEmpty())
         points = heightmapParser->buildGroundProfileForChart(geopath());
     iterator.simple = 0;

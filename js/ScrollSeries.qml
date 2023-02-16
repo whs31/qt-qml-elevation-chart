@@ -40,6 +40,8 @@ Rectangle { id: base;
 			let ctx = getContext('2d');
 
 			ctx.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
+
+			ctx.beginPath();
 			ctx.globalAlpha = 0.5;
 			ctx.font = "bold 12px sans-serif";
 			ctx.strokeStyle = Qt.darker(legendColor, 1.5);
@@ -47,7 +49,6 @@ Rectangle { id: base;
 			ctx.setLineDash([16, 8]);
 			ctx.lineCap = "round";
 			ctx.lineJoin = "round";
-			ctx.beginPath();
 			ctx.moveTo(0, 0);
 			let scaleStepY = mainCanvas.height / yMax * Math.pow(10, Math.round((Math.log(yMax) / Math.log(10)) - 1));
 			for(let yy = 0; yy < mainCanvas.height; yy += scaleStepY)
@@ -62,16 +63,14 @@ Rectangle { id: base;
 				ctx.lineTo(xx, mainCanvas.height);
 			}
 			ctx.stroke();
-			ctx.globalAlpha = 0.7;
-			ctx.shadowOffsetX    = 10;
-			ctx.shadowOffsetY    = -15;
-			ctx.shadowBlur    = 1;
-			ctx.shadowColor    = "rgba(0,0,0,0.2)";
-			ctx.setLineDash([4000, 1]);
-			ctx.strokeStyle = graphColor;
-			ctx.fillStyle = graphColor;
-			ctx.lineWidth = 1;
+
 			ctx.beginPath();
+			ctx.globalAlpha = 0.7;
+//			ctx.shadowOffsetX    = 10;
+//			ctx.shadowOffsetY    = -15;
+//			ctx.shadowBlur    = 1;
+//			ctx.shadowColor    = "rgba(0,0,0,0.2)";
+			ctx.fillStyle = graphColor;
 			for(let pp = 0; pp < points.length; pp++)
 			{
 				if(pp > 0) ctx.moveTo((pp-1) / pointsCount * mainCanvas.width, height - (points[pp-1] / yMax * mainCanvas.height));

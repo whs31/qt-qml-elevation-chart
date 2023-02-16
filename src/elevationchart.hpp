@@ -37,31 +37,31 @@ signals:
 private:
     void update(bool vectorChanged = false);
 
-    PROPERTY_NOCOMPARE_SET_ARGS(QGeoPath, geopath) if(pixelWidth() > 0) update(true); COMMA_BR geopathChanged END
-    PROPERTY(QList<QPointF>, pathData) COMMA pathDataChanged END
-    PROPERTY(QList<QPointF>, intersectList) COMMA intersectListChanged END
-    PROPERTY(QList<bool>, pathErrorList) COMMA pathErrorListChanged END
-    PROPERTY(QList<float>, pathErrorValueList) COMMA pathErrorValueListChanged END
+    PROPERTY_NOCOMPARE_SET_ARGS(QGeoPath, geopath) if(pixelWidth() > 0) update(true); } EMIT geopathChanged END
+    PROPERTY(QList<QPointF>, pathData) EMIT pathDataChanged END
+    PROPERTY(QList<QPointF>, intersectList) EMIT intersectListChanged END
+    PROPERTY(QList<bool>, pathErrorList) EMIT pathErrorListChanged END
+    PROPERTY(QList<float>, pathErrorValueList) EMIT pathErrorValueListChanged END
 
-    PROPERTY(bool, logging) COMMA loggingChanged END
+    PROPERTY(bool, logging) EMIT loggingChanged END
 
-    PROPERTY_SET_ARGS(qreal, pixelWidth) if(!geopath().isEmpty() && pixelWidth() > 0) update(false); COMMA_BR pixelWidthChanged END
-    PROPERTY_SET_ARGS(qreal, pixelHeight) if(!geopath().isEmpty() && pixelWidth() > 0) update(false); COMMA_BR pixelHeightChanged END
-    PROPERTY_NOCOMPARE(qreal, realWidth) COMMA realWidthChanged END
-    PROPERTY_NOCOMPARE(qreal, realHeight) COMMA realHeightChanged END
-    PROPERTY(qreal, zoomX) COMMA zoomXChanged END
-    PROPERTY(int, scaleValueX) COMMA scaleValueXChanged END
-    PROPERTY(int, scaleValueY) COMMA scaleValueYChanged END
-    PROPERTY(qreal, scaleCountX) COMMA scaleCountXChanged END
-    PROPERTY(qreal, scaleCountY) COMMA scaleCountYChanged END
-    PROPERTY(qreal, scaleStepX) COMMA scaleStepXChanged END
-    PROPERTY(qreal, scaleStepY) COMMA scaleStepYChanged END
-    PROPERTY(qreal, offset) COMMA offsetChanged END
-    PROPERTY(qreal, verticalStretch) COMMA verticalStretchChanged END
+    PROPERTY_SET_ARGS(qreal, pixelWidth) if(!geopath().isEmpty() && pixelWidth() > 0) update(false); } EMIT pixelWidthChanged END
+    PROPERTY_SET_ARGS(qreal, pixelHeight) if(!geopath().isEmpty() && pixelWidth() > 0) update(false); } EMIT pixelHeightChanged END
+    PROPERTY_NOCOMPARE(qreal, realWidth) EMIT realWidthChanged END
+    PROPERTY_NOCOMPARE(qreal, realHeight) EMIT realHeightChanged END
+    PROPERTY(qreal, zoomX) EMIT zoomXChanged END
+    PROPERTY(int, scaleValueX) EMIT scaleValueXChanged END
+    PROPERTY(int, scaleValueY) EMIT scaleValueYChanged END
+    PROPERTY(qreal, scaleCountX) EMIT scaleCountXChanged END
+    PROPERTY(qreal, scaleCountY) EMIT scaleCountYChanged END
+    PROPERTY(qreal, scaleStepX) EMIT scaleStepXChanged END
+    PROPERTY(qreal, scaleStepY) EMIT scaleStepYChanged END
+    PROPERTY(qreal, offset) EMIT offsetChanged END
+    PROPERTY(qreal, verticalStretch) EMIT verticalStretchChanged END
 
-    PROPERTY_SET_ARGS(qreal, variometerHV) if(!geopath().isEmpty() && pixelWidth() > 0) update(false); COMMA_BR variometerHVChanged END
-    PROPERTY_SET_ARGS(qreal, variometerROC) if(!geopath().isEmpty() && pixelWidth() > 0) update(false); COMMA_BR variometerROCChanged END
-    PROPERTY_SET_ARGS(qreal, variometerROD) if(!geopath().isEmpty() && pixelWidth() > 0) update(false); COMMA_BR variometerRODChanged END
+    PROPERTY_SET_ARGS(qreal, variometerHV) if(!geopath().isEmpty() && pixelWidth() > 0) update(false); } EMIT variometerHVChanged END
+    PROPERTY_SET_ARGS(qreal, variometerROC) if(!geopath().isEmpty() && pixelWidth() > 0) update(false); } EMIT variometerROCChanged END
+    PROPERTY_SET_ARGS(qreal, variometerROD) if(!geopath().isEmpty() && pixelWidth() > 0) update(false); } EMIT variometerRODChanged END
 
     int m_powerX = 0;
     int m_powerY = 0;
