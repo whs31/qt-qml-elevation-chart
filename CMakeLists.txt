@@ -21,8 +21,8 @@ set(PROJECT_SOURCES
 	examples/example.ui
 
 	js/QPlot.qrc
-	src/elevationchart.hpp
 	src/macro.hpp
+	src/elevationchart.hpp
 	src/elevationchart.cpp
 	examples/QPlot-example.qrc
 )

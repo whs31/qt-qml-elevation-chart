@@ -22,7 +22,7 @@ void ElevationChart::changeFlightPointAltitude(int index, qreal delta)
     if(coord.altitude() <= 0)
         coord.setAltitude(0);
     m_geopath.replaceCoordinate(index, coord);
-    setGeopath(m_geopath);
+    geopathSet(m_geopath);
 }
 
 void ElevationChart::update(bool vectorChanged)
@@ -35,42 +35,42 @@ void ElevationChart::update(bool vectorChanged)
     iterator.rangeSet = false;
 
     // ███  axes calculation  ███
-    axes.x.max = points.last().x();
-    axes.y.max = 0;
-    axes.y.roundmax = 0;
+    m_realWidth = points.last().x();
+    m_realHeight = 0;
+    m_roundmaxY = 0;
     for(QPointF point : points)
     {
-        if(axes.y.max < point.y())
-            axes.y.max = point.y();
+        if(m_realHeight < point.y())
+            m_realHeight = point.y();
     }
-    if(m_logging) qDebug() << "<qplot> profile max elevation:" << axes.y.max << "m";
+    if(m_logging) qDebug() << "<qplot> profile max elevation:" << m_realHeight << "m";
     for(QGeoCoordinate coord : m_geopath.path())
     {
-        if(coord.altitude() > axes.y.max)
+        if(coord.altitude() > m_realHeight)
         {
-            axes.y.max = coord.altitude();
-            if(m_logging) qInfo() << "<qplot> flightpath max elevation" << axes.y.max << "m";
+            m_realHeight = coord.altitude();
+            if(m_logging) qInfo() << "<qplot> flightpath max elevation" << m_realHeight << "m";
         }
     }
 
-    axes.x.power = axes.x.max > 0 ? (int) log10 ((float) axes.x.max) : 1;
-    axes.y.power = axes.y.max > 0 ? (int) log10 ((float) axes.y.max) : 1;
-    while(axes.x.roundmax < axes.x.max)
+    m_powerX = m_realWidth > 0 ? (int) log10 ((float) m_realWidth) : 1;
+    m_powerY = m_realHeight > 0 ? (int) log10 ((float) m_realHeight) : 1;
+    while(m_roundmaxX < m_realWidth)
     {
-        axes.x.roundmax += pow(10, axes.x.power);
+        m_roundmaxX += pow(10, m_powerX);
     }
-    while(axes.y.roundmax < axes.y.max)
+    while(m_roundmaxY < m_realHeight)
     {
-        axes.y.roundmax += pow(10, axes.y.power);
+        m_roundmaxY += pow(10, m_powerY);
     }
-    setRealWidth(axes.x.max);
-    setRealHeight(axes.y.max);
-    setScaleValueX(pow(10, axes.x.power));
-    setScaleValueY(pow(10, axes.y.power));
-    setScaleCountX((float)axes.x.max / (float)axes.x.scalevalue);
-    setScaleCountY((float)axes.y.max * axes.stretch / (float)axes.y.scalevalue);
-    setScaleStepX((axes.x.pixelsize) / axes.x.scalecount);
-    setScaleStepY((axes.y.pixelsize)/ axes.y.scalecount);
+    realWidthSet(m_realWidth);
+    realHeightSet(m_realHeight);
+    scaleValueXSet(pow(10, m_powerX));
+    scaleValueYSet(pow(10, m_powerY));
+    scaleCountXSet((float)realWidth() / (float)scaleValueX());
+    scaleCountYSet((float)realHeight() * verticalStretch() / (float)scaleValueY());
+    scaleStepXSet((pixelWidth()) / scaleCountX());
+    scaleStepYSet((pixelHeight())/ scaleCountY());
 
 
     // ███  flight path & variometer values ███
@@ -84,28 +84,28 @@ void ElevationChart::update(bool vectorChanged)
     {
         QPointF point;
         qreal deltaS = 0;
-        point.setY(m_geopath.path()[i].altitude() * axes.y.pixelsize / (axes.y.max * axes.stretch));
+        point.setY(m_geopath.path()[i].altitude() * pixelHeight() / (realHeight() * verticalStretch()));
         if(i > 0)
             deltaS = m_geopath.path()[i].distanceTo(m_geopath.path()[i-1]);
         previous_distance += deltaS;
-        point.setX(previous_distance * axes.x.pixelsize / axes.x.max);
+        point.setX(previous_distance * pixelWidth() / realWidth());
         data.append(point);
 
         // ███   variometer error list   ███
         if(i > 0)
         {
             qreal deltaH = m_geopath.path()[i].altitude() - m_geopath.path()[i-1].altitude();
-            qreal deltaHmin = variometer.RoD * deltaS / variometer.hV;
-            qreal deltaHmax = variometer.RoC * deltaS / variometer.hV;
+            qreal deltaHmin = variometerROD() * deltaS / variometerHV();
+            qreal deltaHmax = variometerROC() * deltaS / variometerHV();
             if(deltaH > 0 && deltaH > deltaHmax)
             {
                 errorData.append(true);
-                errorDeltas.append((m_geopath.path()[i-1].altitude() + deltaHmax) * axes.y.pixelsize / (axes.y.max * axes.stretch));
+                errorDeltas.append((m_geopath.path()[i-1].altitude() + deltaHmax) * pixelHeight() / (realHeight() * verticalStretch()));
             }
             else if(deltaH < 0 && abs(deltaH) > deltaHmin)
             {
                 errorData.append(true);
-                errorDeltas.append((m_geopath.path()[i-1].altitude() - deltaHmin) * axes.y.pixelsize / (axes.y.max * axes.stretch));
+                errorDeltas.append((m_geopath.path()[i-1].altitude() - deltaHmin) * pixelHeight() / (realHeight() * verticalStretch()));
             }
             else {
                 errorData.append(false);
@@ -113,9 +113,9 @@ void ElevationChart::update(bool vectorChanged)
             }
         }
     }
-    setPathData(data);
-    setPathErrorList(errorData);
-    setPathErrorValueList(errorDeltas);
+    pathDataSet(data);
+    pathErrorListSet(errorData);
+    pathErrorValueListSet(errorDeltas);
 
     // ███   intersections calculation  ███
     routeParser->testRouteIntersectGround(geopath());
@@ -126,13 +126,12 @@ void ElevationChart::update(bool vectorChanged)
     {
         qInfo()  << "<qplot> calculating values <><> ";
         qDebug() << "<qplot> profile list size: " << points.length() << "pts";
-        qDebug() << "<qplot> pixelsize x: " << axes.x.pixelsize << "px";
-        qDebug() << "<qplot> pixelsize y: " << axes.y.pixelsize << "px";
-        qDebug() << "<qplot> max value x: " << axes.x.max << "m";
-        qDebug() << "<qplot> max value y: " << axes.y.max << "m";
-        qDebug() << "<qplot> roundmax value x: " << axes.x.roundmax << "m";
-        qDebug() << "<qplot> roundmax value y: " << axes.y.roundmax << "m";
-        qDebug() << "<qplot> zoom level x: " << zoomX() + 1;
+        qDebug() << "<qplot> pixelsize x: " << pixelWidth() << "px";
+        qDebug() << "<qplot> pixelsize y: " << pixelHeight() << "px";
+        qDebug() << "<qplot> max value x: " << realWidth() << "m";
+        qDebug() << "<qplot> max value y: " << realHeight() << "m";
+        qDebug() << "<qplot> roundmax value x: " << m_roundmaxX << "m";
+        qDebug() << "<qplot> roundmax value y: " << m_roundmaxY << "m";
     }
 }
 
@@ -143,11 +142,12 @@ void ElevationChart::intersectCalculationFinished(quint8 progress, const QVector
     {
         if(resultPath[i].isBase())
             continue;
-        QPointF _point(resultPath[i].distance() * axes.x.pixelsize / axes.x.max,
-                       resultPath[i].altitude() * axes.y.pixelsize / (axes.y.max * axes.stretch));
+        QPointF _point(resultPath[i].distance() * pixelWidth() / realWidth(),
+                       resultPath[i].altitude() * pixelHeight() / (realHeight() * verticalStretch()));
         _intersectList.append(_point);
     }
-    setIntersectList(_intersectList);
+    //setIntersectList(_intersectList);
+    intersectListSet(_intersectList);
     emit requestRedraw();
 }
 
@@ -157,8 +157,8 @@ QPointF ElevationChart::iterateSimple(void)
     if(iterator.simple < points.length())
     {
         QPointF ret = points.at(iterator.simple);
-        ret.setX(ret.x() * pixelWidth() / axes.x.max);
-        ret.setY(ret.y() * pixelHeight() / axes.y.max);
+        ret.setX(ret.x() * pixelWidth() / realWidth());
+        ret.setY(ret.y() * pixelHeight() / realHeight());
         return ret;
     } else {
         iterator.simple = 0;
@@ -180,8 +180,8 @@ QPointF ElevationChart::iterateOverRange(float rangeStart, float rangeStop)
             iterator.rangeMax = points.length() - 1;
         if(rangeStart != 0 && rangeStop != 1)
         {
-            int lval1 = rangeStart * axes.x.max;
-            int lval2 = rangeStop * axes.x.max;
+            int lval1 = rangeStart * realWidth();
+            int lval2 = rangeStop * realWidth();
             bool _rangeMinFlag = false;
             for(int i = 0; i < points.length(); i++)
             {
@@ -204,8 +204,8 @@ QPointF ElevationChart::iterateOverRange(float rangeStart, float rangeStop)
     iterator.range++;
     if(iterator.range < iterator.rangeMax)
     {
-        return QPointF(points[iterator.range].x() * axes.x.pixelsize / axes.x.max,
-                       points[iterator.range].y() * axes.y.pixelsize / (axes.y.max * axes.stretch));
+        return QPointF(points[iterator.range].x() * pixelWidth() / realWidth(),
+                       points[iterator.range].y() * pixelHeight() / (realHeight() * verticalStretch()));
     } else {
         iterator.range = 0;
         iterator.rangeSet = false;

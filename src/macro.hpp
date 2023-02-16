@@ -1,6 +1,61 @@
 #ifndef MACRO_HPP
 #define MACRO_HPP
 
+// one macro to rule them all
+
+#define PROPERTY(type, name) \
+        private: \
+            type m_##name; \
+            type name () const { return m_##name; } \
+            void name##Set ( type val )  \
+            {   \
+                if (m_##name == val) return; \
+                m_##name = val; \
+                emit name##Changed(); \
+            }   \
+        Q_PROPERTY(type name READ name WRITE name##Set NOTIFY name##Changed) \
+
+#define COMMA __S__
+#define COMMA_BR __ENDARGS_S__
+#define END __ENDPR
+
+#define __S__ Q_SIGNALS: void
+#define __ENDARGS_S__ } Q_SIGNALS: void
+#define __ENDPR (); private:
+
+// more precise types:
+#define PROPERTY_NOCOMPARE(type, name) \
+        private: \
+            type m_##name; \
+            type name () const { return m_##name; } \
+            void name##Set ( type val )  \
+            {   \
+                m_##name = val; \
+                emit name##Changed(); \
+            }   \
+        Q_PROPERTY(type name READ name WRITE name##Set NOTIFY name##Changed) \
+
+#define PROPERTY_NOCOMPARE_SET_ARGS(type, name) \
+        Q_PROPERTY(type name READ name WRITE name##Set NOTIFY name##Changed) \
+        private: \
+            type m_##name; \
+            type name () const { return m_##name; } \
+            void name##Set ( type val )  \
+            {   \
+                m_##name = val; \
+                emit name##Changed(); \
+
+#define PROPERTY_SET_ARGS(type, name) \
+        Q_PROPERTY(type name READ name WRITE name##Set NOTIFY name##Changed) \
+        private: \
+            type m_##name; \
+            type name () const { return m_##name; } \
+            void name##Set ( type val )  \
+            {   \
+                if (m_##name == val) return; \
+                m_##name = val; \
+                emit name##Changed(); \
+
 // universal
 
 #define QPR(type, name, setterName) \

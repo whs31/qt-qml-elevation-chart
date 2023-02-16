@@ -44,7 +44,7 @@ Rectangle { id: base;
 			ctx.font = "bold 12px sans-serif";
 			ctx.strokeStyle = Qt.darker(legendColor, 1.5);
 			ctx.lineWidth = 0.75;
-			ctx.setLineDash([16, 16]);
+			ctx.setLineDash([16, 8]);
 			ctx.lineCap = "round";
 			ctx.lineJoin = "round";
 			ctx.beginPath();

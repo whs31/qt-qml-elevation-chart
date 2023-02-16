@@ -17,8 +17,8 @@ Rectangle { id: root;
 	}
 	Timer { id: timer1; running: true; repeat: true; interval: 750; onTriggered: {
 			var p = []; p = scrollingSeries1.points; p.splice(1, 1);  p.push(getRandomVec1());
-			scrollingSeries1.points = p;  } }
-	Timer { id: timer2; running: true; repeat: true; interval: 100; onTriggered: {
+			scrollingSeries1.points = p; } }
+	Timer { id: timer2; running: true; repeat: true; interval: 50; onTriggered: {
 			var p = []; p = scrollingSeries2.points; p.splice(1, 1);  p.push(getRandomVec1());
 			scrollingSeries2.points = p; } }
 
@@ -139,10 +139,10 @@ Rectangle { id: root;
 		anchors.top: parent.top;
 		anchors.bottomMargin: 5;
 
-		pointsCount: 100;
+		pointsCount: 30;
 
 		backgroundColor: "#2f363d";
-		graphColor: "#ec6cb9";
+		graphColor: "#79b8ff";
 		legendColor: "#dae1e5";
 
 		Component.onCompleted: {
@@ -162,10 +162,10 @@ Rectangle { id: root;
 		anchors.top: parent.top;
 		anchors.bottomMargin: 5;
 
-		pointsCount: 30;
+		pointsCount: 150;
 
 		backgroundColor: "#2f363d";
-		graphColor: "#34d058";
+		graphColor: "#f692ce";
 		legendColor: "#dae1e5";
 
 		Component.onCompleted: {
