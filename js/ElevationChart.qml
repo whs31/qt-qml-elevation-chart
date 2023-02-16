@@ -25,6 +25,12 @@ Rectangle { id: base;
 	// ❮❮❮ tweaks ❯❯❯
 	property alias pointSize: graph.flightPointSize;
 
+	// ❮❮❮ slots ❯❯❯
+	function updatePath()
+	{
+		backend.updateProfile();
+	}
+
 	focus: true;
 	clip: true;
 	color: "#222831";
@@ -236,7 +242,6 @@ Rectangle { id: base;
 					ctx.lineWidth = 6;
 					ctx.lineCap = "round";
 					ctx.lineJoin = "round";
-					ctx.moveTo(backend.intersectList[0].x * (backend.zoomX), height - backend.intersectList[0].y);
 					if(backend.intersectList.length > 0)
 					{
 						for(let f = 0; f < backend.intersectList.length; f++)

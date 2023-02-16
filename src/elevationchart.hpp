@@ -27,6 +27,7 @@ public:
     Q_INVOKABLE QPointF iterateSimple(void);
     Q_INVOKABLE QPointF iterateOverRange(float rangeStart, float rangeStop);
     Q_INVOKABLE void changeFlightPointAltitude(int index, qreal delta);
+    Q_INVOKABLE void updateProfile(void);
 
 public slots:
     void intersectCalculationFinished(quint8 progress, const QVector<Elevation::Point> &resultPath);
@@ -39,7 +40,11 @@ signals:
 private:
     void update(bool vectorChanged = false);
 
-    PROPERTY_NOCOMPARE_SET_ARGS(QGeoPath, geopath) if(pixelWidth() > 0) { update(false); } } EMIT geopathChanged END
+    PROPERTY_NOCOMPARE_SET_ARGS(QGeoPath, geopath)
+        if(pixelWidth() > 0)
+            update(false);
+        }
+        EMIT geopathChanged END
     PROPERTY(QList<QPointF>, pathData) EMIT pathDataChanged END
     PROPERTY(QList<QPointF>, intersectList) EMIT intersectListChanged END
     PROPERTY(QList<bool>, pathErrorList) EMIT pathErrorListChanged END
@@ -47,8 +52,16 @@ private:
 
     PROPERTY(bool, logging) EMIT loggingChanged END
 
-    PROPERTY_SET_ARGS(qreal, pixelWidth) if(!geopath().isEmpty() && pixelWidth() > 0) update(false); } EMIT pixelWidthChanged END
-    PROPERTY_SET_ARGS(qreal, pixelHeight) if(!geopath().isEmpty() && pixelWidth() > 0) update(false); } EMIT pixelHeightChanged END
+    PROPERTY_SET_ARGS(qreal, pixelWidth)
+        if(!geopath().isEmpty() && pixelWidth() > 0)
+            update(false);
+        }
+        EMIT pixelWidthChanged END
+    PROPERTY_SET_ARGS(qreal, pixelHeight)
+        if(!geopath().isEmpty() && pixelWidth() > 0)
+            update(false);
+        }
+        EMIT pixelHeightChanged END
     PROPERTY(qreal, realWidth) EMIT realWidthChanged END
     PROPERTY(qreal, realHeight) EMIT realHeightChanged END
     PROPERTY(qreal, zoomX) EMIT zoomXChanged END
@@ -61,9 +74,21 @@ private:
     PROPERTY(qreal, offset) EMIT offsetChanged END
     PROPERTY(qreal, verticalStretch) EMIT verticalStretchChanged END
 
-    PROPERTY_SET_ARGS(qreal, variometerHV) if(!geopath().isEmpty() && pixelWidth() > 0) update(false); } EMIT variometerHVChanged END
-    PROPERTY_SET_ARGS(qreal, variometerROC) if(!geopath().isEmpty() && pixelWidth() > 0) update(false); } EMIT variometerROCChanged END
-    PROPERTY_SET_ARGS(qreal, variometerROD) if(!geopath().isEmpty() && pixelWidth() > 0) update(false); } EMIT variometerRODChanged END
+    PROPERTY_SET_ARGS(qreal, variometerHV)
+        if(!geopath().isEmpty() && pixelWidth() > 0)
+            update(false);
+        }
+        EMIT variometerHVChanged END
+    PROPERTY_SET_ARGS(qreal, variometerROC)
+        if(!geopath().isEmpty() && pixelWidth() > 0)
+            update(false);
+        }
+        EMIT variometerROCChanged END
+    PROPERTY_SET_ARGS(qreal, variometerROD)
+        if(!geopath().isEmpty() && pixelWidth() > 0)
+            update(false);
+        }
+        EMIT variometerRODChanged END
 
     int m_powerX = 0;
     int m_powerY = 0;

@@ -47,7 +47,7 @@ Rectangle { id: root;
 			from: 60;
 			to: 60.1;
 			value: 60.05;
-			onMoved: { coord1 = value; }
+			onMoved: { coord1 = value; elevationChart.updatePath(); }
 		}
 		Slider { id: slider2;
 			anchors.top: slider1.bottom;
@@ -57,7 +57,7 @@ Rectangle { id: root;
 			from: 30;
 			to: 30.15;
 			value: 30.15;
-			onMoved: { coord2 = value; }
+			onMoved: { coord2 = value; elevationChart.updatePath(); }
 		}
 		CheckBox { id: checkbox1;
 			anchors.top: slider2.bottom;
@@ -132,7 +132,8 @@ Rectangle { id: root;
 									 getRandomGeoCoordinate(),
 									 getRandomGeoCoordinate(),
 									 getRandomGeoCoordinate(),
-									 getRandomGeoCoordinate()
+									 getRandomGeoCoordinate(),
+									 QtPositioning.coordinate(coord1, coord2, 100)
 		]);
 		horizontalVelocity: parseInt(textField1.text);
 		rateOfClimb: parseInt(textField2.text);
