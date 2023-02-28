@@ -19,14 +19,13 @@ set(PROJECT_SOURCES
 	examples/example.cpp
 	examples/example.h
 	examples/example.ui
+	examples/QPlot-example.qrc
 
 	js/QPlot.qrc
-	src/macro.hpp
-	src/fpscounter.hpp
-	src/fpscounter.cpp
-	src/elevationchart.hpp
-	src/elevationchart.cpp
-	examples/QPlot-example.qrc
+	src/macro.hpp #remove me
+	src/elevationchart.hpp				src/elevationchart.cpp
+	src/impl/fpscounter.hpp				src/impl/fpscounter.cpp
+	src/impl/intersections.hpp			src/impl/intersections.cpp
 )
 
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
@@ -34,8 +33,3 @@ add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
 target_link_libraries(${PROJECT_NAME} Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::QuickWidgets)
 
 add_subdirectory(submodule)
-
-execute_process(COMMAND git remote update WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-execute_process(COMMAND git describe --tags --always WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} OUTPUT_VARIABLE GIT_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE)
-add_definitions(-DPROJECT_NAME="${PROJECT_NAME}" -DPROJECT_VERSION="${GIT_VERSION}")
-string(TIMESTAMP PROJECT_BUILD_DATE "%d.%m.%Y %H:%M:%S" UTC)

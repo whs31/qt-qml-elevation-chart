@@ -4,7 +4,7 @@
 #include <QPainter>
 #include <QBrush>
 
-FPSCounter::FPSCounter(QQuickItem *parent): QQuickPaintedItem(parent), _currentFPS(0), _cacheCount(0)
+FPSCounter::FPSCounter(QQuickItem *parent): QQuickPaintedItem(parent), _currentFPS(60), _cacheCount(0)
 {
     _times.clear();
     setFlag(QQuickItem::ItemHasContents);

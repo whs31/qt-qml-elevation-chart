@@ -5,15 +5,18 @@
 #include "Elevation/elevation.h"
 #include <QMetaType>
 
-ElevationChart::ElevationChart(QObject *parent)
+ElevationChart::ElevationChart(QObject* parent)
     : QObject{parent}
 {
+    // submodule types
     heightmapParser = new Elevation::Elevation(this);
     routeParser = new Elevation::ElevationTools(this);
+
+    // qplot private implementations
+    fpsCounterImpl = new FPSCounter();
+
     qRegisterMetaType<QVector<Elevation::Point>>("QVector<Point>");
     connect(routeParser, &Elevation::ElevationTools::progressTestRouteIntersectGround, this, &ElevationChart::intersectCalculationFinished);
-
-
 }
 
 void ElevationChart::changeFlightPointAltitude(int index, qreal delta)
@@ -81,6 +84,7 @@ void ElevationChart::update(bool vectorChanged)
 
     // ███  flight path & variometer values ███
     QList<QPointF> data;
+    QList<QPointF> fixedData;
     QList<bool> errorData;
     QList<float> errorDeltas;
     qreal previous_distance = 0;
@@ -144,7 +148,7 @@ void ElevationChart::update(bool vectorChanged)
     }
 }
 
-void ElevationChart::intersectCalculationFinished(quint8 progress, const QVector<Elevation::Point> &resultPath)
+void ElevationChart::intersectCalculationFinished(quint8 progress, const QVector<Elevation::Point>& resultPath)
 {
     QList<QPointF> _intersectList;
     for(size_t i = 0; i < resultPath.length(); i++)
@@ -155,7 +159,6 @@ void ElevationChart::intersectCalculationFinished(quint8 progress, const QVector
                        pixelHeight() - resultPath[i].altitude() * pixelHeight() / (realHeight() * verticalStretch()));
         _intersectList.append(_point);
     }
-    //setIntersectList(_intersectList);
     intersectListSet(_intersectList);
     emit requestRedrawIntersects();
 }
@@ -214,7 +217,7 @@ QPointF ElevationChart::iterateOverRange(float rangeStart, float rangeStop)
     if(iterator.range < iterator.rangeMax)
     {
         return QPointF(points[iterator.range].x() * pixelWidth() / realWidth(),
-                       points[iterator.range].y() * pixelHeight() / (realHeight() * verticalStretch()));
+                points[iterator.range].y() * pixelHeight() / (realHeight() * verticalStretch()));
     } else {
         iterator.range = 0;
         iterator.rangeSet = false;

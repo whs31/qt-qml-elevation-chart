@@ -129,12 +129,12 @@ Rectangle { id: root;
 		showIndex: checkbox1.checked;
 		showFPSCounter: true;
 
-		backgroundColor: "#24292e";
-		chartColor: "#586069";
-		flightPathColor: "#ffab70";
-		successColor: "#34d058";
-		warningColor: "#f66a0a";
-		errorColor: "#ea4a5a";
+		backgroundColor: "#263238";
+		chartColor: "#607D8B";
+		flightPathColor: "#9CCC65";
+		successColor: "#9CCC65";
+		warningColor: "#FFAB40";
+		errorColor: "#FF7043";
 
 		pointSize: 15;
 	}
@@ -148,8 +148,8 @@ Rectangle { id: root;
 
 		pointsCount: 30;
 
-		backgroundColor: "#24292e";
-		graphColor: "#ffab70";
+		backgroundColor: "#263238";
+		graphColor: "#FFAB40";
 		legendColor: "#fafbfc";
 
 		Component.onCompleted: {
@@ -171,8 +171,8 @@ Rectangle { id: root;
 
 		pointsCount: 150;
 
-		backgroundColor: "#24292e";
-		graphColor: "#34d058";
+		backgroundColor: "#263238";
+		graphColor: "#9CCC65";
 		legendColor: "#fafbfc";
 
 		Component.onCompleted: {

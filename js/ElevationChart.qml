@@ -2,7 +2,6 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtPositioning 5.12
 import ElevationChart 1.0
-import FPS 1.0
 
 Rectangle { id: base;
 
@@ -171,7 +170,7 @@ Rectangle { id: base;
 				for(let f = 0; f < backend.pathData.length; f++)
 				{
 					ctx.beginPath();
-					ctx.strokeStyle = flightPathColor;
+					ctx.strokeStyle = (backend.pathErrorList[f]) ? warningColor : flightPathColor;
 					ctx.lineWidth = 4;
 					ctx.fillStyle = flightPathColor;
 					if(f > 0) ctx.moveTo(backend.pathData[f-1].x * (backend.zoomX), backend.pathData[f-1].y);
@@ -436,7 +435,22 @@ Rectangle { id: base;
 		onPositionChanged: mouseCross.requestPaint();
 	}
 
-	FPS { id: fpsWidget;
+//	FPS { id: fpsWidget;
+//		anchors.left: parent.left;
+//		anchors.bottom: parent.bottom;
+//		width: 75;
+//		height: 25;
+//		opacity: 0.3;
+//		visible: showFPSCounter;
+//		Text {
+//			anchors.centerIn: parent;
+//			font.bold: true;
+//			font.pixelSize: 20;
+//			text: Number(fpsWidget.fps).toFixed() + " FPS";
+//			color: "cyan";
+//		}
+//	}
+	Rectangle { id: fpsWidget;
 		anchors.left: parent.left;
 		anchors.bottom: parent.bottom;
 		width: 75;
@@ -447,7 +461,7 @@ Rectangle { id: base;
 			anchors.centerIn: parent;
 			font.bold: true;
 			font.pixelSize: 20;
-			text: Number(fpsWidget.fps).toFixed() + " FPS";
+			text: Number(backend.fpsCounter.fps).toFixed() + " FPS";
 			color: "cyan";
 		}
 	}

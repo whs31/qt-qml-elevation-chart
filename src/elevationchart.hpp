@@ -7,6 +7,7 @@
 #include <QPointF>
 #include <QGeoPath>
 #include "macro.hpp"
+#include "impl/fpscounter.hpp"
 
 // по неизвестным науке причинам я не могу сделать forward declaration этого класса =(
 #include "RouteTools/elevationtools.h"
@@ -37,6 +38,13 @@ signals:
     void requestRedrawIntersects();
 
 private:
+    //class FPSCounter;
+    Q_PROPERTY(FPSCounter* fpsCounter MEMBER fpsCounterImpl CONSTANT)
+    FPSCounter* fpsCounterImpl;
+    Elevation::Elevation* heightmapParser;
+    Elevation::ElevationTools* routeParser;
+
+private:
     void update(bool vectorChanged = false);
 
     PROPERTY_NOCOMPARE_SET_ARGS(QGeoPath, geopath)
@@ -45,6 +53,7 @@ private:
         }
         EMIT geopathChanged END
     PROPERTY(QList<QPointF>, pathData) EMIT pathDataChanged END
+    PROPERTY(QList<QPointF>, fixedPathData) EMIT fixedPathDataChanged END
     PROPERTY(QList<QPointF>, intersectList) EMIT intersectListChanged END
     PROPERTY(QList<bool>, pathErrorList) EMIT pathErrorListChanged END
     PROPERTY(QList<float>, pathErrorValueList) EMIT pathErrorValueListChanged END
@@ -94,8 +103,6 @@ private:
     int m_roundmaxX = 0;
     int m_roundmaxY = 0;
 
-    Elevation::Elevation* heightmapParser;
-    Elevation::ElevationTools* routeParser;
     QVector<QPointF> points;
     struct Iterator
     {
