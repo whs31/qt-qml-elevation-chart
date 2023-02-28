@@ -1,4 +1,5 @@
 import QtQuick 2.15
+import QtQuick.Controls 2.15
 import QtPositioning 5.12
 import ElevationChart 1.0
 import FPS 1.0
@@ -14,6 +15,7 @@ Rectangle { id: base;
 	// ❮❮❮ settings ❯❯❯
 	property alias logging: backend.logging;
 	property bool showIndex: false;
+	property bool showFPSCounter: true;
 
 	// ❮❮❮ colors ❯❯❯
 	property alias backgroundColor: base.color;
@@ -52,7 +54,6 @@ Rectangle { id: base;
 		function onRequestRedrawPath() {
 			graph.requestPaint();
 			legend.requestPaint();
-			//elevationProfile.requestPaint(); // this is causing lag!
 		}
 	}
 
@@ -98,7 +99,7 @@ Rectangle { id: base;
 		boundsMovement: Flickable.StopAtBounds
 		clip: true;
 		pixelAligned: true;
-
+		ScrollBar.horizontal: scrollbar;
 
 		onMovementEnded: { requestAll(); }
 
@@ -272,6 +273,16 @@ Rectangle { id: base;
 			}
 		}
 	}
+	ScrollBar { id: scrollbar;
+		anchors.top: view.top;
+		anchors.left: view.left;
+		anchors.right: view.right;
+		implicitHeight: 10;
+		contentItem: Rectangle {
+			radius: scrollbar.height / 2;
+			color: scrollbar.pressed ? Qt.lighter(chartColor, 1.5) : chartColor;
+		}
+	}
 
 	Canvas { id: legend;
 		property color color: "#dae1e5";
@@ -364,12 +375,26 @@ Rectangle { id: base;
 
 				ctx.clearRect(0, 0, legend.width, legend.height);
 				ctx.beginPath();
-				ctx.strokeStyle = Qt.darker(legend.color, 1.2);
-				ctx.lineWidth = 1;
+				ctx.strokeStyle = legend.color;
+				ctx.fillStyle = legend.color;
+				ctx.lineWidth = 2;
 				ctx.globalAlpha = 0.6;
 				ctx.moveTo(globalMouseArea.mouseX, 0);
 				ctx.lineTo(globalMouseArea.mouseX, height);
+				ctx.moveTo(globalMouseArea.mouseX + 8, height - 2);
+				ctx.lineTo(globalMouseArea.mouseX, height - 10);
+				ctx.lineTo(globalMouseArea.mouseX + 8, height - 18);
+				let txt = Number((globalMouseArea.mouseX + view.visibleArea.xPosition * backend.pixelWidth * backend.zoomX) / 1000 / (backend.pixelWidth * backend.zoomX) * backend.realWidth).toFixed(1) + " км";
+				let textDimensions = ctx.measureText(txt);
+				ctx.lineTo(globalMouseArea.mouseX + 12 + textDimensions.width, height - 18);
+				ctx.lineTo(globalMouseArea.mouseX + 12 + textDimensions.width, height - 2);
+				ctx.lineTo(globalMouseArea.mouseX + 8, height - 2);
 				ctx.stroke();
+				ctx.fillText()
+				ctx.fill();
+				ctx.font = "bold 12px sans-serif";
+				ctx.fillStyle = backgroundColor;
+				ctx.fillText(txt, globalMouseArea.mouseX + 8, height - 6);
 			}
 		}
 		Rectangle { color: legend.color; width: 70; height: 15; anchors.top: legend.top; anchors.left: legend.left;
@@ -408,10 +433,7 @@ Rectangle { id: base;
 		acceptedButtons: Qt.RightButton;
 		anchors.fill: parent;
 		hoverEnabled: true;
-		onPositionChanged:
-		{
-			mouseCross.requestPaint();
-		}
+		onPositionChanged: mouseCross.requestPaint();
 	}
 
 	FPS { id: fpsWidget;
@@ -420,6 +442,7 @@ Rectangle { id: base;
 		width: 75;
 		height: 25;
 		opacity: 0.3;
+		visible: showFPSCounter;
 		Text {
 			anchors.centerIn: parent;
 			font.bold: true;

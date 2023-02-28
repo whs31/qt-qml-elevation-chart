@@ -119,31 +119,6 @@ Rectangle { id: root;
 									 getRandomGeoCoordinate(),
 									 getRandomGeoCoordinate(),
 									 getRandomGeoCoordinate(),
-									 getRandomGeoCoordinate(),
-									 getRandomGeoCoordinate(),
-									 getRandomGeoCoordinate(),
-									 getRandomGeoCoordinate(),
-									 getRandomGeoCoordinate(),
-									 getRandomGeoCoordinate(),
-									 getRandomGeoCoordinate(),
-									 getRandomGeoCoordinate(),
-									 getRandomGeoCoordinate(),
-									 getRandomGeoCoordinate(),
-									 getRandomGeoCoordinate(),
-									 getRandomGeoCoordinate(),
-									 getRandomGeoCoordinate(),
-									 getRandomGeoCoordinate(),
-									 getRandomGeoCoordinate(),
-									 getRandomGeoCoordinate(),
-									 getRandomGeoCoordinate(),
-									 getRandomGeoCoordinate(),
-									 getRandomGeoCoordinate(),
-									 getRandomGeoCoordinate(),
-									 getRandomGeoCoordinate(),
-									 getRandomGeoCoordinate(),
-									 getRandomGeoCoordinate(),
-									 getRandomGeoCoordinate(),
-									 getRandomGeoCoordinate(),
 									 QtPositioning.coordinate(coord1, coord2, 100)
 		]);
 		horizontalVelocity: parseInt(textField1.text);
@@ -152,6 +127,7 @@ Rectangle { id: root;
 
 		logging: false;
 		showIndex: checkbox1.checked;
+		showFPSCounter: true;
 
 		backgroundColor: "#24292e";
 		chartColor: "#586069";
