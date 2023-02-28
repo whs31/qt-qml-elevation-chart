@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtPositioning 5.12
 import ElevationChart 1.0
+import FPS 1.0
 
 Rectangle { id: base;
 
@@ -105,7 +106,7 @@ Rectangle { id: base;
 			property color color: "#43a1ca";
 			width: backend.pixelWidth * backend.zoomX;
 			height: backend.pixelHeight;
-
+			renderStrategy: Canvas.Threaded;
 			clip: true;
 			onPaint:
 			{
@@ -224,6 +225,7 @@ Rectangle { id: base;
 			Canvas { id: intersects;
 				width: backend.pixelWidth * backend.zoomX;
 				height: backend.pixelHeight;
+				renderStrategy: Canvas.Threaded;
 
 				clip: true;
 				onPaint:
@@ -420,77 +422,19 @@ Rectangle { id: base;
 		property real trueMouseX: 0;
 		property real trueMouseY: 0;
 	}
-}
 
-
-
-/*
-ctx.setTransform(1, 0, 0, 1, wheelHandler.zoomTranslation, 0);
-
-// OX scales (recursive)
-ctx.moveTo(0, height);
-let interval = backend.scaleStepX * backend.zoomX;
-wheelHandler.zoomConstInteger = 0;
-while(interval >= 80)
-{
-	wheelHandler.zoomConstInteger++;
-	let mod5 = 0;
-	for(let inner_interval = 0; inner_interval < wheelHandler.zoompixelwidth * Math.min(horizontalScrollBar.position + horizontalScrollBar.size, 1); inner_interval += interval)
-	{
-		if(inner_interval < wheelHandler.zoompixelwidth * horizontalScrollBar.position)
-		{ mod5++; continue; }
-
-		if(mod5++ % 5 == 0)
-		{
-			// grid on major scales ( /= 5 )
-			ctx.globalAlpha = 0.5;
-			ctx.font = "bold 12px sans-serif";
-			ctx.strokeStyle = Qt.darker(legend.color, 1.25);
-			ctx.lineWidth = 1;
-			ctx.setLineDash([16, 16]);
-			ctx.beginPath();
-			ctx.moveTo(inner_interval, 0);
-			ctx.lineTo(inner_interval, height);
-			ctx.stroke();
-			ctx.globalAlpha = 1;
-
-			// scales itself
-			ctx.setLineDash([4000, 1]);
-			ctx.lineWidth = 3;
-			ctx.strokeStyle = legend.color;
-			ctx.beginPath();
-			let val = (backend.scaleValueX * (mod5 - 1) / 5) / Math.pow(5, wheelHandler.zoomConstInteger - 2);
-			let txt = val >= 10000 ? Number(val / 1000).toFixed(1) + " км" : Number(val).toFixed(0) + " м";
-			ctx.fillStyle = legend.color;
-			ctx.fillText(txt, inner_interval + 4, graph.height - 5);
-			ctx.fillStyle = graph.color;
-			ctx.moveTo(inner_interval, height);
-			ctx.lineTo(inner_interval, height - 15);
-
-			} else {
-			// grid on minor scales
-			ctx.globalAlpha = 0.5;
-			ctx.font = "bold 10px sans-serif";
-			ctx.strokeStyle = Qt.darker(legend.color, 1.5);
-			ctx.lineWidth = 0.75;
-			ctx.setLineDash([8, 16]);
-			ctx.beginPath();
-			ctx.moveTo(inner_interval, 0);
-			ctx.lineTo(inner_interval, height);
-			ctx.stroke();
-			ctx.globalAlpha = 1;
-
-			// minor scales itself
-			ctx.setLineDash([4000, 1]);
-			ctx.lineWidth = 2;
-			ctx.strokeStyle = legend.color;
-			ctx.beginPath();
-			ctx.moveTo(inner_interval, height);
-			ctx.lineTo(inner_interval, height - 10);
+	FPS { id: fpsWidget;
+		anchors.left: parent.left;
+		anchors.bottom: parent.bottom;
+		width: 75;
+		height: 25;
+		opacity: 0.3;
+		Text {
+			anchors.centerIn: parent;
+			font.bold: true;
+			font.pixelSize: 20;
+			text: Number(fpsWidget.fps).toFixed() + " FPS";
+			color: "cyan";
 		}
-			ctx.stroke();
-			ctx.setLineDash([4000, 1]);
 	}
-	interval /= 5;
 }
-*/

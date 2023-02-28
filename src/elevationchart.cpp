@@ -12,6 +12,8 @@ ElevationChart::ElevationChart(QObject *parent)
     routeParser = new Elevation::ElevationTools(this);
     qRegisterMetaType<QVector<Elevation::Point>>("QVector<Point>");
     connect(routeParser, &Elevation::ElevationTools::progressTestRouteIntersectGround, this, &ElevationChart::intersectCalculationFinished);
+
+
 }
 
 void ElevationChart::changeFlightPointAltitude(int index, qreal delta)

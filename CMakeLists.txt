@@ -22,6 +22,8 @@ set(PROJECT_SOURCES
 
 	js/QPlot.qrc
 	src/macro.hpp
+	src/fpscounter.hpp
+	src/fpscounter.cpp
 	src/elevationchart.hpp
 	src/elevationchart.cpp
 	examples/QPlot-example.qrc
