@@ -364,13 +364,11 @@ Rectangle { id: base;
 
 				ctx.clearRect(0, 0, legend.width, legend.height);
 				ctx.beginPath();
-				ctx.strokeStyle = Qt.darker(legend.color, 1.5);
+				ctx.strokeStyle = Qt.darker(legend.color, 1.2);
 				ctx.lineWidth = 1;
-				ctx.globalAlpha = 0.5;
-				ctx.moveTo(globalMouseArea.trueMouseX, 0);
-				ctx.lineTo(globalMouseArea.trueMouseX, height);
-				ctx.moveTo(0, globalMouseArea.trueMouseY);
-				ctx.lineTo(width, globalMouseArea.trueMouseY);
+				ctx.globalAlpha = 0.6;
+				ctx.moveTo(globalMouseArea.mouseX, 0);
+				ctx.lineTo(globalMouseArea.mouseX, height);
 				ctx.stroke();
 			}
 		}
@@ -407,20 +405,13 @@ Rectangle { id: base;
 		}
 	}
 	MouseArea { id: globalMouseArea;
-		signal stopDrag();
 		acceptedButtons: Qt.RightButton;
 		anchors.fill: parent;
 		hoverEnabled: true;
-		onClicked: { stopDrag(); }
 		onPositionChanged:
 		{
 			mouseCross.requestPaint();
-			trueMouseX = mouse.x;
-			trueMouseY = mouse.y;
 		}
-
-		property real trueMouseX: 0;
-		property real trueMouseY: 0;
 	}
 
 	FPS { id: fpsWidget;

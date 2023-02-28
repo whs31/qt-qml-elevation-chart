@@ -25,7 +25,6 @@ void FPSCounter::recalculateFPS()
 
     int currentCount = _times.length();
     _currentFPS = (currentCount + _cacheCount) / 2;
-    qDebug() << _currentFPS;
 
     if (currentCount != _cacheCount) fpsChanged(_currentFPS);
 

@@ -14,26 +14,26 @@ Rectangle
 	y: m_y;
 	border.width: 3;
 	border.color: invalid ? Qt.lighter(base.warningColor, 1.2) : Qt.lighter(flightPathColor, 1.2);
-	property real delta: y - globalMouseArea.mouseY;
+	property real delta: y - pointMouseArea.globalPos.y;
 	property bool invalid: m_invalid;
 
 	Timer { id: updateTimer; repeat: true; running: false; interval: 10;
 			onTriggered: backend.changeFlightPointAltitude(index, delta); }
 	MouseArea { id: pointMouseArea;
 		anchors.fill: parent;
-		onDoubleClicked: { mouse.accepted = false; updateTimer.start(); ui.opacity = 0.9; }
-		onClicked: { mouse.accepted = false; updateTimer.stop(); ui.opacity = 0; }
-	}
-	Connections
-	{
-		target: globalMouseArea;
-		function onStopDrag()
+		property var globalPos: mapToItem(globalMouseArea, mouseX, mouseY);
+		hoverEnabled: true;
+		onPressedChanged:
 		{
-			updateTimer.stop();
-			ui.opacity = 0;
+			if(pressed)
+			{
+				updateTimer.start(); ui.opacity = 0.9;
+			}
+			else {
+				updateTimer.stop(); ui.opacity = 0;
+			}
 		}
 	}
-
 	Rectangle { id: indexUI;
 		visible: base.showIndex;
 		width: 31; height: 17; radius: height / 2; opacity: 1; color: invalid ? base.warningColor : flightPathColor;
