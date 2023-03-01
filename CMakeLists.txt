@@ -13,6 +13,7 @@ find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets Core)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets QuickWidgets)
 
 include_directories(src)
+include_directories(include)
 
 set(PROJECT_SOURCES
 	examples/main.cpp
@@ -23,7 +24,7 @@ set(PROJECT_SOURCES
 
 	js/QPlot.qrc
 	src/macro.hpp #remove me
-	include/elevationgraph.hpp			include/elevationgraph.cpp			src/elevationgraph_p.hpp
+	include/elevationgraph.hpp			src/elevationgraph.cpp			src/elevationgraph_p.hpp
 	src/elevationchart.hpp				src/elevationchart.cpp
 	src/impl/fpscounter.hpp				src/impl/fpscounter.cpp
 )
