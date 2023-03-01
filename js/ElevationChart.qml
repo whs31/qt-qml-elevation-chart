@@ -95,7 +95,7 @@ Rectangle { id: base;
 		contentHeight: backend.pixelHeight;
 		flickableDirection: Flickable.HorizontalAndVerticalFlick;
 		interactive: false;
-		boundsMovement: Flickable.StopAtBounds
+		boundsMovement: Flickable.StopAtBounds;
 		clip: true;
 		pixelAligned: true;
 		ScrollBar.horizontal: scrollbar;

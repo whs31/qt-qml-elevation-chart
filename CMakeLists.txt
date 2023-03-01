@@ -23,9 +23,9 @@ set(PROJECT_SOURCES
 
 	js/QPlot.qrc
 	src/macro.hpp #remove me
+	include/elevationgraph.hpp			include/elevationgraph.cpp			src/elevationgraph_p.hpp
 	src/elevationchart.hpp				src/elevationchart.cpp
 	src/impl/fpscounter.hpp				src/impl/fpscounter.cpp
-	src/impl/intersections.hpp			src/impl/intersections.cpp
 )
 
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})

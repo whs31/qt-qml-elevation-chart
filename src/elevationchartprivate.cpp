@@ -1,11 +1,11 @@
-#include "elevationchart.hpp"
+#include "elevationchartprivate.hpp"
 
 #include <QDebug>
 #include <cmath>
 #include "Elevation/elevation.h"
 #include <QMetaType>
 
-ElevationChart::ElevationChart(QObject* parent)
+ElevationChartPrivate::ElevationChartPrivate(QObject* parent)
     : QObject{parent}
 {
     // submodule types
@@ -17,11 +17,10 @@ ElevationChart::ElevationChart(QObject* parent)
     fpsCounterImpl->setParent(this);
 
     qRegisterMetaType<QVector<Elevation::Point>>("QVector<Point>");
-    connect(routeParser, &Elevation::ElevationTools::progressTestRouteIntersectGround,
-            this, &ElevationChart::intersectCalculationFinished);
+    connect(routeParser, &Elevation::ElevationTools::progressTestRouteIntersectGround, this, &ElevationChartPrivate::intersectCalculationFinished);
 }
 
-void ElevationChart::changeFlightPointAltitude(int index, qreal delta)
+void ElevationChartPrivate::changeFlightPointAltitude(int index, qreal delta)
 {
     QGeoCoordinate coord = m_geopath.coordinateAt(index);
     coord.setAltitude(coord.altitude() + delta * (0.15));
@@ -31,12 +30,12 @@ void ElevationChart::changeFlightPointAltitude(int index, qreal delta)
     geopathSet(m_geopath);
 }
 
-void ElevationChart::updateProfile(void)
+void ElevationChartPrivate::updateProfile(void)
 {
     update(true);
 }
 
-void ElevationChart::update(bool vectorChanged)
+void ElevationChartPrivate::update(bool vectorChanged)
 {
     // ███  build profile if necessary + reset iterators ███
     if(vectorChanged || points.isEmpty())
@@ -150,7 +149,7 @@ void ElevationChart::update(bool vectorChanged)
     }
 }
 
-void ElevationChart::intersectCalculationFinished(quint8 progress, const QVector<Elevation::Point>& resultPath)
+void ElevationChartPrivate::intersectCalculationFinished(quint8 progress, const QVector<Elevation::Point>& resultPath)
 {
     QList<QPointF> _intersectList;
     for(size_t i = 0; i < resultPath.length(); i++)
@@ -165,7 +164,7 @@ void ElevationChart::intersectCalculationFinished(quint8 progress, const QVector
     emit requestRedrawIntersects();
 }
 
-QPointF ElevationChart::iterateSimple(void)
+QPointF ElevationChartPrivate::iterateSimple(void)
 {
     iterator.simple += 1;
     if(iterator.simple < points.length())
@@ -181,7 +180,7 @@ QPointF ElevationChart::iterateSimple(void)
     }
 }
 
-QPointF ElevationChart::iterateOverRange(float rangeStart, float rangeStop)
+QPointF ElevationChartPrivate::iterateOverRange(float rangeStart, float rangeStop)
 {
     if(!iterator.rangeSet)
     {
