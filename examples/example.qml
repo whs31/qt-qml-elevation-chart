@@ -109,7 +109,7 @@ Rectangle { id: root;
 		anchors.left: parent.left;
 		anchors.right: exampleToolPanel.left;
 		anchors.bottom: parent.bottom;
-		anchors.top: parent.verticalCenter;
+		height: 200;
 
 		path: QtPositioning.path([
 									 getRandomGeoCoordinate(),
@@ -140,11 +140,10 @@ Rectangle { id: root;
 	}
 
 	ScrollSeries { id: scrollingSeries1;
-		anchors.bottom: elevationChart.top;
+		height: 200;
 		anchors.left: elevationChart.left;
-		anchors.right: parent.horizontalCenter;
+		width: 300;
 		anchors.top: parent.top;
-		anchors.bottomMargin: 5;
 
 		pointsCount: 30;
 
@@ -163,11 +162,10 @@ Rectangle { id: root;
 	}
 
 	ScrollSeries { id: scrollingSeries2;
-		anchors.bottom: elevationChart.top;
-		anchors.left: parent.horizontalCenter;
-		anchors.right: exampleToolPanel.left;
+		anchors.bottom: scrollingSeries1.bottom;
+		anchors.left: scrollingSeries1.right;
+		width: 300;
 		anchors.top: parent.top;
-		anchors.bottomMargin: 5;
 
 		pointsCount: 150;
 
