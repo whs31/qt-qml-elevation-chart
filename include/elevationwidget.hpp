@@ -6,7 +6,7 @@
 class ElevationWidgetPrivate;
 class ElevationWidget : public QObject
 {
-    Q_OBJECT
+        Q_OBJECT
     public:
         explicit ElevationWidget(QObject *parent = nullptr);
 

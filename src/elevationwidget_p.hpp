@@ -2,7 +2,7 @@
 
 #include "elevationwidget.hpp"
 
-class ElevationWidgetPrivate : QObject
+class ElevationWidgetPrivate : public QObject
 {
     Q_DECLARE_PUBLIC(ElevationWidget)
 
