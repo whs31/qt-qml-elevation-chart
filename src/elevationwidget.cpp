@@ -21,21 +21,21 @@ void ElevationWidget::setVelocity(float velocity)
 {
     Q_D(ElevationWidget);
     d->aircraftMetrics.velocity = velocity;
-    // recalculate()
+    // recalculate (variometer) ()
 }
 
 void ElevationWidget::setClimbRate(float rate)
 {
     Q_D(ElevationWidget);
     d->aircraftMetrics.climbRate = rate;
-    // recalculate()
+    // recalculate (variometer) ()
 }
 
 void ElevationWidget::setDescendRate(float rate)
 {
     Q_D(ElevationWidget);
     d->aircraftMetrics.descendRate = rate;
-    // recalculate()
+    // recalculate (variometer) ()
 }
 
 void ElevationWidget::setPallete(QString backgroundColor, QString foregroundColor, QString chartColor,
@@ -46,11 +46,8 @@ void ElevationWidget::setPallete(QString backgroundColor, QString foregroundColo
 
 }
 
-//=== === === === === === === === === === === === //
-//                                                //
-//      💩🖼️🖥️📥 Private implementation 🛠️📥😀❌      //
-//                                                //
-//=== === === === === === === === === === === === //
+//█████████████████████████████████ 🔒 PRIVATE IMPLEMENTATION 🔒 █████████████████████████████████████──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────████████
+
 
 ElevationWidgetPrivate::ElevationWidgetPrivate(QObject* parent)
     : QObject{parent}
@@ -63,6 +60,11 @@ void ElevationWidgetPrivate::resize(float w, float h, float zoom_w, float zoom_h
     if(w == layout.width && h == layout.height &&
        zoom_w == layout.horizontal_zoom && zoom_h == layout.vertical_zoom)
         return;
+    layout.width = w;
+    layout.height = h;
+    layout.horizontal_zoom = zoom_w;
+    layout.vertical_zoom = zoom_h;
+    // recalculate (all) ()
 }
 
 QList<QString> ElevationWidgetPrivate::colors() const { return m_colors; }

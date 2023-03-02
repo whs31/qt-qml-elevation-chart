@@ -139,6 +139,13 @@ Rectangle { id: root;
 		pointSize: 15;
 	}
 
+	ElevationWidget { id: elevationWidget;
+		anchors.left: parent.left;
+		anchors.right: exampleToolPanel.left;
+		anchors.bottom: elevationChart.top;
+		anchors.top: scrollingSeries1.bottom;
+	}
+
 	ScrollSeries { id: scrollingSeries1;
 		height: 200;
 		anchors.left: elevationChart.left;
