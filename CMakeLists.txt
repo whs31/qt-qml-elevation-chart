@@ -26,6 +26,7 @@ set(PROJECT_SOURCES
 	src/macro.hpp #remove me
 	include/elevationwidget.hpp			src/elevationwidget.cpp			src/elevationwidget_p.hpp
 	src/elevationchart.hpp				src/elevationchart.cpp
+	js/qplot-js.qrc
 	src/impl/fpscounter.hpp				src/impl/fpscounter.cpp
 )
 

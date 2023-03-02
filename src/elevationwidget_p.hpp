@@ -4,6 +4,7 @@
 
 class ElevationWidgetPrivate : public QObject
 {
+    Q_OBJECT
     Q_DECLARE_PUBLIC(ElevationWidget)
 
     public:
@@ -13,10 +14,18 @@ class ElevationWidgetPrivate : public QObject
 
         Q_INVOKABLE void resize(float w, float h, float zoom_w, float zoom_h = 1);
 
+    signals:
+        void colorsChanged();
+
     private:
         void recalculate();
 
     private:
+        Q_PROPERTY(QList<QString> colors READ colors WRITE setColors NOTIFY colorsChanged)
+        QList<QString> m_colors = { "#263238", "#dedede", "607d8b",
+                                    "9ccc65", "#ffab40", "#ff7043" };
+        QList<QString> colors() const;       void setColors(const QList<QString>& list);
+
         struct Layout {
             float width = 500;
             float height = 100;
@@ -34,12 +43,4 @@ class ElevationWidgetPrivate : public QObject
             bool showIndex = true;
         }; Input input;
 
-        struct Pallete {
-            QString background: "#263238";
-            QString foreground: "#dedede";
-            QString chart: "#607D8B";
-            QString success: "#9CCC65";
-            QString warning: "#FFAB40";
-            QString critical: "#FF7043";
-        }; Pallete pallete;
 };
