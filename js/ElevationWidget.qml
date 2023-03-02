@@ -35,7 +35,7 @@ Rectangle { id: base;
 		onWheel: (event) =>
 		{
 			if(!shiftPressed) {
-				if(event.angleDelta.y > 0 && backend.zoomX <= maxZoom)
+				if(event.angleDelta.y > 0 && property_handler.zoomX <= maxZoom)
 					property_handler.zoomW += (1 / zoom_sensivity) * property_handler.zoomW;
 				else if(event.angleDelta.y < 0 && property_handler.zoomX >= 1)
 					property_handler.zoomW -= (1 / zoom_sensivity) * property_handler.zoomW;

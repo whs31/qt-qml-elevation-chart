@@ -1,6 +1,12 @@
 #pragma once
 
 #include "elevationwidget.hpp"
+#include "RouteTools/elevationtools.h"
+
+
+namespace Elevation {
+    class Elevation;
+}
 
 class ElevationWidgetPrivate : public QObject
 {
@@ -11,16 +17,28 @@ class ElevationWidgetPrivate : public QObject
         explicit ElevationWidgetPrivate(QObject* parent = nullptr);
         virtual ~ElevationWidgetPrivate() = default;
         ElevationWidget* q_ptr;
+        Elevation::Elevation* heightmapParser;
+        Elevation::ElevationTools* routeParser;
 
         Q_INVOKABLE void resize(float w, float h, float zoom_w, float zoom_h = 1);
 
+        QGeoPath geopath;
+        QVector<QPointF> profile() const;
+        void setProfile(const QVector<QPointF>& newProfile);
+
     signals:
         void colorsChanged();
+        void profileChanged();
 
     private:
         void recalculate();
+        void recalculateWithGeopathChanged();
+
+        void calculateAxisValues();
+        void calculateScaleValues();
 
     private:
+        Q_PROPERTY(QVector<QPointF> profile READ profile WRITE setProfile NOTIFY profileChanged)
         Q_PROPERTY(QList<QString> colors READ colors WRITE setColors NOTIFY colorsChanged)
         QList<QString> m_colors = { "#263238", "#dedede", "607d8b",
                                     "9ccc65", "#ffab40", "#ff7043" };
@@ -43,4 +61,17 @@ class ElevationWidgetPrivate : public QObject
             bool showIndex = true;
         }; Input input;
 
+        struct Axes {
+            struct Axis {
+                float maxValue;
+                float roundMaxValue;
+                int scaleValue;
+                float scaleCount;
+                float scalePixelSize;
+            };
+            Axis x, y;
+            const float stretch = 1.2;
+        }; Axes axis;
+
+        QVector<QPointF> m_profile;
 };
