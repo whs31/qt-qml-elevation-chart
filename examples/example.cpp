@@ -8,6 +8,7 @@ IntegrationExample::IntegrationExample(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::IntegrationExample)
 {
+    elevationWidget = new ElevationWidget(this);
     // регистрация типа в мета-системе QML
     // необходимо выполнить ее до того, как объект будет инстанциирован в QML-е
 
@@ -28,4 +29,16 @@ IntegrationExample::~IntegrationExample()
 {
     delete ui;
 }
+
+void IntegrationExample::on_checkBox_toggled(bool checked)
+{ elevationWidget->showIndexes(checked); }
+
+void IntegrationExample::on_doubleSpinBox_valueChanged(double arg1)
+{ elevationWidget->setVelocity(arg1); }
+
+void IntegrationExample::on_doubleSpinBox_2_valueChanged(double arg1)
+{ elevationWidget->setClimbRate(arg1); }
+
+void IntegrationExample::on_doubleSpinBox_3_valueChanged(double arg1)
+{ elevationWidget->setDescendRate(arg1); }
 
