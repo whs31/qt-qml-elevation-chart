@@ -18,6 +18,9 @@ class ElevationWidget : public QObject
         void setClimbRate(float rate);
         void setDescendRate(float rate);
 
+        void setPallete(QString backgroundColor, QString foregroundColor, QString chartColor,
+                        QString successColor, QString warningColor, QString errorColor);
+
     protected:
         ElevationWidgetPrivate* const d_ptr;
 
