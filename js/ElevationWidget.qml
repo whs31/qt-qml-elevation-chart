@@ -82,6 +82,7 @@ Rectangle { id: base;
 
 
 	Private.ElevationWidgetLegend { id: legendImpl; anchors.fill: parent; }
+	Private.ElevationWidgetMouseCross { id: mouseCrossImpl; anchors.fill: parent; }
 
 	Keys.onPressed: { if (event.key === Qt.Key_Shift) { wheelHandler.shiftPressed = true } }
 	Keys.onReleased: { if (event.key === Qt.Key_Shift) { wheelHandler.shiftPressed = false } }
@@ -109,6 +110,6 @@ Rectangle { id: base;
 		acceptedButtons: Qt.RightButton;
 		anchors.fill: parent;
 		hoverEnabled: true;
-		//onPositionChanged: mouseCross.requestPaint();
+		onPositionChanged: mouseCrossImpl.requestPaint();
 	}
 }

@@ -3,5 +3,6 @@
         <file>ElevationWidget.qml</file>
         <file>private/ElevationWidgetLegend.qml</file>
         <file>private/ElevationWidgetProfile.qml</file>
+        <file>private/ElevationWidgetMouseCross.qml</file>
     </qresource>
 </RCC>
