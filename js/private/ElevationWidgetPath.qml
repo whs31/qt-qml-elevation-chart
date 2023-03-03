@@ -1,5 +1,4 @@
 import QtQuick 2.15
-import "delegates" as Delegates
 import ElevationWidgetImpl 1.0
 
 Canvas { id: graph;
@@ -34,9 +33,6 @@ Canvas { id: graph;
 		}
 		for(let f = 0; f < Impl.path.length; f++)
 		{
-			console.log(Impl.path[f]);
-			console.log(Impl.path);
-			console.log(Impl.path.length);
 			ctx.beginPath();
 			//ctx.strokeStyle = (backend.pathErrorList[f]) ? warningColor : flightPathColor;
 			ctx.strokeStyle = Impl.colors[3];
@@ -65,12 +61,5 @@ Canvas { id: graph;
 			}
 		}
 		ctx.closePath();
-	}
-
-	ListModel { id: pathModel; }
-	Repeater
-	{
-		model: pathModel;
-		delegate: Delegates.ElevationWidgetPoint { }
 	}
 }

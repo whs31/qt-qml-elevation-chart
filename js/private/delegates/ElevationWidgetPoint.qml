@@ -17,6 +17,7 @@ Rectangle
 	border.color: invalid ? Qt.lighter(Impl.colors[4], 1.2) : Qt.lighter(Impl.colors[3], 1.2);
 	property real delta: y - pointMouseArea.globalPos.y;
 	property bool invalid: m_invalid;
+	z: 100;
 
 	Timer { id: updateTimer; repeat: true; running: false; interval: 10;
 			onTriggered: Impl.changeFlightPointAltitude(index, delta); }
@@ -36,6 +37,7 @@ Rectangle
 		}
 	}
 	Rectangle { id: indexUI;
+		z: 100;
 		visible: Impl.showIndex;
 		width: 31; height: 17; radius: height / 2; opacity: 1; color: invalid ? Impl.colors[4] : Impl.colors[3];
 		anchors.horizontalCenter: parent.horizontalCenter; anchors.verticalCenter: parent.verticalCenter;

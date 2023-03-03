@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import ElevationWidgetImpl 1.0
 import "private" as Private;
+import "private/delegates" as Delegates
 
 Rectangle { id: base;
 	focus: true;
@@ -38,7 +39,7 @@ Rectangle { id: base;
 			requestAll();
 		}
 		function onRequestIntersects() {
-			//intersects.requestPaint();
+			intersectsImpl.refresh();
 		}
 
 		function onRequestPath() {
@@ -53,6 +54,8 @@ Rectangle { id: base;
 		legendImpl.refresh();
 		profileImpl.refresh();
 	}
+
+	ListModel { id: pathModel; }
 
 	ScrollBar { id: scrollbar;
 		anchors.top: view.top;
@@ -78,6 +81,12 @@ Rectangle { id: base;
 
 		Private.ElevationWidgetProfile { id: profileImpl; }
 		Private.ElevationWidgetPath { id: pathImpl; }
+		Private.ElevationWidgetIntersections { id: intersectsImpl; }
+		Repeater
+		{
+			model: pathModel;
+			delegate: Delegates.ElevationWidgetPoint { }
+		}
 	}
 
 

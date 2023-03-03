@@ -76,6 +76,10 @@ ElevationWidgetPrivate::ElevationWidgetPrivate(QObject* parent)
     heightmapParser = new Elevation::Elevation(this);
     routeParser = new Elevation::ElevationTools(this);
 
+    qRegisterMetaType<QVector<Elevation::Point>>("QVector<Point>");
+    connect(routeParser, &Elevation::ElevationTools::progressTestRouteIntersectGround,
+            this, &ElevationWidgetPrivate::intersectCalculationFinished);
+
     recalculateWithGeopathChanged();
 }
 
@@ -130,6 +134,8 @@ void ElevationWidgetPrivate::recalculate(bool emitFlag)
 
     calculatePath();
 
+    routeParser->testRouteIntersectGround(geopath);
+
     if(emitFlag || profile().isEmpty())
         emit requestAll();
     else
@@ -160,6 +166,21 @@ void ElevationWidgetPrivate::calculatePath()
         data.append(point);
     }
     setPath(data);
+}
+
+void ElevationWidgetPrivate::intersectCalculationFinished(quint8 progress, const QVector<Elevation::Point>& resultPath)
+{
+    QList<QPointF> _intersectList;
+    for(size_t i = 0; i < resultPath.length(); i++)
+    {
+        if(resultPath[i].isBase())
+            continue;
+        QPointF _point(resultPath[i].distance() * layout.width / axis.x.maxValue,
+                       layout.height - resultPath[i].altitude() * layout.height / (axis.y.maxValue * axis.stretch));
+        _intersectList.append(_point);
+    }
+    setIntersections(_intersectList);
+    emit requestIntersects();
 }
 
 void ElevationWidgetPrivate::resize(float w, float h, float zoom_w, float zoom_h)
@@ -269,4 +290,11 @@ void ElevationWidgetPrivate::setShowIndex(bool state) {
     if (input.showIndex == state) return;
     input.showIndex = state;
     emit showIndexChanged();
+}
+
+QList<QPointF> ElevationWidgetPrivate::intersections() const { return m_intersections; }
+void ElevationWidgetPrivate::setIntersections(const QList<QPointF>& list) {
+    if (m_intersections == list) return;
+    m_intersections = list;
+    emit intersectionsChanged();
 }

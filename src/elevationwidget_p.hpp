@@ -26,18 +26,21 @@ class ElevationWidgetPrivate : public QObject
 
         QGeoPath geopath;
 
-    signals:
-        void requestAll();
-        void requestPath();
-        void requestIntersects();
+        public slots:
+            void intersectCalculationFinished(quint8 progress, const QVector<Elevation::Point> &resultPath);
 
-        void colorsChanged();
-        void profileChanged();
-        void keyValuesChanged();
+        signals:
+            void requestAll();
+            void requestPath();
+            void requestIntersects();
 
-        void pathChanged();
+            void colorsChanged();
+            void profileChanged();
+            void keyValuesChanged();
+            void pathChanged();
+            void showIndexChanged();
 
-        void showIndexChanged();
+            void intersectionsChanged();
 
     private:
         void recalculate(bool emitFlag = false);
@@ -53,6 +56,10 @@ class ElevationWidgetPrivate : public QObject
         Q_PROPERTY(QList<QPointF> path READ path WRITE setPath NOTIFY pathChanged)
         QList<QPointF> m_path;
         QList<QPointF> path() const;         void setPath(const QList<QPointF>& list);
+
+        Q_PROPERTY(QList<QPointF> intersections READ intersections WRITE setIntersections NOTIFY intersectionsChanged)
+        QList<QPointF> m_intersections;
+        QList<QPointF> intersections() const;void setIntersections(const QList<QPointF>& list);
 
         Q_PROPERTY(QList<QString> colors READ colors WRITE setColors NOTIFY colorsChanged)
         QList<QString> m_colors = { "#263238", "#dedede", "#607d8b",
@@ -103,4 +110,5 @@ class ElevationWidgetPrivate : public QObject
             int range = 0;
             bool rangeSet = false;
         }; Iterator iterator;
+
 };
