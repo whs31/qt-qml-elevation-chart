@@ -16,18 +16,19 @@ public:
     IntegrationExample(QWidget* parent = nullptr);
     ~IntegrationExample();
 
-    private slots:
-    void on_checkBox_toggled(bool checked);
 
-    void on_doubleSpinBox_valueChanged(double arg1);
 
-    void on_doubleSpinBox_2_valueChanged(double arg1);
-
-    void on_doubleSpinBox_3_valueChanged(double arg1);
-
-    private:
+private:
     Ui::IntegrationExample* ui;
     ElevationWidget* elevationWidget;
+
+    void uiSetup();
+
+    private slots:
+    void on_checkBox_toggled(bool checked);
+    void on_doubleSpinBox_valueChanged(double arg1);
+    void on_doubleSpinBox_2_valueChanged(double arg1);
+    void on_doubleSpinBox_3_valueChanged(double arg1);
 
 };
 #endif // INTEGRATIONEXAMPLE_H

@@ -23,10 +23,8 @@ set(PROJECT_SOURCES
 	examples/QPlot-example.qrc
 
 	js/QPlot.qrc
-	src/macro.hpp #remove me
 	include/elevationwidget.hpp			src/elevationwidget.cpp			src/elevationwidget_p.hpp
-	src/elevationchart.hpp				src/elevationchart.cpp
-	src/impl/fpscounter.hpp				src/impl/fpscounter.cpp
+	js/qplot-js.qrc
 )
 
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
