@@ -1,7 +1,6 @@
 #include "example.h"
 #include "./ui_example.h"
 #include <qqml.h>
-#include "elevationchart.hpp"
 
 
 IntegrationExample::IntegrationExample(QWidget *parent)
@@ -9,24 +8,14 @@ IntegrationExample::IntegrationExample(QWidget *parent)
     , ui(new Ui::IntegrationExample)
 {
     elevationWidget = new ElevationWidget(this);
-    // регистрация типа в мета-системе QML
-    // необходимо выполнить ее до того, как объект будет инстанциирован в QML-е
-
-    // для инстанциирования в QML-е
-    qmlRegisterType<ElevationChart>("ElevationChart", 1, 0, "ElevationChart");
-
-    // для инстанциирования в C++ с передачей в QML (не тестил)
-    //qmlRegisterSingletonInstance<ElevationChart>("ElevationChart", 1, 0, "ElevationChart", new ElevationChart(this));
-    // альтернативный вариант (не тестил)
-    //ui->quickWidget->rootContext()->setContextProperty("ElevationChart", new ElevationChart(this));
 
     ui->setupUi(this);
     ui->quickWidget->setSource(QUrl("qrc:/example.qml"));
     ui->quickWidget->show();
 
     uiSetup();
-    elevationWidget->setGeopath(QGeoPath({ QGeoCoordinate(60, 30, 20), QGeoCoordinate(60.1, 30.1, 30),
-                                           QGeoCoordinate(60.15, 30.1, 25), QGeoCoordinate(60.125, 30.15, 10) }));
+    elevationWidget->setGeopath(QGeoPath({ QGeoCoordinate(60, 30, 40), QGeoCoordinate(60.1, 30.1, 60),
+                                           QGeoCoordinate(60.15, 30.1, 50), QGeoCoordinate(60.125, 30.15, 20) }));
 }
 
 IntegrationExample::~IntegrationExample()
