@@ -18,7 +18,6 @@ Canvas { id: elevationProfile;
 		ctx.clearRect(0, 0, width, height);
 		ctx.strokeStyle = String(Impl.colors[2]);
 		ctx.fillStyle = String(Impl.colors[2]);
-		console.log(Impl.colors[2]);
 		ctx.lineWidth = 2;
 		ctx.lineCap = "round";
 		ctx.lineJoin = "round";

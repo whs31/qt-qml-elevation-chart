@@ -83,6 +83,8 @@ Rectangle { id: base;
 
 	Private.ElevationWidgetLegend { id: legendImpl; anchors.fill: parent; }
 
+	Keys.onPressed: { if (event.key === Qt.Key_Shift) { wheelHandler.shiftPressed = true } }
+	Keys.onReleased: { if (event.key === Qt.Key_Shift) { wheelHandler.shiftPressed = false } }
 	WheelHandler { id: wheelHandler;
 		property real maxZoom: 1000;
 		readonly property real zoom_sensivity: 3;
@@ -91,9 +93,9 @@ Rectangle { id: base;
 		onWheel: (event) =>
 		{
 			if(!shiftPressed) {
-				if(event.angleDelta.y > 0 && property_handler.zoomX <= maxZoom)
+				if(event.angleDelta.y > 0 && property_handler.zoomW <= maxZoom)
 					property_handler.zoomW += (1 / zoom_sensivity) * property_handler.zoomW;
-				else if(event.angleDelta.y < 0 && property_handler.zoomX >= 1)
+				else if(event.angleDelta.y < 0 && property_handler.zoomW >= 1)
 					property_handler.zoomW -= (1 / zoom_sensivity) * property_handler.zoomW;
 			} else {
 				if(event.angleDelta.y > 0)
