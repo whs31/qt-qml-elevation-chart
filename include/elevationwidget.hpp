@@ -6,7 +6,7 @@
 class ElevationWidgetPrivate;
 class ElevationWidget : public QObject
 {
-    Q_OBJECT
+        Q_OBJECT
     public:
         explicit ElevationWidget(QObject *parent = nullptr);
 
@@ -18,6 +18,9 @@ class ElevationWidget : public QObject
         void setClimbRate(float rate);
         void setDescendRate(float rate);
 
+        void setPallete(QString backgroundColor, QString foregroundColor, QString chartColor,
+                        QString successColor, QString warningColor, QString errorColor);
+
     protected:
         ElevationWidgetPrivate* const d_ptr;
 
@@ -25,5 +28,5 @@ class ElevationWidget : public QObject
         Q_DECLARE_PRIVATE(ElevationWidget)
 
     signals:
-
+        void geopathChanged();
 };
