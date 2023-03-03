@@ -26,7 +26,7 @@ class ElevationWidgetPrivate : public QObject
 
         QGeoPath geopath;
 
-        public slots:
+    public slots:
             void intersectCalculationFinished(quint8 progress, const QVector<Elevation::Point> &resultPath);
 
         signals:
@@ -37,16 +37,18 @@ class ElevationWidgetPrivate : public QObject
             void colorsChanged();
             void profileChanged();
             void keyValuesChanged();
-            void pathChanged();
             void showIndexChanged();
-
+            void pathChanged();
             void intersectionsChanged();
+            void correctedPathChanged();
 
     private:
         void recalculate(bool emitFlag = false);
         void recalculateWithGeopathChanged();
 
         void calculatePath();
+        void calculateCorrectedPath();
+        void calculateCorrectedPathForUI(QGeoPath c_geopath);
 
     private:
         Q_PROPERTY(QVector<QPointF> profile READ profile WRITE setProfile NOTIFY profileChanged)
@@ -56,6 +58,10 @@ class ElevationWidgetPrivate : public QObject
         Q_PROPERTY(QList<QPointF> path READ path WRITE setPath NOTIFY pathChanged)
         QList<QPointF> m_path;
         QList<QPointF> path() const;         void setPath(const QList<QPointF>& list);
+
+        Q_PROPERTY(QList<QPointF> correctedPath READ correctedPath WRITE setCorrectedPath NOTIFY correctedPathChanged)
+        QList<QPointF> m_correctedPath;
+        QList<QPointF> correctedPath() const;void setCorrectedPath(const QList<QPointF>& list);
 
         Q_PROPERTY(QList<QPointF> intersections READ intersections WRITE setIntersections NOTIFY intersectionsChanged)
         QList<QPointF> m_intersections;
@@ -100,7 +106,7 @@ class ElevationWidgetPrivate : public QObject
                 float scalePixelSize;
             };
             Axis x, y;
-            const float stretch = 1.2;
+            const float stretch = 1.15;
         }; Axes axis;
 
         struct Iterator
@@ -110,5 +116,4 @@ class ElevationWidgetPrivate : public QObject
             int range = 0;
             bool rangeSet = false;
         }; Iterator iterator;
-
 };
