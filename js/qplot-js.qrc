@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>ElevationWidget.qml</file>
         <file>private/ElevationWidgetLegend.qml</file>
+        <file>private/ElevationWidgetProfile.qml</file>
     </qresource>
 </RCC>

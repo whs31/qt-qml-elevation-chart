@@ -112,14 +112,10 @@ Rectangle { id: root;
 		height: 200;
 
 		path: QtPositioning.path([
-									 getRandomGeoCoordinate(),
-									 getRandomGeoCoordinate(),
-									 getRandomGeoCoordinate(),
-									 getRandomGeoCoordinate(),
-									 getRandomGeoCoordinate(),
-									 getRandomGeoCoordinate(),
-									 getRandomGeoCoordinate(),
-									 QtPositioning.coordinate(coord1, coord2, 100)
+									 QtPositioning.coordinate(60, 30, 20),
+									 QtPositioning.coordinate(60.1, 30.1, 30),
+									 QtPositioning.coordinate(60.15, 30.1, 25),
+									 QtPositioning.coordinate(60.125, 30.15, 10)
 		]);
 		horizontalVelocity: parseInt(textField1.text);
 		rateOfClimb: parseInt(textField2.text);

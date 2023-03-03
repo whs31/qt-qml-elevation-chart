@@ -12,7 +12,7 @@ Canvas { id: legend;
 	onPaint:
 	{
 		let ctx = getContext('2d');
-		ctx.clearRect(0, 0, legend.width, legend.height);
+		ctx.clearRect(0, 0, width, height);
 
 		ctx.strokeStyle = Impl.colors[1];
 		ctx.lineWidth = 5;
@@ -82,4 +82,10 @@ Canvas { id: legend;
 			ctx.stroke();
 		}
 	}
+	Rectangle { color: Impl.colors[1]; width: 70; height: 15; anchors.top: parent.top; anchors.left: parent.left;
+				Text { color: Impl.colors[0]; anchors.fill: parent; text: "ВЫСОТА"; font.bold: true;
+					   horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter; } }
+	Rectangle { color: Impl.colors[1]; width: 100; height: 15; anchors.bottom: parent.bottom; anchors.right: parent.right;
+				Text { color: Impl.colors[0]; anchors.fill: parent; text: "РАССТОЯНИЕ"; font.bold: true;
+					   horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter; } }
 }

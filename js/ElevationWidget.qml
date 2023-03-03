@@ -1,4 +1,5 @@
 import QtQuick 2.15
+import QtQuick.Controls 2.15
 import ElevationWidgetImpl 1.0
 import "private" as Private;
 
@@ -28,6 +29,9 @@ Rectangle { id: base;
 		}
 	}
 
+	property real widthScaled: width * z_w;
+	property real z_w: property_handler.zoomW;
+
 	Connections {
 		target: Impl;
 		function onRequestAll() {
@@ -47,8 +51,35 @@ Rectangle { id: base;
 	{
 		//graph.requestPaint();
 		legendImpl.refresh();
-		//elevationProfile.requestPaint();
+		profileImpl.refresh();
 	}
+
+	ListModel { id: pathModel; }
+	ScrollBar { id: scrollbar;
+		anchors.top: view.top;
+		anchors.left: view.left;
+		anchors.right: view.right;
+		implicitHeight: 10;
+		contentItem: Rectangle {
+			radius: scrollbar.height / 2;
+			color: scrollbar.pressed ? Qt.lighter(Impl.colors[2], 1.5) : Impl.colors[2];
+		}
+	}
+	Flickable { id: view;
+		anchors.fill: parent;
+		contentWidth: base.width * property_handler.zoomW;
+		contentHeight: base.height;
+		flickableDirection: Flickable.HorizontalAndVerticalFlick;
+		interactive: false;
+		boundsMovement: Flickable.StopAtBounds;
+		clip: true;
+		pixelAligned: true;
+		ScrollBar.horizontal: scrollbar;
+		onMovementEnded: requestAll();
+
+		Private.ElevationWidgetProfile { id: profileImpl; }
+	}
+
 
 	Private.ElevationWidgetLegend { id: legendImpl; anchors.fill: parent; }
 
@@ -65,10 +96,10 @@ Rectangle { id: base;
 				else if(event.angleDelta.y < 0 && property_handler.zoomX >= 1)
 					property_handler.zoomW -= (1 / zoom_sensivity) * property_handler.zoomW;
 			} else {
-				//if(event.angleDelta.y > 0)
-					//view.flick(500, 0);
-				//else if(event.angleDelta.y < 0)
-					//view.flick(-500, 0);
+				if(event.angleDelta.y > 0)
+					view.flick(1000, 0);
+				else if(event.angleDelta.y < 0)
+					view.flick(-1000, 0);
 			}
 		}
 	}

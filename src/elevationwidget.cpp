@@ -82,6 +82,9 @@ ElevationWidgetPrivate::ElevationWidgetPrivate(QObject* parent)
 // █ calculate axes and scales
 void ElevationWidgetPrivate::recalculate(bool emitFlag)
 {
+    iterator.range = 0;
+    iterator.rangeSet = false;
+
     axis.x.maxValue = profile().last().x();
     axis.x.roundMaxValue = 0;
     axis.y.maxValue = 0;
@@ -122,7 +125,6 @@ void ElevationWidgetPrivate::recalculate(bool emitFlag)
                     axis.x.scaleCount, axis.y.scaleCount,               // 7-8
                     axis.x.scalePixelSize, axis.y.scalePixelSize  });   // 9-10
 
-    qDebug() << keyValues();
     if(emitFlag || profile().isEmpty())
         emit requestAll();
     else
@@ -133,12 +135,7 @@ void ElevationWidgetPrivate::recalculate(bool emitFlag)
 // █ build profile
 void ElevationWidgetPrivate::recalculateWithGeopathChanged()
 {
-    QVector<QPointF> points = heightmapParser->buildGroundProfileForChart(geopath);
-    for (QPointF& point : points) {
-        point.setX(point.x() * layout.horizontal_zoom);
-        point.setY(layout.height - point.y());
-    }
-    setProfile(points);
+    setProfile(heightmapParser->buildGroundProfileForChart(geopath));
     recalculate(true);
 }
 
@@ -153,6 +150,52 @@ void ElevationWidgetPrivate::resize(float w, float h, float zoom_w, float zoom_h
     layout.vertical_zoom = zoom_h;
     if(!geopath.isEmpty() && layout.width * layout.height > 0)
         recalculate();
+}
+
+QPointF ElevationWidgetPrivate::iterateOverRange(float rangeStart, float rangeStop)
+{
+    if(!iterator.rangeSet)
+    {
+        iterator.rangeMin = -1;
+        iterator.rangeMax = -1;
+        iterator.range = 0;
+        if(rangeStart == 0)
+            iterator.rangeMin = 0;
+        if(rangeStop == 1)
+            iterator.rangeMax = m_profile.length() - 1;
+        if(rangeStart != 0 && rangeStop != 1)
+        {
+            int lval1 = rangeStart * axis.x.maxValue;
+            int lval2 = rangeStop * axis.x.maxValue;
+            bool _rangeMinFlag = false;
+            for(int i = 0; i < m_profile.length(); i++)
+            {
+                int rval = m_profile[i].x();
+                if(lval1 < rval && !_rangeMinFlag)
+                {
+                    iterator.rangeMin = i > 0 ? i - 1 : 0;
+                    _rangeMinFlag = true;
+                }
+                if(lval2 >= rval)
+                    iterator.rangeMax = i < m_profile.length() - 1 ? i + 1 : i;
+            }
+        }
+        Q_ASSERT_X(iterator.rangeMax != -1, "<qplot> range assignment", "upper range not found in vector");
+        Q_ASSERT_X(iterator.rangeMax < m_profile.length(), "<qplot> bounds", "max range is out of bounds");
+        Q_ASSERT_X(iterator.rangeMin >= 0, "<qplot> bounds", "min range is lower than 0");
+        iterator.rangeSet = true;
+        iterator.range = iterator.rangeMin;
+    }
+    iterator.range++;
+    if(iterator.range < iterator.rangeMax)
+    {
+        return QPointF(m_profile[iterator.range].x() * layout.width / axis.x.maxValue,
+                m_profile[iterator.range].y() * layout.height / (axis.y.maxValue * axis.stretch));
+    } else {
+        iterator.range = 0;
+        iterator.rangeSet = false;
+        return QPointF(-1, -1);
+    }
 }
 
 QList<QString> ElevationWidgetPrivate::colors() const { return m_colors; }

@@ -435,21 +435,6 @@ Rectangle { id: base;
 		onPositionChanged: mouseCross.requestPaint();
 	}
 
-//	FPS { id: fpsWidget;
-//		anchors.left: parent.left;
-//		anchors.bottom: parent.bottom;
-//		width: 75;
-//		height: 25;
-//		opacity: 0.3;
-//		visible: showFPSCounter;
-//		Text {
-//			anchors.centerIn: parent;
-//			font.bold: true;
-//			font.pixelSize: 20;
-//			text: Number(fpsWidget.fps).toFixed() + " FPS";
-//			color: "cyan";
-//		}
-//	}
 	Rectangle { id: fpsWidget;
 		anchors.left: parent.left;
 		anchors.bottom: parent.bottom;
