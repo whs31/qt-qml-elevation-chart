@@ -1,5 +1,6 @@
 import QtQuick 2.15
 import ElevationWidgetImpl 1.0
+import "private" as Private;
 
 Rectangle { id: base;
 	focus: true;
@@ -26,6 +27,30 @@ Rectangle { id: base;
 			Impl.resize(base.width, base.height, zoomW, 1);
 		}
 	}
+
+	Connections {
+		target: Impl;
+		function onRequestAll() {
+			requestAll();
+		}
+		function onRequestIntersects() {
+			//intersects.requestPaint();
+		}
+
+		function onRequestPath() {
+			//graph.requestPaint();
+			legendImpl.refresh();
+		}
+	}
+
+	function requestAll()
+	{
+		//graph.requestPaint();
+		legendImpl.refresh();
+		//elevationProfile.requestPaint();
+	}
+
+	Private.ElevationWidgetLegend { id: legendImpl; anchors.fill: parent; }
 
 	WheelHandler { id: wheelHandler;
 		property real maxZoom: 1000;

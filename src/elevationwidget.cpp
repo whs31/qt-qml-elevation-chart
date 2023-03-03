@@ -80,7 +80,7 @@ ElevationWidgetPrivate::ElevationWidgetPrivate(QObject* parent)
 }
 
 // █ calculate axes and scales
-void ElevationWidgetPrivate::recalculate()
+void ElevationWidgetPrivate::recalculate(bool emitFlag)
 {
     axis.x.maxValue = profile().last().x();
     axis.x.roundMaxValue = 0;
@@ -109,77 +109,26 @@ void ElevationWidgetPrivate::recalculate()
     {
         axis.y.roundMaxValue += pow(10, _power_y);
     }
-//    realWidthSet(m_realWidth);
-//    realHeightSet(m_realHeight);
     axis.x.scaleValue = pow(10, _power_x);
     axis.y.scaleValue = pow(10, _power_y);
     axis.x.scaleCount = (float)axis.x.maxValue / (float)axis.x.scaleValue;
     axis.y.scaleCount = (float)axis.y.maxValue * axis.stretch / (float)axis.y.scaleValue;
     axis.x.scalePixelSize = layout.width / axis.x.scaleCount;
     axis.y.scalePixelSize = layout.height / axis.y.scaleCount;
-}
-/*
- * void ElevationWidgetPrivate::recalculate()
-{
-    calculateAxisValues();
-    calculateScaleValues();
-}
+    setKeyValues({  axis.stretch,                                       // 0
+                    axis.x.maxValue, axis.y.maxValue,                   // 1-2
+                    axis.x.roundMaxValue, axis.y.roundMaxValue,         // 3-4
+                    axis.x.scaleValue, axis.y.scaleValue,               // 5-6
+                    axis.x.scaleCount, axis.y.scaleCount,               // 7-8
+                    axis.x.scalePixelSize, axis.y.scalePixelSize  });   // 9-10
 
-void ElevationWidgetPrivate::calculateAxisValues()
-{
-    axis.x.maxValue = profile().last().x();
-    axis.x.roundMaxValue = roundUpToNearestPowerOfTen(axis.x.maxValue);
-    axis.y.maxValue = findMaxYValue();
-    axis.y.roundMaxValue = roundUpToNearestPowerOfTen(axis.y.maxValue);
+    qDebug() << keyValues();
+    if(emitFlag || profile().isEmpty())
+        emit requestAll();
+    else
+        emit requestPath();
 }
 
-void ElevationWidgetPrivate::calculateScaleValues()
-{
-    int _power_x = axis.x.roundMaxValue > 0 ? (int) log10 ((float) axis.x.roundMaxValue) : 1;
-    int _power_y = axis.y.roundMaxValue > 0 ? (int) log10 ((float) axis.y.roundMaxValue) : 1;
-
-    axis.x.scaleValue = pow(10, _power_x);
-    axis.y.scaleValue = pow(10, _power_y);
-
-    axis.x.scaleCount = (float)axis.x.roundMaxValue / (float)axis.x.scaleValue;
-    axis.y.scaleCount = (float)axis.y.roundMaxValue * axis.stretch / (float)axis.y.scaleValue;
-
-    axis.x.scalePixelSize = layout.width / axis.x.scaleCount;
-    axis.y.scalePixelSize = layout.height / axis.y.scaleCount;
-}
-
-int ElevationWidgetPrivate::findMaxYValue()
-{
-    int maxYValue = 0;
-
-    for(QPointF point : profile())
-    {
-        if(maxYValue < point.y())
-            maxYValue = point.y();
-    }
-
-    for(QGeoCoordinate coord : geopath.path())
-    {
-        if(coord.altitude() > maxYValue)
-            maxYValue = coord.altitude();
-    }
-
-    return maxYValue;
-}
-
-int ElevationWidgetPrivate::roundUpToNearestPowerOfTen(int number)
-{
-    int power = number > 0 ? (int) log10 ((float) number) : 1;
-    int roundedNumber = 0;
-
-    while(roundedNumber < number)
-    {
-        roundedNumber += pow(10, power);
-    }
-
-    return roundedNumber;
-}
-*/
 
 // █ build profile
 void ElevationWidgetPrivate::recalculateWithGeopathChanged()
@@ -190,7 +139,7 @@ void ElevationWidgetPrivate::recalculateWithGeopathChanged()
         point.setY(layout.height - point.y());
     }
     setProfile(points);
-    recalculate();
+    recalculate(true);
 }
 
 void ElevationWidgetPrivate::resize(float w, float h, float zoom_w, float zoom_h)
@@ -214,9 +163,16 @@ void ElevationWidgetPrivate::setColors(const QList<QString>& list) {
 }
 
 QVector<QPointF> ElevationWidgetPrivate::profile() const { return m_profile; }
-void ElevationWidgetPrivate::setProfile(const QVector<QPointF>& newProfile) {
-    if (m_profile == newProfile) return;
-    m_profile = newProfile;
+void ElevationWidgetPrivate::setProfile(const QVector<QPointF>& vec) {
+    if (m_profile == vec) return;
+    m_profile = vec;
     emit profileChanged();
     recalculateWithGeopathChanged();
+}
+
+QList<float> ElevationWidgetPrivate::keyValues() const { return m_keyValues; }
+void ElevationWidgetPrivate::setKeyValues(const QList<float>& values) {
+    if (m_keyValues == values) return;
+    m_keyValues = values;
+    emit keyValuesChanged();
 }

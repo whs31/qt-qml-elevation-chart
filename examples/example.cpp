@@ -25,6 +25,7 @@ IntegrationExample::IntegrationExample(QWidget *parent)
     ui->quickWidget->show();
 
     uiSetup();
+    elevationWidget->setGeopath(QGeoPath({ QGeoCoordinate(60, 30, 20), QGeoCoordinate(60.1, 30.1, 30) }));
 }
 
 IntegrationExample::~IntegrationExample()
