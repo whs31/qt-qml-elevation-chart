@@ -28,5 +28,5 @@ class ElevationWidget : public QObject
         Q_DECLARE_PRIVATE(ElevationWidget)
 
     signals:
-
+        void geopathChanged();
 };

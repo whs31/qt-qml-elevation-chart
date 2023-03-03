@@ -42,19 +42,18 @@ Rectangle { id: base;
 		}
 
 		function onRequestPath() {
-			//graph.requestPaint();
+			pathImpl.refresh();
 			legendImpl.refresh();
 		}
 	}
 
 	function requestAll()
 	{
-		//graph.requestPaint();
+		pathImpl.refresh();
 		legendImpl.refresh();
 		profileImpl.refresh();
 	}
 
-	ListModel { id: pathModel; }
 	ScrollBar { id: scrollbar;
 		anchors.top: view.top;
 		anchors.left: view.left;
@@ -78,6 +77,7 @@ Rectangle { id: base;
 		onMovementEnded: requestAll();
 
 		Private.ElevationWidgetProfile { id: profileImpl; }
+		Private.ElevationWidgetPath { id: pathImpl; }
 	}
 
 

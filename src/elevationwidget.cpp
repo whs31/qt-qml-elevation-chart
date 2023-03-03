@@ -33,7 +33,7 @@ void ElevationWidget::setGeopath(QGeoPath path)
 void ElevationWidget::showIndexes(bool state)
 {
     Q_D(ElevationWidget);
-    d->input.showIndex = state;
+    d->setShowIndex(state);
 }
 
 void ElevationWidget::setVelocity(float velocity)
@@ -82,6 +82,9 @@ ElevationWidgetPrivate::ElevationWidgetPrivate(QObject* parent)
 // █ calculate axes and scales
 void ElevationWidgetPrivate::recalculate(bool emitFlag)
 {
+    if(profile().isEmpty())
+        return;
+
     iterator.range = 0;
     iterator.rangeSet = false;
 
@@ -125,6 +128,8 @@ void ElevationWidgetPrivate::recalculate(bool emitFlag)
                     axis.x.scaleCount, axis.y.scaleCount,               // 7-8
                     axis.x.scalePixelSize, axis.y.scalePixelSize  });   // 9-10
 
+    calculatePath();
+
     if(emitFlag || profile().isEmpty())
         emit requestAll();
     else
@@ -137,6 +142,24 @@ void ElevationWidgetPrivate::recalculateWithGeopathChanged()
 {
     setProfile(heightmapParser->buildGroundProfileForChart(geopath));
     recalculate(true);
+}
+
+void ElevationWidgetPrivate::calculatePath()
+{
+    QList<QPointF> data;
+    qreal previous_distance = 0;
+    for(size_t i = 0; i < geopath.path().length(); i++)
+    {
+        QPointF point;
+        qreal deltaS = 0;
+        point.setY(layout.height - geopath.path()[i].altitude() * layout.height / (axis.y.maxValue * axis.stretch));
+        if(i > 0)
+            deltaS = geopath.path()[i].distanceTo(geopath.path()[i-1]);
+        previous_distance += deltaS;
+        point.setX(previous_distance * layout.width / axis.x.maxValue);
+        data.append(point);
+    }
+    setPath(data);
 }
 
 void ElevationWidgetPrivate::resize(float w, float h, float zoom_w, float zoom_h)
@@ -198,6 +221,20 @@ QPointF ElevationWidgetPrivate::iterateOverRange(float rangeStart, float rangeSt
     }
 }
 
+void ElevationWidgetPrivate::changeFlightPointAltitude(int index, qreal delta)
+{
+    QGeoCoordinate coord = geopath.coordinateAt(index);
+    coord.setAltitude(coord.altitude() + delta * (0.15));
+    if(coord.altitude() <= 0)
+        coord.setAltitude(0);
+    geopath.replaceCoordinate(index, coord);
+    recalculateWithGeopathChanged();
+
+    //@BUG: сегфолт_)))))
+    //Q_Q(ElevationWidget);
+    //emit(q->geopathChanged());
+}
+
 QList<QString> ElevationWidgetPrivate::colors() const { return m_colors; }
 void ElevationWidgetPrivate::setColors(const QList<QString>& list) {
     if (m_colors == list) return;
@@ -213,9 +250,23 @@ void ElevationWidgetPrivate::setProfile(const QVector<QPointF>& vec) {
     recalculateWithGeopathChanged();
 }
 
+QList<QPointF> ElevationWidgetPrivate::path() const { return m_path; }
+void ElevationWidgetPrivate::setPath(const QList<QPointF>& list) {
+    if (m_path == list) return;
+    m_path = list;
+    emit pathChanged();
+}
+
 QList<float> ElevationWidgetPrivate::keyValues() const { return m_keyValues; }
 void ElevationWidgetPrivate::setKeyValues(const QList<float>& values) {
     if (m_keyValues == values) return;
     m_keyValues = values;
     emit keyValuesChanged();
+}
+
+bool ElevationWidgetPrivate::showIndex() const { return input.showIndex; }
+void ElevationWidgetPrivate::setShowIndex(bool state) {
+    if (input.showIndex == state) return;
+    input.showIndex = state;
+    emit showIndexChanged();
 }

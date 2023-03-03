@@ -4,5 +4,8 @@
         <file>private/ElevationWidgetLegend.qml</file>
         <file>private/ElevationWidgetProfile.qml</file>
         <file>private/ElevationWidgetMouseCross.qml</file>
+        <file>private/ElevationWidgetPath.qml</file>
+        <file>private/ElevationWidgetIntersections.qml</file>
+        <file>private/delegates/ElevationWidgetPoint.qml</file>
     </qresource>
 </RCC>
