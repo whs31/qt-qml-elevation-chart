@@ -7,5 +7,6 @@
         <file>private/ElevationWidgetPath.qml</file>
         <file>private/ElevationWidgetIntersections.qml</file>
         <file>private/delegates/ElevationWidgetPoint.qml</file>
+        <file>private/ElevationWidgetCorrectPath.qml</file>
     </qresource>
 </RCC>

@@ -43,6 +43,7 @@ Rectangle { id: base;
 		}
 
 		function onRequestPath() {
+			correctPathImpl.refresh();
 			pathImpl.refresh();
 			legendImpl.refresh();
 		}
@@ -50,6 +51,7 @@ Rectangle { id: base;
 
 	function requestAll()
 	{
+		correctPathImpl.refresh();
 		pathImpl.refresh();
 		legendImpl.refresh();
 		profileImpl.refresh();
@@ -80,6 +82,7 @@ Rectangle { id: base;
 		onMovementEnded: requestAll();
 
 		Private.ElevationWidgetProfile { id: profileImpl; }
+		Private.ElevationWidgetCorrectPath { id: correctPathImpl; }
 		Private.ElevationWidgetPath { id: pathImpl; }
 		Private.ElevationWidgetIntersections { id: intersectsImpl; }
 		Repeater
