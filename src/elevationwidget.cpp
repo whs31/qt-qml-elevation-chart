@@ -68,8 +68,9 @@ void ElevationWidget::setPallete(QString backgroundColor, QString foregroundColo
 //─────────────────────────────█████████████████████████████████ 🔒 PRIVATE IMPLEMENTATION 🔒 █████████████████████████████████████──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 #endif
 
-ElevationWidgetPrivate::ElevationWidgetPrivate(QObject* parent)
+ElevationWidgetPrivate::ElevationWidgetPrivate(ElevationWidget* parent)
     : QObject{parent}
+    , q_ptr(parent)
 {
     // submodule types
     heightmapParser = new Elevation::Elevation(this);
@@ -295,15 +296,15 @@ QPointF ElevationWidgetPrivate::iterateOverRange(float rangeStart, float rangeSt
 void ElevationWidgetPrivate::changeFlightPointAltitude(int index, qreal delta)
 {
     QGeoCoordinate coord = geopath.coordinateAt(index);
-    coord.setAltitude(coord.altitude() + delta * (0.15));
+    coord.setAltitude(coord.altitude() + delta * (.1));
     if(coord.altitude() <= 0)
         coord.setAltitude(0);
     geopath.replaceCoordinate(index, coord);
     recalculateWithGeopathChanged();
 
-    //@BUG: сегфолт_)))))
-    //Q_Q(ElevationWidget);
-    //emit(q->geopathChanged());
+    //@BUG: сегфолт =)))))
+    Q_Q(ElevationWidget);
+    emit(q->geopathChanged());
 }
 
 QList<QString> ElevationWidgetPrivate::colors() const { return m_colors; }

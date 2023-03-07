@@ -14,7 +14,7 @@ class ElevationWidgetPrivate : public QObject
     Q_DECLARE_PUBLIC(ElevationWidget)
 
     public:
-        explicit ElevationWidgetPrivate(QObject* parent = nullptr);
+        explicit ElevationWidgetPrivate(ElevationWidget* parent);
         virtual ~ElevationWidgetPrivate() = default;
         ElevationWidget* q_ptr;
         Elevation::Elevation* heightmapParser;

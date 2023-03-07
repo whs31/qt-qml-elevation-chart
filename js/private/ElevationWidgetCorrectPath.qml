@@ -19,7 +19,8 @@ Canvas { id: graph;
 		let ctx = getContext('2d');
 
 		ctx.clearRect(0, 0, base.widthScaled, base.height);
-		ctx.lineWidth = 2;
+		ctx.lineWidth = 1.5;
+		ctx.setLineDash([4, 4]);
 		ctx.lineCap = "round";
 		ctx.lineJoin = "round";
 
