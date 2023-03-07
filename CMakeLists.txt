@@ -22,9 +22,9 @@ set(PROJECT_SOURCES
 #	examples/example.ui
 #	examples/QPlot-example.qrc
 
-	js/QPlot.qrc
+#	js/QPlot.qrc
 	include/elevationwidget.hpp			src/elevationwidget.cpp			src/elevationwidget_p.hpp
-#	js/qplotjs.qrc
+	js/qplotjs.qrc
 )
 add_library(${PROJECT_NAME} ${PROJECT_SOURCES})
 #add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
