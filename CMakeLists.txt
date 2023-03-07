@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.13)
 
 project(QPlot VERSION 1.0 LANGUAGES CXX)
 
-set(CMAKE_AUTOUIC ON)
+#set(CMAKE_AUTOUIC ON)
 #set(CMAKE_AUTOMOC ON)
 #set(CMAKE_AUTORCC ON)
 
@@ -22,7 +22,7 @@ set(PROJECT_SOURCES
 #	examples/example.ui
 #	examples/QPlot-example.qrc
 
-	js/QPlot.qrc
+#	js/QPlot.qrc
 	include/elevationwidget.hpp			src/elevationwidget.cpp			src/elevationwidget_p.hpp
 #	js/qplotjs.qrc
 )

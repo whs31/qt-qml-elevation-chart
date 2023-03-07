@@ -202,15 +202,15 @@ void ElevationWidgetPrivate::recalculateBound(bool slow)
 
 void ElevationWidgetPrivate::calculateBoundsOffset()
 {
-    QList<QPointF> _list;
-    for(size_t i = 0; i < m_cleanBounds.length(); i++)
-    {
-        QPointF _point(m_cleanBounds[i].x() * layout.width / axis.x.maxValue,
-                       m_cleanBounds[i].y() * layout.height / (axis.y.maxValue * axis.stretch));
-        _list.append(_point);
-    }
-    setBounds(_list);
-    emit requestBounds();
+//    QList<QPointF> _list;
+//    for(size_t i = 0; i < m_cleanBounds.length(); i++)
+//    {
+//        QPointF _point(m_cleanBounds[i].x() * layout.width / axis.x.maxValue,
+//                       m_cleanBounds[i].y() * layout.height / (axis.y.maxValue * axis.stretch));
+//        _list.append(_point);
+//    }
+//    setBounds(_list);
+//    emit requestBounds();
 }
 
 void ElevationWidgetPrivate::calculatePath()
@@ -298,13 +298,13 @@ void ElevationWidgetPrivate::intersectCalculationFinished(quint8 progress, const
 
 void ElevationWidgetPrivate::boundCalculationFinished(quint8 progress, const Elevation::RouteAndElevationProfiles &deltaResult)
 {
-    m_cleanBounds.clear();
-    for(size_t i = 0; i < deltaResult.lowBound().length(); i++)
-    {
-        m_cleanBounds.push_back(deltaResult.lowBound()[i]);
-        m_cleanBounds.push_back(deltaResult.highBound()[i]);
-    }
-    calculateBoundsOffset();
+//    m_cleanBounds.clear();
+//    for(size_t i = 0; i < deltaResult.lowBound().length(); i++)
+//    {
+//        m_cleanBounds.push_back(deltaResult.lowBound()[i]);
+//        m_cleanBounds.push_back(deltaResult.highBound()[i]);
+//    }
+//    calculateBoundsOffset();
 }
 
 void ElevationWidgetPrivate::resize(float w, float h, float zoom_w, float zoom_h)
