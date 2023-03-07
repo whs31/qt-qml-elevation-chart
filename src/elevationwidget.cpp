@@ -89,6 +89,9 @@ void ElevationWidgetPrivate::recalculate(bool emitFlag)
     if(profile().isEmpty())
         return;
 
+    float _emit_check = axis.y.maxValue;
+    bool _emit_checkflag = false;
+
     iterator.range = 0;
     iterator.rangeSet = false;
 
@@ -108,6 +111,8 @@ void ElevationWidgetPrivate::recalculate(bool emitFlag)
         if(coord.altitude() > axis.y.maxValue)
             axis.y.maxValue = coord.altitude();
     }
+    if(_emit_check != axis.y.maxValue)
+        _emit_checkflag = true;
 
     int _power_x = axis.x.maxValue > 0 ? (int) log10 ((float) axis.x.maxValue) : 1;
     int _power_y = axis.y.maxValue > 0 ? (int) log10 ((float) axis.y.maxValue) : 1;
@@ -137,7 +142,7 @@ void ElevationWidgetPrivate::recalculate(bool emitFlag)
 
     routeParser->testRouteIntersectGround(geopath);
 
-    if(emitFlag or profile().isEmpty())
+    if(emitFlag or profile().isEmpty() or _emit_checkflag)
         emit requestAll();
     else
         emit requestPath();
@@ -300,9 +305,8 @@ void ElevationWidgetPrivate::changeFlightPointAltitude(int index, qreal delta)
     if(coord.altitude() <= 0)
         coord.setAltitude(0);
     geopath.replaceCoordinate(index, coord);
-    recalculateWithGeopathChanged();
+    recalculate();
 
-    //@BUG: сегфолт =)))))
     Q_Q(ElevationWidget);
     emit(q->geopathChanged());
 }

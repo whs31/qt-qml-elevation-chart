@@ -28,7 +28,7 @@ IntegrationExample::IntegrationExample(QWidget *parent)
                                             QGeoCoordinate(60.11, 30.11, 50),
                                             QGeoCoordinate(60.12, 30.12, 40),
                                             QGeoCoordinate(60.13, 30.14, 50),
-                                            QGeoCoordinate(60.14, 30.14, 60)
+                                            QGeoCoordinate(61, 31, 60)
                                         })
                                 );
 }

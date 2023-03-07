@@ -37,6 +37,7 @@ Rectangle { id: base;
 		target: Impl;
 		function onRequestAll() {
 			requestAll();
+			console.error("profile");
 		}
 		function onRequestIntersects() {
 			intersectsImpl.refresh();
