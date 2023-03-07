@@ -24,7 +24,7 @@ set(PROJECT_SOURCES
 
 	js/QPlot.qrc
 	include/elevationwidget.hpp			src/elevationwidget.cpp			src/elevationwidget_p.hpp
-	js/qplot-js.qrc
+	js/qplotjs.qrc
 )
 
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
