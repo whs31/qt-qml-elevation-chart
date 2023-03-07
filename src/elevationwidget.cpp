@@ -58,6 +58,20 @@ void ElevationWidget::setDescendRate(float rate)
     d->recalculate();
 }
 
+void ElevationWidget::setBoundHeight(float height)
+{
+    Q_D(ElevationWidget);
+    d->bound.height = height;
+    d->recalculateBound();
+}
+
+void ElevationWidget::setBoundWidth(float width)
+{
+    Q_D(ElevationWidget);
+    d->bound.width = width;
+    d->recalculateBound();
+}
+
 void ElevationWidget::setPallete(QString backgroundColor, QString foregroundColor, QString chartColor,
                                  QString successColor, QString warningColor, QString errorColor)
 {
@@ -66,10 +80,9 @@ void ElevationWidget::setPallete(QString backgroundColor, QString foregroundColo
 
 }
 
-#if(0)
-//─────────────────────────────█████████████████████████████████ 🔒 PRIVATE IMPLEMENTATION 🔒 █████████████████████████████████████──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-#endif
-
+/*
+███████████████████████████          🔒 PRIVATE IMPLEMENTATION 🔒          ███████████████████████████████──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────f
+*/
 ElevationWidgetPrivate::ElevationWidgetPrivate(ElevationWidget* parent)
     : QObject{parent}
     , q_ptr(parent)
@@ -79,10 +92,17 @@ ElevationWidgetPrivate::ElevationWidgetPrivate(ElevationWidget* parent)
     routeParser = new Elevation::ElevationTools(this);
 
     qRegisterMetaType<QVector<Elevation::Point>>("QVector<Point>");
+    qRegisterMetaType<Elevation::RouteAndElevationProfiles>("RouteAndElevationProfiles");
     connect(routeParser, &Elevation::ElevationTools::progressTestRouteIntersectGround,
             this, &ElevationWidgetPrivate::intersectCalculationFinished);
+    connect(routeParser, &Elevation::ElevationTools::progressBuildRouteAndElevationProfiles,
+            this, &ElevationWidgetPrivate::boundCalculationFinished);
 
+    routeTimer = new QTimer(this);
+    routeTimer->setInterval(250);
+    routeTimer->setSingleShot(true);
     recalculateWithGeopathChanged();
+    recalculateBound();
 }
 
 // █ calculate axes and scales
@@ -143,6 +163,10 @@ void ElevationWidgetPrivate::recalculate(bool emitFlag)
     calculateCorrectedPath();
 
     routeParser->testRouteIntersectGround(geopath);
+    if(emitFlag and not profile().isEmpty())
+        routeParser->buildRouteAndElevationProfiles(geopath, bound.height, bound.width,
+                                                    aircraftMetrics.velocity, aircraftMetrics.climbRate,
+                                                    aircraftMetrics.descendRate);
 
     if(emitFlag or profile().isEmpty() or _emit_checkflag)
         emit requestAll();
@@ -156,6 +180,20 @@ void ElevationWidgetPrivate::recalculateWithGeopathChanged()
 {
     setProfile(heightmapParser->buildGroundProfileForChart(geopath));
     recalculate(true);
+}
+
+void ElevationWidgetPrivate::recalculateBound()
+{
+    if(geopath.isEmpty())
+        return;
+    qDebug() << routeTimer->remainingTime() ;
+    if(routeTimer->remainingTime() <= 0)
+    {
+        routeParser->buildRouteAndElevationProfiles(geopath, bound.height, bound.width,
+                                                    aircraftMetrics.velocity, aircraftMetrics.climbRate,
+                                                    aircraftMetrics.descendRate);
+    }
+    routeTimer->start();
 }
 
 void ElevationWidgetPrivate::calculatePath()
@@ -241,6 +279,18 @@ void ElevationWidgetPrivate::intersectCalculationFinished(quint8 progress, const
     emit requestIntersects();
 }
 
+void ElevationWidgetPrivate::boundCalculationFinished(quint8 progress, const Elevation::RouteAndElevationProfiles &deltaResult)
+{
+    QList<QPointF> _list;
+    for(size_t i = 0; i < deltaResult.lowBound().length(); i++)
+    {
+        _list.push_back(deltaResult.lowBound()[i]);
+        _list.push_back(deltaResult.highBound()[i]);
+    }
+    setBounds(_list);
+    emit requestBounds();
+}
+
 void ElevationWidgetPrivate::resize(float w, float h, float zoom_w, float zoom_h)
 {
     if(w == layout.width and h == layout.height and
@@ -319,7 +369,6 @@ void ElevationWidgetPrivate::setColors(const QList<QString>& list) {
     m_colors = list;
     emit colorsChanged();
 }
-
 QVector<QPointF> ElevationWidgetPrivate::profile() const { return m_profile; }
 void ElevationWidgetPrivate::setProfile(const QVector<QPointF>& vec) {
     if (m_profile == vec) return;
@@ -327,38 +376,39 @@ void ElevationWidgetPrivate::setProfile(const QVector<QPointF>& vec) {
     emit profileChanged();
     recalculateWithGeopathChanged();
 }
-
 QList<QPointF> ElevationWidgetPrivate::path() const { return m_path; }
 void ElevationWidgetPrivate::setPath(const QList<QPointF>& list) {
     if (m_path == list) return;
     m_path = list;
     emit pathChanged();
 }
-
 QList<QPointF> ElevationWidgetPrivate::correctedPath() const { return m_correctedPath; }
 void ElevationWidgetPrivate::setCorrectedPath(const QList<QPointF>& list) {
     if (m_correctedPath == list) return;
     m_correctedPath = list;
     emit correctedPathChanged();
 }
-
 QList<float> ElevationWidgetPrivate::keyValues() const { return m_keyValues; }
 void ElevationWidgetPrivate::setKeyValues(const QList<float>& values) {
     if (m_keyValues == values) return;
     m_keyValues = values;
     emit keyValuesChanged();
 }
-
 bool ElevationWidgetPrivate::showIndex() const { return input.showIndex; }
 void ElevationWidgetPrivate::setShowIndex(bool state) {
     if (input.showIndex == state) return;
     input.showIndex = state;
     emit showIndexChanged();
 }
-
 QList<QPointF> ElevationWidgetPrivate::intersections() const { return m_intersections; }
 void ElevationWidgetPrivate::setIntersections(const QList<QPointF>& list) {
     if (m_intersections == list) return;
     m_intersections = list;
     emit intersectionsChanged();
+}
+QList<QPointF> ElevationWidgetPrivate::bounds() const { return m_bounds; }
+void ElevationWidgetPrivate::setBounds(const QList<QPointF>& list) {
+    if (m_bounds == list) return;
+    m_bounds = list;
+    emit boundsChanged();
 }

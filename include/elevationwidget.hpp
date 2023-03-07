@@ -3,7 +3,9 @@
 #include <QObject>
 #include <QGeoPath>
 
+/// @private Приватная имплементация профиля высот.
 class ElevationWidgetPrivate;
+/// @brief API для виджета профиля высот.
 class ElevationWidget : public QObject
 {
         Q_OBJECT
@@ -34,13 +36,21 @@ class ElevationWidget : public QObject
         /// @param rate - скорость спуска в м/с. 
         void setDescendRate(float rate);
 
+        /// @brief Задает высоту для коридора огибания.
+        /// @param height - высота в метрах.
+        void setBoundHeight(float height);
+
+        /// @brief Задает ширину коридора огибания.
+        /// @param width - расстояние между нижней и верхней границей профиля огибания в метрах.
+        void setBoundWidth(float width);
+
         /// @brief Задает цветовую палитру виджета.
-        /// @param backgroundColor - цвет фона
-        /// @param foregroundColor - цвет текста и элементов интерфейса
-        /// @param chartColor      - цвет профиля высот
-        /// @param successColor    - цвет графика пути и путевых точек
-        /// @param warningColor    - цвет графика, скорректированного с учётом ЛТХ БПЛА
-        /// @param errorColor      - цвет частей графика, пересекающихся с рельефом местности
+        /// @param backgroundColor - цвет фона;
+        /// @param foregroundColor - цвет текста и элементов интерфейса;
+        /// @param chartColor      - цвет профиля высот;
+        /// @param successColor    - цвет графика пути и путевых точек;
+        /// @param warningColor    - цвет графика, скорректированного с учётом ЛТХ БПЛА;
+        /// @param errorColor      - цвет частей графика, пересекающихся с рельефом местности;
         void setPallete(QString backgroundColor, QString foregroundColor, QString chartColor,
                         QString successColor, QString warningColor, QString errorColor);
 

@@ -29,6 +29,7 @@ private:
     void on_doubleSpinBox_valueChanged(double arg1);
     void on_doubleSpinBox_2_valueChanged(double arg1);
     void on_doubleSpinBox_3_valueChanged(double arg1);
-
+    void on_doubleSpinBox_4_valueChanged(double arg1);
+    void on_doubleSpinBox_5_valueChanged(double arg1);
 };
 #endif // INTEGRATIONEXAMPLE_H

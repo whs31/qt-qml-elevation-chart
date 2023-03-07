@@ -2,12 +2,13 @@
 
 #include "elevationwidget.hpp"
 #include "RouteTools/elevationtools.h"
-
+#include <QTimer>
 
 namespace Elevation {
     class Elevation;
 }
 
+/// @private
 class ElevationWidgetPrivate : public QObject
 {
     Q_OBJECT
@@ -19,6 +20,7 @@ class ElevationWidgetPrivate : public QObject
         ElevationWidget* q_ptr;
         Elevation::Elevation* heightmapParser;
         Elevation::ElevationTools* routeParser;
+        QTimer* routeTimer;
 
         Q_INVOKABLE void resize(float w, float h, float zoom_w, float zoom_h = 1);
         Q_INVOKABLE QPointF iterateOverRange(float rangeStart, float rangeStop);
@@ -28,11 +30,13 @@ class ElevationWidgetPrivate : public QObject
 
     public slots:
             void intersectCalculationFinished(quint8 progress, const QVector<Elevation::Point> &resultPath);
+            void boundCalculationFinished(quint8 progress, const Elevation::RouteAndElevationProfiles &deltaResult);
 
         signals:
             void requestAll();
             void requestPath();
             void requestIntersects();
+            void requestBounds();
 
             void colorsChanged();
             void profileChanged();
@@ -41,10 +45,12 @@ class ElevationWidgetPrivate : public QObject
             void pathChanged();
             void intersectionsChanged();
             void correctedPathChanged();
+            void boundsChanged();
 
     private:
         void recalculate(bool emitFlag = false);
         void recalculateWithGeopathChanged();
+        void recalculateBound();
 
         void calculatePath();
         void calculateCorrectedPath();
@@ -66,6 +72,10 @@ class ElevationWidgetPrivate : public QObject
         Q_PROPERTY(QList<QPointF> intersections READ intersections WRITE setIntersections NOTIFY intersectionsChanged)
         QList<QPointF> m_intersections;
         QList<QPointF> intersections() const;void setIntersections(const QList<QPointF>& list);
+
+        Q_PROPERTY(QList<QPointF> bounds READ bounds WRITE setBounds NOTIFY boundsChanged)
+        QList<QPointF> m_bounds;
+        QList<QPointF> bounds() const;       void setBounds(const QList<QPointF>& list);
 
         Q_PROPERTY(QList<QString> colors READ colors WRITE setColors NOTIFY colorsChanged)
         QList<QString> m_colors = { "#263238", "#dedede", "#607d8b",
@@ -116,4 +126,10 @@ class ElevationWidgetPrivate : public QObject
             int range = 0;
             bool rangeSet = false;
         }; Iterator iterator;
+
+        struct Bounds
+        {
+            float height = 100;
+            float width = 20;
+        }; Bounds bound;
 };

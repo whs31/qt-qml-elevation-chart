@@ -8,5 +8,6 @@
         <file>private/ElevationWidgetIntersections.qml</file>
         <file>private/delegates/ElevationWidgetPoint.qml</file>
         <file>private/ElevationWidgetCorrectPath.qml</file>
+        <file>private/ElevationWidgetBounds.qml</file>
     </qresource>
 </RCC>

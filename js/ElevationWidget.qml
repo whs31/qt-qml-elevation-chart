@@ -48,6 +48,10 @@ Rectangle { id: base;
 			pathImpl.refresh();
 			legendImpl.refresh();
 		}
+
+		function onRequestBounds() {
+			boundsImpl.refresh();
+		}
 	}
 
 	function requestAll()
@@ -83,6 +87,7 @@ Rectangle { id: base;
 		onMovementEnded: requestAll();
 
 		Private.ElevationWidgetProfile { id: profileImpl; }
+		Private.ElevationWidgetBounds { id: boundsImpl; }
 		Private.ElevationWidgetCorrectPath { id: correctPathImpl; }
 		Private.ElevationWidgetPath { id: pathImpl; }
 		Private.ElevationWidgetIntersections { id: intersectsImpl; }

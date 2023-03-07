@@ -28,7 +28,7 @@ IntegrationExample::IntegrationExample(QWidget *parent)
                                             QGeoCoordinate(60.11, 30.11, 50),
                                             QGeoCoordinate(60.12, 30.12, 40),
                                             QGeoCoordinate(60.13, 30.14, 50),
-                                            QGeoCoordinate(61, 31, 60)
+                                            QGeoCoordinate(60.14, 30.14, 60)
                                         })
                                 );
 }
@@ -57,4 +57,10 @@ void IntegrationExample::on_doubleSpinBox_2_valueChanged(double arg1)
 
 void IntegrationExample::on_doubleSpinBox_3_valueChanged(double arg1)
 { elevationWidget->setDescendRate(arg1); }
+
+void IntegrationExample::on_doubleSpinBox_4_valueChanged(double arg1)
+{ elevationWidget->setBoundHeight(arg1); }
+
+void IntegrationExample::on_doubleSpinBox_5_valueChanged(double arg1)
+{ elevationWidget->setBoundWidth(arg1); }
 
