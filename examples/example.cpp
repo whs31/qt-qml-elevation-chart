@@ -44,6 +44,8 @@ void IntegrationExample::uiSetup()
     ui->doubleSpinBox->setValue(75);
     ui->doubleSpinBox_2->setValue(1);
     ui->doubleSpinBox_3->setValue(1);
+    ui->doubleSpinBox_4->setValue(10);
+    ui->doubleSpinBox_5->setValue(10);
 }
 
 void IntegrationExample::on_checkBox_toggled(bool checked)

@@ -42,6 +42,7 @@ void ElevationWidget::setVelocity(float velocity)
     Q_D(ElevationWidget);
     d->aircraftMetrics.velocity = velocity;
     d->recalculate();
+    d->recalculateBound(true);
 }
 
 void ElevationWidget::setClimbRate(float rate)
@@ -49,6 +50,7 @@ void ElevationWidget::setClimbRate(float rate)
     Q_D(ElevationWidget);
     d->aircraftMetrics.climbRate = rate;
     d->recalculate();
+    d->recalculateBound(true);
 }
 
 void ElevationWidget::setDescendRate(float rate)
@@ -56,20 +58,21 @@ void ElevationWidget::setDescendRate(float rate)
     Q_D(ElevationWidget);
     d->aircraftMetrics.descendRate = rate;
     d->recalculate();
+    d->recalculateBound(true);
 }
 
 void ElevationWidget::setBoundHeight(float height)
 {
     Q_D(ElevationWidget);
     d->bound.height = height;
-    d->recalculateBound();
+    d->recalculateBound(true);
 }
 
 void ElevationWidget::setBoundWidth(float width)
 {
     Q_D(ElevationWidget);
     d->bound.width = width;
-    d->recalculateBound();
+    d->recalculateBound(true);
 }
 
 void ElevationWidget::setPallete(QString backgroundColor, QString foregroundColor, QString chartColor,
@@ -99,10 +102,9 @@ ElevationWidgetPrivate::ElevationWidgetPrivate(ElevationWidget* parent)
             this, &ElevationWidgetPrivate::boundCalculationFinished);
 
     routeTimer = new QTimer(this);
-    routeTimer->setInterval(250);
+    routeTimer->setInterval(1);
     routeTimer->setSingleShot(true);
     recalculateWithGeopathChanged();
-    recalculateBound();
 }
 
 // █ calculate axes and scales
@@ -163,10 +165,7 @@ void ElevationWidgetPrivate::recalculate(bool emitFlag)
     calculateCorrectedPath();
 
     routeParser->testRouteIntersectGround(geopath);
-    if(emitFlag and not profile().isEmpty())
-        routeParser->buildRouteAndElevationProfiles(geopath, bound.height, bound.width,
-                                                    aircraftMetrics.velocity, aircraftMetrics.climbRate,
-                                                    aircraftMetrics.descendRate);
+    recalculateBound(emitFlag);
 
     if(emitFlag or profile().isEmpty() or _emit_checkflag)
         emit requestAll();
@@ -182,18 +181,36 @@ void ElevationWidgetPrivate::recalculateWithGeopathChanged()
     recalculate(true);
 }
 
-void ElevationWidgetPrivate::recalculateBound()
+void ElevationWidgetPrivate::recalculateBound(bool slow)
 {
     if(geopath.isEmpty())
         return;
-    qDebug() << routeTimer->remainingTime() ;
-    if(routeTimer->remainingTime() <= 0)
+    if(routeTimer->remainingTime() <= 0 and slow)
     {
         routeParser->buildRouteAndElevationProfiles(geopath, bound.height, bound.width,
                                                     aircraftMetrics.velocity, aircraftMetrics.climbRate,
                                                     aircraftMetrics.descendRate);
+        routeTimer->start();
+        qWarning() << "!!!!!!";
     }
-    routeTimer->start();
+    else
+    {
+        qWarning() << "!!";
+        calculateBoundsOffset();
+    }
+}
+
+void ElevationWidgetPrivate::calculateBoundsOffset()
+{
+    QList<QPointF> _list;
+    for(size_t i = 0; i < m_cleanBounds.length(); i++)
+    {
+        QPointF _point(m_cleanBounds[i].x() * layout.width / axis.x.maxValue,
+                       m_cleanBounds[i].y() * layout.height / (axis.y.maxValue * axis.stretch));
+        _list.append(_point);
+    }
+    setBounds(_list);
+    emit requestBounds();
 }
 
 void ElevationWidgetPrivate::calculatePath()
@@ -281,14 +298,13 @@ void ElevationWidgetPrivate::intersectCalculationFinished(quint8 progress, const
 
 void ElevationWidgetPrivate::boundCalculationFinished(quint8 progress, const Elevation::RouteAndElevationProfiles &deltaResult)
 {
-    QList<QPointF> _list;
+    m_cleanBounds.clear();
     for(size_t i = 0; i < deltaResult.lowBound().length(); i++)
     {
-        _list.push_back(deltaResult.lowBound()[i]);
-        _list.push_back(deltaResult.highBound()[i]);
+        m_cleanBounds.push_back(deltaResult.lowBound()[i]);
+        m_cleanBounds.push_back(deltaResult.highBound()[i]);
     }
-    setBounds(_list);
-    emit requestBounds();
+    calculateBoundsOffset();
 }
 
 void ElevationWidgetPrivate::resize(float w, float h, float zoom_w, float zoom_h)
@@ -301,7 +317,10 @@ void ElevationWidgetPrivate::resize(float w, float h, float zoom_w, float zoom_h
     layout.horizontal_zoom = zoom_w;
     layout.vertical_zoom = zoom_h;
     if(not geopath.isEmpty() and layout.width * layout.height > 0)
+    {
         recalculate();
+        recalculateBound();
+    }
 }
 
 QPointF ElevationWidgetPrivate::iterateOverRange(float rangeStart, float rangeStop)

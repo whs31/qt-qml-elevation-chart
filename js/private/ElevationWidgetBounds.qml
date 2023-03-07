@@ -20,8 +20,8 @@ Canvas { id: graph;
 		let ctx = getContext('2d');
 
 		ctx.clearRect(0, 0, base.widthScaled, base.height);
-		ctx.lineWidth = 1;
-		ctx.setLineDash([1, 1]);
+		ctx.globalAlpha = 0.5;
+		//ctx.setLineDash([2, 4]);
 
 		// draw flight path
 		ctx.moveTo(0, 0);
@@ -30,10 +30,10 @@ Canvas { id: graph;
 		{
 			ctx.beginPath();
 			ctx.strokeStyle = Impl.colors[4];
-			ctx.lineWidth = 4;
+			ctx.lineWidth = 2;
 			ctx.fillStyle = Impl.colors[4];
-			if(f > 0) ctx.moveTo(Impl.bounds[f-1].x * base.z_w, Impl.bounds[f-1].y);
-			ctx.lineTo(Impl.bounds[f].x * base.z_w, Impl.bounds[f].y);
+			//if(f > 0) ctx.moveTo(Impl.bounds[f-1].x * base.z_w, Impl.bounds[f-1].y);
+			//ctx.lineTo(Impl.bounds[f].x * base.z_w, Impl.bounds[f].y);
 			ctx.stroke();
 		}
 	}

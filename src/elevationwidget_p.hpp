@@ -50,11 +50,12 @@ class ElevationWidgetPrivate : public QObject
     private:
         void recalculate(bool emitFlag = false);
         void recalculateWithGeopathChanged();
-        void recalculateBound();
+        void recalculateBound(bool slow = false);
 
         void calculatePath();
         void calculateCorrectedPath();
         void calculateCorrectedPathForUI(QGeoPath c_geopath);
+        void calculateBoundsOffset();
 
     private:
         Q_PROPERTY(QVector<QPointF> profile READ profile WRITE setProfile NOTIFY profileChanged)
@@ -74,7 +75,7 @@ class ElevationWidgetPrivate : public QObject
         QList<QPointF> intersections() const;void setIntersections(const QList<QPointF>& list);
 
         Q_PROPERTY(QList<QPointF> bounds READ bounds WRITE setBounds NOTIFY boundsChanged)
-        QList<QPointF> m_bounds;
+        QList<QPointF> m_bounds;             QList<QPointF> m_cleanBounds;
         QList<QPointF> bounds() const;       void setBounds(const QList<QPointF>& list);
 
         Q_PROPERTY(QList<QString> colors READ colors WRITE setColors NOTIFY colorsChanged)
