@@ -44,7 +44,7 @@ Rectangle
 		anchors.horizontalCenterOffset: m_x / base.width > 0.5 ? -width / 2 - 7 : width / 2 + 7;
 		Text {
 			id: label1; color: base.color; width: 31; height: 15;
-			text: "<b>" + Number(index) + "</b>";
+			text: "<b>" + Number(index+1) + "</b>";
 			anchors.centerIn: parent; horizontalAlignment: Text.AlignHCenter;
 			verticalAlignment: Text.AlignVCenter; font.pixelSize: 10;
 		}
@@ -54,28 +54,6 @@ Rectangle
 		anchors.fill: parent;
 		opacity: 0;
 		Behavior on opacity { NumberAnimation { duration: 200; } }
-		Shape { id: arrowUp;
-			width: 15; height: 10; anchors.bottom: parent.top; anchors.bottomMargin: 15; opacity: 0.75;
-			anchors.horizontalCenter: parent.horizontalCenter; smooth: true; antialiasing: true;
-			ShapePath {
-				strokeWidth: 0; capStyle: ShapePath.RoundCap; joinStyle: ShapePath.RoundJoin;
-				strokeColor: Impl.colors[1]; fillColor: Impl.colors[1]; startX: 0; startY: arrowUp.height;
-				PathLine { x: arrowUp.width / 2; y: 0 }
-				PathLine { x: arrowUp.width; y: arrowUp.height }
-				PathLine { x: 0; y: arrowUp.height }
-			}
-		}
-		Shape { id: arrowDown;
-			width: 15; height: 10; anchors.top: parent.bottom; anchors.topMargin: 15; opacity: 0.75;
-			anchors.horizontalCenter: parent.horizontalCenter; smooth: true; antialiasing: true;
-			ShapePath {
-				strokeWidth: 0; capStyle: ShapePath.RoundCap; joinStyle: ShapePath.RoundJoin;
-				strokeColor: Impl.colors[1]; fillColor: Impl.colors[1]; startX: 0; startY: 0;
-				PathLine { x: arrowDown.width / 2; y: arrowDown.height }
-				PathLine { x: arrowDown.width; y: 0 }
-				PathLine { x: 0; y: 0 }
-			}
-		}
 		Rectangle { id: tooltip;
 			width: 160; height: 35; radius: height / 2; color: Qt.lighter(Impl.colors[0], 2);
 			anchors.horizontalCenter: parent.horizontalCenter; anchors.verticalCenter: parent.verticalCenter;

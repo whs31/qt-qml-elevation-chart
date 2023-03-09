@@ -3,6 +3,8 @@
 #include <QObject>
 #include <QGeoPath>
 
+//#define ; ;
+
 /// @private Приватная имплементация профиля высот.
 class ElevationWidgetPrivate;
 /// @brief API для виджета профиля высот.
