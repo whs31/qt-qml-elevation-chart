@@ -30,7 +30,7 @@ class ElevationWidgetPrivate : public QObject
 
     public slots:
             void intersectCalculationFinished(quint8 progress, const QVector<Elevation::Point> &resultPath);
-            void boundCalculationFinished(quint8 progress, const Elevation::RouteAndElevationProfiles &deltaResult);
+//            void boundCalculationFinished(quint8 progress, const Elevation::RouteAndElevationProfiles &deltaResult);
 
         signals:
             void requestAll();
@@ -50,12 +50,12 @@ class ElevationWidgetPrivate : public QObject
     private:
         void recalculate(bool emitFlag = false);
         void recalculateWithGeopathChanged();
-        void recalculateBound(bool slow = false);
+//        void recalculateBound(bool slow = false);
 
         void calculatePath();
         void calculateCorrectedPath();
         void calculateCorrectedPathForUI(QGeoPath c_geopath);
-        void calculateBoundsOffset();
+//        void calculateBoundsOffset();
 
     private:
         Q_PROPERTY(QVector<QPointF> profile READ profile WRITE setProfile NOTIFY profileChanged)
@@ -74,9 +74,9 @@ class ElevationWidgetPrivate : public QObject
         QList<QPointF> m_intersections;
         QList<QPointF> intersections() const;void setIntersections(const QList<QPointF>& list);
 
-        Q_PROPERTY(QList<QPointF> bounds READ bounds WRITE setBounds NOTIFY boundsChanged)
-        QList<QPointF> m_bounds;             QList<QPointF> m_cleanBounds;
-        QList<QPointF> bounds() const;       void setBounds(const QList<QPointF>& list);
+//        Q_PROPERTY(QList<QPointF> bounds READ bounds WRITE setBounds NOTIFY boundsChanged)
+//        QList<QPointF> m_bounds;             QList<QPointF> m_cleanBounds;
+//        QList<QPointF> bounds() const;       void setBounds(const QList<QPointF>& list);
 
         Q_PROPERTY(QList<QString> colors READ colors WRITE setColors NOTIFY colorsChanged)
         QList<QString> m_colors = { "#2e3440", "#eceff4", "#4c566a",
@@ -128,9 +128,9 @@ class ElevationWidgetPrivate : public QObject
             bool rangeSet = false;
         }; Iterator iterator;
 
-        struct Bounds
-        {
-            float height = 100;
-            float width = 20;
-        }; Bounds bound;
+//        struct Bounds
+//        {
+//            float height = 100;
+//            float width = 20;
+//        }; Bounds bound;
 };
