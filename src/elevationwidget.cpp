@@ -281,6 +281,16 @@ void ElevationWidgetPrivate::calculateCorrectedPathForUI(QGeoPath c_geopath)
 void ElevationWidgetPrivate::intersectCalculationFinished(quint8 progress, const QVector<Elevation::Point>& resultPath)
 {
     QList<QPointF> _intersectList;
+    // check for first & last point lies inside ground:
+    bool _first_point_in_ground = false;
+    bool _last_point_in_ground = false;
+    if((float)routeParser->elevationGeoPoint(geopath.path().first().latitude(), geopath.path().first().longitude()) > geopath.path().first().altitude())
+        _first_point_in_ground = true;
+    if((float)routeParser->elevationGeoPoint(geopath.path().last().latitude(), geopath.path().last().longitude()) > geopath.path().last().altitude())
+        _last_point_in_ground = true;
+
+    if(_first_point_in_ground)
+        _intersectList.append(QPointF(0, layout.height));
     for(size_t i = 0; i < resultPath.length(); i++)
     {
         if(resultPath[i].isBase())
@@ -289,6 +299,8 @@ void ElevationWidgetPrivate::intersectCalculationFinished(quint8 progress, const
                        layout.height - resultPath[i].altitude() * layout.height / (axis.y.maxValue * axis.stretch));
         _intersectList.append(_point);
     }
+    if(_last_point_in_ground)
+        _intersectList.append(QPointF(layout.width, layout.height));
     setIntersections(_intersectList);
     emit requestIntersects();
 }
@@ -316,7 +328,7 @@ void ElevationWidgetPrivate::resize(float w, float h, float zoom_w, float zoom_h
     if(not geopath.isEmpty() and layout.width * layout.height > 0)
     {
         recalculate();
-        recalculateBound();
+        //recalculateBound();
     }
 }
 
@@ -422,9 +434,9 @@ void ElevationWidgetPrivate::setIntersections(const QList<QPointF>& list) {
     m_intersections = list;
     emit intersectionsChanged();
 }
-QList<QPointF> ElevationWidgetPrivate::bounds() const { return m_bounds; }
-void ElevationWidgetPrivate::setBounds(const QList<QPointF>& list) {
-    if (m_bounds == list) return;
-    m_bounds = list;
-    emit boundsChanged();
-}
+//QList<QPointF> ElevationWidgetPrivate::bounds() const { return m_bounds; }
+//void ElevationWidgetPrivate::setBounds(const QList<QPointF>& list) {
+//    if (m_bounds == list) return;
+//    m_bounds = list;
+//    emit boundsChanged();
+//}
