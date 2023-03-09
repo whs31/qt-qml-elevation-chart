@@ -48,6 +48,7 @@ class ElevationWidgetPrivate : public QObject
             //void boundsChanged();
 
     private:
+        QPointF toPixel(const QPointF& point);
         void recalculate(bool emitFlag = false);
         void recalculateWithGeopathChanged();
 //        void recalculateBound(bool slow = false);
@@ -127,10 +128,4 @@ class ElevationWidgetPrivate : public QObject
             int range = 0;
             bool rangeSet = false;
         }; Iterator iterator;
-
-//        struct Bounds
-//        {
-//            float height = 100;
-//            float width = 20;
-//        }; Bounds bound;
 };

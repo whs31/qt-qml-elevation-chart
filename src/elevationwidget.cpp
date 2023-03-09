@@ -106,6 +106,12 @@ ElevationWidgetPrivate::ElevationWidgetPrivate(ElevationWidget* parent)
     //recalculateWithGeopathChanged(); <- geopath is empty = draw blank screen
 }
 
+QPointF ElevationWidgetPrivate::toPixel(const QPointF& point)
+{
+    return QPointF(point.x() * layout.width / axis.x.maxValue,
+                   layout.height - point.y() * layout.height / (axis.y.maxValue * axis.stretch));
+}
+
 // █ calculate axes and scales
 void ElevationWidgetPrivate::recalculate(bool emitFlag)
 {
@@ -216,14 +222,12 @@ void ElevationWidgetPrivate::calculatePath()
     float previous_distance = 0;
     for(size_t i = 0; i < geopath.path().length(); i++)
     {
-        QPointF point;
         float delta_s = 0;
-        point.setY(layout.height - geopath.path()[i].altitude() * layout.height / (axis.y.maxValue * axis.stretch));
         if(i > 0)
             delta_s = geopath.path()[i].distanceTo(geopath.path()[i-1]);
         previous_distance += delta_s;
-        point.setX(previous_distance * layout.width / axis.x.maxValue);
-        data.append(point);
+        QPointF point(previous_distance, geopath.path()[i].altitude());
+        data.append(toPixel(point));
     }
     setPath(data);
 }
@@ -290,17 +294,16 @@ void ElevationWidgetPrivate::intersectCalculationFinished(quint8 progress, const
         _last_point_in_ground = true;
 
     if(_first_point_in_ground)
-        _intersectList.append(QPointF(0, layout.height));
+        _intersectList.append(QPointF(0, layout.height - geopath.path().first().altitude() * layout.height / (axis.y.maxValue * axis.stretch)));
     for(size_t i = 0; i < resultPath.length(); i++)
     {
         if(resultPath[i].isBase())
             continue;
-        QPointF _point(resultPath[i].distance() * layout.width / axis.x.maxValue,
-                       layout.height - resultPath[i].altitude() * layout.height / (axis.y.maxValue * axis.stretch));
-        _intersectList.append(_point);
+        QPointF _point(resultPath[i].distance(), resultPath[i].altitude());
+        _intersectList.append(toPixel(_point));
     }
     if(_last_point_in_ground)
-        _intersectList.append(QPointF(layout.width, layout.height));
+        _intersectList.append(QPointF(layout.width, layout.height - geopath.path().last().altitude() * layout.height / (axis.y.maxValue * axis.stretch)));
     setIntersections(_intersectList);
     emit requestIntersects();
 }
