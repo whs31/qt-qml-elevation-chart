@@ -22,7 +22,7 @@ QGeoPath ElevationWidget::getGeopath()
     return d->geopath;
 }
 
-void ElevationWidget::setGeopath(QGeoPath path)
+void ElevationWidget::setGeopath(const QGeoPath& path)
 {
     Q_D(ElevationWidget);
     if(path == d->geopath)
@@ -104,7 +104,7 @@ ElevationWidgetPrivate::ElevationWidgetPrivate(ElevationWidget* parent)
     routeTimer = new QTimer(this);
     routeTimer->setInterval(1);
     routeTimer->setSingleShot(true);
-    recalculateWithGeopathChanged();
+    //recalculateWithGeopathChanged(); <- geopath is empty = draw blank screen
 }
 
 // █ calculate axes and scales

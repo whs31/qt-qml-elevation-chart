@@ -18,7 +18,7 @@ class ElevationWidget : public QObject
 
         /// @brief Задает путь в виджет для редактирования.
         /// @param path - путь для редактирования.
-        void setGeopath(QGeoPath path);
+        void setGeopath(const QGeoPath& path);
 
         /// @brief Переключение показа индексов точек на графике.
         /// @param state Состояние показа точек.

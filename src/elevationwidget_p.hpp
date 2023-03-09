@@ -79,8 +79,8 @@ class ElevationWidgetPrivate : public QObject
         QList<QPointF> bounds() const;       void setBounds(const QList<QPointF>& list);
 
         Q_PROPERTY(QList<QString> colors READ colors WRITE setColors NOTIFY colorsChanged)
-        QList<QString> m_colors = { "#263238", "#dedede", "#607d8b",
-                                    "#9ccc65", "#ffab40", "#ff7043" };
+        QList<QString> m_colors = { "#2e3440", "#eceff4", "#4c566a",
+                                    "#a3be8c", "#ebcb8b", "#bf616a" };
         QList<QString> colors() const;       void setColors(const QList<QString>& list);
 
         Q_PROPERTY(QList<float> keyValues READ keyValues WRITE setKeyValues NOTIFY keyValuesChanged)
