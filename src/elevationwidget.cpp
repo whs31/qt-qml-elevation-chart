@@ -4,15 +4,14 @@
 #include <qqml.h>
 #include <cmath>
 #include "Elevation/elevation.h"
-#include <QDebug>
 #include <QMetaType>
-#include <QDir>
+//#include <QDir>
 
 ElevationWidget::ElevationWidget(QObject *parent)
     : QObject{parent}
     , d_ptr(new ElevationWidgetPrivate(this))
 {
-    Q_INIT_RESOURCE(qplotjs);
+    //Q_INIT_RESOURCE(qplotjs);
     qmlRegisterSingletonInstance("ElevationWidgetImpl", 1, 0, "Impl", d_ptr);
 }
 
