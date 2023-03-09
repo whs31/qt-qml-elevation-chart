@@ -63,14 +63,14 @@ void ElevationWidget::setDescendRate(float rate)
 void ElevationWidget::setBoundHeight(float height)
 {
     Q_D(ElevationWidget);
-    d->bound.height = height;
+    //d->bound.height = height;
 //    d->recalculateBound(true);
 }
 
 void ElevationWidget::setBoundWidth(float width)
 {
     Q_D(ElevationWidget);
-    d->bound.width = width;
+    //d->bound.width = width;
 //    d->recalculateBound(true);
 }
 
@@ -164,7 +164,7 @@ void ElevationWidgetPrivate::recalculate(bool emitFlag)
     calculateCorrectedPath();
 
     routeParser->testRouteIntersectGround(geopath);
-    recalculateBound(emitFlag);
+    //recalculateBound(emitFlag);
 
     if(emitFlag or profile().isEmpty() or _emit_checkflag)
         emit requestAll();
@@ -293,8 +293,8 @@ void ElevationWidgetPrivate::intersectCalculationFinished(quint8 progress, const
     emit requestIntersects();
 }
 
-void ElevationWidgetPrivate::boundCalculationFinished(quint8 progress, const Elevation::RouteAndElevationProfiles &deltaResult)
-{
+//void ElevationWidgetPrivate::boundCalculationFinished(quint8 progress, const Elevation::RouteAndElevationProfiles &deltaResult)
+//{
 //    m_cleanBounds.clear();
 //    for(size_t i = 0; i < deltaResult.lowBound().length(); i++)
 //    {
@@ -302,7 +302,7 @@ void ElevationWidgetPrivate::boundCalculationFinished(quint8 progress, const Ele
 //        m_cleanBounds.push_back(deltaResult.highBound()[i]);
 //    }
 //    calculateBoundsOffset();
-}
+//}
 
 void ElevationWidgetPrivate::resize(float w, float h, float zoom_w, float zoom_h)
 {

@@ -45,7 +45,7 @@ class ElevationWidgetPrivate : public QObject
             void pathChanged();
             void intersectionsChanged();
             void correctedPathChanged();
-            void boundsChanged();
+            //void boundsChanged();
 
     private:
         void recalculate(bool emitFlag = false);
