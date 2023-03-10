@@ -93,7 +93,7 @@ ElevationWidgetPrivate::ElevationWidgetPrivate(ElevationWidget* parent)
     heightmapParser = new Elevation::Elevation(this);
     routeParser = new Elevation::ElevationTools(this);
 
-    qRegisterMetaType<QVector<Elevation::Point>>("QVector<Point>");
+    qRegisterMetaType<QVector<Elevation::Point>>("QVector<Point>");
 //    qRegisterMetaType<Elevation::RouteAndElevationProfiles>("RouteAndElevationProfiles");
     connect(routeParser, &Elevation::ElevationTools::progressTestRouteIntersectGround,
             this, &ElevationWidgetPrivate::intersectCalculationFinished);
