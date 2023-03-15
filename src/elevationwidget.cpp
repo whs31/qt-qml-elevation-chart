@@ -236,6 +236,9 @@ void ElevationWidgetPrivate::calculateCorrectedPath()
 {
     QGeoPath correctPath;
     //QList<QPointF> data;
+
+    ///При обновлении маршута вызывается дважды хз почему
+
     correctPath.addCoordinate(geopath.path()[0]);
     for(size_t i = 1; i < geopath.path().length(); i++)
     {
@@ -246,12 +249,11 @@ void ElevationWidgetPrivate::calculateCorrectedPath()
         QGeoCoordinate coordinate = QGeoCoordinate(geopath.path()[i]);
 
         // correct case
-        if((delta_y > 0 and delta_y < delta_y_max) or (delta_y < 0 and abs(delta_y) < delta_y_min))
+        if((delta_y >= 0 and delta_y < delta_y_max) or (delta_y <= 0 and abs(delta_y) < delta_y_min))
         {
             correctPath.addCoordinate(geopath.path()[i]);
             continue;
         }
-
 
         // climbs too fast
         else if(delta_y > 0 and delta_y > delta_y_max)
