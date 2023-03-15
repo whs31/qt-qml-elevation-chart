@@ -115,8 +115,13 @@ QPointF ElevationWidgetPrivate::toPixel(const QPointF& point)
 // █ calculate axes and scales
 void ElevationWidgetPrivate::recalculate(bool emitFlag)
 {
-    if(profile().isEmpty())
+    if(profile().isEmpty()){
+        calculatePath();
+        calculateCorrectedPath();
+        setKeyValues({});
+        emit requestAll();
         return;
+    }
 
     float _emit_check = axis.y.maxValue;
     bool _emit_checkflag = false;
@@ -218,7 +223,7 @@ void ElevationWidgetPrivate::recalculateWithGeopathChanged()
 
 void ElevationWidgetPrivate::calculatePath()
 {
-    QList<QPointF> data;
+    auto data = QList<QPointF>();
     float previous_distance = 0;
     for(size_t i = 0; i < geopath.path().length(); i++)
     {
@@ -234,7 +239,11 @@ void ElevationWidgetPrivate::calculatePath()
 
 void ElevationWidgetPrivate::calculateCorrectedPath()
 {
-    QGeoPath correctPath;
+    auto correctPath = QGeoPath();
+    if (geopath.size() == 0){
+        calculateCorrectedPathForUI(correctPath);
+        return;
+    }
     //QList<QPointF> data;
 
     ///При обновлении маршута вызывается дважды хз почему
@@ -365,7 +374,11 @@ QPointF ElevationWidgetPrivate::iterateOverRange(float rangeStart, float rangeSt
                     iterator.rangeMax = i < m_profile.length() - 1 ? i + 1 : i;
             }
         }
-        Q_ASSERT_X(iterator.rangeMax != -1, "<qplot> range assignment", "upper range not found in vector");
+        if (iterator.rangeMax != -1) {
+            qDebug() <<"<qplot> range assignment\t" << "upper range not found in vector";
+            return QPointF(-1, -1);
+        }
+        //Q_ASSERT_X(iterator.rangeMax != -1, "<qplot> range assignment", "upper range not found in vector");
         Q_ASSERT_X(iterator.rangeMax < m_profile.length(), "<qplot> bounds", "max range is out of bounds");
         Q_ASSERT_X(iterator.rangeMin >= 0, "<qplot> bounds", "min range is lower than 0");
         iterator.rangeSet = true;

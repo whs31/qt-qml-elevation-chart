@@ -18,7 +18,8 @@ Canvas { id: mouseCross;
 		ctx.moveTo(globalMouseArea.mouseX + 8, height - 2);
 		ctx.lineTo(globalMouseArea.mouseX, height - 10);
 		ctx.lineTo(globalMouseArea.mouseX + 8, height - 18);
-		let txt = Number((globalMouseArea.mouseX + view.visibleArea.xPosition * base.widthScaled) / 1000 / base.widthScaled * Impl.keyValues[1]).toFixed(1) + " км";
+        let txt = Impl.keyValues[1] ? Number((globalMouseArea.mouseX + view.visibleArea.xPosition * base.widthScaled) / 1000 / base.widthScaled * Impl.keyValues[1]).toFixed(1) + " км " : "---";
+
 		let textDimensions = ctx.measureText(txt);
 		ctx.lineTo(globalMouseArea.mouseX + 12 + textDimensions.width, height - 18);
 		ctx.lineTo(globalMouseArea.mouseX + 12 + textDimensions.width, height - 2);
