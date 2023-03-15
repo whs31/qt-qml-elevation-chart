@@ -374,7 +374,7 @@ QPointF ElevationWidgetPrivate::iterateOverRange(float rangeStart, float rangeSt
                     iterator.rangeMax = i < m_profile.length() - 1 ? i + 1 : i;
             }
         }
-        if (iterator.rangeMax != -1) {
+        if (iterator.rangeMax == -1) {
             qDebug() <<"<qplot> range assignment\t" << "upper range not found in vector";
             return QPointF(-1, -1);
         }
