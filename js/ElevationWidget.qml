@@ -60,11 +60,9 @@ Rectangle { id: base;
 			}
 
 			function onRequestBounds() {
-				boundsImpl.refresh();
+                //boundsImpl.refresh();
 			}
 		}
-
-
 
 		ListModel { id: pathModel; }
 
@@ -112,7 +110,7 @@ Rectangle { id: base;
 			readonly property real zoom_sensivity: 3;
 			property bool shiftPressed: false;
 
-			onWheel: (event) =>
+            onWheel: (event) =>
 					 {
 						 if(!shiftPressed) {
 							 if(event.angleDelta.y > 0 && property_handler.zoomW <= maxZoom)

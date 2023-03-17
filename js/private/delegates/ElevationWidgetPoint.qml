@@ -23,16 +23,19 @@ Rectangle
 			onTriggered: Impl.changeFlightPointAltitude(index, delta); }
 	MouseArea { id: pointMouseArea;
 		anchors.fill: parent;
+        anchors.margins: -5;
 		property var globalPos: mapToItem(globalMouseArea, mouseX, mouseY);
 		hoverEnabled: true;
 		onPressedChanged:
 		{
 			if(pressed)
 			{
-				updateTimer.start(); ui.opacity = 0.9;
+                updateTimer.start();
+                ui.opacity = 0.9;
 			}
 			else {
-				updateTimer.stop(); ui.opacity = 0;
+                updateTimer.stop();
+                ui.opacity = 0;
 			}
 		}
 	}
