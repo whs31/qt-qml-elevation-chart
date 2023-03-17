@@ -128,4 +128,6 @@ class ElevationWidgetPrivate : public QObject
             int range = 0;
             bool rangeSet = false;
         }; Iterator iterator;
+
+        bool m_isIntersecting = false;
 };

@@ -74,6 +74,12 @@ void ElevationWidget::setBoundWidth(float width)
 //    d->recalculateBound(true);
 }
 
+bool ElevationWidget::isIntersecting(void)
+{
+    Q_D(ElevationWidget);
+    return d->m_isIntersecting;
+}
+
 void ElevationWidget::setPallete(QString backgroundColor, QString foregroundColor, QString chartColor,
                                  QString successColor, QString warningColor, QString errorColor)
 {
@@ -167,7 +173,7 @@ void ElevationWidgetPrivate::recalculate(bool emitFlag)
     setKeyValues({  axis.stretch,                                       // 0
                     axis.x.maxValue, axis.y.maxValue,                   // 1-2
                     axis.x.roundMaxValue, axis.y.roundMaxValue,         // 3-4
-                    axis.x.scaleValue, axis.y.scaleValue,               // 5-6
+                    static_cast<float>(axis.x.scaleValue), static_cast<float>(axis.y.scaleValue),               // 5-6
                     axis.x.scaleCount, axis.y.scaleCount,               // 7-8
                     axis.x.scalePixelSize, axis.y.scalePixelSize  });   // 9-10
 
@@ -190,36 +196,6 @@ void ElevationWidgetPrivate::recalculateWithGeopathChanged()
     setProfile(heightmapParser->buildGroundProfileForChart(geopath));
     recalculate(true);
 }
-
-//void ElevationWidgetPrivate::recalculateBound(bool slow)
-//{
-//    if(geopath.isEmpty())
-//        return;
-//    if(routeTimer->remainingTime() <= 0 and slow)
-//    {
-//        routeParser->buildRouteAndElevationProfiles(geopath, bound.height, bound.width,
-//                                                    aircraftMetrics.velocity, aircraftMetrics.climbRate,
-//                                                    aircraftMetrics.descendRate);
-//        routeTimer->start();
-//    }
-//    else
-//    {
-//        calculateBoundsOffset();
-//    }
-//}
-
-//void ElevationWidgetPrivate::calculateBoundsOffset()
-//{
-////    QList<QPointF> _list;
-////    for(size_t i = 0; i < m_cleanBounds.length(); i++)
-////    {
-////        QPointF _point(m_cleanBounds[i].x() * layout.width / axis.x.maxValue,
-////                       m_cleanBounds[i].y() * layout.height / (axis.y.maxValue * axis.stretch));
-////        _list.append(_point);
-////    }
-////    setBounds(_list);
-////    emit requestBounds();
-//}
 
 void ElevationWidgetPrivate::calculatePath()
 {
@@ -244,7 +220,6 @@ void ElevationWidgetPrivate::calculateCorrectedPath()
         calculateCorrectedPathForUI(correctPath);
         return;
     }
-    //QList<QPointF> data;
 
     ///При обновлении маршута вызывается дважды хз почему
 
@@ -306,29 +281,28 @@ void ElevationWidgetPrivate::intersectCalculationFinished(quint8 progress, const
 
     if(_first_point_in_ground)
         _intersectList.append(QPointF(0, layout.height - geopath.path().first().altitude() * layout.height / (axis.y.maxValue * axis.stretch)));
+
+    // эта херня будет отвечать за то, лежит ли любая часть маршрута внутри рельефа)
+    // bool _intersects_flag = false;
     for(size_t i = 0; i < resultPath.length(); i++)
     {
         if(resultPath[i].isBase())
             continue;
         QPointF _point(resultPath[i].distance(), resultPath[i].altitude());
         _intersectList.append(toPixel(_point));
+        //@FIXME: заменить на {not m_isIntersecting}, когда вова перестанет душить
+        if(!m_isIntersecting)
+            m_isIntersecting = true;
     }
+    Q_Q(ElevationWidget);
+    if(m_isIntersecting)
+        emit(q->intersectingStateChanged());
+
     if(_last_point_in_ground)
         _intersectList.append(QPointF(layout.width, layout.height - geopath.path().last().altitude() * layout.height / (axis.y.maxValue * axis.stretch)));
     setIntersections(_intersectList);
     emit requestIntersects();
 }
-
-//void ElevationWidgetPrivate::boundCalculationFinished(quint8 progress, const Elevation::RouteAndElevationProfiles &deltaResult)
-//{
-//    m_cleanBounds.clear();
-//    for(size_t i = 0; i < deltaResult.lowBound().length(); i++)
-//    {
-//        m_cleanBounds.push_back(deltaResult.lowBound()[i]);
-//        m_cleanBounds.push_back(deltaResult.highBound()[i]);
-//    }
-//    calculateBoundsOffset();
-//}
 
 void ElevationWidgetPrivate::resize(float w, float h, float zoom_w, float zoom_h)
 {
@@ -348,6 +322,8 @@ void ElevationWidgetPrivate::resize(float w, float h, float zoom_w, float zoom_h
 
 QPointF ElevationWidgetPrivate::iterateOverRange(float rangeStart, float rangeStop)
 {
+    if(geopath.isEmpty())
+        return QPointF(-1, -1);
     if(not iterator.rangeSet)
     {
         iterator.rangeMin = -1;
@@ -378,7 +354,6 @@ QPointF ElevationWidgetPrivate::iterateOverRange(float rangeStart, float rangeSt
             qDebug() <<"<qplot> range assignment\t" << "upper range not found in vector";
             return QPointF(-1, -1);
         }
-        //Q_ASSERT_X(iterator.rangeMax != -1, "<qplot> range assignment", "upper range not found in vector");
         Q_ASSERT_X(iterator.rangeMax < m_profile.length(), "<qplot> bounds", "max range is out of bounds");
         Q_ASSERT_X(iterator.rangeMin >= 0, "<qplot> bounds", "min range is lower than 0");
         iterator.rangeSet = true;
@@ -452,9 +427,3 @@ void ElevationWidgetPrivate::setIntersections(const QList<QPointF>& list) {
     m_intersections = list;
     emit intersectionsChanged();
 }
-//QList<QPointF> ElevationWidgetPrivate::bounds() const { return m_bounds; }
-//void ElevationWidgetPrivate::setBounds(const QList<QPointF>& list) {
-//    if (m_bounds == list) return;
-//    m_bounds = list;
-//    emit boundsChanged();
-//}

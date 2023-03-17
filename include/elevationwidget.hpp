@@ -46,6 +46,9 @@ class ElevationWidget : public QObject
         /// @param width - расстояние между нижней и верхней границей профиля огибания в метрах.
         void setBoundWidth(float width);
 
+        /// @brief Возвращает true, если путь пересекается с профилем высот
+        bool isIntersecting(void);
+
         /// @brief Задает цветовую палитру виджета.
         /// @param backgroundColor - цвет фона;
         /// @param foregroundColor - цвет текста и элементов интерфейса;
@@ -65,4 +68,8 @@ class ElevationWidget : public QObject
     signals:
         /// @brief Сигнал, сообщающий об измененении пути.
         void geopathChanged();
+
+        /// @brief Сигнал сообщает, что состояние пересечения пути с рельефом изменилось
+        /// @details Нужно запрашивать isIntersecting() при получении сигнала
+        void intersectingStateChanged();
 };
