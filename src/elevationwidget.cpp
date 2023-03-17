@@ -36,16 +36,17 @@ bool ElevationWidget::isPathMatchingMetrics()
     return d->m_isMatchingMetrics;
 }
 
-void ElevationWidget::applyMetricsCorrection()
+QGeoPath ElevationWidget::applyMetricsCorrection()
 {
     Q_D(ElevationWidget);
     if(isPathMatchingMetrics())
     {
         qWarning() << "<qplot> Пути совпадают, изменения пути не будут применены";
-        return;
+        return QGeoPath();
     }
     setGeopath(d->metricsCorrectedGeopath);
     qInfo() << "<qplot> Изменения применены";
+    return d->metricsCorrectedGeopath;
 }
 
 void ElevationWidget::showIndexes(bool state)
