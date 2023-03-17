@@ -27,6 +27,7 @@ class ElevationWidgetPrivate : public QObject
         Q_INVOKABLE void changeFlightPointAltitude(int index, qreal delta);
 
         QGeoPath geopath;
+        QGeoPath metricsCorrectedGeopath;
 
     public slots:
             void intersectCalculationFinished(quint8 progress, const QVector<Elevation::Point> &resultPath);
@@ -130,4 +131,5 @@ class ElevationWidgetPrivate : public QObject
         }; Iterator iterator;
 
         bool m_isIntersecting = false;
+        bool m_isMatchingMetrics = true;
 };

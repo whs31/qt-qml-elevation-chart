@@ -30,6 +30,24 @@ void ElevationWidget::setGeopath(const QGeoPath& path)
     d->recalculateWithGeopathChanged();
 }
 
+bool ElevationWidget::isPathMatchingMetrics()
+{
+    Q_D(ElevationWidget);
+    return d->m_isMatchingMetrics;
+}
+
+void ElevationWidget::applyMetricsCorrection()
+{
+    Q_D(ElevationWidget);
+    if(isPathMatchingMetrics())
+    {
+        qWarning() << "<qplot> Пути совпадают, изменения пути не будут применены";
+        return;
+    }
+    setGeopath(d->metricsCorrectedGeopath);
+    qInfo() << "<qplot> Изменения применены";
+}
+
 void ElevationWidget::showIndexes(bool state)
 {
     Q_D(ElevationWidget);
@@ -215,15 +233,16 @@ void ElevationWidgetPrivate::calculatePath()
 
 void ElevationWidgetPrivate::calculateCorrectedPath()
 {
-    auto correctPath = QGeoPath();
-    if (geopath.size() == 0){
+    QGeoPath correctPath;
+    if (geopath.isEmpty()){
         calculateCorrectedPathForUI(correctPath);
         return;
     }
 
-    ///При обновлении маршута вызывается дважды хз почему
+    // При обновлении маршута вызывается дважды хз почему       @BUG: проверить
 
     correctPath.addCoordinate(geopath.path()[0]);
+    m_isMatchingMetrics = true;
     for(size_t i = 1; i < geopath.path().length(); i++)
     {
         float delta_x = geopath.path()[i].distanceTo(geopath.path()[i-1]);
@@ -241,11 +260,20 @@ void ElevationWidgetPrivate::calculateCorrectedPath()
 
         // climbs too fast
         else if(delta_y > 0 and delta_y > delta_y_max)
+        {
             coordinate.setAltitude(correctPath.path()[i-1].altitude() + delta_y_max);
+            m_isMatchingMetrics = false;
+        }
         // descends too fast
         else
+        {
             coordinate.setAltitude(correctPath.path()[i-1].altitude() - delta_y_min);
+            m_isMatchingMetrics = false;
+        }
         correctPath.addCoordinate(coordinate);
+        // @FIXME: not
+        if(!m_isMatchingMetrics)
+            metricsCorrectedGeopath = correctPath;
     }
     calculateCorrectedPathForUI(correctPath);
 }

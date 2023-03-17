@@ -22,6 +22,12 @@ class ElevationWidget : public QObject
         /// @param path - путь для редактирования.
         void setGeopath(const QGeoPath& path);
 
+        /// @brief Возвращает true, если обычный путь и скорректированный путь с учётом ЛТХ совпадают.
+        bool isPathMatchingMetrics(void);
+
+        /// @brief Меняет точки основного пути на точки, скорректированные с учётом ЛТХ
+        void applyMetricsCorrection(void);
+
         /// @brief Переключение показа индексов точек на графике.
         /// @param state Состояние показа точек.
         void showIndexes(bool state);
