@@ -134,12 +134,12 @@ void ElevationWidgetPrivate::recalculate(bool emitFlag)
     axis.y.maxValue = 0;
     axis.y.roundMaxValue = 0;
 
-    // double check real quick)
-    for(QPointF point : profile())
-    {
-        if(axis.y.maxValue < point.y())
-            axis.y.maxValue = point.y();
-    }
+    // тут было выставление высоты по рельефу
+//    for(QPointF point : profile())
+//    {
+//        if(axis.y.maxValue < point.y())
+//            axis.y.maxValue = point.y();
+//    }
     for(QGeoCoordinate coord : geopath.path())
     {
         if(coord.altitude() > axis.y.maxValue)
