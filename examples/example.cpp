@@ -71,7 +71,7 @@ void IntegrationExample::on_pushButton_2_clicked()
                                         })
                                 );
     std::vector<float> vec = { 30, 40, 30, 40, 70, 10, 20, 30, 80, 100, 200, 300, 200, 100, 100 };
-    elevationWidget->setVelocities(vec);
+    elevationWidget->setVelocity(vec);
 }
 
 

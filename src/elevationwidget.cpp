@@ -31,16 +31,6 @@ void ElevationWidget::setGeopath(const QGeoPath& path)
     d->recalculateWithGeopathChanged();
 }
 
-void ElevationWidget::setVelocities(const std::vector<float>& points)
-{
-    Q_D(ElevationWidget);
-    qDebug() << "<qplot> Задан массив скоростей.";
-    if(d->geopath.path().size() == points.size())
-        d->m_speeds = points;
-    else
-        qCritical() << "<qplot> Массив скоростей для точек некорректен.";
-}
-
 bool ElevationWidget::isPathMatchingMetrics()
 {
     Q_D(ElevationWidget);
@@ -81,6 +71,16 @@ void ElevationWidget::setVelocity(float velocity)
     Q_D(ElevationWidget);
     d->aircraftMetrics.velocity = velocity;
     d->recalculate();
+}
+
+void ElevationWidget::setVelocity(const std::vector<float>& points)
+{
+    Q_D(ElevationWidget);
+    qDebug() << "<qplot> Задан массив скоростей.";
+    if(d->geopath.path().size() == points.size())
+        d->m_speeds = points;
+    else
+        qCritical() << "<qplot> Массив скоростей для точек некорректен.";
 }
 
 void ElevationWidget::setClimbRate(float rate)

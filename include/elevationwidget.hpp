@@ -21,9 +21,7 @@ class ElevationWidget : public QObject
         /// @param path - путь для редактирования.
         void setGeopath(const QGeoPath& path);
 
-        /// @brief Задает вектор скоростей для каждой точки.
-        /// @param vec - список float, хранящий значение для каждой точки на geopath.
-        void setVelocities(const std::vector<float>& points);
+
 
         /// @brief Возвращает true, если обычный путь и скорректированный путь с учётом ЛТХ совпадают.
         bool isPathMatchingMetrics(void);
@@ -39,6 +37,8 @@ class ElevationWidget : public QObject
         /// @brief Задает текущую скорость БПЛА в виджет.
         /// @param velocity - скорость в м/с.
         void setVelocity(float velocity);
+        /// @overload Задает индивидуальные скорости для каждой точки на пути.
+        void setVelocity(const std::vector<float>& points);
 
         /// @brief Задает текущую скороподъемность в виджет.
         /// @param rate - скороподъемность в м/с.
