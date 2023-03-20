@@ -423,9 +423,14 @@ QPointF ElevationWidgetPrivate::iterateOverRange(float rangeStart, float rangeSt
 void ElevationWidgetPrivate::changeFlightPointAltitude(int index, qreal delta)
 {
     QGeoCoordinate coord = geopath.coordinateAt(index);
-    coord.setAltitude(coord.altitude() + delta * (coord.altitude() / axis.y.roundMaxValue * .1 + .01));
+    coord.setAltitude(coord.altitude() + delta * (coord.altitude() / axis.y.roundMaxValue * .2 + .01));
     if(coord.altitude() <= 0)
         coord.setAltitude(0);
+    if(coord.altitude() >= 15'000)
+    {
+        coord.setAltitude(15000);
+        qInfo() << "?)";
+    }
     geopath.replaceCoordinate(index, coord);
     recalculate();
 
