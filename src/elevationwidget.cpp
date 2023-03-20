@@ -343,14 +343,14 @@ void ElevationWidgetPrivate::intersectCalculationFinished(quint8 progress, const
 
     // эта херня будет отвечать за то, лежит ли любая часть маршрута внутри рельефа)
     // bool _intersects_flag = false;
+    m_isIntersecting = false;
     for(size_t i = 0; i < resultPath.length(); i++)
     {
         if(resultPath[i].isBase())
             continue;
         QPointF _point(resultPath[i].distance(), resultPath[i].altitude());
         _intersectList.append(toPixel(_point));
-        //@FIXME: заменить на {not m_isIntersecting}, когда вова перестанет душить
-        if(!m_isIntersecting)
+        if(not m_isIntersecting)
             m_isIntersecting = true;
     }
     Q_Q(ElevationWidget);
@@ -447,6 +447,8 @@ void ElevationWidgetPrivate::changeFlightPointAltitude(int index, qreal delta)
 
     Q_Q(ElevationWidget);
     emit(q->geopathChanged());
+
+    qWarning() << m_isIntersecting;
 }
 
 QList<QString> ElevationWidgetPrivate::colors() const { return m_colors; }

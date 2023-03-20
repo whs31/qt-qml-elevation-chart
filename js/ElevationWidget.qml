@@ -93,6 +93,8 @@ Rectangle { id: base;
 			Private.ElevationWidgetIntersections { id: intersectsImpl; visible: Impl.valid && Impl.fileIntegrity; }
 			Repeater
 			{
+				enabled: Impl.valid && Impl.fileIntegrity;
+				visible: Impl.valid && Impl.fileIntegrity;
 				clip: false;
 				model: pathModel;
 				delegate: Delegates.ElevationWidgetPoint { }
@@ -134,7 +136,7 @@ Rectangle { id: base;
 		font.pixelSize: width / 30;
 		horizontalAlignment: Text.AlignHCenter;
 		verticalAlignment: Text.AlignVCenter;
-		visible: !Impl.fileIntegrity;
+		visible: warningLabel2.visible ? false : !Impl.fileIntegrity;
 	}
 	Text { id: warningLabel2;
 		anchors.fill: parent;
