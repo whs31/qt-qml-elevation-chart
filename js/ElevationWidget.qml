@@ -85,10 +85,10 @@ Rectangle { id: base;
 			ScrollBar.horizontal: scrollbar;
 			onMovementEnded: requestAll();
 
-			Private.ElevationWidgetProfile { id: profileImpl; visible: Impl.valid; }
-			Private.ElevationWidgetCorrectPath { id: correctPathImpl; visible: Impl.valid; }
-			Private.ElevationWidgetPath { id: pathImpl; visible: Impl.valid; }
-			Private.ElevationWidgetIntersections { id: intersectsImpl; visible: Impl.valid; }
+			Private.ElevationWidgetProfile { id: profileImpl; visible: Impl.valid && Impl.fileIntegrity; }
+			Private.ElevationWidgetCorrectPath { id: correctPathImpl; visible: Impl.valid && Impl.fileIntegrity; }
+			Private.ElevationWidgetPath { id: pathImpl; visible: Impl.valid && Impl.fileIntegrity; }
+			Private.ElevationWidgetIntersections { id: intersectsImpl; visible: Impl.valid && Impl.fileIntegrity; }
 			Repeater
 			{
 				model: pathModel;
@@ -97,8 +97,8 @@ Rectangle { id: base;
 		}
 
 
-		Private.ElevationWidgetLegend { id: legendImpl; anchors.fill: parent; visible: Impl.valid; }
-		Private.ElevationWidgetMouseCross { id: mouseCrossImpl; anchors.fill: parent; visible: Impl.valid; }
+		Private.ElevationWidgetLegend { id: legendImpl; anchors.fill: parent; visible: Impl.valid && Impl.fileIntegrity; }
+		Private.ElevationWidgetMouseCross { id: mouseCrossImpl; anchors.fill: parent; visible: Impl.valid && Impl.fileIntegrity; }
 
 		Keys.onPressed: { if (event.key === Qt.Key_Shift) { wheelHandler.shiftPressed = true } }
 		Keys.onReleased: { if (event.key === Qt.Key_Shift) { wheelHandler.shiftPressed = false } }
