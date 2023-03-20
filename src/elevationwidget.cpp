@@ -353,6 +353,10 @@ void ElevationWidgetPrivate::intersectCalculationFinished(quint8 progress, const
         if(not m_isIntersecting)
             m_isIntersecting = true;
     }
+
+    // additional check if all desired points lies inside graph
+    if(not m_isIntersecting and heightmapParser->elevation(geopath.path().first().latitude(), geopath.path().first().longitude()) > geopath.path().first().altitude())
+        m_isIntersecting = true;
     Q_Q(ElevationWidget);
     if(m_isIntersecting)
         emit(q->intersectingStateChanged());
