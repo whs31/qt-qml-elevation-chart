@@ -47,7 +47,7 @@ Canvas { id: graph;
 				pathModel.append({
 									 "m_x": Impl.path[f].x * base.z_w - flightPointSize / 2,
 									 "m_y": Impl.path[f].y - flightPointSize / 2, flightPointSize, flightPointSize,
-									 "m_distance": Impl.path[f].x / base.width * Impl.keyValues[1],
+									 "m_distance": Impl.path[f].x / (base.width - base.offset) * Impl.keyValues[1],
 									 "m_elevation": Impl.keyValues[2] * Impl.keyValues[0] - Impl.path[f].y / base.height * Impl.keyValues[2] * Impl.keyValues[0],
 									 "m_invalid": false
 								 })
@@ -56,7 +56,7 @@ Canvas { id: graph;
 			{
 				pathModel.setProperty(f, "m_x", Impl.path[f].x * base.z_w - flightPointSize / 2);
 				pathModel.setProperty(f, "m_y", Impl.path[f].y - flightPointSize / 2, flightPointSize, flightPointSize);
-				pathModel.setProperty(f, "m_distance", Impl.path[f].x / base.width * Impl.keyValues[1]);
+				pathModel.setProperty(f, "m_distance", Impl.path[f].x / (base.width - base.offset) * Impl.keyValues[1]);
 				pathModel.setProperty(f, "m_elevation", Impl.keyValues[2] * Impl.keyValues[0] - Impl.path[f].y / base.height * Impl.keyValues[2] * Impl.keyValues[0]);
 			}
 		}

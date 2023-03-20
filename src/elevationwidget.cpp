@@ -354,10 +354,11 @@ void ElevationWidgetPrivate::intersectCalculationFinished(quint8 progress, const
 
 void ElevationWidgetPrivate::resize(float w, float h, float zoom_w, float zoom_h)
 {
+    const float RIGHT_OFFSET = 10;
     if(w == layout.width and h == layout.height and
        zoom_w == layout.horizontal_zoom and zoom_h == layout.vertical_zoom)
         return;
-    layout.width = w;
+    layout.width = w - RIGHT_OFFSET;
     layout.height = h;
     layout.horizontal_zoom = zoom_w;
     layout.vertical_zoom = zoom_h;

@@ -17,10 +17,10 @@ Rectangle { id: base;
 	}
 	Component.onCompleted:
 	{
-		Impl.resize(width, height, property_handler.zoomW, 1);
+		Impl.resize((base.width - base.offset), height, property_handler.zoomW, 1);
 	}
-	onWidthChanged: Impl.resize(width, height, property_handler.zoomW, 1);
-	onHeightChanged: Impl.resize(width, height, property_handler.zoomW, 1);
+	onWidthChanged: Impl.resize((base.width - base.offset), height, property_handler.zoomW, 1);
+	onHeightChanged: Impl.resize((base.width - base.offset), height, property_handler.zoomW, 1);
 
 	Item { id: property_handler;
 		property real zoomW: 1;
@@ -30,12 +30,13 @@ Rectangle { id: base;
 				zoomW = wheelHandler.maxZoom;
 			if(zoomW < 1)
 				zoomW = 1;
-			Impl.resize(base.width, base.height, zoomW, 1);
+			Impl.resize((base.width - base.offset), base.height, zoomW, 1);
 		}
 	}
 
-	property real widthScaled: width * z_w;
+	property real widthScaled: (base.width - base.offset) * z_w;
 	property real z_w: property_handler.zoomW;
+	property int offset: 30;
 	MouseArea { id: globalMouseArea;
 		acceptedButtons: Qt.RightButton;
 		anchors.fill: parent;
@@ -74,13 +75,14 @@ Rectangle { id: base;
 			}
 		}
 		Flickable { id: view;
-			anchors.fill: parent;
-			contentWidth: base.width * property_handler.zoomW;
+			anchors.fill: legendImpl;
+			anchors.leftMargin: base.offset;
+			contentWidth: (base.width - base.offset) * property_handler.zoomW;
 			contentHeight: base.height;
 			flickableDirection: Flickable.HorizontalAndVerticalFlick;
 			interactive: false;
 			boundsMovement: Flickable.StopAtBounds;
-			clip: true;
+			clip: false;
 			pixelAligned: true;
 			ScrollBar.horizontal: scrollbar;
 			onMovementEnded: requestAll();
@@ -91,6 +93,7 @@ Rectangle { id: base;
 			Private.ElevationWidgetIntersections { id: intersectsImpl; visible: Impl.valid && Impl.fileIntegrity; }
 			Repeater
 			{
+				clip: false;
 				model: pathModel;
 				delegate: Delegates.ElevationWidgetPoint { }
 			}
@@ -98,7 +101,7 @@ Rectangle { id: base;
 
 
 		Private.ElevationWidgetLegend { id: legendImpl; anchors.fill: parent; visible: Impl.valid && Impl.fileIntegrity; }
-		Private.ElevationWidgetMouseCross { id: mouseCrossImpl; anchors.fill: parent; visible: Impl.valid && Impl.fileIntegrity; }
+		Private.ElevationWidgetMouseCross { id: mouseCrossImpl; anchors.fill: view; anchors.rightMargin: 10; visible: Impl.valid && Impl.fileIntegrity; }
 
 		Keys.onPressed: { if (event.key === Qt.Key_Shift) { wheelHandler.shiftPressed = true } }
 		Keys.onReleased: { if (event.key === Qt.Key_Shift) { wheelHandler.shiftPressed = false } }

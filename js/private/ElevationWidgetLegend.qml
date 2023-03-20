@@ -15,11 +15,11 @@ Canvas { id: legend;
 		ctx.clearRect(0, 0, width, height);
 
 		ctx.strokeStyle = Impl.colors[1];
-		ctx.lineWidth = 5;
+		ctx.lineWidth = 3;
 
 		ctx.beginPath();
-		ctx.moveTo(0, 0);
-		ctx.lineTo(0, height);
+		ctx.moveTo(base.offset, 0);
+		ctx.lineTo(base.offset, height);
 		ctx.lineTo(width, height);
 
 		ctx.stroke();
@@ -32,7 +32,7 @@ Canvas { id: legend;
 			{
 				// grid
 				ctx.globalAlpha = 0.35;
-				ctx.font = "bold 12px sans-serif";
+				ctx.font = "bold 10px sans-serif";
 				ctx.strokeStyle = Qt.darker(Impl.colors[1], 1.5);
 				ctx.lineWidth = 0.6;
 				ctx.beginPath();
@@ -42,21 +42,22 @@ Canvas { id: legend;
 				ctx.globalAlpha = 1;
 
 				// scales itself
-				ctx.lineWidth = 3;
+				ctx.lineWidth = 2;
 				ctx.strokeStyle = Impl.colors[1];
 				ctx.beginPath();
 				let val = Impl.keyValues[6] * k;
-				let txt = Number(val).toFixed(0) + " м";
+				let txt = Number(val).toFixed(0);
+				let textDimensions = ctx.measureText(txt);
 				ctx.fillStyle = Impl.colors[1];
-				ctx.fillText(txt, 4, height - k * Impl.keyValues[10] - 4);
-				ctx.moveTo(0, height - k * Impl.keyValues[10]);
-				ctx.lineTo(40, height - k * Impl.keyValues[10]);
+				ctx.fillText(txt, base.offset - textDimensions.width - 3, height - k * Impl.keyValues[10] - 4);
+				ctx.moveTo(base.offset, height - k * Impl.keyValues[10]);
+				ctx.lineTo(0, height - k * Impl.keyValues[10]);
 			}
 			else
 			{
 				// grid
 				ctx.globalAlpha = 0.3;
-				ctx.font = "bold 12px sans-serif";
+				ctx.font = "bold 9px sans-serif";
 				ctx.strokeStyle = Qt.darker(Impl.colors[1], 1.5);
 				ctx.lineWidth = 0.4;
 				ctx.beginPath();
@@ -66,23 +67,24 @@ Canvas { id: legend;
 				ctx.globalAlpha = 1;
 
 				// text on minor scales
-				ctx.font = "bold 10px sans-serif";
+				ctx.font = "bold 9px sans-serif";
 				let val = Impl.keyValues[6] * k;
-				let txt = Number(val).toFixed(0) + " м";
+				let txt = Number(val).toFixed(0);
+				let textDimensions = ctx.measureText(txt);
 				ctx.fillStyle = Impl.colors[1];
-				ctx.fillText(txt, 4, height - k * Impl.keyValues[10] - 4);
+				ctx.fillText(txt, base.offset - textDimensions.width - 3, height - k * Impl.keyValues[10] - 4);
 
 				// scales itself
 				ctx.lineWidth = 2;
 				ctx.strokeStyle = Impl.colors[1];
 				ctx.beginPath();
-				ctx.moveTo(0, height - k * Impl.keyValues[10]);
-				ctx.lineTo(30, height - k * Impl.keyValues[10]);
+				ctx.moveTo(base.offset, height - k * Impl.keyValues[10]);
+				ctx.lineTo(0, height - k * Impl.keyValues[10]);
 			}
 			ctx.stroke();
 		}
 	}
-	Rectangle { color: Impl.colors[1]; width: 70; height: 15; anchors.top: parent.top; anchors.left: parent.left;
+	Rectangle { color: Impl.colors[1]; width: 60; height: 15; anchors.top: parent.top; anchors.left: parent.left;
 				Text { color: Impl.colors[0]; anchors.fill: parent; text: "ВЫСОТА"; font.bold: true;
 					   horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter; } }
 	Rectangle { color: Impl.colors[1]; width: 100; height: 15; anchors.bottom: parent.bottom; anchors.right: parent.right;
