@@ -5,6 +5,7 @@ import "private" as Private;
 import "private/delegates" as Delegates
 
 Rectangle { id: base;
+	required property string sFontFamily;
 	focus: true;
 	clip: true;
 	color: Impl.colors[0];
@@ -112,16 +113,19 @@ Rectangle { id: base;
 
             onWheel: (event) =>
 					 {
-						 if(!shiftPressed) {
-							 if(event.angleDelta.y > 0 && property_handler.zoomW <= maxZoom)
-							 property_handler.zoomW += (1 / zoom_sensivity) * property_handler.zoomW;
-							 else if(event.angleDelta.y < 0 && property_handler.zoomW >= 1)
-							 property_handler.zoomW -= (1 / zoom_sensivity) * property_handler.zoomW;
-						 } else {
-							 if(event.angleDelta.y > 0)
-							 view.flick(1000, 0);
-							 else if(event.angleDelta.y < 0)
-							 view.flick(-1000, 0);
+						 if(Impl.valid && Impl.fileIntegrity)
+						 {
+							 if(!shiftPressed) {
+								 if(event.angleDelta.y > 0 && property_handler.zoomW <= maxZoom)
+									property_handler.zoomW += (1 / zoom_sensivity) * property_handler.zoomW;
+								 else if(event.angleDelta.y < 0 && property_handler.zoomW >= 1)
+									property_handler.zoomW -= (1 / zoom_sensivity) * property_handler.zoomW;
+							 } else {
+								 if(event.angleDelta.y > 0)
+									view.flick(1000, 0);
+								 else if(event.angleDelta.y < 0)
+									view.flick(-1000, 0);
+							 }
 						 }
 					 }
 		}
@@ -132,9 +136,10 @@ Rectangle { id: base;
 		text: "ОТСУТСТВУЮТ ИСХОДНЫЕ ДАННЫЕ ПО ВЫСОТЕ";
 		font.bold: true;
 		font.pixelSize: width / 30;
+		font.family: sFontFamily;
 		horizontalAlignment: Text.AlignHCenter;
 		verticalAlignment: Text.AlignVCenter;
-		visible: warningLabel2.visible ? false : !Impl.fileIntegrity;
+		visible: !Impl.valid ? false : !Impl.fileIntegrity;
 	}
 	Text { id: warningLabel2;
 		anchors.fill: parent;
@@ -142,6 +147,7 @@ Rectangle { id: base;
 		text: "НЕ ЗАДАН МАРШРУТ";
 		font.bold: true;
 		font.pixelSize: width / 30;
+		font.family: sFontFamily;
 		horizontalAlignment: Text.AlignHCenter;
 		verticalAlignment: Text.AlignVCenter;
 		visible: !Impl.valid;

@@ -438,12 +438,12 @@ QPointF ElevationWidgetPrivate::iterateOverRange(float rangeStart, float rangeSt
 void ElevationWidgetPrivate::changeFlightPointAltitude(int index, qreal delta)
 {
     QGeoCoordinate coord = geopath.coordinateAt(index);
-    coord.setAltitude(coord.altitude() + delta * (coord.altitude() / axis.y.roundMaxValue * .2 + .01));
-    if(coord.altitude() <= 0)
-        coord.setAltitude(0);
-    if(coord.altitude() >= 15'000)
+    coord.setAltitude(coord.altitude() + delta * (coord.altitude() / axis.y.roundMaxValue * .1 + .01));
+    if(coord.altitude() <= ALTITUDE_MIN)
+        coord.setAltitude(ALTITUDE_MIN);
+    if(coord.altitude() >= ALTITUDE_MAX)
     {
-        coord.setAltitude(15000);
+        coord.setAltitude(ALTITUDE_MAX);
         qInfo() << "?)";
     }
     geopath.replaceCoordinate(index, coord);
@@ -451,8 +451,6 @@ void ElevationWidgetPrivate::changeFlightPointAltitude(int index, qreal delta)
 
     Q_Q(ElevationWidget);
     emit(q->geopathChanged());
-
-    qWarning() << m_isIntersecting;
 }
 
 QList<QString> ElevationWidgetPrivate::colors() const { return m_colors; }

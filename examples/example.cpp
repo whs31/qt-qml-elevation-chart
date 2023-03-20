@@ -14,6 +14,8 @@ IntegrationExample::IntegrationExample(QWidget *parent)
     ui->quickWidget->show();
 
     elevationWidget->setGeopath(QGeoPath());
+    elevationWidget->setPallete("#2e3440", "#eceff4", "#4c566a",
+                                "#a3be8c", "#ebcb8b", "#bf616a");
     uiSetup();
 }
 

@@ -23,6 +23,8 @@ Rectangle { id: root;
 		anchors.right: parent.right;
 		anchors.bottom: parent.bottom;
 		anchors.top: scrollingSeries1.bottom;
+
+		sFontFamily: "Ubuntu Mono";
 	}
 
 	ScrollSeries { id: scrollingSeries1;

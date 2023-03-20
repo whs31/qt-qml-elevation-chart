@@ -29,6 +29,9 @@ class ElevationWidgetPrivate : public QObject
         QGeoPath geopath;
         QGeoPath metricsCorrectedGeopath;
 
+        const int32_t ALTITUDE_MIN = 5; // m
+        const int32_t ALTITUDE_MAX = 15'000; // m
+
         public slots:
             void intersectCalculationFinished(quint8 progress, const QVector<Elevation::Point> &resultPath);
 //            void boundCalculationFinished(quint8 progress, const Elevation::RouteAndElevationProfiles &deltaResult);
@@ -83,8 +86,8 @@ class ElevationWidgetPrivate : public QObject
 //        QList<QPointF> bounds() const;       void setBounds(const QList<QPointF>& list);
 
         Q_PROPERTY(QList<QString> colors READ colors WRITE setColors NOTIFY colorsChanged)
-        QList<QString> m_colors = { "#2e3440", "#eceff4", "#4c566a",
-                                    "#a3be8c", "#ebcb8b", "#bf616a" };
+        QList<QString> m_colors = { "#000000", "#ffffff", "#888888",
+                                    "#00ff00", "#ffff00", "#ff0000" };
         QList<QString> colors() const;       void setColors(const QList<QString>& list);
 
         Q_PROPERTY(QList<float> keyValues READ keyValues WRITE setKeyValues NOTIFY keyValuesChanged)
