@@ -45,9 +45,9 @@ Rectangle
 	Rectangle { id: indexUI;
 		z: 100;
 		visible: Impl.showIndex;
-		width: 31; height: 17; radius: height / 2; opacity: 1; color: invalid ? Impl.colors[4] : Impl.colors[3];
-		anchors.horizontalCenter: parent.horizontalCenter; anchors.verticalCenter: parent.verticalCenter;
-		anchors.horizontalCenterOffset: m_x / base.width > 0.5 ? -width / 2 - 7 : width / 2 + 7;
+		width: 24; height: 14; radius: height / 2; opacity: 1; color: invalid ? Impl.colors[4] : Impl.colors[3];
+		anchors.horizontalCenter: parent.horizontalCenter; anchors.bottom: parent.top;
+		anchors.bottomMargin: 5;
 		Text {
 			id: label1; color: base.color; width: 31; height: 15;
 			text: "<b>" + Number(index+1) + "</b>";

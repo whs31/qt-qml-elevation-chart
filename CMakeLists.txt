@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.13)
 
 project(QPlot VERSION 1.0 LANGUAGES CXX)
-set(LIBRARY_COMPILE TRUE)
+set(LIBRARY_COMPILE FALSE)
 
 if(NOT LIBRARY_COMPILE)
 	set(CMAKE_AUTOUIC ON)
@@ -19,15 +19,24 @@ include_directories(src)
 include_directories(include)
 
 set(PROJECT_SOURCES
+	# EXAMPLES
 	examples/main.cpp
 	examples/example.cpp
 	examples/example.h
 	examples/example.ui
 	examples/QPlot-example.qrc
 
+	# QML|JS
 	js/QPlot.qrc
-	include/elevationwidget.hpp			src/elevationwidget.cpp			src/elevationwidget_p.hpp
 	js/qplotjs.qrc
+
+	# API
+	include/elevationwidget.hpp
+
+	# IMPLEMENTATION
+	src/elevationwidget.cpp
+	src/elevationwidget_p.hpp
+
 )
 
 if(LIBRARY_COMPILE)
