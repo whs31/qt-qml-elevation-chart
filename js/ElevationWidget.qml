@@ -85,10 +85,10 @@ Rectangle { id: base;
 			ScrollBar.horizontal: scrollbar;
 			onMovementEnded: requestAll();
 
-			Private.ElevationWidgetProfile { id: profileImpl; }
-			Private.ElevationWidgetCorrectPath { id: correctPathImpl; }
-			Private.ElevationWidgetPath { id: pathImpl; }
-			Private.ElevationWidgetIntersections { id: intersectsImpl; }
+			Private.ElevationWidgetProfile { id: profileImpl; visible: Impl.valid; }
+			Private.ElevationWidgetCorrectPath { id: correctPathImpl; visible: Impl.valid; }
+			Private.ElevationWidgetPath { id: pathImpl; visible: Impl.valid; }
+			Private.ElevationWidgetIntersections { id: intersectsImpl; visible: Impl.valid; }
 			Repeater
 			{
 				model: pathModel;
@@ -97,8 +97,8 @@ Rectangle { id: base;
 		}
 
 
-		Private.ElevationWidgetLegend { id: legendImpl; anchors.fill: parent; }
-        Private.ElevationWidgetMouseCross { id: mouseCrossImpl; anchors.fill: parent; }
+		Private.ElevationWidgetLegend { id: legendImpl; anchors.fill: parent; visible: Impl.valid; }
+		Private.ElevationWidgetMouseCross { id: mouseCrossImpl; anchors.fill: parent; visible: Impl.valid; }
 
 		Keys.onPressed: { if (event.key === Qt.Key_Shift) { wheelHandler.shiftPressed = true } }
 		Keys.onReleased: { if (event.key === Qt.Key_Shift) { wheelHandler.shiftPressed = false } }
@@ -132,5 +132,15 @@ Rectangle { id: base;
 		horizontalAlignment: Text.AlignHCenter;
 		verticalAlignment: Text.AlignVCenter;
 		visible: !Impl.fileIntegrity;
+	}
+	Text { id: warningLabel2;
+		anchors.fill: parent;
+		color: Impl.colors[4];
+		text: "НЕ ЗАДАН МАРШРУТ";
+		font.bold: true;
+		font.pixelSize: width / 30;
+		horizontalAlignment: Text.AlignHCenter;
+		verticalAlignment: Text.AlignVCenter;
+		visible: !Impl.valid;
 	}
 }

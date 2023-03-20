@@ -27,7 +27,6 @@ class ElevationWidget : public QObject
         /// @return Скорректированный путь
         QGeoPath applyMetricsCorrection(void);
 
-
         /// @brief Переключение показа индексов точек на графике.
         /// @param state Состояние показа точек.
         void showIndexes(bool state);

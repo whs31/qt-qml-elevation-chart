@@ -24,7 +24,7 @@ QGeoPath ElevationWidget::getGeopath()
 void ElevationWidget::setGeopath(const QGeoPath& path)
 {
     Q_D(ElevationWidget);
-    if(path == d->geopath)
+    if(path == d->geopath and not path.isEmpty())
         return;
     d->geopath = path;
     d->recalculateWithGeopathChanged();
@@ -224,6 +224,13 @@ void ElevationWidgetPrivate::recalculate(bool emitFlag)
 // █ build profile
 void ElevationWidgetPrivate::recalculateWithGeopathChanged()
 {
+    if(geopath.isEmpty())
+    {
+        setValid(false);
+        qWarning() << "<qplot> Empty geopath.";
+        return;
+    }
+    setValid(true);
     setProfile(heightmapParser->buildGroundProfileForChart(geopath));
     recalculate(true);
 }
@@ -474,3 +481,10 @@ void ElevationWidgetPrivate::setFileIntegrity(bool state) {
     m_fileIntegrity = state;
     emit fileIntegrityChanged();
 }
+bool ElevationWidgetPrivate::valid() const { return m_valid; }
+void ElevationWidgetPrivate::setValid(bool state) {
+    if (m_valid == state) return;
+    m_valid = state;
+    emit validChanged();
+}
+

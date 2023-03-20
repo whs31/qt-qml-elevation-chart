@@ -48,6 +48,7 @@ class ElevationWidgetPrivate : public QObject
             void correctedPathChanged();
             //void boundsChanged();
             void fileIntegrityChanged();
+            void validChanged();
 
     private:
         QPointF toPixel(const QPointF& point);
@@ -97,6 +98,9 @@ class ElevationWidgetPrivate : public QObject
         bool m_fileIntegrity = true;
         bool fileIntegrity() const;          void setFileIntegrity(bool state);
 
+        Q_PROPERTY(bool valid READ valid WRITE setValid NOTIFY validChanged)
+        bool m_valid = true;
+        bool valid() const;          void setValid(bool state);
 
         struct Layout {
             float width = 500;
