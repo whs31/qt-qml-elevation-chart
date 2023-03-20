@@ -29,7 +29,7 @@ class ElevationWidgetPrivate : public QObject
         QGeoPath geopath;
         QGeoPath metricsCorrectedGeopath;
 
-    public slots:
+        public slots:
             void intersectCalculationFinished(quint8 progress, const QVector<Elevation::Point> &resultPath);
 //            void boundCalculationFinished(quint8 progress, const Elevation::RouteAndElevationProfiles &deltaResult);
 
@@ -47,6 +47,7 @@ class ElevationWidgetPrivate : public QObject
             void intersectionsChanged();
             void correctedPathChanged();
             //void boundsChanged();
+            void fileIntegrityChanged();
 
     private:
         QPointF toPixel(const QPointF& point);
@@ -91,6 +92,10 @@ class ElevationWidgetPrivate : public QObject
 
         Q_PROPERTY(bool showIndex READ showIndex WRITE setShowIndex NOTIFY showIndexChanged)
         bool showIndex() const;              void setShowIndex(bool state);
+
+        Q_PROPERTY(bool fileIntegrity READ fileIntegrity WRITE setFileIntegrity NOTIFY fileIntegrityChanged)
+        bool m_fileIntegrity = true;
+        bool fileIntegrity() const;          void setFileIntegrity(bool state);
 
 
         struct Layout {

@@ -55,6 +55,9 @@ class ElevationWidget : public QObject
         /// @brief Возвращает true, если путь пересекается с профилем высот
         bool isIntersecting(void);
 
+        /// @brief Вовращает false, если в папке с профилями высот отсутствуют нужные файлы
+        bool isValidPath(void);
+
         /// @brief Задает цветовую палитру виджета.
         /// @param backgroundColor - цвет фона;
         /// @param foregroundColor - цвет текста и элементов интерфейса;

@@ -29,9 +29,7 @@ Rectangle { id: base;
 			if(zoomW > wheelHandler.maxZoom)
 				zoomW = wheelHandler.maxZoom;
 			if(zoomW < 1)
-			{
 				zoomW = 1;
-			}
 			Impl.resize(base.width, base.height, zoomW, 1);
 		}
 	}
@@ -65,7 +63,6 @@ Rectangle { id: base;
 		}
 
 		ListModel { id: pathModel; }
-
 		ScrollBar { id: scrollbar;
 			anchors.top: view.top;
 			anchors.left: view.left;
@@ -125,5 +122,15 @@ Rectangle { id: base;
 						 }
 					 }
 		}
+	}
+	Text { id: warningLabel;
+		anchors.fill: parent;
+		color: Impl.colors[5];
+		text: "ОТСУТСТВУЮТ ИСХОДНЫЕ ДАННЫЕ ПО ВЫСОТЕ";
+		font.bold: true;
+		font.pixelSize: width / 30;
+		horizontalAlignment: Text.AlignHCenter;
+		verticalAlignment: Text.AlignVCenter;
+		visible: !Impl.fileIntegrity;
 	}
 }

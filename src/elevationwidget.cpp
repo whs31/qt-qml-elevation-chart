@@ -99,6 +99,12 @@ bool ElevationWidget::isIntersecting(void)
     return d->m_isIntersecting;
 }
 
+bool ElevationWidget::isValidPath()
+{
+    Q_D(ElevationWidget);
+    return d->fileIntegrity();
+}
+
 void ElevationWidget::setPallete(QString backgroundColor, QString foregroundColor, QString chartColor,
                                  QString successColor, QString warningColor, QString errorColor)
 {
@@ -119,7 +125,7 @@ ElevationWidgetPrivate::ElevationWidgetPrivate(ElevationWidget* parent)
     routeParser = new Elevation::ElevationTools(this);
 
     qRegisterMetaType<QVector<Elevation::Point>>("QVector<Point>");
-//    qRegisterMetaType<Elevation::RouteAndElevationProfiles>("RouteAndElevationProfiles");
+    qRegisterMetaType<Elevation::RouteAndElevationProfiles>("RouteAndElevationProfiles");
     connect(routeParser, &Elevation::ElevationTools::progressTestRouteIntersectGround,
             this, &ElevationWidgetPrivate::intersectCalculationFinished);
 //    connect(routeParser, &Elevation::ElevationTools::progressBuildRouteAndElevationProfiles,
@@ -159,12 +165,18 @@ void ElevationWidgetPrivate::recalculate(bool emitFlag)
     axis.y.maxValue = 0;
     axis.y.roundMaxValue = 0;
 
-    // тут было выставление высоты по рельефу
-//    for(QPointF point : profile())
-//    {
-//        if(axis.y.maxValue < point.y())
-//            axis.y.maxValue = point.y();
-//    }
+    // проверка на целостность профиля высот
+    setFileIntegrity(true);
+    for(QPointF point : profile())
+    {
+        if(point.y() > 32000)
+        {
+            qWarning() << "<qplot> Some elevation profiles are missing.";
+            setFileIntegrity(false);
+            return;
+        }
+    }
+
     for(QGeoCoordinate coord : geopath.path())
     {
         if(coord.altitude() > axis.y.maxValue)
@@ -189,12 +201,12 @@ void ElevationWidgetPrivate::recalculate(bool emitFlag)
     axis.y.scaleCount = (float)axis.y.maxValue * axis.stretch / (float)axis.y.scaleValue;
     axis.x.scalePixelSize = layout.width / axis.x.scaleCount;
     axis.y.scalePixelSize = layout.height / axis.y.scaleCount;
-    setKeyValues({  axis.stretch,                                       // 0
-                    axis.x.maxValue, axis.y.maxValue,                   // 1-2
-                    axis.x.roundMaxValue, axis.y.roundMaxValue,         // 3-4
+    setKeyValues({  axis.stretch,                                                                               // 0
+                    axis.x.maxValue, axis.y.maxValue,                                                           // 1-2
+                    axis.x.roundMaxValue, axis.y.roundMaxValue,                                                 // 3-4
                     static_cast<float>(axis.x.scaleValue), static_cast<float>(axis.y.scaleValue),               // 5-6
-                    axis.x.scaleCount, axis.y.scaleCount,               // 7-8
-                    axis.x.scalePixelSize, axis.y.scalePixelSize  });   // 9-10
+                    axis.x.scaleCount, axis.y.scaleCount,                                                       // 7-8
+                    axis.x.scalePixelSize, axis.y.scalePixelSize  });                                           // 9-10
 
     calculatePath();
     calculateCorrectedPath();
@@ -403,7 +415,7 @@ QPointF ElevationWidgetPrivate::iterateOverRange(float rangeStart, float rangeSt
 void ElevationWidgetPrivate::changeFlightPointAltitude(int index, qreal delta)
 {
     QGeoCoordinate coord = geopath.coordinateAt(index);
-    coord.setAltitude(coord.altitude() + delta * (.1));
+    coord.setAltitude(coord.altitude() + delta * (coord.altitude() / axis.y.roundMaxValue * .1 + .01));
     if(coord.altitude() <= 0)
         coord.setAltitude(0);
     geopath.replaceCoordinate(index, coord);
@@ -455,4 +467,10 @@ void ElevationWidgetPrivate::setIntersections(const QList<QPointF>& list) {
     if (m_intersections == list) return;
     m_intersections = list;
     emit intersectionsChanged();
+}
+bool ElevationWidgetPrivate::fileIntegrity() const { return m_fileIntegrity; }
+void ElevationWidgetPrivate::setFileIntegrity(bool state) {
+    if (m_fileIntegrity == state) return;
+    m_fileIntegrity = state;
+    emit fileIntegrityChanged();
 }
