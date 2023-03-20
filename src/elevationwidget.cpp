@@ -264,12 +264,27 @@ void ElevationWidgetPrivate::calculateCorrectedPath()
 
     correctPath.addCoordinate(geopath.path()[0]);
     m_isMatchingMetrics = true;
+    const bool _allow_individual_speeds = (m_speeds.size() == geopath.path().size());
+    #ifdef QT_DEBUG
+        if(_allow_individual_speeds)
+            qDebug() << "<qplot> Используются индивидуальные скорости для каждой точки";
+    #endif
     for(size_t i = 1; i < geopath.path().length(); i++)
     {
-        float delta_x = geopath.path()[i].distanceTo(geopath.path()[i-1]);
-        float delta_y = geopath.path()[i].altitude() - correctPath.path()[i-1].altitude();
-        const float delta_y_min = aircraftMetrics.descendRate * delta_x / aircraftMetrics.velocity;
-        const float delta_y_max = aircraftMetrics.climbRate * delta_x / aircraftMetrics.velocity;
+        const float delta_x = geopath.path()[i].distanceTo(geopath.path()[i-1]);
+        const float delta_y = geopath.path()[i].altitude() - correctPath.path()[i-1].altitude();
+        float delta_y_min, delta_y_max;
+
+        if(_allow_individual_speeds)
+        {
+            delta_y_min = aircraftMetrics.descendRate * delta_x / m_speeds[i];
+            delta_y_max = aircraftMetrics.climbRate * delta_x / m_speeds[i];
+        }
+        else
+        {
+            delta_y_min = aircraftMetrics.descendRate * delta_x / aircraftMetrics.velocity;
+            delta_y_max = aircraftMetrics.climbRate * delta_x / aircraftMetrics.velocity;
+        }
         QGeoCoordinate coordinate = QGeoCoordinate(geopath.path()[i]);
 
         // correct case
