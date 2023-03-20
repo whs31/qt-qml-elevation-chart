@@ -44,9 +44,19 @@ QGeoPath ElevationWidget::applyMetricsCorrection()
         qWarning() << "<qplot> Пути совпадают, изменения пути не будут применены";
         return QGeoPath();
     }
-    setGeopath(d->metricsCorrectedGeopath);
+
+    QGeoPath returnPath = d->geopath;
+    for(size_t i = 0; i < d->geopath.path().length(); i++)
+    {
+        if(i < d->metricsCorrectedGeopath.path().length())
+            returnPath.replaceCoordinate(i, d->metricsCorrectedGeopath.path()[i]);
+    }
+
+    d->metricsCorrectedGeopath = returnPath;
+    setGeopath(returnPath);
+
     qInfo() << "<qplot> Изменения применены";
-    return d->metricsCorrectedGeopath;
+    return getGeopath();
 }
 
 void ElevationWidget::showIndexes(bool state)
@@ -285,17 +295,18 @@ void ElevationWidgetPrivate::calculateCorrectedPath()
             m_isMatchingMetrics = false;
         }
         // descends too fast
-        else
+        else if(delta_y < 0 and abs(delta_y) > delta_y_min)
         {
             coordinate.setAltitude(correctPath.path()[i-1].altitude() - delta_y_min);
             m_isMatchingMetrics = false;
         }
         correctPath.addCoordinate(coordinate);
-        // @FIXME: not
-        if(!m_isMatchingMetrics)
+
+        if(not m_isMatchingMetrics)
             metricsCorrectedGeopath = correctPath;
     }
     calculateCorrectedPathForUI(correctPath);
+
 }
 
 void ElevationWidgetPrivate::calculateCorrectedPathForUI(QGeoPath c_geopath)
