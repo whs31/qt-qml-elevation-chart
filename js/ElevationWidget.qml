@@ -1,6 +1,8 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import ElevationWidgetImpl 1.0
+import QtGraphicalEffects 1.15
+
 import "private" as Private;
 import "private/delegates" as Delegates
 
@@ -90,8 +92,10 @@ Rectangle { id: base;
 
 			Private.ElevationWidgetProfile { id: profileImpl; visible: Impl.valid && Impl.fileIntegrity; }
 			Private.ElevationWidgetCorrectPath { id: correctPathImpl; visible: Impl.valid && Impl.fileIntegrity; }
+			Glow { anchors.fill: correctPathImpl; color: Impl.colors[4]; source: correctPathImpl; opacity: 0.3; }
 			Private.ElevationWidgetPath { id: pathImpl; visible: Impl.valid && Impl.fileIntegrity; }
 			Private.ElevationWidgetIntersections { id: intersectsImpl; visible: Impl.valid && Impl.fileIntegrity; }
+			Glow { anchors.fill: intersectsImpl; color: Impl.colors[5]; source: intersectsImpl; opacity: 0.3; }
 			Repeater
 			{
 				clip: false;

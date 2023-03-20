@@ -6,6 +6,28 @@ Canvas { id: graph;
 	height: base.height;
 
 	clip: true;
+	opacity: 1;
+
+	SequentialAnimation {
+		PropertyAnimation {
+			target: graph;
+			property: "opacity"
+			to: 0;
+			duration: 500;
+			easing.type: Easing.InOutQuad
+		}
+		PropertyAnimation {
+			target: graph;
+			property: "opacity"
+			to: 1.0;
+			duration: 500;
+			easing.type: Easing.InOutQuad
+		}
+		loops: Animation.Infinite;
+		running: true;
+		Component.onCompleted: start();
+	}
+
 
 	function refresh()
 	{

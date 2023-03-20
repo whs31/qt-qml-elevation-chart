@@ -36,7 +36,7 @@ Canvas { id: graph;
 			ctx.beginPath();
 			//ctx.strokeStyle = (backend.pathErrorList[f]) ? warningColor : flightPathColor;
 			ctx.strokeStyle = Impl.colors[3];
-			ctx.lineWidth = 4;
+			ctx.lineWidth = 6;
 			ctx.fillStyle = Impl.colors[3];
 			if(f > 0) ctx.moveTo(Impl.path[f-1].x * base.z_w, Impl.path[f-1].y);
 			ctx.lineTo(Impl.path[f].x * base.z_w, Impl.path[f].y);
