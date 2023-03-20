@@ -93,8 +93,6 @@ Rectangle { id: base;
 			Private.ElevationWidgetIntersections { id: intersectsImpl; visible: Impl.valid && Impl.fileIntegrity; }
 			Repeater
 			{
-				enabled: Impl.valid && Impl.fileIntegrity;
-				visible: Impl.valid && Impl.fileIntegrity;
 				clip: false;
 				model: pathModel;
 				delegate: Delegates.ElevationWidgetPoint { }

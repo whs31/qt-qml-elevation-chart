@@ -32,5 +32,7 @@ private:
     void on_doubleSpinBox_4_valueChanged(double arg1);
     void on_doubleSpinBox_5_valueChanged(double arg1);
     void on_pushButton_clicked();
+    void on_pushButton_2_clicked();
+    void on_pushButton_3_clicked();
 };
 #endif // INTEGRATIONEXAMPLE_H

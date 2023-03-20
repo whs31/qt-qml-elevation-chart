@@ -7,6 +7,9 @@ Rectangle
 	property real distance: m_distance;
 	property real elevation: m_elevation;
 
+	enabled: Impl.valid && Impl.fileIntegrity;
+	visible: Impl.valid && Impl.fileIntegrity;
+
 	width: pathImpl.flightPointSize;
 	height: width;
 	color: invalid ? Impl.colors[4] : Impl.colors[3];
