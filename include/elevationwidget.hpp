@@ -2,6 +2,7 @@
 
 #include <QObject>
 #include <QGeoPath>
+#include <vector>
 
 /// @private Приватная имплементация профиля высот.
 class ElevationWidgetPrivate;
@@ -19,6 +20,10 @@ class ElevationWidget : public QObject
         /// @brief Задает путь в виджет для редактирования.
         /// @param path - путь для редактирования.
         void setGeopath(const QGeoPath& path);
+
+        /// @brief Задает вектор скоростей для каждой точки.
+        /// @param vec - список float, хранящий значение для каждой точки на geopath.
+        void setVelocities(const std::vector<float>& points);
 
         /// @brief Возвращает true, если обычный путь и скорректированный путь с учётом ЛТХ совпадают.
         bool isPathMatchingMetrics(void);

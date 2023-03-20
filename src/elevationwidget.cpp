@@ -11,8 +11,8 @@ ElevationWidget::ElevationWidget(QObject *parent)
     : QObject{parent}
     , d_ptr(new ElevationWidgetPrivate(this))
 {
-    //Q_INIT_RESOURCE(qplotjs);
     qmlRegisterSingletonInstance("ElevationWidgetImpl", 1, 0, "Impl", d_ptr);
+    qSetMessagePattern("[%{time process}] %{if-debug}\033[01;38;05;15m%{endif}%{if-info}\033[01;38;05;146m%{endif}%{if-warning}\033[1;33m%{endif}%{if-critical}\033[1;31m%{endif}%{if-fatal}F%{endif}%{message}\033[0m");
 }
 
 QGeoPath ElevationWidget::getGeopath()
@@ -27,7 +27,18 @@ void ElevationWidget::setGeopath(const QGeoPath& path)
     if(path == d->geopath and not path.isEmpty())
         return;
     d->geopath = path;
+    qDebug() << "<qplot> Задан маршрут.";
     d->recalculateWithGeopathChanged();
+}
+
+void ElevationWidget::setVelocities(const std::vector<float>& points)
+{
+    Q_D(ElevationWidget);
+    qDebug() << "<qplot> Задан массив скоростей.";
+    if(d->geopath.path().size() == points.size())
+        d->m_speeds = points;
+    else
+        qCritical() << "<qplot> Массив скоростей для точек некорректен.";
 }
 
 bool ElevationWidget::isPathMatchingMetrics()
@@ -70,7 +81,6 @@ void ElevationWidget::setVelocity(float velocity)
     Q_D(ElevationWidget);
     d->aircraftMetrics.velocity = velocity;
     d->recalculate();
-//    d->recalculateBound(true);
 }
 
 void ElevationWidget::setClimbRate(float rate)
@@ -78,7 +88,6 @@ void ElevationWidget::setClimbRate(float rate)
     Q_D(ElevationWidget);
     d->aircraftMetrics.climbRate = rate;
     d->recalculate();
-//    d->recalculateBound(true);
 }
 
 void ElevationWidget::setDescendRate(float rate)
@@ -86,21 +95,16 @@ void ElevationWidget::setDescendRate(float rate)
     Q_D(ElevationWidget);
     d->aircraftMetrics.descendRate = rate;
     d->recalculate();
-//    d->recalculateBound(true);
 }
 
 void ElevationWidget::setBoundHeight(float height)
 {
     Q_D(ElevationWidget);
-    //d->bound.height = height;
-//    d->recalculateBound(true);
 }
 
 void ElevationWidget::setBoundWidth(float width)
 {
     Q_D(ElevationWidget);
-    //d->bound.width = width;
-//    d->recalculateBound(true);
 }
 
 bool ElevationWidget::isIntersecting(void)
@@ -130,7 +134,6 @@ ElevationWidgetPrivate::ElevationWidgetPrivate(ElevationWidget* parent)
     : QObject{parent}
     , q_ptr(parent)
 {
-    // submodule types
     heightmapParser = new Elevation::Elevation(this);
     routeParser = new Elevation::ElevationTools(this);
 
@@ -138,13 +141,6 @@ ElevationWidgetPrivate::ElevationWidgetPrivate(ElevationWidget* parent)
     qRegisterMetaType<Elevation::RouteAndElevationProfiles>("RouteAndElevationProfiles");
     connect(routeParser, &Elevation::ElevationTools::progressTestRouteIntersectGround,
             this, &ElevationWidgetPrivate::intersectCalculationFinished);
-//    connect(routeParser, &Elevation::ElevationTools::progressBuildRouteAndElevationProfiles,
-//            this, &ElevationWidgetPrivate::boundCalculationFinished);
-
-//    routeTimer = new QTimer(this);
-//    routeTimer->setInterval(1);
-//    routeTimer->setSingleShot(true);
-    //recalculateWithGeopathChanged(); <- geopath is empty = draw blank screen
 }
 
 QPointF ElevationWidgetPrivate::toPixel(const QPointF& point)
@@ -153,7 +149,6 @@ QPointF ElevationWidgetPrivate::toPixel(const QPointF& point)
                    layout.height - point.y() * layout.height / (axis.y.maxValue * axis.stretch));
 }
 
-// █ calculate axes and scales
 void ElevationWidgetPrivate::recalculate(bool emitFlag)
 {
     if(profile().isEmpty()){
@@ -181,7 +176,7 @@ void ElevationWidgetPrivate::recalculate(bool emitFlag)
     {
         if(point.y() > 32000)
         {
-            qWarning() << "<qplot> Some elevation profiles are missing.";
+            qWarning() << "<qplot> Некоторые профили высот отсутствуют в папке.";
             setFileIntegrity(false);
             return;
         }
@@ -222,7 +217,6 @@ void ElevationWidgetPrivate::recalculate(bool emitFlag)
     calculateCorrectedPath();
 
     routeParser->testRouteIntersectGround(geopath);
-    //recalculateBound(emitFlag);
 
     if(emitFlag or profile().isEmpty() or _emit_checkflag)
         emit requestAll();
@@ -231,13 +225,12 @@ void ElevationWidgetPrivate::recalculate(bool emitFlag)
 }
 
 
-// █ build profile
 void ElevationWidgetPrivate::recalculateWithGeopathChanged()
 {
     if(geopath.isEmpty())
     {
         setValid(false);
-        qWarning() << "<qplot> Empty geopath.";
+        qWarning() << "<qplot> Пустой путь";
         return;
     }
     setValid(true);
@@ -268,8 +261,6 @@ void ElevationWidgetPrivate::calculateCorrectedPath()
         calculateCorrectedPathForUI(correctPath);
         return;
     }
-
-    // При обновлении маршута вызывается дважды хз почему       @BUG: проверить
 
     correctPath.addCoordinate(geopath.path()[0]);
     m_isMatchingMetrics = true;
@@ -380,7 +371,6 @@ void ElevationWidgetPrivate::resize(float w, float h, float zoom_w, float zoom_h
     if(not geopath.isEmpty() and layout.width * layout.height > 0)
     {
         recalculate();
-        //recalculateBound();
     }
 }
 
@@ -415,11 +405,10 @@ QPointF ElevationWidgetPrivate::iterateOverRange(float rangeStart, float rangeSt
             }
         }
         if (iterator.rangeMax == -1) {
-            qDebug() <<"<qplot> range assignment\t" << "upper range not found in vector";
             return QPointF(-1, -1);
         }
-        Q_ASSERT_X(iterator.rangeMax < m_profile.length(), "<qplot> bounds", "max range is out of bounds");
-        Q_ASSERT_X(iterator.rangeMin >= 0, "<qplot> bounds", "min range is lower than 0");
+        Q_ASSERT_X(iterator.rangeMax < m_profile.length(), "<qplot> Итератор: ", "макс. значение больше размера профиля высот.");
+        Q_ASSERT_X(iterator.rangeMin >= 0, "<qplot> Итератор:", "мин. значение меньше нуля.");
         iterator.rangeSet = true;
         iterator.range = iterator.rangeMin;
     }

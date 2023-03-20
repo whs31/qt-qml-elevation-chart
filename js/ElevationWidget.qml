@@ -74,7 +74,7 @@ Rectangle { id: base;
 			implicitHeight: 10;
 			contentItem: Rectangle {
 				radius: scrollbar.height / 2;
-				color: scrollbar.pressed ? Qt.lighter(Impl.colors[2], 1.5) : Impl.colors[2];
+				color: scrollbar.pressed ? Qt.lighter(Impl.colors[2], .5) : Impl.colors[2];
 			}
 		}
 		Flickable { id: view;
@@ -92,10 +92,10 @@ Rectangle { id: base;
 
 			Private.ElevationWidgetProfile { id: profileImpl; visible: Impl.valid && Impl.fileIntegrity; }
 			Private.ElevationWidgetCorrectPath { id: correctPathImpl; visible: Impl.valid && Impl.fileIntegrity; }
-			Glow { anchors.fill: correctPathImpl; color: Impl.colors[4]; source: correctPathImpl; opacity: 0.3; }
+			Glow { anchors.fill: correctPathImpl; color: Impl.colors[4]; source: correctPathImpl; opacity: 0.3; visible: Impl.valid && Impl.fileIntegrity; }
 			Private.ElevationWidgetPath { id: pathImpl; visible: Impl.valid && Impl.fileIntegrity; }
 			Private.ElevationWidgetIntersections { id: intersectsImpl; visible: Impl.valid && Impl.fileIntegrity; }
-			Glow { anchors.fill: intersectsImpl; color: Impl.colors[5]; source: intersectsImpl; opacity: 0.3; }
+			Glow { anchors.fill: intersectsImpl; color: Impl.colors[5]; source: intersectsImpl; opacity: 0.3; visible: Impl.valid && Impl.fileIntegrity; }
 			Repeater
 			{
 				clip: false;
@@ -103,7 +103,6 @@ Rectangle { id: base;
 				delegate: Delegates.ElevationWidgetPoint { }
 			}
 		}
-
 
 		Private.ElevationWidgetLegend { id: legendImpl; anchors.fill: parent; visible: Impl.valid && Impl.fileIntegrity; }
 		Private.ElevationWidgetMouseCross { id: mouseCrossImpl; anchors.fill: view; anchors.rightMargin: 10; visible: Impl.valid && Impl.fileIntegrity; }

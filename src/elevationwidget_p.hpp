@@ -2,7 +2,6 @@
 
 #include "elevationwidget.hpp"
 #include "RouteTools/elevationtools.h"
-#include <QTimer>
 
 namespace Elevation {
     class Elevation;
@@ -20,7 +19,6 @@ class ElevationWidgetPrivate : public QObject
         ElevationWidget* q_ptr;
         Elevation::Elevation* heightmapParser;
         Elevation::ElevationTools* routeParser;
-        QTimer* routeTimer;
 
         Q_INVOKABLE void resize(float w, float h, float zoom_w, float zoom_h = 1);
         Q_INVOKABLE QPointF iterateOverRange(float rangeStart, float rangeStop);
@@ -144,4 +142,7 @@ class ElevationWidgetPrivate : public QObject
 
         bool m_isIntersecting = false;
         bool m_isMatchingMetrics = true;
+
+        /// @brief Вектор для скоростей, индивидуальных для каждой точки)
+        std::vector<float> m_speeds;
 };
