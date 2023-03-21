@@ -47,9 +47,9 @@ Rectangle
 		visible: Impl.showIndex;
 		width: 24; height: 14; radius: height / 2; opacity: 1; color: invalid ? Impl.colors[4] : Impl.colors[3];
 		anchors.horizontalCenter: parent.horizontalCenter; anchors.bottom: parent.top;
-		anchors.bottomMargin: 5;
+		anchors.bottomMargin: 2;
 		Text {
-			id: label1; color: base.color; width: 31; height: 15;
+			id: label1; color: base.color; width: 31; height: 14;
 			text: "<b>" + Number(index+1) + "</b>";
 			anchors.centerIn: parent; horizontalAlignment: Text.AlignHCenter;
 			verticalAlignment: Text.AlignVCenter; font.pixelSize: 10;

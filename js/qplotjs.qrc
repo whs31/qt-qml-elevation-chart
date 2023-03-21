@@ -9,5 +9,6 @@
         <file>private/delegates/ElevationWidgetPoint.qml</file>
         <file>private/ElevationWidgetCorrectPath.qml</file>
         <file>private/ElevationWidgetBounds.qml</file>
+        <file>private/ElevationWidgetEnvelope.qml</file>
     </qresource>
 </RCC>

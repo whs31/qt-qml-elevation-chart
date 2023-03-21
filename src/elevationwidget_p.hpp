@@ -59,6 +59,7 @@ namespace Charts
             void recalculate(bool emitFlag = false);
             void recalculateWithGeopathChanged();
             void recalculateEnvelope();
+            void recalculateEnvelopeForUI();
             void calculatePath();
             void calculateCorrectedPath();
             void calculateCorrectedPathForUI(QGeoPath c_geopath);
@@ -87,7 +88,7 @@ namespace Charts
             Q_PROPERTY(QList<QString> colors READ colors WRITE setColors NOTIFY colorsChanged)
             QList<QString> m_colors = { "#000000", "#ffffff", "#888888",
                                         "#00ff00", "#ffff00", "#ff0000",
-                                        "#0000ff" };
+                                        "#88C0D0" };
             QList<QString> colors() const;       void setColors(const QList<QString>& list);
 
             Q_PROPERTY(QList<float> keyValues READ keyValues WRITE setKeyValues NOTIFY keyValuesChanged)

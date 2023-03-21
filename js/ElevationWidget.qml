@@ -17,6 +17,7 @@ Rectangle { id: base;
 		pathImpl.refresh();
 		legendImpl.refresh();
 		profileImpl.refresh();
+		envelopeImpl.refresh();
 	}
 	Component.onCompleted:
 	{
@@ -61,8 +62,8 @@ Rectangle { id: base;
 				legendImpl.refresh();
 			}
 
-			function onRequestBounds() {
-                //boundsImpl.refresh();
+			function onRequestEnvelope() {
+				envelopeImpl.refresh();
 			}
 		}
 
@@ -93,6 +94,8 @@ Rectangle { id: base;
 			Private.ElevationWidgetProfile { id: profileImpl; visible: Impl.valid && Impl.fileIntegrity; }
 			Private.ElevationWidgetCorrectPath { id: correctPathImpl; visible: Impl.valid && Impl.fileIntegrity; }
 			Glow { anchors.fill: correctPathImpl; color: Impl.colors[4]; source: correctPathImpl; opacity: 0.3; visible: Impl.valid && Impl.fileIntegrity; }
+			Private.ElevationWidgetEnvelope { id: envelopeImpl; visible: Impl.valid && Impl.fileIntegrity; }
+			Glow { anchors.fill: envelopeImpl; color: Impl.colors[6]; source: envelopeImpl; opacity: 0.3; visible: Impl.valid && Impl.fileIntegrity; }
 			Private.ElevationWidgetPath { id: pathImpl; visible: Impl.valid && Impl.fileIntegrity; }
 			Private.ElevationWidgetIntersections { id: intersectsImpl; visible: Impl.valid && Impl.fileIntegrity; }
 			Glow { anchors.fill: intersectsImpl; color: Impl.colors[5]; source: intersectsImpl; opacity: 0.3; visible: Impl.valid && Impl.fileIntegrity; }
