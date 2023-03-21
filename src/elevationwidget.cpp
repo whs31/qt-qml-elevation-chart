@@ -59,7 +59,7 @@ QGeoPath ElevationWidget::applyMetricsCorrection()
     return getGeopath();
 }
 
-QGeoPath ElevationWidget::applyTerrainEnvelope()
+void ElevationWidget::applyTerrainEnvelope()
 {
     Q_D(ElevationWidget);
     d->recalculateEnvelope();
