@@ -32,7 +32,7 @@ class ElevationWidgetPrivate : public QObject
 
         public slots:
             void intersectCalculationFinished(quint8 progress, const QVector<Elevation::Point> &resultPath);
-//            void boundCalculationFinished(quint8 progress, const Elevation::RouteAndElevationProfiles &deltaResult);
+            void routeToolsCalculationFinished(quint8 progress, const Elevation::RouteAndElevationProfiles &deltaResult);
 
         signals:
             void requestAll();
@@ -55,6 +55,7 @@ class ElevationWidgetPrivate : public QObject
         QPointF toPixel(const QPointF& point);
         void recalculate(bool emitFlag = false);
         void recalculateWithGeopathChanged();
+        void recalculateEnvelope();
 //        void recalculateBound(bool slow = false);
 
         void calculatePath();
@@ -144,5 +145,5 @@ class ElevationWidgetPrivate : public QObject
         bool m_isMatchingMetrics = true;
 
         /// @brief Вектор для скоростей, индивидуальных для каждой точки)
-        std::vector<float> m_speeds;
+        std::vector<uint8_t> m_speeds;
 };

@@ -67,11 +67,12 @@ void IntegrationExample::on_pushButton_2_clicked()
                                             QGeoCoordinate(60.11, 30.11, 50),
                                             QGeoCoordinate(60.12, 30.12, 20),
                                             QGeoCoordinate(60.13, 30.14, 10),
-                                            QGeoCoordinate(60.14, 30.14, 10)
+                                            QGeoCoordinate(61.0, 30.14, 10)
                                         })
                                 );
-    std::vector<float> vec = { 30, 40, 30, 40, 70, 10, 20, 30, 80, 100, 200, 300, 200, 100, 100 };
+    std::vector<uint8_t> vec = { 30, 40, 30, 40, 70, 10, 20, 30, 80, 100, 200, 100, 200, 100, 100 };
     elevationWidget->setVelocity(vec);
+    elevationWidget->applyTerrainEnvelope();
 }
 
 
