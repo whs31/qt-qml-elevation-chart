@@ -20,7 +20,7 @@ public:
 
 private:
     Ui::IntegrationExample* ui;
-    ElevationWidget* elevationWidget;
+    charts::ElevationWidget* elevationWidget;
 
     void uiSetup();
 
@@ -34,5 +34,7 @@ private:
     void on_pushButton_clicked();
     void on_pushButton_2_clicked();
     void on_pushButton_3_clicked();
+    void on_pushButton_4_clicked();
+    void on_pushButton_5_clicked();
 };
 #endif // INTEGRATIONEXAMPLE_H

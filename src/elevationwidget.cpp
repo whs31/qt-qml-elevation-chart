@@ -6,6 +6,8 @@
 #include "Elevation/elevation.h"
 #include <QMetaType>
 
+using namespace charts;
+
 ElevationWidget::ElevationWidget(QObject *parent)
     : QObject{parent}
     , d_ptr(new ElevationWidgetPrivate(this))
@@ -36,6 +38,55 @@ bool ElevationWidget::isPathMatchingMetrics()
     return d->m_isMatchingMetrics;
 }
 
+bool ElevationWidget::isIntersecting(void)
+{
+    Q_D(ElevationWidget);
+    return d->m_isIntersecting;
+}
+
+bool ElevationWidget::isValidPath()
+{
+    Q_D(ElevationWidget);
+    return d->fileIntegrity();
+}
+
+void ElevationWidget::setVelocity(float velocity)
+{
+    Q_D(ElevationWidget);
+    d->aircraftMetrics.velocity = velocity;
+    d->recalculate();
+}
+
+void ElevationWidget::setVelocity(const std::vector<uint8_t>& points)
+{
+    Q_D(ElevationWidget);
+    qDebug() << "<qplot> Задан массив скоростей.";
+    if(d->geopath.path().size() == points.size())
+        d->m_speeds = points;
+    else
+        qCritical() << "<qplot> Массив скоростей для точек некорректен.";
+}
+
+std::vector<uint8_t> ElevationWidget::getSpeeds()
+{
+    Q_D(ElevationWidget);
+    return d->m_speeds;
+}
+
+void ElevationWidget::setClimbRate(float rate)
+{
+    Q_D(ElevationWidget);
+    d->aircraftMetrics.climbRate = rate;
+    d->recalculate();
+}
+
+void ElevationWidget::setDescendRate(float rate)
+{
+    Q_D(ElevationWidget);
+    d->aircraftMetrics.descendRate = rate;
+    d->recalculate();
+}
+
 QGeoPath ElevationWidget::applyMetricsCorrection()
 {
     Q_D(ElevationWidget);
@@ -59,6 +110,23 @@ QGeoPath ElevationWidget::applyMetricsCorrection()
     return getGeopath();
 }
 
+void ElevationWidget::setEnvelopeMinHeight(float height)
+{
+    Q_D(ElevationWidget);
+    d->aircraftMetrics.envelopeHeight = height;
+}
+
+void ElevationWidget::setEnvelopeCoridorHeight(float height)
+{
+    Q_D(ElevationWidget);
+    d->aircraftMetrics.envelopeSize = height;
+}
+
+void ElevationWidget::calculateTerrainEnvelope()
+{
+
+}
+
 void ElevationWidget::applyTerrainEnvelope()
 {
     Q_D(ElevationWidget);
@@ -71,64 +139,11 @@ void ElevationWidget::showIndexes(bool state)
     d->setShowIndex(state);
 }
 
-void ElevationWidget::setVelocity(float velocity)
-{
-    Q_D(ElevationWidget);
-    d->aircraftMetrics.velocity = velocity;
-    d->recalculate();
-}
-
-void ElevationWidget::setVelocity(const std::vector<uint8_t>& points)
-{
-    Q_D(ElevationWidget);
-    qDebug() << "<qplot> Задан массив скоростей.";
-    if(d->geopath.path().size() == points.size())
-        d->m_speeds = points;
-    else
-        qCritical() << "<qplot> Массив скоростей для точек некорректен.";
-}
-
-void ElevationWidget::setClimbRate(float rate)
-{
-    Q_D(ElevationWidget);
-    d->aircraftMetrics.climbRate = rate;
-    d->recalculate();
-}
-
-void ElevationWidget::setDescendRate(float rate)
-{
-    Q_D(ElevationWidget);
-    d->aircraftMetrics.descendRate = rate;
-    d->recalculate();
-}
-
-void ElevationWidget::setBoundHeight(float height)
-{
-    // @TODO:
-}
-
-void ElevationWidget::setBoundWidth(float width)
-{
-    // @TODO:
-}
-
-bool ElevationWidget::isIntersecting(void)
-{
-    Q_D(ElevationWidget);
-    return d->m_isIntersecting;
-}
-
-bool ElevationWidget::isValidPath()
-{
-    Q_D(ElevationWidget);
-    return d->fileIntegrity();
-}
-
 void ElevationWidget::setPallete(QString backgroundColor, QString foregroundColor, QString chartColor,
-                                 QString successColor, QString warningColor, QString errorColor)
+                                 QString successColor, QString warningColor, QString errorColor, QString subColor)
 {
     Q_D(ElevationWidget);
-    d->setColors({ backgroundColor, foregroundColor, chartColor, successColor, warningColor, errorColor });
+    d->setColors({ backgroundColor, foregroundColor, chartColor, successColor, warningColor, errorColor, subColor });
 
 }
 
@@ -255,7 +270,24 @@ void ElevationWidgetPrivate::recalculateEnvelope()
     #ifdef QT_DEBUG
         qDebug() << "<qplot> Вычисление огибающей.";
     #endif
-    routeParser->buildRouteAndElevationProfiles(geopath, 50, 100, aircraftMetrics.velocity, aircraftMetrics.climbRate, aircraftMetrics.descendRate);
+    routeParser->buildRouteAndElevationProfiles(geopath, aircraftMetrics.envelopeHeight, aircraftMetrics.envelopeSize, aircraftMetrics.velocity,
+                                                         aircraftMetrics.climbRate, aircraftMetrics.descendRate);
+}
+
+void ElevationWidgetPrivate::routeToolsCalculationFinished(quint8 progress, const Elevation::RouteAndElevationProfiles& deltaResult)
+{
+    QVector<Elevation::Point> route = deltaResult.route();
+    QGeoPath envelopePath;
+    for(const Elevation::Point& point : route)
+    {
+        QGeoCoordinate coord(point.latitude(), point.longitude(), point.altitude());
+        envelopePath.addCoordinate(coord);
+    }
+    geopath = envelopePath;
+    m_speeds.clear();
+    for(size_t i = 0; i < geopath.path().size(); i++)
+        m_speeds.push_back(aircraftMetrics.velocity);
+    recalculateWithGeopathChanged();
 }
 
 void ElevationWidgetPrivate::calculatePath()
@@ -393,19 +425,6 @@ void ElevationWidgetPrivate::intersectCalculationFinished(quint8 progress, const
     emit requestIntersects();
 }
 
-void ElevationWidgetPrivate::routeToolsCalculationFinished(quint8 progress, const Elevation::RouteAndElevationProfiles& deltaResult)
-{
-    QVector<Elevation::Point> route = deltaResult.route();
-    QGeoPath envelopePath;
-    for(const Elevation::Point& point : route)
-    {
-        QGeoCoordinate coord(point.latitude(), point.longitude(), point.altitude());
-        envelopePath.addCoordinate(coord);
-    }
-    geopath = envelopePath;
-    recalculateWithGeopathChanged();
-}
-
 void ElevationWidgetPrivate::resize(float w, float h, float zoom_w, float zoom_h)
 {
     const float RIGHT_OFFSET = 10;
@@ -472,7 +491,7 @@ QPointF ElevationWidgetPrivate::iterateOverRange(float rangeStart, float rangeSt
     }
 }
 
-void ElevationWidgetPrivate::changeFlightPointAltitude(int index, qreal delta)
+void ElevationWidgetPrivate::changeFlightPointAltitude(int index, float delta)
 {
     QGeoCoordinate coord = geopath.coordinateAt(index);
     coord.setAltitude(coord.altitude() + delta * (coord.altitude() / axis.y.roundMaxValue * .1 + .01));
@@ -546,3 +565,9 @@ void ElevationWidgetPrivate::setValid(bool state) {
     emit validChanged();
 }
 
+QList<QPointF> ElevationWidgetPrivate::envelope() const { return m_envelope; }
+void ElevationWidgetPrivate::setEnvelope(const QList<QPointF>& list) {
+    if (m_envelope == list) return;
+    m_envelope = list;
+    emit envelopeChanged();
+}

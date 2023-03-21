@@ -7,7 +7,7 @@ IntegrationExample::IntegrationExample(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::IntegrationExample)
 {
-    elevationWidget = new ElevationWidget(this);
+    elevationWidget = new charts::ElevationWidget(this);
 
     ui->setupUi(this);
     ui->quickWidget->setSource(QUrl("qrc:/example.qml"));
@@ -15,7 +15,8 @@ IntegrationExample::IntegrationExample(QWidget *parent)
 
     elevationWidget->setGeopath(QGeoPath());
     elevationWidget->setPallete("#2e3440", "#eceff4", "#4c566a",
-                                "#a3be8c", "#ebcb8b", "#bf616a");
+                                "#a3be8c", "#ebcb8b", "#bf616a",
+                                "#0000FF");
     uiSetup();
 }
 
@@ -30,8 +31,8 @@ void IntegrationExample::uiSetup()
     ui->doubleSpinBox->setValue(75);
     ui->doubleSpinBox_2->setValue(1);
     ui->doubleSpinBox_3->setValue(1);
-    ui->doubleSpinBox_4->setValue(10);
-    ui->doubleSpinBox_5->setValue(10);
+    ui->doubleSpinBox_4->setValue(100);
+    ui->doubleSpinBox_5->setValue(100);
 }
 
 void IntegrationExample::on_checkBox_toggled(bool checked)
@@ -43,9 +44,9 @@ void IntegrationExample::on_doubleSpinBox_2_valueChanged(double arg1)
 void IntegrationExample::on_doubleSpinBox_3_valueChanged(double arg1)
 { elevationWidget->setDescendRate(arg1); }
 void IntegrationExample::on_doubleSpinBox_4_valueChanged(double arg1)
-{ elevationWidget->setBoundHeight(arg1); }
+{ elevationWidget->setEnvelopeMinHeight(arg1); }
 void IntegrationExample::on_doubleSpinBox_5_valueChanged(double arg1)
-{ elevationWidget->setBoundWidth(arg1); }
+{ elevationWidget->setEnvelopeCoridorHeight(arg1); }
 void IntegrationExample::on_pushButton_clicked()
 { elevationWidget->applyMetricsCorrection(); }
 
@@ -72,12 +73,8 @@ void IntegrationExample::on_pushButton_2_clicked()
                                 );
     std::vector<uint8_t> vec = { 30, 40, 30, 40, 70, 10, 20, 30, 80, 100, 200, 100, 200, 100, 100 };
     elevationWidget->setVelocity(vec);
-    elevationWidget->applyTerrainEnvelope();
 }
 
-
-void IntegrationExample::on_pushButton_3_clicked()
-{
-    elevationWidget->setGeopath(QGeoPath());
-}
-
+void IntegrationExample::on_pushButton_3_clicked() { elevationWidget->setGeopath(QGeoPath()); }
+void IntegrationExample::on_pushButton_4_clicked() { elevationWidget->calculateTerrainEnvelope(); }
+void IntegrationExample::on_pushButton_5_clicked() { elevationWidget->applyTerrainEnvelope(); }
