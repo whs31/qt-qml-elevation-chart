@@ -133,7 +133,6 @@ Rectangle { id: base;
 									view.flick(-1000, 0);
 							 }
 						 }
-						 console.warn("1231");
 					 }
 		}
 	}
