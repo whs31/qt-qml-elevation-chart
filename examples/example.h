@@ -20,7 +20,7 @@ public:
 
 private:
     Ui::IntegrationExample* ui;
-    charts::ElevationWidget* elevationWidget;
+    Charts::ElevationWidget* elevationWidget;
 
     void uiSetup();
 

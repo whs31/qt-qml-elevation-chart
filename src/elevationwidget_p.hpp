@@ -7,7 +7,7 @@ namespace Elevation {
     class Elevation;
 }
 
-namespace charts
+namespace Charts
 {
     /// @private
     class ElevationWidgetPrivate : public QObject

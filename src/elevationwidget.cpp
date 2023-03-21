@@ -6,7 +6,7 @@
 #include "Elevation/elevation.h"
 #include <QMetaType>
 
-using namespace charts;
+using namespace Charts;
 
 ElevationWidget::ElevationWidget(QObject *parent)
     : QObject{parent}

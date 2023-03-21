@@ -5,7 +5,7 @@
 #include <vector>
 
 /// @namespace Пространство имен для библиотеки построения графиков
-namespace charts
+namespace Charts
 {
     /// @private Приватная имплементация профиля высот.
     class ElevationWidgetPrivate;

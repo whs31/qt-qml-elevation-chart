@@ -7,7 +7,7 @@ IntegrationExample::IntegrationExample(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::IntegrationExample)
 {
-    elevationWidget = new charts::ElevationWidget(this);
+    elevationWidget = new Charts::ElevationWidget(this);
 
     ui->setupUi(this);
     ui->quickWidget->setSource(QUrl("qrc:/example.qml"));
