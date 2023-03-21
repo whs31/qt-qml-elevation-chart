@@ -13,7 +13,7 @@ ElevationWidget::ElevationWidget(QObject *parent)
     , d_ptr(new ElevationWidgetPrivate(this))
 {
     qmlRegisterSingletonInstance("ElevationWidgetImpl", 1, 0, "Impl", d_ptr);
-    qSetMessagePattern("[%{time process}] %{if-debug}\033[01;38;05;15m%{endif}%{if-info}\033[01;38;05;146m%{endif}%{if-warning}\033[1;33m%{endif}%{if-critical}\033[1;31m%{endif}%{if-fatal}F%{endif}%{message}\033[0m");
+    qSetMessagePattern("[%{time process}] [%{category}] %{if-debug}\033[01;38;05;15m%{endif}%{if-info}\033[01;38;05;146m%{endif}%{if-warning}\033[1;33m%{endif}%{if-critical}\033[1;31m%{endif}%{if-fatal}F%{endif}%{message}\033[0m");
 }
 
 QGeoPath ElevationWidget::getGeopath()
@@ -134,7 +134,9 @@ void ElevationWidget::applyTerrainEnvelope()
     d->m_speeds.clear();
     for(size_t i = 0; i < d->geopath.path().size(); i++)
         d->m_speeds.push_back(d->aircraftMetrics.velocity);
-    setGeopath(d->envelopePath);
+    QGeoPath envelope_apply = d->envelopePath;
+    d->envelopePath = QGeoPath();
+    setGeopath(envelope_apply);
 }
 
 void ElevationWidget::showIndexes(bool state)

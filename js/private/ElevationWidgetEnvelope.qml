@@ -40,7 +40,6 @@ Canvas { id: graph;
 
 		ctx.clearRect(0, 0, base.widthScaled, base.height);
 		ctx.setLineDash([2, 2]);
-		ctx.lineWidth = 2;
 		ctx.lineCap = "round";
 		ctx.lineJoin = "round";
 
@@ -51,16 +50,20 @@ Canvas { id: graph;
 		{
 			pathModel.clear();
 		}
+		ctx.strokeStyle = Impl.colors[6];
+		ctx.lineWidth = 4;
+		ctx.fillStyle = Impl.colors[6];
 		for(let f = 0; f < Impl.envelope.length; f++)
 		{
 			ctx.beginPath();
-			ctx.strokeStyle = Impl.colors[6];
-			ctx.lineWidth = 4;
-			ctx.fillStyle = Impl.colors[6];
 			if(f > 0) ctx.moveTo(Impl.envelope[f-1].x * base.z_w, Impl.envelope[f-1].y);
 			ctx.lineTo(Impl.envelope[f].x * base.z_w, Impl.envelope[f].y);
+			ctx.setLineDash([42, 2]);
+			ctx.ellipse(Impl.envelope[f].x * base.z_w - 5, Impl.envelope[f].y - 5, 10, 10);
+			ctx.setLineDash([2, 2]);
 			ctx.stroke();
 		}
+		ctx.fill();
 		ctx.closePath();
 	}
 }

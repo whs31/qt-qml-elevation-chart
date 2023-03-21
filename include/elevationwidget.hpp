@@ -102,18 +102,21 @@ namespace Charts
                             QString successColor, QString warningColor, QString errorColor, QString subColor);
             /// @}
 
-        protected:
-            ElevationWidgetPrivate* const d_ptr;
-
-        private:
-            Q_DECLARE_PRIVATE(ElevationWidget)
-
-        signals:
+            signals:
+            /// @defgroup Сигналы
+            /// @{
             /// @brief Сигнал, сообщающий об измененении пути.
             void geopathChanged();
 
             /// @brief Сигнал сообщает, что состояние пересечения пути с рельефом изменилось.
             /// @details Нужно запрашивать isIntersecting() при получении сигнала.
             void intersectingStateChanged();
+            /// @}
+
+        protected:
+            ElevationWidgetPrivate* const d_ptr;
+
+        private:
+            Q_DECLARE_PRIVATE(ElevationWidget)
     };
 } //namespace charts
