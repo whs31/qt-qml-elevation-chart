@@ -51,7 +51,7 @@ Canvas { id: graph;
 		{
 			pathModel.clear();
 		}
-		for(let f = 0; f < Impl.path.length; f++)
+		for(let f = 0; f < Impl.envelope.length; f++)
 		{
 			ctx.beginPath();
 			ctx.strokeStyle = Impl.colors[6];
