@@ -28,6 +28,7 @@ namespace Charts
 
             QGeoPath geopath;
             QGeoPath metricsCorrectedGeopath;
+            QGeoPath envelopePath;
 
             const int32_t ALTITUDE_MIN = 5; // m
             const int32_t ALTITUDE_MAX = 15'000; // m
@@ -40,7 +41,7 @@ namespace Charts
                 void requestAll();
                 void requestPath();
                 void requestIntersects();
-                void requestBounds();
+                void requestEnvelope();
 
                 void colorsChanged();
                 void profileChanged();

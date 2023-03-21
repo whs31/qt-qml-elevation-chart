@@ -67,7 +67,7 @@ void ElevationWidget::setVelocity(const std::vector<uint8_t>& points)
         qCritical() << "<qplot> Массив скоростей для точек некорректен.";
 }
 
-std::vector<uint8_t> ElevationWidget::getSpeeds()
+std::vector<uint8_t> ElevationWidget::getVelocity()
 {
     Q_D(ElevationWidget);
     return d->m_speeds;
@@ -124,13 +124,17 @@ void ElevationWidget::setEnvelopeCoridorHeight(float height)
 
 void ElevationWidget::calculateTerrainEnvelope()
 {
-
+    Q_D(ElevationWidget);
+    d->recalculateEnvelope();
 }
 
 void ElevationWidget::applyTerrainEnvelope()
 {
     Q_D(ElevationWidget);
-    d->recalculateEnvelope();
+    d->m_speeds.clear();
+    for(size_t i = 0; i < d->geopath.path().size(); i++)
+        d->m_speeds.push_back(d->aircraftMetrics.velocity);
+    setGeopath(d->envelopePath);
 }
 
 void ElevationWidget::showIndexes(bool state)
@@ -277,17 +281,14 @@ void ElevationWidgetPrivate::recalculateEnvelope()
 void ElevationWidgetPrivate::routeToolsCalculationFinished(quint8 progress, const Elevation::RouteAndElevationProfiles& deltaResult)
 {
     QVector<Elevation::Point> route = deltaResult.route();
-    QGeoPath envelopePath;
+    envelopePath.clearPath();
     for(const Elevation::Point& point : route)
     {
         QGeoCoordinate coord(point.latitude(), point.longitude(), point.altitude());
         envelopePath.addCoordinate(coord);
     }
-    geopath = envelopePath;
-    m_speeds.clear();
-    for(size_t i = 0; i < geopath.path().size(); i++)
-        m_speeds.push_back(aircraftMetrics.velocity);
-    recalculateWithGeopathChanged();
+
+    // ui
 }
 
 void ElevationWidgetPrivate::calculatePath()
@@ -552,6 +553,12 @@ void ElevationWidgetPrivate::setIntersections(const QList<QPointF>& list) {
     m_intersections = list;
     emit intersectionsChanged();
 }
+QList<QPointF> ElevationWidgetPrivate::envelope() const { return m_envelope; }
+void ElevationWidgetPrivate::setEnvelope(const QList<QPointF>& list) {
+    if (m_envelope == list) return;
+    m_envelope = list;
+    emit envelopeChanged();
+}
 bool ElevationWidgetPrivate::fileIntegrity() const { return m_fileIntegrity; }
 void ElevationWidgetPrivate::setFileIntegrity(bool state) {
     if (m_fileIntegrity == state) return;
@@ -563,11 +570,4 @@ void ElevationWidgetPrivate::setValid(bool state) {
     if (m_valid == state) return;
     m_valid = state;
     emit validChanged();
-}
-
-QList<QPointF> ElevationWidgetPrivate::envelope() const { return m_envelope; }
-void ElevationWidgetPrivate::setEnvelope(const QList<QPointF>& list) {
-    if (m_envelope == list) return;
-    m_envelope = list;
-    emit envelopeChanged();
 }

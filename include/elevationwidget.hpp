@@ -48,7 +48,7 @@ namespace Charts
 
             /// @brief  Возвращает значение скорости для каждой точки на графике
             /// @return - вектор, хранящий скорости для точек. Значение скорости будет константно, если график перестроен с учетом огибания
-            std::vector<uint8_t> getSpeeds();
+            std::vector<uint8_t> getVelocity();
 
             /// @brief Задает текущую скороподъемность в виджет.
             /// @param rate - скороподъемность в м/с.
@@ -73,7 +73,7 @@ namespace Charts
 
             /// @brief Задает размер коридора огибания.
             /// @param height - расстояние между нижней и верхней границей профиля огибания в метрах.
-            void setEnvelopeCoridorHeight(float height);
+            void setEnvelopeCoridorHeight(float distance);
 
             /// @brief Вычисляет маршрут огибания и отображает его на экране
             void calculateTerrainEnvelope(void);
