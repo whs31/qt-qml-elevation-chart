@@ -56,7 +56,7 @@ namespace Charts
 
         private:
             QPointF toPixel(const QPointF& point);
-            void recalculate(bool emitFlag = false);
+            void recalculate(bool emitFlag = false, float predefined_envelope_height = 0);
             void recalculateWithGeopathChanged();
             void recalculateEnvelope();
             void recalculateEnvelopeForUI();

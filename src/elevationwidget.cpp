@@ -175,7 +175,7 @@ QPointF ElevationWidgetPrivate::toPixel(const QPointF& point)
                    layout.height - point.y() * layout.height / (axis.y.maxValue * axis.stretch));
 }
 
-void ElevationWidgetPrivate::recalculate(bool emitFlag)
+void ElevationWidgetPrivate::recalculate(bool emitFlag, float predefined_envelope_height)
 {
     if(profile().isEmpty()){
         calculatePath();
@@ -193,7 +193,7 @@ void ElevationWidgetPrivate::recalculate(bool emitFlag)
 
     axis.x.maxValue = profile().last().x();
     axis.x.roundMaxValue = 0;
-    axis.y.maxValue = 0;
+    axis.y.maxValue = predefined_envelope_height;
     axis.y.roundMaxValue = 0;
 
     // проверка на целостность профиля высот
@@ -283,13 +283,18 @@ void ElevationWidgetPrivate::routeToolsCalculationFinished(quint8 progress, cons
 {
     QVector<Elevation::Point> route = deltaResult.route();
     envelopePath.clearPath();
+    float _local_y_max = 0;
     for(const Elevation::Point& point : route)
     {
         QGeoCoordinate coord(point.latitude(), point.longitude(), point.altitude());
         envelopePath.addCoordinate(coord);
+        if(coord.altitude() > _local_y_max)
+            _local_y_max = coord.altitude();
     }
-
-    recalculateEnvelopeForUI();
+    #ifdef QT_DEBUG
+        qDebug() << "<qplot> Применено выравнивание для оси Y по огибающей: " << _local_y_max << "м";
+    #endif
+    recalculate(false, _local_y_max);
 }
 
 void ElevationWidgetPrivate::recalculateEnvelopeForUI()
