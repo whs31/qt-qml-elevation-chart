@@ -30,7 +30,7 @@ class ElevationWidget : public QObject
 
         /// @brief  Вычисляет маршрут огибания и применяет его к текущему загруженному маршруту.
         /// @return - вычисленный маршрут
-        QGeoPath applyTerrainEnvelope(void);
+        void applyTerrainEnvelope(void);
 
         /// @brief Переключение показа индексов точек на графике.
         /// @param state - состояние показа точек.
