@@ -5,7 +5,6 @@
 #include <cmath>
 #include "Elevation/elevation.h"
 #include <QMetaType>
-//#include <QDir>
 
 ElevationWidget::ElevationWidget(QObject *parent)
     : QObject{parent}
@@ -60,6 +59,12 @@ QGeoPath ElevationWidget::applyMetricsCorrection()
     return getGeopath();
 }
 
+QGeoPath ElevationWidget::applyTerrainEnvelope()
+{
+    Q_D(ElevationWidget);
+    d->recalculateEnvelope();
+}
+
 void ElevationWidget::showIndexes(bool state)
 {
     Q_D(ElevationWidget);
@@ -73,7 +78,7 @@ void ElevationWidget::setVelocity(float velocity)
     d->recalculate();
 }
 
-void ElevationWidget::setVelocity(const std::vector<float>& points)
+void ElevationWidget::setVelocity(const std::vector<uint8_t>& points)
 {
     Q_D(ElevationWidget);
     qDebug() << "<qplot> Задан массив скоростей.";
@@ -99,12 +104,12 @@ void ElevationWidget::setDescendRate(float rate)
 
 void ElevationWidget::setBoundHeight(float height)
 {
-    Q_D(ElevationWidget);
+    // @TODO:
 }
 
 void ElevationWidget::setBoundWidth(float width)
 {
-    Q_D(ElevationWidget);
+    // @TODO:
 }
 
 bool ElevationWidget::isIntersecting(void)
@@ -141,6 +146,8 @@ ElevationWidgetPrivate::ElevationWidgetPrivate(ElevationWidget* parent)
     qRegisterMetaType<Elevation::RouteAndElevationProfiles>("RouteAndElevationProfiles");
     connect(routeParser, &Elevation::ElevationTools::progressTestRouteIntersectGround,
             this, &ElevationWidgetPrivate::intersectCalculationFinished);
+    connect(routeParser, &Elevation::ElevationTools::progressBuildRouteAndElevationProfiles,
+            this, &ElevationWidgetPrivate::routeToolsCalculationFinished);
 }
 
 QPointF ElevationWidgetPrivate::toPixel(const QPointF& point)
@@ -174,7 +181,7 @@ void ElevationWidgetPrivate::recalculate(bool emitFlag)
     setFileIntegrity(true);
     for(QPointF point : profile())
     {
-        if(point.y() > 32000)
+        if(point.y() > __INT16_MAX__ - 1'000)
         {
             qWarning() << "<qplot> Некоторые профили высот отсутствуют в папке.";
             setFileIntegrity(false);
@@ -238,6 +245,19 @@ void ElevationWidgetPrivate::recalculateWithGeopathChanged()
     recalculate(true);
 }
 
+void ElevationWidgetPrivate::recalculateEnvelope()
+{
+    if(geopath.isEmpty())
+    {
+        qWarning() << "<qplot> Маршрут не содержит точек, вычисление огибающей не будет выполнено!";
+        return;
+    }
+    #ifdef QT_DEBUG
+        qDebug() << "<qplot> Вычисление огибающей.";
+    #endif
+    routeParser->buildRouteAndElevationProfiles(geopath, 50, 100, aircraftMetrics.velocity, aircraftMetrics.climbRate, aircraftMetrics.descendRate);
+}
+
 void ElevationWidgetPrivate::calculatePath()
 {
     auto data = QList<QPointF>();
@@ -277,8 +297,8 @@ void ElevationWidgetPrivate::calculateCorrectedPath()
 
         if(_allow_individual_speeds)
         {
-            delta_y_min = aircraftMetrics.descendRate * delta_x / m_speeds[i];
-            delta_y_max = aircraftMetrics.climbRate * delta_x / m_speeds[i];
+            delta_y_min = aircraftMetrics.descendRate * delta_x / static_cast<float>(m_speeds[i]);
+            delta_y_max = aircraftMetrics.climbRate * delta_x / static_cast<float>(m_speeds[i]);
         }
         else
         {
@@ -371,6 +391,19 @@ void ElevationWidgetPrivate::intersectCalculationFinished(quint8 progress, const
         _intersectList.append(QPointF(layout.width, layout.height - geopath.path().last().altitude() * layout.height / (axis.y.maxValue * axis.stretch)));
     setIntersections(_intersectList);
     emit requestIntersects();
+}
+
+void ElevationWidgetPrivate::routeToolsCalculationFinished(quint8 progress, const Elevation::RouteAndElevationProfiles& deltaResult)
+{
+    QVector<Elevation::Point> route = deltaResult.route();
+    QGeoPath envelopePath;
+    for(const Elevation::Point& point : route)
+    {
+        QGeoCoordinate coord(point.latitude(), point.longitude(), point.altitude());
+        envelopePath.addCoordinate(coord);
+    }
+    geopath = envelopePath;
+    recalculateWithGeopathChanged();
 }
 
 void ElevationWidgetPrivate::resize(float w, float h, float zoom_w, float zoom_h)

@@ -14,31 +14,33 @@ class ElevationWidget : public QObject
         explicit ElevationWidget(QObject *parent = nullptr);
 
         /// @brief  Возвращает текущий редактируемый путь из виджета.
-        /// @return Заданный путь с неизменными геокоординатами и измененной высотой.
+        /// @return - заданный путь с неизменными геокоординатами и измененной высотой.
         QGeoPath getGeopath();
 
         /// @brief Задает путь в виджет для редактирования.
         /// @param path - путь для редактирования.
         void setGeopath(const QGeoPath& path);
 
-
-
         /// @brief Возвращает true, если обычный путь и скорректированный путь с учётом ЛТХ совпадают.
         bool isPathMatchingMetrics(void);
 
-        /// @brief Меняет точки основного пути на точки, скорректированные с учётом ЛТХ и возвращает путь
-        /// @return Скорректированный путь
+        /// @brief  Меняет точки основного пути на точки, скорректированные с учётом ЛТХ и возвращает путь.
+        /// @return - скорректированный путь.
         QGeoPath applyMetricsCorrection(void);
 
+        /// @brief  Вычисляет маршрут огибания и применяет его к текущему загруженному маршруту.
+        /// @return - вычисленный маршрут
+        QGeoPath applyTerrainEnvelope(void);
+
         /// @brief Переключение показа индексов точек на графике.
-        /// @param state Состояние показа точек.
+        /// @param state - состояние показа точек.
         void showIndexes(bool state);
 
         /// @brief Задает текущую скорость БПЛА в виджет.
         /// @param velocity - скорость в м/с.
         void setVelocity(float velocity);
         /// @overload Задает индивидуальные скорости для каждой точки на пути.
-        void setVelocity(const std::vector<float>& points);
+        void setVelocity(const std::vector<uint8_t>& points);
 
         /// @brief Задает текущую скороподъемность в виджет.
         /// @param rate - скороподъемность в м/с.
@@ -56,10 +58,10 @@ class ElevationWidget : public QObject
         /// @param width - расстояние между нижней и верхней границей профиля огибания в метрах.
         void setBoundWidth(float width);
 
-        /// @brief Возвращает true, если путь пересекается с профилем высот
+        /// @brief Возвращает true, если путь пересекается с профилем высот.
         bool isIntersecting(void);
 
-        /// @brief Вовращает false, если в папке с профилями высот отсутствуют нужные файлы
+        /// @brief Вовращает false, если в папке с профилями высот отсутствуют нужные файлы.
         bool isValidPath(void);
 
         /// @brief Задает цветовую палитру виджета.
@@ -82,7 +84,7 @@ class ElevationWidget : public QObject
         /// @brief Сигнал, сообщающий об измененении пути.
         void geopathChanged();
 
-        /// @brief Сигнал сообщает, что состояние пересечения пути с рельефом изменилось
-        /// @details Нужно запрашивать isIntersecting() при получении сигнала
+        /// @brief Сигнал сообщает, что состояние пересечения пути с рельефом изменилось.
+        /// @details Нужно запрашивать isIntersecting() при получении сигнала.
         void intersectingStateChanged();
 };
