@@ -116,10 +116,10 @@ void ElevationWidget::setEnvelopeMinHeight(float height)
     d->aircraftMetrics.envelopeHeight = height;
 }
 
-void ElevationWidget::setEnvelopeCoridorHeight(float height)
+void ElevationWidget::setEnvelopeCoridorSize(float distance)
 {
     Q_D(ElevationWidget);
-    d->aircraftMetrics.envelopeSize = height;
+    d->aircraftMetrics.envelopeSize = distance;
 }
 
 void ElevationWidget::calculateTerrainEnvelope()
@@ -289,6 +289,42 @@ void ElevationWidgetPrivate::routeToolsCalculationFinished(quint8 progress, cons
     }
 
     // ui
+//    QList<QPointF> _intersectList;
+//    // check for first & last point lies inside ground:
+//    bool _first_point_in_ground = false;
+//    bool _last_point_in_ground = false;
+//    if((float)routeParser->elevationGeoPoint(geopath.path().first().latitude(), geopath.path().first().longitude()) > geopath.path().first().altitude())
+//        _first_point_in_ground = true;
+//    if((float)routeParser->elevationGeoPoint(geopath.path().last().latitude(), geopath.path().last().longitude()) > geopath.path().last().altitude())
+//        _last_point_in_ground = true;
+
+//    if(_first_point_in_ground)
+//        _intersectList.append(QPointF(0, layout.height - geopath.path().first().altitude() * layout.height / (axis.y.maxValue * axis.stretch)));
+
+//    // эта херня будет отвечать за то, лежит ли любая часть маршрута внутри рельефа)
+//    // bool _intersects_flag = false;
+//    m_isIntersecting = false;
+//    for(size_t i = 0; i < resultPath.length(); i++)
+//    {
+//        if(resultPath[i].isBase())
+//            continue;
+//        QPointF _point(resultPath[i].distance(), resultPath[i].altitude());
+//        _intersectList.append(toPixel(_point));
+//        if(not m_isIntersecting)
+//            m_isIntersecting = true;
+//    }
+
+//    // additional check if all desired points lies inside graph
+//    if(not m_isIntersecting and heightmapParser->elevation(geopath.path().first().latitude(), geopath.path().first().longitude()) > geopath.path().first().altitude())
+//        m_isIntersecting = true;
+//    Q_Q(ElevationWidget);
+//    if(m_isIntersecting)
+//        emit(q->intersectingStateChanged());
+
+//    if(_last_point_in_ground)
+//        _intersectList.append(QPointF(layout.width, layout.height - geopath.path().last().altitude() * layout.height / (axis.y.maxValue * axis.stretch)));
+//    setIntersections(_intersectList);
+//    emit requestIntersects();
 }
 
 void ElevationWidgetPrivate::calculatePath()

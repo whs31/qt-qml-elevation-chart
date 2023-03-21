@@ -73,7 +73,7 @@ namespace Charts
 
             /// @brief Задает размер коридора огибания.
             /// @param height - расстояние между нижней и верхней границей профиля огибания в метрах.
-            void setEnvelopeCoridorHeight(float distance);
+            void setEnvelopeCoridorSize(float distance);
 
             /// @brief Вычисляет маршрут огибания и отображает его на экране
             void calculateTerrainEnvelope(void);
