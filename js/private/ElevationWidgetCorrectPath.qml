@@ -47,19 +47,19 @@ Canvas { id: graph;
 		ctx.setLineDash([4, 4]);
 		ctx.lineCap = "round";
 		ctx.lineJoin = "round";
+		ctx.strokeStyle = Impl.colors[4];
+		ctx.lineWidth = 4;
+		ctx.fillStyle = Impl.colors[4];
 
 		// draw flight path
 		ctx.moveTo(0, 0);
 
+		ctx.beginPath();
 		for(let f = 0; f < Impl.correctedPath.length; f++)
 		{
-			ctx.beginPath();
-			ctx.strokeStyle = Impl.colors[4];
-			ctx.lineWidth = 4;
-			ctx.fillStyle = Impl.colors[4];
 			if(f > 0) ctx.moveTo(Impl.correctedPath[f-1].x * base.z_w, Impl.correctedPath[f-1].y);
 			ctx.lineTo(Impl.correctedPath[f].x * base.z_w, Impl.correctedPath[f].y);
-			ctx.stroke();
 		}
+		ctx.stroke();
 	}
 }

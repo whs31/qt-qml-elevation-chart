@@ -25,24 +25,19 @@ Canvas { id: elevationProfile;
 		ctx.lineJoin = "round";
 
 		// draw elevation profile
+		ctx.beginPath();
 		ctx.moveTo(0, height);
-		var p0 = Qt.point(0, 0);
 		while(1)
 		{
 			let p = Impl.iterateOverRange(0, 1);
 			if(p === Qt.point(-1, -1))
 				break;
-			ctx.beginPath();
-			ctx.moveTo(p0.x * base.z_w, height - p0.y);
 			ctx.lineTo(p.x * base.z_w, height - p.y);
-			if(p0.x !== 0 && p0.y !== 0)
-			{
-				ctx.lineTo(p.x * base.z_w, height);
-				ctx.lineTo(p0.x * base.z_w, height);
-			}
-			p0 = p;
-			ctx.stroke();
-			ctx.fill();
 		}
+		ctx.lineTo(width, height);
+		ctx.lineTo(0, height);
+		ctx.closePath();
+		ctx.stroke();
+		ctx.fill();
 	}
 }

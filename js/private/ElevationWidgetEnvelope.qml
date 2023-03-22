@@ -44,16 +44,10 @@ Canvas { id: graph;
 		ctx.lineCap = "round";
 		ctx.lineJoin = "round";
 		ctx.lineWidth = 3;
-
-		// draw flight path
-		ctx.moveTo(0, 0);
-
-		if(Impl.path.length !== pathModel.count)
-		{
-			pathModel.clear();
-		}
 		ctx.strokeStyle = Impl.colors[6];
 		ctx.fillStyle = Impl.colors[6];
+
+		ctx.moveTo(0, 0);
 		ctx.beginPath();
 		for(let f = 0; f < Impl.envelope.length; f++)
 		{

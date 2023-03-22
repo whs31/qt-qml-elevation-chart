@@ -25,6 +25,9 @@ Canvas { id: graph;
 		ctx.lineWidth = 2;
 		ctx.lineCap = "round";
 		ctx.lineJoin = "round";
+		ctx.strokeStyle = Impl.colors[3];
+		ctx.lineWidth = 6;
+		ctx.fillStyle = Impl.colors[3];
 
 		// draw flight path
 		ctx.moveTo(0, 0);
@@ -33,16 +36,11 @@ Canvas { id: graph;
 		{
 			pathModel.clear();
 		}
+		ctx.beginPath();
 		for(let f = 0; f < Impl.path.length; f++)
 		{
-			ctx.beginPath();
-			//ctx.strokeStyle = (backend.pathErrorList[f]) ? warningColor : flightPathColor;
-			ctx.strokeStyle = Impl.colors[3];
-			ctx.lineWidth = 6;
-			ctx.fillStyle = Impl.colors[3];
 			if(f > 0) ctx.moveTo(Impl.path[f-1].x * base.z_w, Impl.path[f-1].y);
 			ctx.lineTo(Impl.path[f].x * base.z_w, Impl.path[f].y);
-			ctx.stroke();
 
 			if(pathModel.count < Impl.path.length)
 			{
@@ -62,6 +60,6 @@ Canvas { id: graph;
 				pathModel.setProperty(f, "m_elevation", Impl.keyValues[2] * Impl.keyValues[0] - Impl.path[f].y / base.height * Impl.keyValues[2] * Impl.keyValues[0]);
 			}
 		}
-		ctx.closePath();
+		ctx.stroke();
 	}
 }
