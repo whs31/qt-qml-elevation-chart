@@ -15,23 +15,23 @@ Canvas { id: mouseCross;
             ctx.fillStyle = Impl.colors[1];
             ctx.lineWidth = 2;
             ctx.globalAlpha = 0.6;
-			ctx.moveTo(globalMouseArea.mouseX - base.offset, 0);
-			ctx.lineTo(globalMouseArea.mouseX - base.offset, height);
-			ctx.moveTo(globalMouseArea.mouseX - base.offset + 8, height - 2);
-			ctx.lineTo(globalMouseArea.mouseX - base.offset, height - 10);
-			ctx.lineTo(globalMouseArea.mouseX - base.offset + 8, height - 18);
+			ctx.moveTo(globalMouseArea.trueMouseX - base.offset, 0);
+			ctx.lineTo(globalMouseArea.trueMouseX - base.offset, height);
+			ctx.moveTo(globalMouseArea.trueMouseX - base.offset + 8, height - 2);
+			ctx.lineTo(globalMouseArea.trueMouseX - base.offset, height - 10);
+			ctx.lineTo(globalMouseArea.trueMouseX - base.offset + 8, height - 18);
 			let txt = Impl.keyValues[1] ? Number((globalMouseArea.mouseX - base.offset + view.visibleArea.xPosition * base.widthScaled) / 1000 / base.widthScaled * Impl.keyValues[1]).toFixed(1) + " км " : "---";
 
             let textDimensions = ctx.measureText(txt);
-			ctx.lineTo(globalMouseArea.mouseX - base.offset + 12 + textDimensions.width, height - 18);
-			ctx.lineTo(globalMouseArea.mouseX - base.offset + 12 + textDimensions.width, height - 2);
-			ctx.lineTo(globalMouseArea.mouseX - base.offset + 8, height - 2);
+			ctx.lineTo(globalMouseArea.trueMouseX - base.offset + 12 + textDimensions.width, height - 18);
+			ctx.lineTo(globalMouseArea.trueMouseX - base.offset + 12 + textDimensions.width, height - 2);
+			ctx.lineTo(globalMouseArea.trueMouseX - base.offset + 8, height - 2);
             ctx.stroke();
             ctx.fillText()
             ctx.fill();
             ctx.font = "bold 12px sans-serif";
             ctx.fillStyle = Impl.colors[0];
-			ctx.fillText(txt, globalMouseArea.mouseX - base.offset + 8, height - 6);
+			ctx.fillText(txt, globalMouseArea.trueMouseX - base.offset + 8, height - 6);
         }
 	}
 }

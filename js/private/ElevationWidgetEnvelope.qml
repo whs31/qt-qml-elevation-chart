@@ -1,6 +1,8 @@
 import QtQuick 2.15
 import ElevationWidgetImpl 1.0
 
+// @TODO: OpenGL
+
 Canvas { id: graph;
 	width: base.widthScaled;
 	height: base.height;
@@ -39,9 +41,9 @@ Canvas { id: graph;
 		let ctx = getContext('2d');
 
 		ctx.clearRect(0, 0, base.widthScaled, base.height);
-		ctx.setLineDash([2, 2]);
 		ctx.lineCap = "round";
 		ctx.lineJoin = "round";
+		ctx.lineWidth = 3;
 
 		// draw flight path
 		ctx.moveTo(0, 0);
@@ -51,18 +53,15 @@ Canvas { id: graph;
 			pathModel.clear();
 		}
 		ctx.strokeStyle = Impl.colors[6];
-		ctx.lineWidth = 4;
 		ctx.fillStyle = Impl.colors[6];
+		ctx.beginPath();
 		for(let f = 0; f < Impl.envelope.length; f++)
 		{
-			ctx.beginPath();
 			if(f > 0) ctx.moveTo(Impl.envelope[f-1].x * base.z_w, Impl.envelope[f-1].y);
 			ctx.lineTo(Impl.envelope[f].x * base.z_w, Impl.envelope[f].y);
-			ctx.setLineDash([42, 2]);
 			ctx.ellipse(Impl.envelope[f].x * base.z_w - 5, Impl.envelope[f].y - 5, 10, 10);
-			ctx.setLineDash([2, 2]);
-			ctx.stroke();
 		}
+		ctx.stroke();
 		ctx.fill();
 		ctx.closePath();
 	}

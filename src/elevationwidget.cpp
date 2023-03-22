@@ -136,6 +136,7 @@ void ElevationWidget::applyTerrainEnvelope()
         d->m_speeds.push_back(d->aircraftMetrics.velocity);
     QGeoPath envelope_apply = d->envelopePath;
     d->envelopePath = QGeoPath();
+    d->setEnvelope(QList<QPointF>());
     setGeopath(envelope_apply);
 }
 
@@ -414,6 +415,7 @@ void ElevationWidgetPrivate::calculateCorrectedPathForUI(QGeoPath c_geopath)
 void ElevationWidgetPrivate::intersectCalculationFinished(quint8 progress, const QVector<Elevation::Point>& resultPath)
 {
     QList<QPointF> _intersectList;
+
     // check for first & last point lies inside ground:
     bool _first_point_in_ground = false;
     bool _last_point_in_ground = false;

@@ -1,6 +1,8 @@
 import QtQuick 2.15
 import ElevationWidgetImpl 1.0
 
+// @TODO: OpenGL
+
 Canvas { id: graph;
 	width: base.widthScaled;
 	height: base.height;

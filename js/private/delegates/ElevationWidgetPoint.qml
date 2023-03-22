@@ -41,6 +41,7 @@ Rectangle
                 ui.opacity = 0;
 			}
 		}
+		onPositionChanged: globalMouseArea.trueMouseX = globalPos;
 	}
 	Rectangle { id: indexUI;
 		z: 100;

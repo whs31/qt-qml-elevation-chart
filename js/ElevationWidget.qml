@@ -45,7 +45,11 @@ Rectangle { id: base;
 		acceptedButtons: Qt.RightButton;
 		anchors.fill: parent;
 		hoverEnabled: true;
-		onPositionChanged: mouseCrossImpl.requestPaint();
+		onPositionChanged: {
+			mouseCrossImpl.requestPaint();
+			trueMouseX = mouseX;
+		}
+		property real trueMouseX: 0;
 
 		Connections {
 			target: Impl;
