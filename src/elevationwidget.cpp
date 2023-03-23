@@ -12,6 +12,7 @@ ElevationWidget::ElevationWidget(QObject *parent)
     : QObject{parent}
     , d_ptr(new ElevationWidgetPrivate(this))
 {
+    connect(d_ptr, &ElevationWidgetPrivate::endElevationCalculate, this, &ElevationWidget::endElevationCalculate);
     qmlRegisterSingletonInstance("ElevationWidgetImpl", 1, 0, "Impl", d_ptr);
     qSetMessagePattern("[%{time process}] [%{category}] %{if-debug}\033[01;38;05;15m%{endif}%{if-info}\033[01;38;05;146m%{endif}%{if-warning}\033[1;33m%{endif}%{if-critical}\033[1;31m%{endif}%{if-fatal}F%{endif}%{message}\033[0m");
 }
@@ -245,7 +246,7 @@ void ElevationWidgetPrivate::recalculate(bool emitFlag, float predefined_envelop
     calculatePath();
     calculateCorrectedPath();
     recalculateEnvelopeForUI();
-
+    setAcceptCalculate();
     routeParser->testRouteIntersectGround(geopath);
 
     if(emitFlag or profile().isEmpty() or _emit_checkflag)
@@ -412,6 +413,15 @@ void ElevationWidgetPrivate::calculateCorrectedPathForUI(QGeoPath c_geopath)
     setCorrectedPath(data);
 }
 
+void ElevationWidgetPrivate::setAcceptCalculate()
+{
+    m_acceptCalculate += 1;
+    if (m_acceptCalculate == 2){
+        m_acceptCalculate = 0;
+        emit endElevationCalculate();
+    }
+}
+
 void ElevationWidgetPrivate::intersectCalculationFinished(quint8 progress, const QVector<Elevation::Point>& resultPath)
 {
     QList<QPointF> _intersectList;
@@ -446,7 +456,7 @@ void ElevationWidgetPrivate::intersectCalculationFinished(quint8 progress, const
     Q_Q(ElevationWidget);
     if(m_isIntersecting)
         emit(q->intersectingStateChanged());
-
+    setAcceptCalculate();
     if(_last_point_in_ground)
         _intersectList.append(QPointF(layout.width, layout.height - geopath.path().last().altitude() * layout.height / (axis.y.maxValue * axis.stretch)));
     setIntersections(_intersectList);

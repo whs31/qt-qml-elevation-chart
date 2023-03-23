@@ -54,6 +54,8 @@ namespace Charts
                 void fileIntegrityChanged();
                 void validChanged();
 
+                void endElevationCalculate();
+
         private:
             QPointF toPixel(const QPointF& point);
             void recalculate(bool emitFlag = false, float predefined_envelope_height = 0);
@@ -63,6 +65,7 @@ namespace Charts
             void calculatePath();
             void calculateCorrectedPath();
             void calculateCorrectedPathForUI(QGeoPath c_geopath);
+            void setAcceptCalculate();
 
         private:
             Q_PROPERTY(QVector<QPointF> profile READ profile WRITE setProfile NOTIFY profileChanged)
@@ -147,6 +150,8 @@ namespace Charts
 
             bool m_isIntersecting = false;
             bool m_isMatchingMetrics = true;
+
+            quint8 m_acceptCalculate = 0;
 
         std::vector<uint8_t> m_speeds; // Вектор для скоростей, индивидуальных для каждой точки)
     };
