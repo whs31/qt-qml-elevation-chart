@@ -6,6 +6,7 @@
 #include "Elevation/elevation.h"
 #include <QMetaType>
 
+inline void initMyResource() { Q_INIT_RESOURCE(qplotjs); }
 using namespace Charts;
 
 ElevationWidget::ElevationWidget(QObject *parent)
@@ -15,6 +16,7 @@ ElevationWidget::ElevationWidget(QObject *parent)
     connect(d_ptr, &ElevationWidgetPrivate::endElevationCalculate, this, &ElevationWidget::endElevationCalculate);
     qmlRegisterSingletonInstance("ElevationWidgetImpl", 1, 0, "Impl", d_ptr);
     qSetMessagePattern("[%{time process}] [%{category}] %{if-debug}\033[01;38;05;15m%{endif}%{if-info}\033[01;38;05;146m%{endif}%{if-warning}\033[1;33m%{endif}%{if-critical}\033[1;31m%{endif}%{if-fatal}F%{endif}%{message}\033[0m");
+    initMyResource();
 }
 
 QGeoPath ElevationWidget::getGeopath()
