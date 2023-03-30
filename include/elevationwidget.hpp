@@ -113,6 +113,7 @@ namespace Charts
             void intersectingStateChanged();
             /// @}
 
+            void endElevationCalculate();
         protected:
             ElevationWidgetPrivate* const d_ptr;
 

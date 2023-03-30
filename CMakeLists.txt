@@ -18,14 +18,15 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets QuickWidgets)
 include_directories(src)
 include_directories(include)
 
-set(PROJECT_SOURCES
-	# EXAMPLES
-	examples/main.cpp
-	examples/example.cpp
-	examples/example.h
-	examples/example.ui
-	examples/QPlot-example.qrc
-
+set (EXAMPLES
+    # EXAMPLES
+    examples/main.cpp
+    examples/example.cpp
+    examples/example.h
+    examples/example.ui
+    examples/QPlot-example.qrc
+)
+set (PROJECT_SOURCES
 	# QML|JS
 	js/QPlot.qrc
 	js/qplotjs.qrc
@@ -42,7 +43,7 @@ set(PROJECT_SOURCES
 if(LIBRARY_COMPILE)
 	add_library(${PROJECT_NAME} ${PROJECT_SOURCES})
 else()
-	add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
+        add_executable(${PROJECT_NAME} ${PROJECT_SOURCES} ${EXAMPLES})
 endif()
 
 target_include_directories(${PROJECT_NAME} PUBLIC src, include)
