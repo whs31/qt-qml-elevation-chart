@@ -57,6 +57,9 @@ void ElevationWidget::setVelocity(float velocity)
 {
     Q_D(ElevationWidget);
     d->aircraftMetrics.velocity = velocity;
+    #ifdef QT_DEBUG
+        qInfo() << "\033[01;48;05;132m<qplot> Задана скорость:" << d->aircraftMetrics.velocity << "м/с\e[0m";
+    #endif
     d->recalculate();
 }
 
