@@ -132,9 +132,11 @@ void ElevationWidget::applyTerrainEnvelope()
 {
     Q_D(ElevationWidget);
     d->m_speeds.clear();
-    for(size_t i = 0; i < d->geopath.path().size(); i++)
-        d->m_speeds.push_back(d->aircraftMetrics.velocity);
+
     QGeoPath envelope_apply = d->envelopePath;
+    for(size_t i = 0; i < envelope_apply.path().size(); ++i)
+        d->m_speeds.push_back(d->aircraftMetrics.velocity);
+
     d->envelopePath = QGeoPath();
     d->setEnvelope(QList<QPointF>());
     setGeopath(envelope_apply);
