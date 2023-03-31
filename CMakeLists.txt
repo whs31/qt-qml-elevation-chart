@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.13)
 
-project(QPlot VERSION 1.0 LANGUAGES CXX)
-set(LIBRARY_COMPILE TRUE)
+project(GLCharts VERSION 1.0 LANGUAGES CXX)
+set(LIBRARY_COMPILE FALSE)
 
 if(NOT LIBRARY_COMPILE)
 	set(CMAKE_AUTOUIC ON)
@@ -24,15 +24,15 @@ set (EXAMPLES
     examples/example.cpp
     examples/example.h
     examples/example.ui
-    examples/QPlot-example.qrc
+    examples/example.qrc
 )
 set (PROJECT_SOURCES
 	# QML|JS
-	js/QPlot.qrc
-	js/qplotjs.qrc
+	js/charts.qrc
 
 	# API
-	include/elevationwidget.hpp
+	include/charts/elevationwidget.hpp
+	include/charts/geopoint.hpp
 
 	# IMPLEMENTATION
 	src/elevationwidget.cpp

@@ -2,7 +2,7 @@
 #define INTEGRATIONEXAMPLE_H
 
 #include <QMainWindow>
-#include "elevationwidget.hpp"
+#include "charts/elevationwidget.hpp"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class IntegrationExample; }

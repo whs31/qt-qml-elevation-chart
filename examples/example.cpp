@@ -13,10 +13,9 @@ IntegrationExample::IntegrationExample(QWidget *parent)
     ui->quickWidget->setSource(QUrl("qrc:/example.qml"));
     ui->quickWidget->show();
 
-    elevationWidget->setGeopath(QGeoPath());
-    elevationWidget->setPallete("#2e3440", "#eceff4", "#4c566a",
-                                "#a3be8c", "#ebcb8b", "#bf616a",
-                                "#88C0D0");
+//    elevationWidget->setPallete("#2e3440", "#eceff4", "#4c566a",
+//                                "#a3be8c", "#ebcb8b", "#bf616a",
+//                                "#88C0D0");
     uiSetup();
 }
 
@@ -36,33 +35,46 @@ void IntegrationExample::uiSetup()
 }
 
 void IntegrationExample::on_checkBox_toggled(bool checked)
-{ elevationWidget->showIndexes(checked); }
+{
+//    elevationWidget->showIndexes(checked);
+}
 void IntegrationExample::on_doubleSpinBox_valueChanged(double arg1)
-{ elevationWidget->setVelocity(arg1); }
+{
+//    elevationWidget->setVelocity(arg1);
+}
 void IntegrationExample::on_doubleSpinBox_2_valueChanged(double arg1)
-{ elevationWidget->setClimbRate(arg1); }
+{
+//    elevationWidget->setClimbRate(arg1);
+}
 void IntegrationExample::on_doubleSpinBox_3_valueChanged(double arg1)
-{ elevationWidget->setDescendRate(arg1); }
+{
+//    elevationWidget->setDescendRate(arg1);
+}
 void IntegrationExample::on_doubleSpinBox_4_valueChanged(double arg1)
-{ elevationWidget->setEnvelopeMinHeight(arg1); }
+{
+//    elevationWidget->setEnvelopeMinHeight(arg1);
+}
 void IntegrationExample::on_doubleSpinBox_5_valueChanged(double arg1)
-{ elevationWidget->setEnvelopeCoridorSize(arg1); }
+{
+//    elevationWidget->setEnvelopeCoridorSize(arg1);
+}
 void IntegrationExample::on_pushButton_clicked()
-{ elevationWidget->applyMetricsCorrection(); }
+{
+//    elevationWidget->applyMetricsCorrection();
+}
 
 
 void IntegrationExample::on_pushButton_2_clicked()
 {
-    elevationWidget->setGeopath(QGeoPath({
-                                            QGeoCoordinate(60.01, 30.0, 5),
-                                            QGeoCoordinate(60.5, 30.01, 70),
-                                            QGeoCoordinate(61.0, 30.14, 10)
-                                        })
-                                );
-    std::vector<uint8_t> vec = { 30, 40, 30, 40, 70, 10, 20, 30, 80, 100, 200, 100, 200, 100, 100 };
-    elevationWidget->setVelocity(vec);
+
 }
 
-void IntegrationExample::on_pushButton_3_clicked() { elevationWidget->setGeopath(QGeoPath()); }
-void IntegrationExample::on_pushButton_4_clicked() { elevationWidget->calculateTerrainEnvelope(); }
-void IntegrationExample::on_pushButton_5_clicked() { elevationWidget->applyTerrainEnvelope(); }
+void IntegrationExample::on_pushButton_3_clicked() {
+//    elevationWidget->setGeopath(QGeoPath());
+}
+void IntegrationExample::on_pushButton_4_clicked() {
+//    elevationWidget->calculateTerrainEnvelope();
+}
+void IntegrationExample::on_pushButton_5_clicked() {
+//    elevationWidget->applyTerrainEnvelope();
+}
