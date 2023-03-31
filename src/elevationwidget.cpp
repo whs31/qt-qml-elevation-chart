@@ -3,6 +3,8 @@
 #include "Elevation/elevation.h"
 #include "RouteTools/elevationtools.h"
 #include "qdeclitems/cdeclarativepolyline.hpp"
+#include "qdeclitems/celevationwidgetpolyline.hpp"
+#include "ielevationdata.hpp"
 
 #include <qqml.h>
 #include <QMetaType>
@@ -37,9 +39,11 @@ ElevationWidgetPrivate::ElevationWidgetPrivate(ElevationWidget* parent)
 {
     heightmapParser = new Elevation::Elevation(this);
     routeParser = new Elevation::ElevationTools(this);
+    IElevationData::get(this); // set parent to prevent memleak
 
     qRegisterMetaType<QVector<Elevation::Point>>("QVector<Point>");
     qRegisterMetaType<Elevation::RouteAndElevationProfiles>("RouteAndElevationProfiles");
 
-    qmlRegisterType<CDeclarativePolyline>("CDeclarativePolyline", 1, 0, "CDeclarativePolyline");
+    qmlRegisterType<ChartsOpenGL::CDeclarativePolyline>("CDeclarativePolyline", 1, 0, "CDeclarativePolyline");
+    qmlRegisterType<ChartsOpenGL::CElevationWidgetPolyline>("CElevationWidgetPolyline", 1, 0, "CElevationWidgetPolyline");
 }

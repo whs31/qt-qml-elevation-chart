@@ -22,8 +22,25 @@ namespace Charts
             explicit ElevationWidgetPrivate(ElevationWidget* parent);
             virtual ~ElevationWidgetPrivate() = default;
 
+            list<GeoPoint> getRoute();
+            void setRoute(const list<GeoPoint>& route, const QGeoCoordinate& uav_position = QGeoCoordinate());
+            void setUAVPosition(const QGeoCoordinate& position);
+            void setUAVPosition(double latitude, double longitude);
+            bool isIntersecting();
+            bool isValid();
+            void setClimbRate(float rate);
+            void setDescendRate(float rate);
+            void setGlobalVelocity(float velocity);
+            void applyMetricsCorrection();
+            bool isMatchingMetrics();
+            void setEnvelopeMinimumAltitude(float altitude);
+            void setEnevelopeCoridorSize(float distance);
+            void estimateEnvelope();
+            void applyEnvelopeCorrection();
+
         protected:
             ElevationWidget* q_ptr;
+
     };
 } ///namespace Charts;
 
