@@ -7,6 +7,8 @@ namespace Elevation {
     class ElevationTools;
 }
 
+using std::list;
+
 namespace Charts
 {
     /// @private
@@ -18,12 +20,17 @@ namespace Charts
         Elevation::Elevation* heightmapParser;
         Elevation::ElevationTools* routeParser;
 
+        // variables
+
+        list<GeoPoint> m_route;
+        QGeoCoordinate m_uavPosition;
+
         public:
             explicit ElevationWidgetPrivate(ElevationWidget* parent);
             virtual ~ElevationWidgetPrivate() = default;
 
             list<GeoPoint> getRoute();
-            void setRoute(const list<GeoPoint>& route, const QGeoCoordinate& uav_position = QGeoCoordinate());
+            void setRoute(const list<GeoPoint>& route);
             void setUAVPosition(const QGeoCoordinate& position);
             void setUAVPosition(double latitude, double longitude);
             bool isIntersecting();
@@ -34,7 +41,7 @@ namespace Charts
             void applyMetricsCorrection();
             bool isMatchingMetrics();
             void setEnvelopeMinimumAltitude(float altitude);
-            void setEnevelopeCoridorSize(float distance);
+            void setEnvelopeCoridorSize(float distance);
             void estimateEnvelope();
             void applyEnvelopeCorrection();
 

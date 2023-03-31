@@ -28,7 +28,7 @@ namespace Charts
             //! @brief Задает список точек в виджет.
             //! @param route - список точек с высотой отн. борта и скоростями в м/с.
 
-            void setRoute(const list<GeoPoint>& route, const QGeoCoordinate& uav_position = QGeoCoordinate());
+            void setRoute(const list<GeoPoint>& route);
 
             //! @brief Задает географические координаты БПЛА для расчета высоты для точек.
             //! @param uav_position - геокоординаты БПЛА. Высота в них не будет учитываться.
@@ -84,7 +84,7 @@ namespace Charts
 
             //! @brief Задает предпочитаемый размер коридора огибания.
             //! @param distance - расстояние между нижней и верхней границей профиля огибания в метрах.
-            void setEnevelopeCoridorSize(float distance);
+            void setEnvelopeCoridorSize(float distance);
 
             //! @brief Вычисляет маршрут огибания и отображает его на экране.
             void estimateEnvelope();

@@ -30,6 +30,96 @@ ElevationWidget::ElevationWidget(QObject *parent)
     initialize_qrc_file_within_namespace_1("charts");
 }
 
+list<GeoPoint> ElevationWidget::getRoute()
+{
+    Q_D(ElevationWidget);
+    return d->getRoute();
+}
+
+void ElevationWidget::setRoute(const std::list<GeoPoint>& route)
+{
+    Q_D(ElevationWidget);
+    d->setRoute(route);
+}
+
+void ElevationWidget::setUAVPosition(const QGeoCoordinate& position)
+{
+    Q_D(ElevationWidget);
+    d->setUAVPosition(position);
+}
+
+void ElevationWidget::setUAVPosition(double latitude, double longitude)
+{
+    Q_D(ElevationWidget);
+    d->setUAVPosition(latitude, longitude);
+}
+
+bool ElevationWidget::isIntersecting()
+{
+    Q_D(ElevationWidget);
+    return d->isIntersecting();
+}
+
+bool ElevationWidget::isValid()
+{
+    Q_D(ElevationWidget);
+    return d->isValid();
+}
+
+void ElevationWidget::setClimbRate(float rate)
+{
+    Q_D(ElevationWidget);
+    d->setClimbRate(rate);
+}
+
+void ElevationWidget::setDescendRate(float rate)
+{
+    Q_D(ElevationWidget);
+    d->setDescendRate(rate);
+}
+
+void ElevationWidget::setGlobalVelocity(float velocity)
+{
+    Q_D(ElevationWidget);
+    d->setGlobalVelocity(velocity);
+}
+
+void ElevationWidget::applyMetricsCorrection()
+{
+    Q_D(ElevationWidget);
+    d->applyMetricsCorrection();
+}
+
+bool ElevationWidget::isMatchingMetrics()
+{
+    Q_D(ElevationWidget);
+    return d->isMatchingMetrics();
+}
+
+void ElevationWidget::setEnvelopeMinimumAltitude(float altitude)
+{
+    Q_D(ElevationWidget);
+    d->setEnvelopeMinimumAltitude(altitude);
+}
+
+void ElevationWidget::setEnvelopeCoridorSize(float distance)
+{
+    Q_D(ElevationWidget);
+    d->setEnvelopeCoridorSize(distance);
+}
+
+void ElevationWidget::estimateEnvelope()
+{
+    Q_D(ElevationWidget);
+    d->estimateEnvelope();
+}
+
+void ElevationWidget::applyEnvelopeCorrection()
+{
+    Q_D(ElevationWidget);
+    d->applyEnvelopeCorrection();
+}
+
 /*
 ███████████████████████████          🔒 PRIVATE IMPLEMENTATION 🔒          ███████████████████████████████──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────f
 */
@@ -46,4 +136,85 @@ ElevationWidgetPrivate::ElevationWidgetPrivate(ElevationWidget* parent)
 
     qmlRegisterType<ChartsOpenGL::CDeclarativePolyline>("CDeclarativePolyline", 1, 0, "CDeclarativePolyline");
     qmlRegisterType<ChartsOpenGL::CElevationWidgetPolyline>("CElevationWidgetPolyline", 1, 0, "CElevationWidgetPolyline");
+}
+
+list<GeoPoint> ElevationWidgetPrivate::getRoute()
+{
+    return m_route;
+}
+
+void ElevationWidgetPrivate::setRoute(const std::list<GeoPoint>& route)
+{
+    m_route = route;
+}
+
+void ElevationWidgetPrivate::setUAVPosition(const QGeoCoordinate& position)
+{
+    if(position == m_uavPosition)
+        return;
+    m_uavPosition = position;
+    // velocity xd
+}
+
+void ElevationWidgetPrivate::setUAVPosition(double latitude, double longitude)
+{
+    if(m_uavPosition == QGeoCoordinate(latitude, longitude))
+        return;
+    m_uavPosition = QGeoCoordinate(latitude, longitude);
+    // velocity xd
+}
+
+bool ElevationWidgetPrivate::isIntersecting()
+{
+
+}
+
+bool ElevationWidgetPrivate::isValid()
+{
+
+}
+
+void ElevationWidgetPrivate::setClimbRate(float rate)
+{
+
+}
+
+void ElevationWidgetPrivate::setDescendRate(float rate)
+{
+
+}
+
+void ElevationWidgetPrivate::setGlobalVelocity(float velocity)
+{
+
+}
+
+void ElevationWidgetPrivate::applyMetricsCorrection()
+{
+
+}
+
+bool ElevationWidgetPrivate::isMatchingMetrics()
+{
+
+}
+
+void ElevationWidgetPrivate::setEnvelopeMinimumAltitude(float altitude)
+{
+
+}
+
+void ElevationWidgetPrivate::setEnvelopeCoridorSize(float distance)
+{
+
+}
+
+void ElevationWidgetPrivate::estimateEnvelope()
+{
+
+}
+
+void ElevationWidgetPrivate::applyEnvelopeCorrection()
+{
+
 }
