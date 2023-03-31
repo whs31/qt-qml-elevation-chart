@@ -2,11 +2,11 @@
 #include "elevationwidget_p.hpp"
 #include "Elevation/elevation.h"
 #include "RouteTools/elevationtools.h"
+#include "qdeclitems/cdeclarativepolyline.hpp"
 
 #include <qqml.h>
 #include <QMetaType>
 
-inline void qrc_init_charts(const char* comment) { Q_INIT_RESOURCE(charts); }
 using namespace Charts;
 
 ElevationWidget::ElevationWidget(QObject *parent)
@@ -22,10 +22,10 @@ ElevationWidget::ElevationWidget(QObject *parent)
                        "%{if-info}\033[01;38;05;146m%{endif}"
                        "%{if-warning}\033[1;33m%{endif}"
                        "%{if-critical}\033[1;31m%{endif}"
-                       "%{if-fatal}F%{endif}%{message}\033[0m");
+                       "%{if-fatal}F%\033[1;31m%{endif}%{message}\033[0m");
     #endif
 
-    qrc_init_charts("charts");
+    initialize_qrc_file_within_namespace_1("charts");
 }
 
 /*
@@ -40,4 +40,6 @@ ElevationWidgetPrivate::ElevationWidgetPrivate(ElevationWidget* parent)
 
     qRegisterMetaType<QVector<Elevation::Point>>("QVector<Point>");
     qRegisterMetaType<Elevation::RouteAndElevationProfiles>("RouteAndElevationProfiles");
+
+    qmlRegisterType<CDeclarativePolyline>("CDeclarativePolyline", 1, 0, "CDeclarativePolyline");
 }

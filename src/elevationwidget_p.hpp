@@ -26,3 +26,8 @@ namespace Charts
             ElevationWidget* q_ptr;
     };
 } ///namespace Charts;
+
+inline void initialize_qrc_file_within_namespace_1(const char* comment)
+{
+    Q_INIT_RESOURCE(charts);
+}

@@ -34,9 +34,11 @@ set (PROJECT_SOURCES
 	include/charts/elevationwidget.hpp
 	include/charts/geopoint.hpp
 
-	# IMPLEMENTATION
-	src/elevationwidget.cpp
-	src/elevationwidget_p.hpp
+	# SOURCE BASE
+	src/elevationwidget_p.hpp src/elevationwidget.cpp
+
+		# DECLARATIVE ITEMS
+		src/qdeclitems/cdeclarativepolyline.hpp src/qdeclitems/cdeclarativepolyline.cpp
 
 )
 
