@@ -9,13 +9,7 @@ Rectangle { id: root;
 	color: "#1b1f23";
 	CDeclarativePolyline
 	{
-		anchors.centerIn: parent;
-		width: 200;
-		height: 300;
-		Component.onCompleted: {
-			update();
-			console.log("qml");
-		}
-
+		anchors.fill: parent;
+		anchors.margins: 50;
 	}
 }
