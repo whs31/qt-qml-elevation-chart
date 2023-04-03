@@ -39,6 +39,7 @@ set (PROJECT_SOURCES
 
 		# DECLARATIVE ITEMS
 		src/qdeclitems/cdeclarativepolyline.hpp src/qdeclitems/cdeclarativepolyline.cpp
+		src/qdeclitems/cdeclarativepolygon.hpp src/qdeclitems/cdeclarativepolygon.cpp
 
 )
 

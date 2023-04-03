@@ -71,8 +71,24 @@ void IntegrationExample::on_pushButton_2_clicked()
     elevationWidget->setRoute({ Charts::GeoPoint(60, 30, 50, 50),
                                 Charts::GeoPoint(60.1, 30.1, 100, 100),
                                 Charts::GeoPoint(60.2, 30.2, 25, 50),
-                                Charts::GeoPoint(60.21, 30.2, 45, 50),
-                                Charts::GeoPoint(60.21, 30.22, 35, 50) });
+                                Charts::GeoPoint(60.3, 30.3, 45, 50),
+                                Charts::GeoPoint(60.4, 30.4, 35, 50),
+                                Charts::GeoPoint(60.5, 30.5, 50, 50),
+                                Charts::GeoPoint(60.6, 30.6, 100, 100),
+                                Charts::GeoPoint(60.7, 30.7, 25, 50),
+                                Charts::GeoPoint(60.8, 30.8, 45, 50),
+                                Charts::GeoPoint(60.9, 30.9, 35, 50),
+                                Charts::GeoPoint(60, 30, 50, 50),
+                                Charts::GeoPoint(60.1, 30.1, 100, 100),
+                                Charts::GeoPoint(60.2, 30.2, 25, 50),
+                                Charts::GeoPoint(60.3, 30.3, 45, 50),
+                                Charts::GeoPoint(60.4, 30.4, 35, 50),
+                                Charts::GeoPoint(60.5, 30.5, 50, 50),
+                                Charts::GeoPoint(60.6, 30.6, 100, 100),
+                                Charts::GeoPoint(60.7, 30.7, 25, 50),
+                                Charts::GeoPoint(60.8, 30.8, 45, 50),
+                                Charts::GeoPoint(60.9, 30.9, 35, 50)
+                              });
 }
 
 void IntegrationExample::on_pushButton_3_clicked() {

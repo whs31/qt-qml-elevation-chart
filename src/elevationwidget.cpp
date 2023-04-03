@@ -3,6 +3,7 @@
 #include "Elevation/elevation.h"
 #include "RouteTools/elevationtools.h"
 #include "qdeclitems/cdeclarativepolyline.hpp"
+#include "qdeclitems/cdeclarativepolygon.hpp"
 
 #include <qqml.h>
 #include <cmath>
@@ -145,16 +146,23 @@ ElevationWidgetPrivate::ElevationWidgetPrivate(ElevationWidget* parent)
     qRegisterMetaType<Elevation::RouteAndElevationProfiles>("RouteAndElevationProfiles");
 
     qmlRegisterType<ChartsOpenGL::CDeclarativePolyline>("CDeclarativePolyline", 1, 0, "CDeclarativePolyline");
+    qmlRegisterType<ChartsOpenGL::CDeclarativePolygon>("CDeclarativePolygon", 1, 0, "CDeclarativePolygon");
 }
 
 void ElevationWidgetPrivate::linkWithQML(QQuickItem* rootObject)
 {
     m_pathPolyline = rootObject->findChild<ChartsOpenGL::CDeclarativePolyline*>("qml_gl_path_polyline");
+    m_profilePolygon = rootObject->findChild<ChartsOpenGL::CDeclarativePolygon*>("qml_gl_profile_polygon");
 
     if(not m_pathPolyline)
-        qCritical() << "<charts> Failed to link with QML.";
+        qCritical() << "<charts> Failed to link with QML at qml_gl_path_polyline";
     else
-        qInfo() << "<charts> Path polyline linked successfully";
+        qInfo() << "<charts> qml_gl_path_polyline linked successfully";
+
+    if(not m_profilePolygon)
+        qCritical() << "<charts> Failed to link with QML at qml_gl_profile_polygon";
+    else
+        qInfo() << "<charts> qml_gl_profile_polygon linked successfully";
 }
 
 list<GeoPoint> ElevationWidgetPrivate::getRoute()
@@ -283,7 +291,7 @@ void ElevationWidgetPrivate::update(UpdateMode mode)
         for(size_t i = 0; i < profile.size(); ++i)
             profile_polygon.push_back(toPixelCoords(profile.at(i), axis.x.maxValue, axis.y.maxValue,
                                                     axis.stretch, m_pathPolyline->width(), m_pathPolyline->height()));
-        // set profile here
+        m_profilePolygon->setList(profile_polygon);
     }
 
     list<QPointF> path_polyline;

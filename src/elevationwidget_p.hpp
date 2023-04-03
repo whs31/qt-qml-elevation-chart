@@ -54,6 +54,7 @@ namespace Charts
 
         // qml instances
         ChartsOpenGL::CDeclarativePolyline* m_pathPolyline = nullptr;
+        ChartsOpenGL::CDeclarativePolygon* m_profilePolygon = nullptr;
 
         public:
             explicit ElevationWidgetPrivate(ElevationWidget* parent);
