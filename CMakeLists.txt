@@ -39,7 +39,6 @@ set (PROJECT_SOURCES
 
 		# DECLARATIVE ITEMS
 		src/qdeclitems/cdeclarativepolyline.hpp src/qdeclitems/cdeclarativepolyline.cpp
-		src/qdeclitems/celevationwidgetpolyline.hpp src/qdeclitems/celevationwidgetpolyline.cpp
 
 )
 

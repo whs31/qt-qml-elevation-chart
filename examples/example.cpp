@@ -68,7 +68,11 @@ void IntegrationExample::on_pushButton_clicked()
 
 void IntegrationExample::on_pushButton_2_clicked()
 {
-
+    elevationWidget->setRoute({ Charts::GeoPoint(60, 30, 50, 50),
+                                Charts::GeoPoint(60.1, 30.1, 100, 100),
+                                Charts::GeoPoint(60.2, 30.2, 25, 50),
+                                Charts::GeoPoint(60.21, 30.2, 45, 50),
+                                Charts::GeoPoint(60.21, 30.22, 35, 50) });
 }
 
 void IntegrationExample::on_pushButton_3_clicked() {

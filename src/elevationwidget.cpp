@@ -3,11 +3,17 @@
 #include "Elevation/elevation.h"
 #include "RouteTools/elevationtools.h"
 #include "qdeclitems/cdeclarativepolyline.hpp"
+
 #include <qqml.h>
+#include <cmath>
 #include <QMetaType>
 #include <QQuickItem>
+#include <QGeoPath>
+#include <QVector>
 
 using namespace Charts;
+
+#pragma region PUBLIC
 
 ElevationWidget::ElevationWidget(QObject *parent)
     : QObject{parent}
@@ -124,9 +130,10 @@ void ElevationWidget::applyEnvelopeCorrection()
     d->applyEnvelopeCorrection();
 }
 
-/*
-███████████████████████████          🔒 PRIVATE IMPLEMENTATION 🔒          ███████████████████████████████──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────f
-*/
+#pragma endregion PUBLIC
+
+#pragma region PRIVATE
+
 ElevationWidgetPrivate::ElevationWidgetPrivate(ElevationWidget* parent)
     : QObject{parent}
     , q_ptr(parent)
@@ -158,6 +165,8 @@ list<GeoPoint> ElevationWidgetPrivate::getRoute()
 void ElevationWidgetPrivate::setRoute(const std::list<GeoPoint>& route)
 {
     m_route = route;
+    if(not route.empty() and m_pathPolyline != nullptr)
+        this->update(UpdateMode::RebuildProfile);
 }
 
 void ElevationWidgetPrivate::setUAVPosition(const QGeoCoordinate& position)
@@ -230,3 +239,70 @@ void ElevationWidgetPrivate::applyEnvelopeCorrection()
 {
 
 }
+
+void ElevationWidgetPrivate::update(UpdateMode mode)
+{
+    if(mode == UpdateMode::RebuildProfile)
+    {
+        QGeoPath path_to_build;
+        for(GeoPoint point : m_route)
+            path_to_build.addCoordinate(point.coordinate());
+        QVector<QPointF> profile = heightmapParser->buildGroundProfileForChart(path_to_build);
+
+        axis.x.maxValue = profile.last().x();
+        axis.x.roundMaxValue = 0;
+        axis.y.maxValue = 0;
+        axis.y.roundMaxValue = 0;
+
+        for(const QPointF& point_to_check_for_elevation_files : profile)
+        {
+            if(point_to_check_for_elevation_files.y() > __INT16_MAX__ - 1'000)
+            {
+                qWarning() << "<charts> Some elevation profiles are missing from /elevations folder.";
+                //set file integrity
+                return;
+            }
+        }
+        for(const QGeoCoordinate& coordinate : path_to_build.path())
+            if(coordinate.altitude() > axis.y.maxValue)
+                axis.y.maxValue = coordinate.altitude();
+        int power_of_x = axis.x.maxValue > 0 ? (int) log10 ((float) axis.x.maxValue) : 1;
+        int power_of_y = axis.y.maxValue > 0 ? (int) log10 ((float) axis.y.maxValue) : 1;
+        while(axis.x.roundMaxValue < axis.x.maxValue)
+            axis.x.roundMaxValue += pow(10, power_of_x);
+        while(axis.y.roundMaxValue < axis.y.maxValue)
+            axis.y.roundMaxValue += pow(10, power_of_y);
+        axis.x.scaleValue = pow(10, power_of_x);
+        axis.y.scaleValue = pow(10, power_of_y);
+        axis.x.scaleCount = (float)axis.x.maxValue / (float)axis.x.scaleValue;
+        axis.y.scaleCount = (float)axis.y.maxValue * axis.stretch / (float)axis.y.scaleValue;
+        axis.x.scalePixelSize = m_pathPolyline->width() / axis.x.scaleCount;
+        axis.y.scalePixelSize = m_pathPolyline->height() / axis.y.scaleCount;
+
+        list<QPointF> profile_polygon;
+        for(size_t i = 0; i < profile.size(); ++i)
+            profile_polygon.push_back(toPixelCoords(profile.at(i), axis.x.maxValue, axis.y.maxValue,
+                                                    axis.stretch, m_pathPolyline->width(), m_pathPolyline->height()));
+        // set profile here
+    }
+
+    list<QPointF> path_polyline;
+    QGeoCoordinate prev_coord = m_route.front().coordinate();
+    float distance_cap = 0;
+    for(GeoPoint& point : m_route)
+    {
+        distance_cap += point.coordinate().distanceTo(prev_coord);
+        QPointF distance_height_point = QPointF(distance_cap, point.altitude());
+        path_polyline.push_back(toPixelCoords(distance_height_point, axis.x.maxValue, axis.y.maxValue,
+                                              axis.stretch, m_pathPolyline->width(), m_pathPolyline->height()));
+        prev_coord = point.coordinate();
+    }
+    m_pathPolyline->setList(path_polyline);
+}
+
+QPointF ElevationWidgetPrivate::toPixelCoords(const QPointF& point, float x_max, float y_max, float y_stretch, float pixel_width, float pixel_height)
+{
+    return QPointF(point.x() * pixel_width / x_max, pixel_height - point.y() * pixel_height / (y_max * y_stretch));
+}
+
+#pragma endregion PRIVATE

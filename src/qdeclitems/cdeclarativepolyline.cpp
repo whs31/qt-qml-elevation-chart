@@ -1,6 +1,7 @@
 #include "cdeclarativepolyline.hpp"
 #include <cmath>
 #include <QSGFlatColorMaterial>
+#include <QSGGeometryNode>
 
 using namespace ChartsOpenGL;
 
@@ -11,10 +12,17 @@ CDeclarativePolyline::CDeclarativePolyline(QQuickItem* parent)
     qDebug() << "<charts> CDeclarativePolyline initialized";
 }
 
+void CDeclarativePolyline::setList(const std::list<QPointF>& points)
+{
+    m_points = points;
+    this->update();
+}
+
 QSGNode* CDeclarativePolyline::updatePaintNode(QSGNode *old_node, UpdatePaintNodeData *update_paint_node_data)
 {
     Q_UNUSED(update_paint_node_data);
 
+    QSGGeometry* geometry = nullptr;
     QSGGeometryNode* node = static_cast<QSGGeometryNode*>(old_node);
     if(node == nullptr)
     {
@@ -24,20 +32,26 @@ QSGNode* CDeclarativePolyline::updatePaintNode(QSGNode *old_node, UpdatePaintNod
 
         node->setMaterial(material);
         node->setFlag(QSGNode::OwnsMaterial);
+        geometry = new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), m_points.size(), 0, QSGGeometry::UnsignedIntType);
+        node->setGeometry(geometry);
+        node->setFlag(QSGNode::OwnsGeometry);
     }
 
-    QSGGeometry* geometry = new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), 4);
-    geometry->setDrawingMode(QSGGeometry::DrawLineStrip);
-    geometry->setLineWidth(4);
 
-    geometry->vertexDataAsPoint2D()[0].set(0, height() - 10);
-    geometry->vertexDataAsPoint2D()[1].set(0, height() / 2);
-    geometry->vertexDataAsPoint2D()[2].set(width(), height());
-    geometry->vertexDataAsPoint2D()[3].set(width(), height() - 10);
+    geometry = node->geometry();
+    geometry->allocate(m_points.size() + 1);
 
-    node->setGeometry(geometry);
-    node->setFlag(QSGNode::OwnsGeometry);
+    geometry->setDrawingMode(GL_LINE_STRIP);
+    geometry->setLineWidth(5);
 
+    // это пиздец)
+    // короче. если аллоцировать память под массив(лист) из N точек, то ничего работать не будет
+    // поэтому мы аллоцируем память под N+1 точек.
+    size_t index = 1;
+    geometry->vertexDataAsPoint2D()[0].set(m_points.front().x(), m_points.front().y());
+    for(QPointF point : m_points)
+        geometry->vertexDataAsPoint2D()[index++].set(point.x(), point.y());
+    node->markDirty(QSGNode::DirtyGeometry);
     return node;
 }
 
@@ -47,4 +61,5 @@ void CDeclarativePolyline::setLineColor(const QString& col) {
     m_lineColor = col;
     emit lineColorChanged();
 }
+
 

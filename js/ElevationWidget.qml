@@ -15,7 +15,9 @@ Rectangle { id: c_ImplRoot;
 	CDeclarativePolyline { id: c_ImplBasePath;
 		objectName: "qml_gl_path_polyline"; //! required!
 		anchors.fill: parent;
-		anchors.margins: 50;
+		anchors.leftMargin: 30;
+		anchors.bottomMargin: 15;
+		anchors.rightMargin: 7;
 		lineColor: c_ImplRoot.s_RouteColor;
 		visible: true;
 	}

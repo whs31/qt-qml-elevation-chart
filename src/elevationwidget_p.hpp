@@ -25,12 +25,34 @@ namespace Charts
         Elevation::ElevationTools* routeParser;
 
         // variables
-
         list<GeoPoint> m_route;
         QGeoCoordinate m_uavPosition;
 
-        // qml instances
+        struct AircraftMetrics {
+            float velocity = 75;
+            float climbRate = 1;
+            float descendRate = 1;
+            float envelopeHeight = 100;
+            float envelopeSize = 100;
+        } aircraftMetrics;
 
+        struct Input {
+            bool showIndex = true;
+        } input;
+
+        struct Axes {
+            struct Axis {
+                float maxValue;
+                float roundMaxValue;
+                int scaleValue;
+                float scaleCount;
+                float scalePixelSize;
+            };
+            Axis x, y;
+            const float stretch = 1.15;
+        } axis;
+
+        // qml instances
         ChartsOpenGL::CDeclarativePolyline* m_pathPolyline = nullptr;
 
         public:
@@ -57,6 +79,14 @@ namespace Charts
         protected:
             ElevationWidget* q_ptr;
 
+        private:
+            enum UpdateMode
+            {
+                RebuildProfile,
+                KeepProfile
+            };
+            void update(UpdateMode mode);
+            QPointF toPixelCoords(const QPointF& point, float x_max, float y_max, float y_stretch, float pixel_width, float pixel_height);
     };
 } ///namespace Charts;
 
