@@ -26,6 +26,9 @@ namespace ChartsOpenGL {
             CDeclarativePolygon(QQuickItem* parent = nullptr);
 
             void setList(const list<QPointF>& points);
+            void asyncAppend(const list<QPointF>& points);
+            void clear();
+
             void setLoopMode(LoopMode mode);
 
             signals:

@@ -87,6 +87,7 @@ namespace Charts
                 KeepProfile
             };
             void update(UpdateMode mode);
+            void sync(QVector<QPointF> vec);
             QPointF toPixelCoords(const QPointF& point, float x_max, float y_max, float y_stretch, float pixel_width, float pixel_height);
     };
 } ///namespace Charts;

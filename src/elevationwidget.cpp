@@ -154,9 +154,7 @@ ElevationWidgetPrivate::ElevationWidgetPrivate(ElevationWidget* parent)
             qWarning() << "<charts> Some elevation profiles are missing from /elevations folder.";
     });
 
-    connect(heightmapParser, &Elevation::Elevation::profileAsyncPacket, this, [](QVector<QPointF> vec) {
-        qInfo() << vec.length();
-    });
+    connect(heightmapParser, &Elevation::Elevation::profileAsyncPacket, this, &ElevationWidgetPrivate::sync);
 }
 
 void ElevationWidgetPrivate::linkWithQML(QQuickItem* rootObject)
@@ -262,20 +260,18 @@ void ElevationWidgetPrivate::update(UpdateMode mode)
 {
     if(mode == UpdateMode::RebuildProfile)
     {
+        m_profilePolygon->clear();
         QGeoPath path_to_build;
         for(GeoPoint point : m_route)
             path_to_build.addCoordinate(point.coordinate());
-        QVector<QPointF> profile = heightmapParser->buildGroundProfileForChart(path_to_build);
-        qCritical() << heightmapParser->buildProfileChartAsync(path_to_build);
+        QPointF bounds =  heightmapParser->buildProfileChartAsync(path_to_build);
 
-        axis.x.maxValue = profile.last().x();
+        axis.x.maxValue = bounds.x();
+        qDebug() << axis.x.maxValue;
         axis.x.roundMaxValue = 0;
-        axis.y.maxValue = 0;
+        axis.y.maxValue = bounds.y();
         axis.y.roundMaxValue = 0;
 
-        for(const QGeoCoordinate& coordinate : path_to_build.path())
-            if(coordinate.altitude() > axis.y.maxValue)
-                axis.y.maxValue = coordinate.altitude();
         int power_of_x = axis.x.maxValue > 0 ? (int) log10 ((float) axis.x.maxValue) : 1;
         int power_of_y = axis.y.maxValue > 0 ? (int) log10 ((float) axis.y.maxValue) : 1;
         while(axis.x.roundMaxValue < axis.x.maxValue)
@@ -288,12 +284,6 @@ void ElevationWidgetPrivate::update(UpdateMode mode)
         axis.y.scaleCount = (float)axis.y.maxValue * axis.stretch / (float)axis.y.scaleValue;
         axis.x.scalePixelSize = m_pathPolyline->width() / axis.x.scaleCount;
         axis.y.scalePixelSize = m_pathPolyline->height() / axis.y.scaleCount;
-
-        list<QPointF> profile_polygon;
-        for(size_t i = 0; i < profile.size(); ++i)
-            profile_polygon.push_back(toPixelCoords(profile.at(i), axis.x.maxValue, axis.y.maxValue,
-                                                    axis.stretch, m_pathPolyline->width(), m_pathPolyline->height()));
-        m_profilePolygon->setList(profile_polygon);
     }
 
     list<QPointF> path_polyline;
@@ -308,6 +298,18 @@ void ElevationWidgetPrivate::update(UpdateMode mode)
         prev_coord = point.coordinate();
     }
     m_pathPolyline->setList(path_polyline);
+}
+
+void ElevationWidgetPrivate::sync(QVector<QPointF> vec)
+{
+    list<QPointF> packet;
+    for(size_t i = 0; i < vec.size(); ++i)
+    {
+        packet.push_back(toPixelCoords(vec.at(i), axis.x.maxValue, axis.y.maxValue,
+                         axis.stretch, m_pathPolyline->width(), m_pathPolyline->height()));
+    }
+    m_profilePolygon->asyncAppend(packet);
+
 }
 
 QPointF ElevationWidgetPrivate::toPixelCoords(const QPointF& point, float x_max, float y_max, float y_stretch, float pixel_width, float pixel_height)
