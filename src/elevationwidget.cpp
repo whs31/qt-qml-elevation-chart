@@ -147,6 +147,16 @@ ElevationWidgetPrivate::ElevationWidgetPrivate(ElevationWidget* parent)
 
     qmlRegisterType<ChartsOpenGL::CDeclarativePolyline>("CDeclarativePolyline", 1, 0, "CDeclarativePolyline");
     qmlRegisterType<ChartsOpenGL::CDeclarativePolygon>("CDeclarativePolygon", 1, 0, "CDeclarativePolygon");
+
+    connect(heightmapParser, &Elevation::Elevation::profileAsyncNotification, this, [](unsigned int return_code){
+        qDebug() << "<charts> Received notification from async calc:" << Qt::hex << return_code << Qt::dec;
+        if(return_code == 0xFF)
+            qWarning() << "<charts> Some elevation profiles are missing from /elevations folder.";
+    });
+
+    connect(heightmapParser, &Elevation::Elevation::profileAsyncPacket, this, [](QVector<QPointF> vec) {
+        qInfo() << vec.length();
+    });
 }
 
 void ElevationWidgetPrivate::linkWithQML(QQuickItem* rootObject)
@@ -256,21 +266,13 @@ void ElevationWidgetPrivate::update(UpdateMode mode)
         for(GeoPoint point : m_route)
             path_to_build.addCoordinate(point.coordinate());
         QVector<QPointF> profile = heightmapParser->buildGroundProfileForChart(path_to_build);
+        qCritical() << heightmapParser->buildProfileChartAsync(path_to_build);
 
         axis.x.maxValue = profile.last().x();
         axis.x.roundMaxValue = 0;
         axis.y.maxValue = 0;
         axis.y.roundMaxValue = 0;
 
-        for(const QPointF& point_to_check_for_elevation_files : profile)
-        {
-            if(point_to_check_for_elevation_files.y() > __INT16_MAX__ - 1'000)
-            {
-                qWarning() << "<charts> Some elevation profiles are missing from /elevations folder.";
-                //set file integrity
-                return;
-            }
-        }
         for(const QGeoCoordinate& coordinate : path_to_build.path())
             if(coordinate.altitude() > axis.y.maxValue)
                 axis.y.maxValue = coordinate.altitude();
