@@ -6,6 +6,7 @@
 #include <list>
 
 using std::list;
+class QQuickItem;
 
 /// @namespace Пространство имен для библиотеки построения графиков
 namespace Charts
@@ -18,6 +19,14 @@ namespace Charts
         Q_OBJECT
         public:
             explicit ElevationWidget(QObject *parent);
+
+            //! @brief Связывает QML и C++ части виджета в контексте целевого приложения.
+            //! @param rootObject - указатель на  Item в QML, в котором размещен виджет.
+            //! @details Конструктор этого класса должен быть вызван до инициализации UI
+            //!          (для регистрации типов QML). Эта функция должна быть вызвана после
+            //!          инициализации QML и UI.
+            //! @warning Без вызова этой функции работать ничего не будет.
+            void linkWithQML(QQuickItem* rootObject);
 
             //! @defgroup Маршрут
             //! @{

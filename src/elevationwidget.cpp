@@ -3,11 +3,9 @@
 #include "Elevation/elevation.h"
 #include "RouteTools/elevationtools.h"
 #include "qdeclitems/cdeclarativepolyline.hpp"
-#include "qdeclitems/celevationwidgetpolyline.hpp"
-#include "ielevationdata.hpp"
-
 #include <qqml.h>
 #include <QMetaType>
+#include <QQuickItem>
 
 using namespace Charts;
 
@@ -28,6 +26,12 @@ ElevationWidget::ElevationWidget(QObject *parent)
     #endif
 
     initialize_qrc_file_within_namespace_1("charts");
+}
+
+void ElevationWidget::linkWithQML(QQuickItem* rootObject)
+{
+    Q_D(ElevationWidget);
+    d->linkWithQML(rootObject);
 }
 
 list<GeoPoint> ElevationWidget::getRoute()
@@ -129,13 +133,21 @@ ElevationWidgetPrivate::ElevationWidgetPrivate(ElevationWidget* parent)
 {
     heightmapParser = new Elevation::Elevation(this);
     routeParser = new Elevation::ElevationTools(this);
-    IElevationData::get(this); // set parent to prevent memleak
 
     qRegisterMetaType<QVector<Elevation::Point>>("QVector<Point>");
     qRegisterMetaType<Elevation::RouteAndElevationProfiles>("RouteAndElevationProfiles");
 
     qmlRegisterType<ChartsOpenGL::CDeclarativePolyline>("CDeclarativePolyline", 1, 0, "CDeclarativePolyline");
-    qmlRegisterType<ChartsOpenGL::CElevationWidgetPolyline>("CElevationWidgetPolyline", 1, 0, "CElevationWidgetPolyline");
+}
+
+void ElevationWidgetPrivate::linkWithQML(QQuickItem* rootObject)
+{
+    m_pathPolyline = rootObject->findChild<ChartsOpenGL::CDeclarativePolyline*>("qml_gl_path_polyline");
+
+    if(not m_pathPolyline)
+        qCritical() << "<charts> Failed to link with QML.";
+    else
+        qInfo() << "<charts> Path polyline linked successfully";
 }
 
 list<GeoPoint> ElevationWidgetPrivate::getRoute()

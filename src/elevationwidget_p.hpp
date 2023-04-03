@@ -6,6 +6,10 @@ namespace Elevation {
     class Elevation;
     class ElevationTools;
 }
+namespace ChartsOpenGL {
+    class CDeclarativePolyline;
+    class CDeclarativePolygon;
+}
 
 using std::list;
 
@@ -25,9 +29,14 @@ namespace Charts
         list<GeoPoint> m_route;
         QGeoCoordinate m_uavPosition;
 
+        // qml instances
+
+        ChartsOpenGL::CDeclarativePolyline* m_pathPolyline = nullptr;
+
         public:
             explicit ElevationWidgetPrivate(ElevationWidget* parent);
             virtual ~ElevationWidgetPrivate() = default;
+            void linkWithQML(QQuickItem* rootObject);
 
             list<GeoPoint> getRoute();
             void setRoute(const list<GeoPoint>& route);

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.13)
 
-project(GLCharts VERSION 1.0 LANGUAGES CXX)
+project(GLCharts VERSION 1.1 LANGUAGES CXX)
 set(LIBRARY_COMPILE FALSE)
 
 if(NOT LIBRARY_COMPILE)
@@ -36,7 +36,6 @@ set (PROJECT_SOURCES
 
 	# SOURCE BASE
 	src/elevationwidget_p.hpp src/elevationwidget.cpp
-	src/ielevationdata.hpp src/ielevationdata.cpp
 
 		# DECLARATIVE ITEMS
 		src/qdeclitems/cdeclarativepolyline.hpp src/qdeclitems/cdeclarativepolyline.cpp

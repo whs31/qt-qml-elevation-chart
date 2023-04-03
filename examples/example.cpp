@@ -13,6 +13,8 @@ IntegrationExample::IntegrationExample(QWidget *parent)
     ui->quickWidget->setSource(QUrl("qrc:/example.qml"));
     ui->quickWidget->show();
 
+    elevationWidget->linkWithQML(ui->quickWidget->rootObject());
+
 //    elevationWidget->setPallete("#2e3440", "#eceff4", "#4c566a",
 //                                "#a3be8c", "#ebcb8b", "#bf616a",
 //                                "#88C0D0");
