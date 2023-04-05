@@ -19,57 +19,64 @@ Rectangle { id: c_ImplRoot;
 	layer.enabled: true;
 	layer.samples: 8;
 
-	CDeclarativePolygon { id: c_ImplProfile;
-		objectName: "qml_gl_profile_polygon"; //! required!
+	Flickable
+	{
 		anchors.fill: parent;
-		anchors.leftMargin: 30;
-		anchors.bottomMargin: 15;
-		anchors.rightMargin: 7;
-		fillColor: c_ImplRoot.s_ProfileColor;
-		visible: true;
-	}
+		interactive: true;
+		flickableDirection: Flickable.HorizontalAndVerticalFlick;
 
-	CDeclarativePolyline { id: c_ImplMetricsPath;
-		objectName: "qml_gl_metrics_polyline"; //! required!
-		anchors.fill: c_ImplProfile;
-		lineColor: c_ImplRoot.s_WarnColor;
-		visible: true;
-	}
-
-	CDeclarativePolyline { id: c_ImplEnvelopePath;
-		objectName: "qml_gl_envelope_polyline"; //! required!
-		anchors.fill: c_ImplProfile;
-		lineColor: c_ImplRoot.s_InfoColor;
-		visible: true;
-		opacity: 0.5;
-		dashed: true;
-		dashPattern: CDeclarativePolyline.DashPattern.Dotted;
-		SequentialAnimation {
-			PropertyAnimation {
-				target: c_ImplEnvelopePath;
-				property: "opacity";
-				to: 0.5;
-				duration: 500;
-				easing.type: Easing.InOutQuad;
-			}
-			PropertyAnimation {
-				target: c_ImplEnvelopePath;
-				property: "opacity";
-				to: 1.0;
-				duration: 500;
-				easing.type: Easing.InOutQuad;
-			}
-
-			loops: Animation.Infinite;
-			running: true;
-			Component.onCompleted: start();
+		CDeclarativePolygon { id: c_ImplProfile;
+			objectName: "qml_gl_profile_polygon"; //! required!
+			anchors.fill: parent;
+			anchors.leftMargin: 30;
+			anchors.bottomMargin: 15;
+			anchors.rightMargin: 7;
+			fillColor: c_ImplRoot.s_ProfileColor;
+			visible: true;
 		}
-	}
 
-	CDeclarativePolyline { id: c_ImplBasePath;
-		objectName: "qml_gl_path_polyline"; //! required!
-		anchors.fill: c_ImplProfile;
-		lineColor: c_ImplRoot.s_RouteColor;
-		visible: true;
+		CDeclarativePolyline { id: c_ImplMetricsPath;
+			objectName: "qml_gl_metrics_polyline"; //! required!
+			anchors.fill: c_ImplProfile;
+			lineColor: c_ImplRoot.s_WarnColor;
+			visible: true;
+		}
+
+		CDeclarativePolyline { id: c_ImplEnvelopePath;
+			objectName: "qml_gl_envelope_polyline"; //! required!
+			anchors.fill: c_ImplProfile;
+			lineColor: c_ImplRoot.s_InfoColor;
+			visible: true;
+			opacity: 0.5;
+			dashed: true;
+			dashPattern: CDeclarativePolyline.DashPattern.Dotted;
+			SequentialAnimation {
+				PropertyAnimation {
+					target: c_ImplEnvelopePath;
+					property: "opacity";
+					to: 0.5;
+					duration: 500;
+					easing.type: Easing.InOutQuad;
+				}
+				PropertyAnimation {
+					target: c_ImplEnvelopePath;
+					property: "opacity";
+					to: 1.0;
+					duration: 500;
+					easing.type: Easing.InOutQuad;
+				}
+
+				loops: Animation.Infinite;
+				running: true;
+				Component.onCompleted: start();
+			}
+		}
+
+		CDeclarativePolyline { id: c_ImplBasePath;
+			objectName: "qml_gl_path_polyline"; //! required!
+			anchors.fill: c_ImplProfile;
+			lineColor: c_ImplRoot.s_RouteColor;
+			visible: true;
+		}
 	}
 }
