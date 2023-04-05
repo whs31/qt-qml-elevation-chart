@@ -50,6 +50,7 @@ namespace Charts
             };
             Axis x, y;
             const float stretch = 1.15;
+            float relative_height = 0;
         } axis;
 
         // qml instances

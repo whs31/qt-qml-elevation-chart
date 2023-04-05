@@ -94,3 +94,12 @@ void IntegrationExample::on_pushButton_4_clicked() {
 void IntegrationExample::on_pushButton_5_clicked() {
 //    elevationWidget->applyTerrainEnvelope();
 }
+
+void IntegrationExample::on_pushButton_6_clicked()
+{
+    double lat = 60 + static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+    double lon = 30 + static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+    elevationWidget->setUAVPosition(lat, lon);
+    qDebug() << "<example> Moved UAV to" << lat << "," << lon;
+}
+

@@ -190,6 +190,9 @@ void ElevationWidgetPrivate::setUAVPosition(const QGeoCoordinate& position)
     if(position == m_uavPosition)
         return;
     m_uavPosition = position;
+    axis.relative_height = heightmapParser->elevation(m_uavPosition.latitude(), m_uavPosition.longitude());
+    qInfo() << "<charts> Using UAV relative height" << axis.relative_height << "meters";
+    update(UpdateMode::RebuildProfile);
     // velocity xd
 }
 
@@ -198,6 +201,9 @@ void ElevationWidgetPrivate::setUAVPosition(double latitude, double longitude)
     if(m_uavPosition == QGeoCoordinate(latitude, longitude))
         return;
     m_uavPosition = QGeoCoordinate(latitude, longitude);
+    axis.relative_height = heightmapParser->elevation(m_uavPosition.latitude(), m_uavPosition.longitude());
+    qInfo() << "<charts> Using UAV relative height" << axis.relative_height << "meters";
+    update(UpdateMode::RebuildProfile);
     // velocity xd
 }
 
@@ -264,10 +270,9 @@ void ElevationWidgetPrivate::update(UpdateMode mode)
         QGeoPath path_to_build;
         for(GeoPoint point : m_route)
             path_to_build.addCoordinate(point.coordinate());
-        QPointF bounds =  heightmapParser->buildProfileChartAsync(path_to_build);
+        QPointF bounds =  heightmapParser->buildProfileChartAsync(path_to_build, axis.relative_height);
 
         axis.x.maxValue = bounds.x();
-        qDebug() << axis.x.maxValue;
         axis.x.roundMaxValue = 0;
         axis.y.maxValue = bounds.y();
         axis.y.roundMaxValue = 0;
