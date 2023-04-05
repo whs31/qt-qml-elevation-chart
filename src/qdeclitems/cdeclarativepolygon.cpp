@@ -28,7 +28,7 @@ void CDeclarativePolygon::asyncAppend(const std::list<QPointF>& points)
 void CDeclarativePolygon::clear()
 {
     m_points.clear();
-    this->update();
+    //this->update();
 }
 
 QSGNode* CDeclarativePolygon::updatePaintNode(QSGNode *old_node, UpdatePaintNodeData *update_paint_node_data)

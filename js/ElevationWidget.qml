@@ -1,5 +1,4 @@
 import QtQuick 2.15
-import QtGraphicalEffects 1.15
 
 import CDeclarativePolyline 1.0
 import CDeclarativePolygon 1.0
@@ -13,6 +12,9 @@ Rectangle { id: c_ImplRoot;
 	property color s_ErrorColor: "#bf616a";
 	property color s_InfoColor: "#81a1c1";
 
+	property string s_FontFamily: "Ubuntu Mono";
+
+	// private:
 	color: s_BackgroundColor;
 	layer.enabled: true;
 	layer.samples: 8;
@@ -39,6 +41,29 @@ Rectangle { id: c_ImplRoot;
 		anchors.fill: c_ImplProfile;
 		lineColor: c_ImplRoot.s_InfoColor;
 		visible: true;
+		opacity: 0.5;
+		dashed: true;
+		dashPattern: CDeclarativePolyline.DashPattern.Dotted;
+		SequentialAnimation {
+			PropertyAnimation {
+				target: c_ImplEnvelopePath;
+				property: "opacity";
+				to: 0.5;
+				duration: 500;
+				easing.type: Easing.InOutQuad;
+			}
+			PropertyAnimation {
+				target: c_ImplEnvelopePath;
+				property: "opacity";
+				to: 1.0;
+				duration: 500;
+				easing.type: Easing.InOutQuad;
+			}
+
+			loops: Animation.Infinite;
+			running: true;
+			Component.onCompleted: start();
+		}
 	}
 
 	CDeclarativePolyline { id: c_ImplBasePath;
