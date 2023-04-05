@@ -18,6 +18,12 @@ void CDeclarativePolyline::setList(const std::list<QPointF>& points)
     this->update();
 }
 
+void CDeclarativePolyline::clear()
+{
+    m_points.clear();
+    this->update();
+}
+
 QSGNode* CDeclarativePolyline::updatePaintNode(QSGNode *old_node, UpdatePaintNodeData *update_paint_node_data)
 {
     Q_UNUSED(update_paint_node_data);

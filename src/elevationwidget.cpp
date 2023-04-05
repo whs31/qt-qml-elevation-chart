@@ -261,17 +261,16 @@ bool ElevationWidgetPrivate::isMatchingMetrics()
 void ElevationWidgetPrivate::setEnvelopeMinimumAltitude(float altitude)
 {
     this->aircraftMetrics.envelopeHeight = altitude;
-
 }
 
 void ElevationWidgetPrivate::setEnvelopeCoridorSize(float distance)
 {
-
+    this->aircraftMetrics.envelopeSize = distance;
 }
 
 void ElevationWidgetPrivate::estimateEnvelope()
 {
-
+    this->calculateEnvelope();
 }
 
 void ElevationWidgetPrivate::applyEnvelopeCorrection()
@@ -324,6 +323,7 @@ void ElevationWidgetPrivate::update(UpdateMode mode, float force_y_axis_height)
         prev_coord = point.coordinate();
     }
     m_pathPolyline->setList(path_polyline);
+    m_envelopePolyline->clear();
 }
 
 void ElevationWidgetPrivate::sync(QVector<QPointF> vec)
@@ -354,7 +354,31 @@ void ElevationWidgetPrivate::calculateEnvelope()
 
 void ElevationWidgetPrivate::calculateEnvelopeFinished(quint8 progress, const Elevation::RouteAndElevationProfiles& deltaResult)
 {
+    QVector<Elevation::Point> _route = deltaResult.route();
+    float _local_y_max = 0;
+    QGeoPath envelope;
+    for(const Elevation::Point& point : _route)
+    {
+        QGeoCoordinate coord(point.latitude(), point.longitude(), point.altitude());
+        envelope.addCoordinate(coord);
+        if(coord.altitude() > _local_y_max)
+            _local_y_max = coord.altitude();
+    }
+    update(UpdateMode::RebuildProfile, _local_y_max);
 
+    list<QPointF> _list;
+    float prev_distance = 0;
+    for(size_t i = 0; i < envelope.path().size(); i++)
+    {
+        float ds = 0;
+        if(i > 0)
+            ds = envelope.path()[i].distanceTo(envelope.path()[i-1]);
+        prev_distance += ds;
+        QPointF point(prev_distance, envelope.path()[i].altitude());
+        _list.push_back(toPixelCoords(point, axis.x.maxValue, axis.y.maxValue, axis.stretch,
+                                      m_envelopePolyline->width(), m_envelopePolyline->height()));
+    }
+    m_envelopePolyline->setList(_list);
 }
 
 void ElevationWidgetPrivate::calculateIntersects()

@@ -54,11 +54,11 @@ void IntegrationExample::on_doubleSpinBox_3_valueChanged(double arg1)
 }
 void IntegrationExample::on_doubleSpinBox_4_valueChanged(double arg1)
 {
-//    elevationWidget->setEnvelopeMinHeight(arg1);
+    elevationWidget->setEnvelopeMinimumAltitude(arg1);
 }
 void IntegrationExample::on_doubleSpinBox_5_valueChanged(double arg1)
 {
-//    elevationWidget->setEnvelopeCoridorSize(arg1);
+    elevationWidget->setEnvelopeCoridorSize(arg1);
 }
 void IntegrationExample::on_pushButton_clicked()
 {
@@ -86,13 +86,13 @@ void IntegrationExample::on_pushButton_2_clicked()
 }
 
 void IntegrationExample::on_pushButton_3_clicked() {
-//    elevationWidget->setGeopath(QGeoPath());
+    elevationWidget->setRoute({});
 }
 void IntegrationExample::on_pushButton_4_clicked() {
-//    elevationWidget->calculateTerrainEnvelope();
+    elevationWidget->estimateEnvelope();
 }
 void IntegrationExample::on_pushButton_5_clicked() {
-//    elevationWidget->applyTerrainEnvelope();
+    elevationWidget->applyEnvelopeCorrection();
 }
 
 void IntegrationExample::on_pushButton_6_clicked()

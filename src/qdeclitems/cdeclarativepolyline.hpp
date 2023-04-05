@@ -19,6 +19,7 @@ namespace ChartsOpenGL {
             CDeclarativePolyline(QQuickItem* parent = nullptr);
 
             void setList(const list<QPointF>& points);
+            void clear();
 
             signals:
                 void lineColorChanged();
