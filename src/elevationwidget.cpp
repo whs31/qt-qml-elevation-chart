@@ -155,17 +155,33 @@ ElevationWidgetPrivate::ElevationWidgetPrivate(ElevationWidget* parent)
     });
 
     connect(heightmapParser, &Elevation::Elevation::profileAsyncPacket, this, &ElevationWidgetPrivate::sync);
+    connect(routeParser, &Elevation::ElevationTools::progressBuildRouteAndElevationProfiles, this,
+            &ElevationWidgetPrivate::calculateEnvelopeFinished);
+    connect(routeParser, &Elevation::ElevationTools::progressTestRouteIntersectGround, this,
+            &ElevationWidgetPrivate::calculateIntersectsFinished);
 }
 
 void ElevationWidgetPrivate::linkWithQML(QQuickItem* rootObject)
 {
     m_pathPolyline = rootObject->findChild<ChartsOpenGL::CDeclarativePolyline*>("qml_gl_path_polyline");
+    m_metricsPolyline = rootObject->findChild<ChartsOpenGL::CDeclarativePolyline*>("qml_gl_metrics_polyline");
+    m_envelopePolyline = rootObject->findChild<ChartsOpenGL::CDeclarativePolyline*>("qml_gl_envelope_polyline");
     m_profilePolygon = rootObject->findChild<ChartsOpenGL::CDeclarativePolygon*>("qml_gl_profile_polygon");
 
     if(not m_pathPolyline)
         qCritical() << "<charts> Failed to link with QML at qml_gl_path_polyline";
     else
         qInfo() << "<charts> qml_gl_path_polyline linked successfully";
+
+    if(not m_metricsPolyline)
+        qCritical() << "<charts> Failed to link with QML at qml_gl_metrics_polyline";
+    else
+        qInfo() << "<charts> qml_gl_metrics_polyline linked successfully";
+
+    if(not m_envelopePolyline)
+        qCritical() << "<charts> Failed to link with QML at qml_gl_envelope_polyline";
+    else
+        qInfo() << "<charts> qml_gl_envelope_polyline linked successfully";
 
     if(not m_profilePolygon)
         qCritical() << "<charts> Failed to link with QML at qml_gl_profile_polygon";
@@ -244,6 +260,7 @@ bool ElevationWidgetPrivate::isMatchingMetrics()
 
 void ElevationWidgetPrivate::setEnvelopeMinimumAltitude(float altitude)
 {
+    this->aircraftMetrics.envelopeHeight = altitude;
 
 }
 
@@ -262,7 +279,11 @@ void ElevationWidgetPrivate::applyEnvelopeCorrection()
 
 }
 
-void ElevationWidgetPrivate::update(UpdateMode mode)
+#pragma endregion PRIVATE
+
+#pragma region IMPLEMENTATION
+
+void ElevationWidgetPrivate::update(UpdateMode mode, float force_y_axis_height)
 {
     if(mode == UpdateMode::RebuildProfile)
     {
@@ -274,7 +295,7 @@ void ElevationWidgetPrivate::update(UpdateMode mode)
 
         axis.x.maxValue = bounds.x();
         axis.x.roundMaxValue = 0;
-        axis.y.maxValue = bounds.y();
+        axis.y.maxValue = force_y_axis_height ? force_y_axis_height : bounds.y();
         axis.y.roundMaxValue = 0;
 
         int power_of_x = axis.x.maxValue > 0 ? (int) log10 ((float) axis.x.maxValue) : 1;
@@ -317,9 +338,38 @@ void ElevationWidgetPrivate::sync(QVector<QPointF> vec)
 
 }
 
+void ElevationWidgetPrivate::calculateEnvelope()
+{
+    if(m_route.empty())
+    {
+        qWarning() << "<charts> Route does not contain any points, envelope calculation will not be executed.";
+        return;
+    }
+    QGeoPath path_to_process;
+    for(GeoPoint point : m_route)
+        path_to_process.addCoordinate(point.coordinate());
+    routeParser->buildRouteAndElevationProfiles(path_to_process, aircraftMetrics.envelopeHeight, aircraftMetrics.envelopeSize,
+                                                aircraftMetrics.velocity, aircraftMetrics.climbRate, aircraftMetrics.descendRate);
+}
+
+void ElevationWidgetPrivate::calculateEnvelopeFinished(quint8 progress, const Elevation::RouteAndElevationProfiles& deltaResult)
+{
+
+}
+
+void ElevationWidgetPrivate::calculateIntersects()
+{
+
+}
+
+void ElevationWidgetPrivate::calculateIntersectsFinished(quint8 progress, const QVector<Elevation::Point>& resultPath)
+{
+
+}
+
 QPointF ElevationWidgetPrivate::toPixelCoords(const QPointF& point, float x_max, float y_max, float y_stretch, float pixel_width, float pixel_height)
 {
     return QPointF(point.x() * pixel_width / x_max, pixel_height - point.y() * pixel_height / (y_max * y_stretch));
 }
 
-#pragma endregion PRIVATE
+#pragma endregion IMPLEMENTATION

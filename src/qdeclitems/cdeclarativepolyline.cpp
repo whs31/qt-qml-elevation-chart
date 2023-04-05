@@ -33,15 +33,15 @@ QSGNode* CDeclarativePolyline::updatePaintNode(QSGNode *old_node, UpdatePaintNod
         node->setMaterial(material);
         node->setFlag(QSGNode::OwnsMaterial);
         geometry = new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), m_points.size(), 0, QSGGeometry::UnsignedIntType);
+        geometry->setDrawingMode(GL_LINE_STRIP);
+        geometry->setLineWidth(5);
+
         node->setGeometry(geometry);
         node->setFlag(QSGNode::OwnsGeometry);
     }
 
     geometry = node->geometry();
     geometry->allocate(m_points.size() + 1);
-
-    geometry->setDrawingMode(GL_LINE_STRIP);
-    geometry->setLineWidth(5);
 
     // это пиздец)
     // короче. если аллоцировать память под массив (лист) из N точек, то ничего работать не будет
@@ -50,6 +50,7 @@ QSGNode* CDeclarativePolyline::updatePaintNode(QSGNode *old_node, UpdatePaintNod
     geometry->vertexDataAsPoint2D()[0].set(m_points.front().x(), m_points.front().y());
     for(QPointF point : m_points)
         geometry->vertexDataAsPoint2D()[index++].set(point.x(), point.y());
+
     node->markDirty(QSGNode::DirtyGeometry);
     return node;
 }

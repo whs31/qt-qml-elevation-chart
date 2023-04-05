@@ -5,6 +5,8 @@
 namespace Elevation {
     class Elevation;
     class ElevationTools;
+    class RouteAndElevationProfiles;
+    class Point;
 }
 namespace ChartsOpenGL {
     class CDeclarativePolyline;
@@ -56,6 +58,8 @@ namespace Charts
         // qml instances
         ChartsOpenGL::CDeclarativePolyline* m_pathPolyline = nullptr;
         ChartsOpenGL::CDeclarativePolygon* m_profilePolygon = nullptr;
+        ChartsOpenGL::CDeclarativePolyline* m_metricsPolyline = nullptr;
+        ChartsOpenGL::CDeclarativePolyline* m_envelopePolyline = nullptr;
 
         public:
             explicit ElevationWidgetPrivate(ElevationWidget* parent);
@@ -82,13 +86,26 @@ namespace Charts
             ElevationWidget* q_ptr;
 
         private:
+            // common + profile
             enum UpdateMode
             {
                 RebuildProfile,
                 KeepProfile
             };
-            void update(UpdateMode mode);
+            void update(UpdateMode mode, float force_y_axis_height = 0);
             void sync(QVector<QPointF> vec);
+
+            // envelope
+            void calculateEnvelope();
+            private slots:
+                void calculateEnvelopeFinished(quint8 progress, const Elevation::RouteAndElevationProfiles& deltaResult);
+
+            // intersects
+            void calculateIntersects();
+            private slots:
+                void calculateIntersectsFinished(quint8 progress, const QVector<Elevation::Point>& resultPath);
+
+            // shared
             QPointF toPixelCoords(const QPointF& point, float x_max, float y_max, float y_stretch, float pixel_width, float pixel_height);
     };
 } ///namespace Charts;
