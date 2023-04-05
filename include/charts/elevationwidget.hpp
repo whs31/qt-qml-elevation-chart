@@ -124,4 +124,4 @@ namespace Charts
         private:
             Q_DECLARE_PRIVATE(ElevationWidget)
     };
-} //namespace charts
+} /// namespace charts;

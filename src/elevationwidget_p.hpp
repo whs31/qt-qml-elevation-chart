@@ -1,6 +1,7 @@
 #pragma once
 
 #include "charts/elevationwidget.hpp"
+#include <QGeoPath>
 
 namespace Elevation {
     class Elevation;
@@ -28,7 +29,13 @@ namespace Charts
 
         // variables
         list<GeoPoint> m_route;
+        QGeoPath m_envelope;
+        QGeoPath m_metricsPath;
+
         QGeoCoordinate m_uavPosition;
+
+        bool m_valid = true;
+        bool m_intersects = false;
 
         struct AircraftMetrics {
             float velocity = 75;
@@ -107,6 +114,8 @@ namespace Charts
 
             // shared
             QPointF toPixelCoords(const QPointF& point, float x_max, float y_max, float y_stretch, float pixel_width, float pixel_height);
+            list<GeoPoint> toRoute(const QGeoPath& path);
+            QGeoPath fromRoute(const list<GeoPoint> route);
     };
 } ///namespace Charts;
 

@@ -225,12 +225,12 @@ void ElevationWidgetPrivate::setUAVPosition(double latitude, double longitude)
 
 bool ElevationWidgetPrivate::isIntersecting()
 {
-
+    return m_intersects;
 }
 
 bool ElevationWidgetPrivate::isValid()
 {
-
+    return m_valid;
 }
 
 void ElevationWidgetPrivate::setClimbRate(float rate)
@@ -275,7 +275,7 @@ void ElevationWidgetPrivate::estimateEnvelope()
 
 void ElevationWidgetPrivate::applyEnvelopeCorrection()
 {
-
+    setRoute(toRoute(m_envelope));
 }
 
 #pragma endregion PRIVATE
@@ -287,10 +287,7 @@ void ElevationWidgetPrivate::update(UpdateMode mode, float force_y_axis_height)
     if(mode == UpdateMode::RebuildProfile)
     {
         m_profilePolygon->clear();
-        QGeoPath path_to_build;
-        for(GeoPoint point : m_route)
-            path_to_build.addCoordinate(point.coordinate());
-        QPointF bounds =  heightmapParser->buildProfileChartAsync(path_to_build, axis.relative_height);
+        QPointF bounds =  heightmapParser->buildProfileChartAsync(fromRoute(m_route));//, axis.relative_height);
 
         axis.x.maxValue = bounds.x();
         axis.x.roundMaxValue = 0;
@@ -356,11 +353,11 @@ void ElevationWidgetPrivate::calculateEnvelopeFinished(quint8 progress, const El
 {
     QVector<Elevation::Point> _route = deltaResult.route();
     float _local_y_max = 0;
-    QGeoPath envelope;
+    m_envelope.clearPath();
     for(const Elevation::Point& point : _route)
     {
         QGeoCoordinate coord(point.latitude(), point.longitude(), point.altitude());
-        envelope.addCoordinate(coord);
+        m_envelope.addCoordinate(coord);
         if(coord.altitude() > _local_y_max)
             _local_y_max = coord.altitude();
     }
@@ -368,13 +365,13 @@ void ElevationWidgetPrivate::calculateEnvelopeFinished(quint8 progress, const El
 
     list<QPointF> _list;
     float prev_distance = 0;
-    for(size_t i = 0; i < envelope.path().size(); i++)
+    for(size_t i = 0; i < m_envelope.path().size(); i++)
     {
         float ds = 0;
         if(i > 0)
-            ds = envelope.path()[i].distanceTo(envelope.path()[i-1]);
+            ds = m_envelope.path()[i].distanceTo(m_envelope.path()[i-1]);
         prev_distance += ds;
-        QPointF point(prev_distance, envelope.path()[i].altitude());
+        QPointF point(prev_distance, m_envelope.path()[i].altitude()); //- axis.relative_height);
         _list.push_back(toPixelCoords(point, axis.x.maxValue, axis.y.maxValue, axis.stretch,
                                       m_envelopePolyline->width(), m_envelopePolyline->height()));
     }
@@ -394,6 +391,22 @@ void ElevationWidgetPrivate::calculateIntersectsFinished(quint8 progress, const 
 QPointF ElevationWidgetPrivate::toPixelCoords(const QPointF& point, float x_max, float y_max, float y_stretch, float pixel_width, float pixel_height)
 {
     return QPointF(point.x() * pixel_width / x_max, pixel_height - point.y() * pixel_height / (y_max * y_stretch));
+}
+
+list<GeoPoint> ElevationWidgetPrivate::toRoute(const QGeoPath& path)
+{
+    list<GeoPoint> ret;
+    for(QGeoCoordinate coord : path.path())
+        ret.push_back(GeoPoint(coord, aircraftMetrics.velocity));
+    return ret;
+}
+
+QGeoPath ElevationWidgetPrivate::fromRoute(const std::list<GeoPoint> route)
+{
+    QGeoPath ret;
+    for(GeoPoint point : route)
+        ret.addCoordinate(point.coordinate());
+    return ret;
 }
 
 #pragma endregion IMPLEMENTATION
