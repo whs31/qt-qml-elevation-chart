@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>polygon.vert</file>
+        <file>polygon.frag</file>
+    </qresource>
+</RCC>
