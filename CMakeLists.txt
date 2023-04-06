@@ -44,6 +44,9 @@ set (PROJECT_SOURCES
 
 		# GLSL & SCENE GRAPH
 		src/scenegraph/glsl/glsl.qrc
+		src/scenegraph/glvertextype.hpp
+
+		# SHADERS
 		src/scenegraph/glpolygonshader.hpp
 )
 

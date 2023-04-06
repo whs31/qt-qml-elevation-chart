@@ -1,36 +1,35 @@
 #include "pointsmodel.hpp"
 
+using namespace Charts;
+
 PointsModel::PointsModel(QObject *parent)
     : QAbstractListModel(parent)
 {
 }
 
-
-
 int PointsModel::rowCount(const QModelIndex &parent) const
 {
-    if (parent.isValid()){
+    if (parent.isValid())
         return 0;
-    }
     return m_points.size();
 }
 
 QVariant PointsModel::data(const QModelIndex &index, int role) const
 {
-    if (!index.isValid()){
+    if (!index.isValid())
         return QVariant();
-    }
+
     switch (role) {
-    case PointRoles::index:
-        return index.row();
-    case PointRoles::distance:
-        return m_points.at(index.row()).distance;
-    case PointRoles::altitude:
-        return m_points.at(index.row()).altitude;
-    case PointRoles::valid:
-        return m_points.at(index.row()).valid;
-    case PointRoles::intersects:
-        return m_points.at(index.row()).intersects;
+        case PointRoles::Index:
+            return index.row();
+        case PointRoles::Distance:
+            return m_points.at(index.row()).distance;
+        case PointRoles::Altitude:
+            return m_points.at(index.row()).altitude;
+        case PointRoles::Valid:
+            return m_points.at(index.row()).valid;
+        case PointRoles::Intersects:
+            return m_points.at(index.row()).intersects;
     }
     return QVariant();
 }
@@ -38,16 +37,15 @@ QVariant PointsModel::data(const QModelIndex &index, int role) const
 QHash<int, QByteArray> PointsModel::roleNames() const
 {
     QHash<int, QByteArray> roles;
-    roles[PointRoles::index] = "index";
-    roles[PointRoles::distance] = "distance";
-    roles[PointRoles::altitude] = "altitude";
-    roles[PointRoles::valid] = "valid";
-    roles[PointRoles::intersects] = "intersects";
+    roles[PointRoles::Index] = "index";
+    roles[PointRoles::Distance] = "distance";
+    roles[PointRoles::Altitude] = "altitude";
+    roles[PointRoles::Valid] = "valid";
+    roles[PointRoles::Intersects] = "intersects";
     return roles;
-
 }
 
-void PointsModel::setPath(const std::vector<CustomPoint> &_points)
+void PointsModel::setPath(const std::vector<ChartPoint>& _points)
 {
     beginResetModel();     //если не работает, закоментировать и поменять на нижнее
     m_points = _points;    //если не работает, закоментировать и поменять на нижнее
@@ -62,7 +60,7 @@ void PointsModel::setPath(const std::vector<CustomPoint> &_points)
 
 }
 
-void PointsModel::updatePoint(const int _index, const CustomPoint &_point)
+void PointsModel::updatePoint(const int _index, const ChartPoint& _point)
 {
     m_points[_index] = _point;
     emit dataChanged(createIndex(_index, 0), createIndex(_index,0));
@@ -75,7 +73,7 @@ void PointsModel::removePath()
     endRemoveRows();
 }
 
-CustomPoint PointsModel::getPoint(const int _index)
+ChartPoint PointsModel::getPoint(const int _index)
 {
     return m_points.at(_index);
 }

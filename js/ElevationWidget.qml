@@ -2,6 +2,7 @@ import QtQuick 2.15
 
 import CDeclarativePolyline 1.0
 import CDeclarativePolygon 1.0
+import PointModel 1.0
 
 Rectangle { id: c_ImplRoot;
 	property color s_BackgroundColor: Qt.darker("#2E3440", 1.2);
@@ -76,6 +77,12 @@ Rectangle { id: c_ImplRoot;
 			anchors.fill: c_ImplProfile;
 			lineColor: c_ImplRoot.s_RouteColor;
 			visible: true;
+		}
+		Repeater
+		{
+			clip: false;
+			model: pathModel;
+			delegate: Rectangle { color: "red"; width: 20; height: 20; }
 		}
 	}
 }
