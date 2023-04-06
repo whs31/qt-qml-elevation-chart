@@ -18,6 +18,7 @@ using std::list;
 
 namespace Charts
 {
+    class PointsModel;
     /// @private
     class ElevationWidgetPrivate : public QObject
     {
@@ -26,6 +27,7 @@ namespace Charts
 
         Elevation::Elevation* heightmapParser;
         Elevation::ElevationTools* routeParser;
+        PointsModel* model;
 
         // variables
         list<GeoPoint> m_route;

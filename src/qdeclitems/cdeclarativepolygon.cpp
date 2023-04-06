@@ -1,12 +1,15 @@
 #include "cdeclarativepolygon.hpp"
 #include "../scenegraph/glpolygonshader.hpp"
+#include "../scenegraph/glvertextype.hpp"
 
 #include <cmath>
 #include <QSGFlatColorMaterial>
 #include <QSGGeometryNode>
 #include <QtQuick/qsgsimplematerial.h>
+#include <vector>
 
 using namespace ChartsOpenGL;
+using std::vector;
 
 CDeclarativePolygon::CDeclarativePolygon(QQuickItem* parent)
     : QQuickItem{parent}
@@ -38,13 +41,19 @@ QSGNode* CDeclarativePolygon::updatePaintNode(QSGNode *old_node, UpdatePaintNode
 {
     Q_UNUSED(update_paint_node_data);
 
+    // создаем указатели на саму ноду и на ее геометрию
     QSGGeometry* geometry = nullptr;
     QSGGeometryNode* node = static_cast<QSGGeometryNode*>(old_node);
 
+    // сетапим ноду при инстанциировании объекта в кумээль
     if(node == nullptr)
     {
         node = new QSGGeometryNode;
 
+        // это лучше скопипастить
+        // ремарка: материалы, использующие UV (fragment shader), должны использовать VertexT
+        // в качестве точек ноды. Остальные более простые материалы (напр. flatcolormat) можно
+        // ассоциировать с более простым типом Vertex.
         QSGSimpleMaterial<State>* material = GLPolygonShader::createMaterial();
         material->setFlag(QSGMaterial::Blending);
         node->setMaterial(material);
@@ -55,27 +64,43 @@ QSGNode* CDeclarativePolygon::updatePaintNode(QSGNode *old_node, UpdatePaintNode
         node->setFlag(QSGNode::OwnsGeometry);
     }
 
+    // ставим геометрии параметры отрисовки
     geometry = node->geometry();                                                          
-    geometry->allocate(m_loopmode == LoopMode::LoopByItemRect ? m_points.size() * 2 + 2 : m_points.size() * 2 + 2);
-    //                                                                                ^
-    //                             3 вершины нужны чтобы достроить по boundingRect()  | 03.04: временно отключил
-
     geometry->setDrawingMode(GL_QUAD_STRIP);
     geometry->setLineWidth(1);
 
-    // это пиздец)
-    // короче. если аллоцировать память под массив (лист) из N точек, то ничего работать не будет
-    // поэтому мы аллоцируем память под N+1 точек и присваиваем нулевой точке значение первой
-    size_t index = 1;
-    geometry->vertexDataAsTexturedPoint2D()[0].set(m_points.front().x(), m_points.front().y(), 1.0f, 1.0f);
+    // создаем вектор точек (Vertex = Point2D, VertexT = TexturedPoint2D)
+    // задаем в него точки графика в пиксельных координатах и координаты UV (опционально)
+    vector<VertexT> glPoints;
+    glPoints.push_back(VertexT(m_points.front().x(), m_points.front().y(), 0, 0));
+    Vertex max(0, 0);
+    for(QPointF point : m_points)
+        if(point.y() > max.y)
+            max.y = point.y();
+    max.x = m_points.back().x();
     for(QPointF point : m_points)
     {
-        geometry->vertexDataAsTexturedPoint2D()[index++].set(point.x(), point.y(), 1.0f, 1.0f);
-        geometry->vertexDataAsTexturedPoint2D()[index++].set(point.x(), height(), 1.0f, 1.0f);
+        glPoints.push_back(VertexT(point.x(), point.y(), point.x() / max.x, point.y() / max.y));
+        glPoints.push_back(VertexT(point.x(), height(), point.x() / max.x, height() / max.y));
     }
-    geometry->vertexDataAsTexturedPoint2D()[m_points.size() * 2 + 1].set(m_points.back().x(), height(), 1.0f, 1.0f);
 
+    glPoints.push_back(VertexT(m_points.back().x(), height(), m_points.back().x() / max.x, height() / max.y));
+
+    // после создания всех точек аллоцируем память под этот вектор + 1 точку
+    geometry->allocate(m_loopmode == LoopMode::LoopByItemRect ? glPoints.size() + 1 : glPoints.size() + 1);
+
+    // задаем в геометрию графа эти точки
+    for(size_t i = 0; i < glPoints.size(); ++i)
+    {
+        geometry->vertexDataAsTexturedPoint2D()[i].set(glPoints.at(i).x, glPoints.at(i).y, glPoints.at(i).u, glPoints.at(i).v);
+        qDebug() << glPoints.at(i).u << glPoints.at(i).v;
+    }
+    qDebug() << max.x << max.y;
+
+    // говорим куэмэлю что ему надо задуматься о перерисовке графика
     node->markDirty(QSGNode::DirtyGeometry);
+
+    // не забываем вернуть ноду обратно в граф сцены
     return node;
 }
 

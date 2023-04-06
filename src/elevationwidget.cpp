@@ -2,6 +2,7 @@
 #include "elevationwidget_p.hpp"
 #include "Elevation/elevation.h"
 #include "RouteTools/elevationtools.h"
+#include "pointsmodel.hpp"
 #include "qdeclitems/cdeclarativepolyline.hpp"
 #include "qdeclitems/cdeclarativepolygon.hpp"
 
@@ -138,15 +139,16 @@ void ElevationWidget::applyEnvelopeCorrection()
 ElevationWidgetPrivate::ElevationWidgetPrivate(ElevationWidget* parent)
     : QObject{parent}
     , q_ptr(parent)
+    , model(new PointsModel(this))
+    , heightmapParser(new Elevation::Elevation(this))
+    , routeParser(new Elevation::ElevationTools(this))
 {
-    heightmapParser = new Elevation::Elevation(this);
-    routeParser = new Elevation::ElevationTools(this);
-
     qRegisterMetaType<QVector<Elevation::Point>>("QVector<Point>");
     qRegisterMetaType<Elevation::RouteAndElevationProfiles>("RouteAndElevationProfiles");
 
     qmlRegisterType<ChartsOpenGL::CDeclarativePolyline>("CDeclarativePolyline", 1, 0, "CDeclarativePolyline");
     qmlRegisterType<ChartsOpenGL::CDeclarativePolygon>("CDeclarativePolygon", 1, 0, "CDeclarativePolygon");
+    qmlRegisterSingletonInstance<PointsModel>("PointModel", 1, 0, "PointModel", model);
 
     connect(heightmapParser, &Elevation::Elevation::profileAsyncNotification, this, [](unsigned int return_code){
         qDebug() << "<charts> Received notification from async calc:" << Qt::hex << return_code << Qt::dec;
@@ -319,6 +321,7 @@ void ElevationWidgetPrivate::update(UpdateMode mode, float force_y_axis_height)
                                               axis.stretch, m_pathPolyline->width(), m_pathPolyline->height()));
         prev_coord = point.coordinate();
     }
+
     m_pathPolyline->setList(path_polyline);
     m_envelopePolyline->clear();
 }
