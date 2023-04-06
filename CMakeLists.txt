@@ -41,6 +41,7 @@ set (PROJECT_SOURCES
 		src/qdeclitems/cdeclarativepolyline.hpp src/qdeclitems/cdeclarativepolyline.cpp
 		src/qdeclitems/cdeclarativepolygon.hpp src/qdeclitems/cdeclarativepolygon.cpp
 
+		src/scenegraph/test.hpp src/scenegraph/test.cpp
 )
 
 if(LIBRARY_COMPILE)
