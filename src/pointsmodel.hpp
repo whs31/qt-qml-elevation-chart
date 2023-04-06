@@ -54,6 +54,7 @@ namespace Charts
             QHash<int, QByteArray> roleNames() const override;
 
             void setPath(const std::vector<ChartPoint> &_points);
+            Q_INVOKABLE
             void updatePoint(const int _index, const ChartPoint &_point);
             void removePath();
 

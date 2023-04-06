@@ -24,10 +24,10 @@ QSGNode* CDeclarativePoint::updatePaintNode(QSGNode *old_node, UpdatePaintNodeDa
     if(node == nullptr)
     {
         node = new QSGGeometryNode;
+        QSGFlatColorMaterial* material = new QSGFlatColorMaterial;
+        material->setColor(QColor(m_color));
         //QSGSimpleMaterial<State>* material = GLPointShader::createMaterial();
         //material->setFlag(QSGMaterial::Blending);
-        QSGFlatColorMaterial* material = new QSGFlatColorMaterial;
-        material->setColor(color());
 
         node->setMaterial(material);
         node->setFlag(QSGNode::OwnsMaterial);
