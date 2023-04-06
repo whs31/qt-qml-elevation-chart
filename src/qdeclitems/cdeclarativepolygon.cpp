@@ -93,9 +93,7 @@ QSGNode* CDeclarativePolygon::updatePaintNode(QSGNode *old_node, UpdatePaintNode
     for(size_t i = 0; i < glPoints.size(); ++i)
     {
         geometry->vertexDataAsTexturedPoint2D()[i].set(glPoints.at(i).x, glPoints.at(i).y, glPoints.at(i).u, glPoints.at(i).v);
-        qDebug() << glPoints.at(i).u << glPoints.at(i).v;
     }
-    qDebug() << max.x << max.y;
 
     // говорим куэмэлю что ему надо задуматься о перерисовке графика
     node->markDirty(QSGNode::DirtyGeometry);
