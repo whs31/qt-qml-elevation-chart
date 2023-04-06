@@ -49,7 +49,6 @@ Rectangle { id: c_ImplRoot;
 			visible: true;
 			opacity: 0.5;
 			dashed: true;
-			dashPattern: CDeclarativePolyline.DashPattern.Dotted;
 			SequentialAnimation {
 				PropertyAnimation {
 					target: c_ImplEnvelopePath;

@@ -94,16 +94,14 @@ QSGNode* CDeclarativePolyline::updatePaintNode(QSGNode *old_node, UpdatePaintNod
         if(not glVec.empty())
         {
             geometry->allocate(glVec.size() + 1);
-            geometry->vertexDataAsPoint2D()[0].set(m_points.front().x(), m_points.front().y());
+
             for(size_t i = 1; i < glVec.size(); ++i)
                 geometry->vertexDataAsPoint2D()[i].set(glVec.at(i).x, glVec.at(i).y);
         }
     }
     else
-    {
         for(QPointF point : m_points)
             geometry->vertexDataAsPoint2D()[index++].set(point.x(), point.y());
-    }
 
     node->markDirty(QSGNode::DirtyGeometry);
     return node;

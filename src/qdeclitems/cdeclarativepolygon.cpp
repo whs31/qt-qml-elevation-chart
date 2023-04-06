@@ -1,7 +1,10 @@
 #include "cdeclarativepolygon.hpp"
+#include "../scenegraph/glpolygonshader.hpp"
+
 #include <cmath>
 #include <QSGFlatColorMaterial>
 #include <QSGGeometryNode>
+#include <QtQuick/qsgsimplematerial.h>
 
 using namespace ChartsOpenGL;
 
@@ -37,15 +40,17 @@ QSGNode* CDeclarativePolygon::updatePaintNode(QSGNode *old_node, UpdatePaintNode
 
     QSGGeometry* geometry = nullptr;
     QSGGeometryNode* node = static_cast<QSGGeometryNode*>(old_node);
+
     if(node == nullptr)
     {
         node = new QSGGeometryNode;
-        QSGFlatColorMaterial* material = new QSGFlatColorMaterial;
-        material->setColor(QColor(fillColor()));
 
+        QSGSimpleMaterial<State>* material = GLPolygonShader::createMaterial();
+        material->setFlag(QSGMaterial::Blending);
         node->setMaterial(material);
         node->setFlag(QSGNode::OwnsMaterial);
-        geometry = new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), m_points.size(), 0, QSGGeometry::UnsignedIntType);
+        static_cast<QSGSimpleMaterial<State>*>(node->material())->state()->color = QColor(m_fillColor);
+        geometry = new QSGGeometry(QSGGeometry::defaultAttributes_TexturedPoint2D(), m_points.size(), 0, QSGGeometry::UnsignedIntType);
         node->setGeometry(geometry);
         node->setFlag(QSGNode::OwnsGeometry);
     }
@@ -62,13 +67,13 @@ QSGNode* CDeclarativePolygon::updatePaintNode(QSGNode *old_node, UpdatePaintNode
     // короче. если аллоцировать память под массив (лист) из N точек, то ничего работать не будет
     // поэтому мы аллоцируем память под N+1 точек и присваиваем нулевой точке значение первой
     size_t index = 1;
-    geometry->vertexDataAsPoint2D()[0].set(m_points.front().x(), m_points.front().y());
+    geometry->vertexDataAsTexturedPoint2D()[0].set(m_points.front().x(), m_points.front().y(), 1.0f, 1.0f);
     for(QPointF point : m_points)
     {
-        geometry->vertexDataAsPoint2D()[index++].set(point.x(), point.y());
-        geometry->vertexDataAsPoint2D()[index++].set(point.x(), height());
+        geometry->vertexDataAsTexturedPoint2D()[index++].set(point.x(), point.y(), 1.0f, 1.0f);
+        geometry->vertexDataAsTexturedPoint2D()[index++].set(point.x(), height(), 1.0f, 1.0f);
     }
-    geometry->vertexDataAsPoint2D()[m_points.size() * 2 + 1].set(m_points.back().x(), height());
+    geometry->vertexDataAsTexturedPoint2D()[m_points.size() * 2 + 1].set(m_points.back().x(), height(), 1.0f, 1.0f);
 
     node->markDirty(QSGNode::DirtyGeometry);
     return node;
