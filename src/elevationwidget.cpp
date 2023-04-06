@@ -5,8 +5,6 @@
 #include "qdeclitems/cdeclarativepolyline.hpp"
 #include "qdeclitems/cdeclarativepolygon.hpp"
 
-#include "scenegraph/test.hpp"
-
 #include <qqml.h>
 #include <cmath>
 #include <QMetaType>
@@ -149,7 +147,6 @@ ElevationWidgetPrivate::ElevationWidgetPrivate(ElevationWidget* parent)
 
     qmlRegisterType<ChartsOpenGL::CDeclarativePolyline>("CDeclarativePolyline", 1, 0, "CDeclarativePolyline");
     qmlRegisterType<ChartsOpenGL::CDeclarativePolygon>("CDeclarativePolygon", 1, 0, "CDeclarativePolygon");
-    qmlRegisterType<SimpleMaterialItem>("SimpleMaterialItem", 1, 0, "SimpleMaterialItem");
 
     connect(heightmapParser, &Elevation::Elevation::profileAsyncNotification, this, [](unsigned int return_code){
         qDebug() << "<charts> Received notification from async calc:" << Qt::hex << return_code << Qt::dec;

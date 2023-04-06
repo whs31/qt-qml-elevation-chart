@@ -1,10 +1,7 @@
-#include "test.hpp"
+#pragma once
 
 #include <QtQuick/qsgsimplematerial.h>
-#include <QtQuick/qsggeometry.h>
-#include <QtQuick/qsgnode.h>
 
-//! [1]
 struct State
 {
     QColor color;
@@ -22,12 +19,10 @@ struct State
         }
     }
 };
-//! [1]
 
-//! [2]
-class Shader : public QSGSimpleMaterialShader<State>
+class GLPolygonShader : public QSGSimpleMaterialShader<State>
 {
-    QSG_DECLARE_SIMPLE_COMPARABLE_SHADER(Shader, State);
+    QSG_DECLARE_SIMPLE_COMPARABLE_SHADER(GLPolygonShader, State)
 //! [2] //! [3]
 public:
 
@@ -73,47 +68,3 @@ private:
     int id_color;
 //! [6]
 };
-
-
-//! [7]
-class ColorNode : public QSGGeometryNode
-{
-public:
-    ColorNode()
-        : m_geometry(QSGGeometry::defaultAttributes_TexturedPoint2D(), 4)
-    {
-        setGeometry(&m_geometry);
-
-        QSGSimpleMaterial<State> *material = Shader::createMaterial();
-        material->setFlag(QSGMaterial::Blending);
-        setMaterial(material);
-        setFlag(OwnsMaterial);
-    }
-
-    QSGGeometry m_geometry;
-};
-//! [7]
-
-void SimpleMaterialItem::setColor(const QColor &color) {
-    if (m_color != color) {
-        m_color = color;
-        emit colorChanged();
-        update();
-    }
-}
-
-//! [9]
-QSGNode *SimpleMaterialItem::updatePaintNode(QSGNode *node, QQuickItem::UpdatePaintNodeData *)
-{
-    ColorNode *n = static_cast<ColorNode *>(node);
-    if (!node)
-        n = new ColorNode();
-
-    QSGGeometry::updateTexturedRectGeometry(n->geometry(), boundingRect(), QRectF(0, 0, 1, 1));
-    static_cast<QSGSimpleMaterial<State>*>(n->material())->state()->color = m_color;
-
-    n->markDirty(QSGNode::DirtyGeometry | QSGNode::DirtyMaterial);
-
-    return n;
-}
-//! [9]
