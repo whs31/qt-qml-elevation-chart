@@ -17,7 +17,7 @@ Rectangle { id: c_ImplRoot;
 
 	property string s_FontFamily: "Ubuntu Mono";
 
-	property rect mtx_Offsets: Qt.rect(30, 0, 7, 15); // left top right bottom
+	property vector4d vec_Offsets: Qt.vector4d(30, 0, 15, 7); // left top right bottom : x y z w
 
 	// private:
 	color: s_BackgroundColor;
@@ -33,9 +33,9 @@ Rectangle { id: c_ImplRoot;
 		CDeclarativePolygon { id: c_ImplProfile;
 			objectName: "qml_gl_profile_polygon"; //! required!
 			anchors.fill: parent;
-			anchors.leftMargin: mtx_Offsets.left;
-			anchors.bottomMargin: mtx_Offsets.bottom;
-			anchors.rightMargin: mtx_Offsets.right;
+			anchors.leftMargin: vec_Offsets.x;
+			anchors.bottomMargin: vec_Offsets.w;
+			anchors.rightMargin: vec_Offsets.z;
 			fillColor: c_ImplRoot.s_ProfileColor;
 			visible: true;
 		}

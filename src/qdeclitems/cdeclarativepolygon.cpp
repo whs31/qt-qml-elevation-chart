@@ -3,9 +3,7 @@
 #include "../scenegraph/glvertextype.hpp"
 
 #include <cmath>
-#include <QSGFlatColorMaterial>
 #include <QSGGeometryNode>
-#include <QtQuick/qsgsimplematerial.h>
 #include <vector>
 
 using namespace ChartsOpenGL;
@@ -55,7 +53,7 @@ QSGNode* CDeclarativePolygon::updatePaintNode(QSGNode *old_node, UpdatePaintNode
         // в качестве точек ноды. Остальные более простые материалы (напр. flatcolormat) можно
         // ассоциировать с более простым типом Vertex.
         QSGSimpleMaterial<State>* material = GLPolygonShader::createMaterial();
-        material->setFlag(QSGMaterial::Blending);
+        //material->setFlag(QSGMaterial::Blending);
         node->setMaterial(material);
         node->setFlag(QSGNode::OwnsMaterial);
         static_cast<QSGSimpleMaterial<State>*>(node->material())->state()->color = QColor(m_fillColor);

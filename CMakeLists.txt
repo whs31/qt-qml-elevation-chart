@@ -41,6 +41,7 @@ set (PROJECT_SOURCES
 		# DECLARATIVE ITEMS
 		src/qdeclitems/cdeclarativepolyline.hpp src/qdeclitems/cdeclarativepolyline.cpp
 		src/qdeclitems/cdeclarativepolygon.hpp src/qdeclitems/cdeclarativepolygon.cpp
+		src/qdeclitems/cdeclarativepoint.hpp src/qdeclitems/cdeclarativepoint.cpp
 
 		# GLSL & SCENE GRAPH
 		src/scenegraph/glsl/glsl.qrc
@@ -48,6 +49,7 @@ set (PROJECT_SOURCES
 
 		# SHADERS
 		src/scenegraph/glpolygonshader.hpp
+		src/scenegraph/glpointshader.hpp
 )
 
 if(LIBRARY_COMPILE)

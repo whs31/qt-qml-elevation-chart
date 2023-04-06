@@ -5,6 +5,7 @@
 #include "pointsmodel.hpp"
 #include "qdeclitems/cdeclarativepolyline.hpp"
 #include "qdeclitems/cdeclarativepolygon.hpp"
+#include "qdeclitems/cdeclarativepoint.hpp"
 
 #include <qqml.h>
 #include <cmath>
@@ -149,6 +150,7 @@ ElevationWidgetPrivate::ElevationWidgetPrivate(ElevationWidget* parent)
 
     qmlRegisterType<ChartsOpenGL::CDeclarativePolyline>("CDeclarativePolyline", 1, 0, "CDeclarativePolyline");
     qmlRegisterType<ChartsOpenGL::CDeclarativePolygon>("CDeclarativePolygon", 1, 0, "CDeclarativePolygon");
+    qmlRegisterType<ChartsOpenGL::CDeclarativePoint>("CDeclarativePoint", 1, 0, "CDeclarativePoint");
     qmlRegisterSingletonInstance<PointsModel>("PointModel", 1, 0, "PointModel", model);
 
     connect(heightmapParser, &Elevation::Elevation::profileAsyncNotification, this, [](unsigned int return_code){

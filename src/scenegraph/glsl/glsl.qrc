@@ -2,5 +2,7 @@
     <qresource prefix="/">
         <file>polygon.vert</file>
         <file>polygon.frag</file>
+        <file>point.frag</file>
+        <file>point.vert</file>
     </qresource>
 </RCC>

@@ -7,7 +7,6 @@
 using std::list;
 
 namespace ChartsOpenGL {
-
     class CDeclarativePolygon : public QQuickItem
     {
         Q_OBJECT

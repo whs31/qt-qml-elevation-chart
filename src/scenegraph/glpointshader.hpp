@@ -5,22 +5,22 @@
 #include <QtQuick/qsgsimplematerial.h>
 #include <QFile>
 
-class GLPolygonShader : public QSGSimpleMaterialShader<State>
+class GLPointShader : public QSGSimpleMaterialShader<State>
 {
-    QSG_DECLARE_SIMPLE_COMPARABLE_SHADER(GLPolygonShader, State)
+    QSG_DECLARE_SIMPLE_COMPARABLE_SHADER(GLPointShader, State)
 
     int id_color;
 
     public:
         const char *vertexShader() const override {
-            QFile file(":/polygon.vert");
+            QFile file(":/point.vert");
             if(not file.open(QIODevice::ReadOnly | QIODevice::Text))
                 return "Error reading vertex shader from file";
             return file.readAll().constData();
         }
 
         const char *fragmentShader() const override {
-            QFile file(":/polygon.frag");
+            QFile file(":/point.frag");
             if(not file.open(QIODevice::ReadOnly | QIODevice::Text))
                 return "Error reading fragment shader from file";
             return file.readAll().constData();

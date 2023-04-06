@@ -1,5 +1,15 @@
 #pragma once
 
+struct State
+{
+    QColor color;
+    int compare(const State* other) const {
+        if (color.rgba() == other->color.rgba()) return 0;
+        else if (color.rgba() < other->color.rgba()) return -1;
+        else return 1;
+    }
+};
+
 namespace ChartsOpenGL {
     struct Vertex
     {
