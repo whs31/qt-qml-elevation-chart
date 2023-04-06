@@ -36,6 +36,7 @@ set (PROJECT_SOURCES
 
 	# SOURCE BASE
 	src/elevationwidget_p.hpp src/elevationwidget.cpp
+        src/pointsmodel.hpp src/pointsmodel.cpp
 
 		# DECLARATIVE ITEMS
 		src/qdeclitems/cdeclarativepolyline.hpp src/qdeclitems/cdeclarativepolyline.cpp
