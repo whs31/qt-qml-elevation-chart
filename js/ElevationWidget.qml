@@ -4,6 +4,8 @@ import CDeclarativePolyline 1.0
 import CDeclarativePolygon 1.0
 import PointModel 1.0
 
+import "elevation-chart/private" as Private
+
 Rectangle { id: c_ImplRoot;
 	property color s_BackgroundColor: Qt.darker("#2E3440", 1.2);
 	property color s_ForegroundColor: "#d8dee9";
@@ -14,6 +16,8 @@ Rectangle { id: c_ImplRoot;
 	property color s_InfoColor: "#81a1c1";
 
 	property string s_FontFamily: "Ubuntu Mono";
+
+	property rect mtx_Offsets: Qt.rect(30, 0, 7, 15); // left top right bottom
 
 	// private:
 	color: s_BackgroundColor;
@@ -29,9 +33,9 @@ Rectangle { id: c_ImplRoot;
 		CDeclarativePolygon { id: c_ImplProfile;
 			objectName: "qml_gl_profile_polygon"; //! required!
 			anchors.fill: parent;
-			anchors.leftMargin: 30;
-			anchors.bottomMargin: 15;
-			anchors.rightMargin: 7;
+			anchors.leftMargin: mtx_Offsets.left;
+			anchors.bottomMargin: mtx_Offsets.bottom;
+			anchors.rightMargin: mtx_Offsets.right;
 			fillColor: c_ImplRoot.s_ProfileColor;
 			visible: true;
 		}
@@ -81,8 +85,9 @@ Rectangle { id: c_ImplRoot;
 		Repeater
 		{
 			clip: false;
-			model: pathModel;
-			delegate: Rectangle { color: "red"; width: 20; height: 20; }
+			model: PointModel;
+			anchors.fill: c_ImplProfile;
+			delegate: Private.ElevationPoint { }
 		}
 	}
 }

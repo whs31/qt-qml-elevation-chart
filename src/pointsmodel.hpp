@@ -8,9 +8,26 @@ namespace Charts
 {
     struct ChartPoint
     {
+        ChartPoint(float distance, float altitude, float velocity = -1, bool valid = true, bool intersects = false)
+            : distance(distance)
+            , altitude(altitude)
+            , velocity(velocity)
+            , valid(valid)
+            , intersects(intersects)
+        {}
+
+        ChartPoint(QPointF coords, float velocity = -1, bool valid = true, bool intersects = false)
+            : distance(coords.x())
+            , altitude(coords.y())
+            , velocity(velocity)
+            , valid(valid)
+            , intersects(intersects)
+        {}
+
         size_t index = -1;
         float distance = 0;
         float altitude = 0;
+        float velocity = -1;
         bool valid = true;
         bool intersects = false;
     };

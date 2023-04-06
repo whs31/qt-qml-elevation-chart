@@ -8,6 +8,7 @@
 
 #include <qqml.h>
 #include <cmath>
+#include <vector>
 #include <QMetaType>
 #include <QQuickItem>
 #include <QGeoPath>
@@ -323,6 +324,12 @@ void ElevationWidgetPrivate::update(UpdateMode mode, float force_y_axis_height)
     }
 
     m_pathPolyline->setList(path_polyline);
+
+    std::vector<ChartPoint> model_points;
+    for(QPointF p : path_polyline)
+        model_points.push_back(ChartPoint(p));
+    model->setPath(model_points);
+
     m_envelopePolyline->clear();
 }
 
