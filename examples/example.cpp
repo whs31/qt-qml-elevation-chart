@@ -42,15 +42,15 @@ void IntegrationExample::on_checkBox_toggled(bool checked)
 }
 void IntegrationExample::on_doubleSpinBox_valueChanged(double arg1)
 {
-//    elevationWidget->setVelocity(arg1);
+    elevationWidget->setGlobalVelocity(arg1);
 }
 void IntegrationExample::on_doubleSpinBox_2_valueChanged(double arg1)
 {
-//    elevationWidget->setClimbRate(arg1);
+    elevationWidget->setClimbRate(arg1);
 }
 void IntegrationExample::on_doubleSpinBox_3_valueChanged(double arg1)
 {
-//    elevationWidget->setDescendRate(arg1);
+    elevationWidget->setDescendRate(arg1);
 }
 void IntegrationExample::on_doubleSpinBox_4_valueChanged(double arg1)
 {
@@ -62,7 +62,7 @@ void IntegrationExample::on_doubleSpinBox_5_valueChanged(double arg1)
 }
 void IntegrationExample::on_pushButton_clicked()
 {
-//    elevationWidget->applyMetricsCorrection();
+    elevationWidget->applyMetricsCorrection();
 }
 
 

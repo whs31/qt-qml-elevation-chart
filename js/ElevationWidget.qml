@@ -46,6 +46,28 @@ Rectangle { id: c_ImplRoot;
 			anchors.fill: c_ImplProfile;
 			lineColor: c_ImplRoot.s_WarnColor;
 			visible: true;
+			opacity: 0.5;
+			dashed: true;
+			SequentialAnimation {
+				PropertyAnimation {
+					target: c_ImplMetricsPath;
+					property: "opacity";
+					to: 0.5;
+					duration: 500;
+					easing.type: Easing.InOutQuad;
+				}
+				PropertyAnimation {
+					target: c_ImplMetricsPath;
+					property: "opacity";
+					to: 1.0;
+					duration: 500;
+					easing.type: Easing.InOutQuad;
+				}
+
+				loops: Animation.Infinite;
+				running: true;
+				Component.onCompleted: start();
+			}
 		}
 
 		CDeclarativePolyline { id: c_ImplEnvelopePath;

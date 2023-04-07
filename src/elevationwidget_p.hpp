@@ -37,6 +37,7 @@ namespace Charts
         QGeoCoordinate m_uavPosition;
 
         bool m_valid = true;
+        bool m_matchingMetrics = true;
         bool m_intersects = false;
 
         struct AircraftMetrics {
@@ -107,6 +108,9 @@ namespace Charts
             // points
             private slots:
                 void syncPointsWithPath(int _index);
+
+            // metrics
+            void calculateMetrics();
 
             // envelope
             void calculateEnvelope();

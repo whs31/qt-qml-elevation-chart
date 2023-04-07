@@ -243,17 +243,20 @@ bool ElevationWidgetPrivate::isValid()
 
 void ElevationWidgetPrivate::setClimbRate(float rate)
 {
-
+    aircraftMetrics.climbRate = rate;
+    update(UpdateMode::KeepProfile);
 }
 
 void ElevationWidgetPrivate::setDescendRate(float rate)
 {
-
+    aircraftMetrics.descendRate = rate;
+    update(UpdateMode::KeepProfile);
 }
 
 void ElevationWidgetPrivate::setGlobalVelocity(float velocity)
 {
-
+    aircraftMetrics.velocity = velocity;
+    update(UpdateMode::KeepProfile);
 }
 
 void ElevationWidgetPrivate::applyMetricsCorrection()
@@ -263,7 +266,7 @@ void ElevationWidgetPrivate::applyMetricsCorrection()
 
 bool ElevationWidgetPrivate::isMatchingMetrics()
 {
-
+    return m_matchingMetrics;
 }
 
 void ElevationWidgetPrivate::setEnvelopeMinimumAltitude(float altitude)
@@ -336,6 +339,8 @@ void ElevationWidgetPrivate::update(UpdateMode mode, float force_y_axis_height)
     model->setPath(model_points);
 
     m_envelopePolyline->clear();
+
+    calculateMetrics();
 }
 
 void ElevationWidgetPrivate::sync(QVector<QPointF> vec)
@@ -368,6 +373,87 @@ void ElevationWidgetPrivate::syncPointsWithPath(int _index)
         update(UpdateMode::KeepProfile);
     else
         update(UpdateMode::RebuildProfile);
+}
+
+void ElevationWidgetPrivate::calculateMetrics()
+{
+    QGeoPath correct_path;
+    QGeoPath route_geopath = fromRoute(m_route);
+    list<QPointF> correct_route_pixel;
+    bool allow_individual_speeds = m_route.front().velocity() > 0;
+    vector<float> velocities;
+
+    for(GeoPoint point : m_route)
+    {
+        velocities.push_back(point.velocity());
+        if(point.velocity() == 0)
+            allow_individual_speeds = false;
+    }
+
+    if(route_geopath.isEmpty())
+    {
+        m_metricsPolyline->clear();
+        return;
+    }
+    correct_path.addCoordinate(route_geopath.path().first());
+    m_matchingMetrics = true;
+    for(size_t i = 1; i < route_geopath.path().size(); ++i)
+    {
+        const float delta_x = route_geopath.path().at(i).distanceTo(route_geopath.path().at(i-1));
+        const float delta_y = route_geopath.path().at(i).altitude() - route_geopath.path().at(i-1).altitude();
+        float delta_y_min, delta_y_max;
+
+        if(allow_individual_speeds)
+        {
+            delta_y_min = aircraftMetrics.descendRate * delta_x / static_cast<float>(velocities.at(i));
+            delta_y_max = aircraftMetrics.climbRate * delta_x / static_cast<float>(velocities.at(i));
+        }
+        else
+        {
+            delta_y_min = aircraftMetrics.descendRate * delta_x / aircraftMetrics.velocity;
+            delta_y_max = aircraftMetrics.climbRate * delta_x / aircraftMetrics.velocity;
+        }
+        QGeoCoordinate coordinate_to_correct_path = route_geopath.path().at(i);
+
+        // correct case
+        if((delta_y >= 0 and delta_y < delta_y_max) or (delta_y <= 0 and abs(delta_y) < delta_y_min))
+        {
+            correct_path.addCoordinate(coordinate_to_correct_path);
+            continue;
+        }
+
+        // climbs too fast
+        else if(delta_y > 0 and delta_y > delta_y_max)
+        {
+            coordinate_to_correct_path.setAltitude(correct_path.path().at(i-1).altitude() + delta_y_max);
+            m_matchingMetrics = false;
+        }
+
+        // descend too fast
+        else if(delta_y < 0 and abs(delta_y) > delta_y_min)
+        {
+            coordinate_to_correct_path.setAltitude(correct_path.path().at(i-1).altitude() - delta_y_min);
+            m_matchingMetrics = false;
+        }
+        correct_path.addCoordinate(coordinate_to_correct_path);
+    }
+    if(not m_matchingMetrics)
+        m_metricsPath = correct_path;
+
+    float previous_distance = 0;
+    for(size_t i = 0; i < correct_path.path().size(); ++i)
+    {
+        QPointF point;
+        float delta_s = 0;
+        point.setY(m_metricsPolyline->height() - correct_path.path().at(i).altitude() * m_metricsPolyline->height()
+                    / (axis.y.maxValue * axis.stretch));
+        if(i > 0)
+            delta_s = correct_path.path().at(i).distanceTo(correct_path.path().at(i-1));
+        previous_distance += delta_s;
+        point.setX(previous_distance * m_metricsPolyline->width() / axis.x.maxValue);
+        correct_route_pixel.push_back(point);
+    }
+    m_metricsPolyline->setList(correct_route_pixel);
 }
 
 void ElevationWidgetPrivate::calculateEnvelope()
