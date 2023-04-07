@@ -73,6 +73,14 @@ void PointsModel::removePath()
     endRemoveRows();
 }
 
+void PointsModel::changePointAltitude(const int _index, const float _altitude)
+{
+    m_points[_index].altitude = _altitude;
+    emit pointChanged(_index);
+    emit dataChanged(createIndex(_index, 0), createIndex(_index, 0));
+}
+
+
 ChartPoint PointsModel::getPoint(const int _index)
 {
     return m_points.at(_index);

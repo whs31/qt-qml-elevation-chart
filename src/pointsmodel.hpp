@@ -4,6 +4,8 @@
 #include <vector>
 #include <QPointF>
 
+using std::vector;
+
 namespace Charts
 {
     struct ChartPoint
@@ -35,7 +37,7 @@ namespace Charts
     class PointsModel : public QAbstractListModel
     {
         Q_OBJECT
-        std::vector<ChartPoint> m_points;
+        vector<ChartPoint> m_points;
 
         public:
             enum PointRoles
@@ -53,11 +55,15 @@ namespace Charts
             QVariant data(const QModelIndex &index, int role) const override;
             QHash<int, QByteArray> roleNames() const override;
 
-            void setPath(const std::vector<ChartPoint> &_points);
-            Q_INVOKABLE
+            void setPath(const vector<ChartPoint> &_points);
             void updatePoint(const int _index, const ChartPoint &_point);
             void removePath();
 
+            Q_INVOKABLE
+            void changePointAltitude(const int _index, const float _altitude);
             ChartPoint getPoint(const int _index);
+
+            signals:
+                void pointChanged(const int _index);
     };
 }

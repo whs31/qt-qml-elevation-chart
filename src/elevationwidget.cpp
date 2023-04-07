@@ -10,6 +10,7 @@
 #include <qqml.h>
 #include <cmath>
 #include <vector>
+#include <iterator>
 #include <QMetaType>
 #include <QQuickItem>
 #include <QGeoPath>
@@ -164,6 +165,8 @@ ElevationWidgetPrivate::ElevationWidgetPrivate(ElevationWidget* parent)
             &ElevationWidgetPrivate::calculateEnvelopeFinished);
     connect(routeParser, &Elevation::ElevationTools::progressTestRouteIntersectGround, this,
             &ElevationWidgetPrivate::calculateIntersectsFinished);
+
+    connect(model, &PointsModel::pointChanged, this, &ElevationWidgetPrivate::syncPointsWithPath);
 }
 
 void ElevationWidgetPrivate::linkWithQML(QQuickItem* rootObject)
@@ -346,6 +349,23 @@ void ElevationWidgetPrivate::sync(QVector<QPointF> vec)
     m_profilePolygon->asyncAppend(packet);
 }
 
+void ElevationWidgetPrivate::syncPointsWithPath(const int _index)
+{
+    ChartPoint point = model->getPoint(_index);
+    QPointF geo_point = fromPixelCoords(QPointF(point.distance, point.altitude), axis.x.maxValue, axis.y.maxValue,
+                                        axis.stretch, m_pathPolyline->width(), m_pathPolyline->height());
+
+    auto l_begin = m_route.begin();
+    std::advance(l_begin, _index);
+    //qDebug() << geo_point.y();
+    l_begin->setAltitude(geo_point.y());
+
+    if(geo_point.y() < axis.y.maxValue)
+        update(UpdateMode::KeepProfile);
+    else
+        update(UpdateMode::RebuildProfile);
+}
+
 void ElevationWidgetPrivate::calculateEnvelope()
 {
     if(m_route.empty())
@@ -402,6 +422,11 @@ void ElevationWidgetPrivate::calculateIntersectsFinished(quint8 progress, const 
 QPointF ElevationWidgetPrivate::toPixelCoords(const QPointF& point, float x_max, float y_max, float y_stretch, float pixel_width, float pixel_height)
 {
     return QPointF(point.x() * pixel_width / x_max, pixel_height - point.y() * pixel_height / (y_max * y_stretch));
+}
+
+QPointF ElevationWidgetPrivate::fromPixelCoords(const QPointF& point, float x_max, float y_max, float y_stretch, float pixel_width, float pixel_height)
+{
+    return QPointF(point.x() * x_max / pixel_width, (pixel_height - point.y()) * y_max * y_stretch / pixel_height);
 }
 
 list<GeoPoint> ElevationWidgetPrivate::toRoute(const QGeoPath& path)

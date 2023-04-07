@@ -104,6 +104,10 @@ namespace Charts
             void update(UpdateMode mode, float force_y_axis_height = 0);
             void sync(QVector<QPointF> vec);
 
+            // points
+            private slots:
+                void syncPointsWithPath(const int _index);
+
             // envelope
             void calculateEnvelope();
             private slots:
@@ -116,6 +120,7 @@ namespace Charts
 
             // shared
             QPointF toPixelCoords(const QPointF& point, float x_max, float y_max, float y_stretch, float pixel_width, float pixel_height);
+            QPointF fromPixelCoords(const QPointF& point, float x_max, float y_max, float y_stretch, float pixel_width, float pixel_height);
             list<GeoPoint> toRoute(const QGeoPath& path);
             QGeoPath fromRoute(const list<GeoPoint> route);
     };

@@ -24,18 +24,19 @@ Rectangle { id: c_ImplRoot;
 	layer.enabled: true;
 	layer.samples: 8;
 
-	Flickable
-	{
+	Flickable { id: c_ImplView;
 		anchors.fill: parent;
-		interactive: true;
-		flickableDirection: Flickable.HorizontalAndVerticalFlick;
+		anchors.leftMargin: vec_Offsets.x;
+		anchors.bottomMargin: vec_Offsets.w;
+		anchors.rightMargin: vec_Offsets.z;
+		anchors.topMargin: vec_Offsets.y;
+
+		interactive: false;
+		//flickableDirection: Flickable.HorizontalAndVerticalFlick;
 
 		CDeclarativePolygon { id: c_ImplProfile;
 			objectName: "qml_gl_profile_polygon"; //! required!
 			anchors.fill: parent;
-			anchors.leftMargin: vec_Offsets.x;
-			anchors.bottomMargin: vec_Offsets.w;
-			anchors.rightMargin: vec_Offsets.z;
 			fillColor: c_ImplRoot.s_ProfileColor;
 			visible: true;
 		}
