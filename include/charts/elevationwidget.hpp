@@ -117,7 +117,6 @@ namespace Charts
                 //! @param state - состояние расчета огибающей.
                 void envelopeCalculated(bool state);
 
-
         protected:
             ElevationWidgetPrivate* const d_ptr;
 

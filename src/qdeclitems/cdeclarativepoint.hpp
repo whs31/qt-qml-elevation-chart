@@ -27,7 +27,7 @@ namespace ChartsOpenGL {
                 void radiusChanged();
 
         protected:
-                virtual QSGNode* updatePaintNode(QSGNode* old_node, UpdatePaintNodeData* update_paint_node_data) override;
+            virtual QSGNode* updatePaintNode(QSGNode* old_node, UpdatePaintNodeData* update_paint_node_data) override;
     };
 }
 

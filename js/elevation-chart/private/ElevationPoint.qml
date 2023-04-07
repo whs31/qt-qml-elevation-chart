@@ -7,6 +7,8 @@ Item {
 	height: 15;
 	x: distance - width / 2;
 	y: altitude - height / 2;
+	property bool b_Active: false;
+
 	CDeclarativePoint {
 		anchors.fill: parent;
 		radius: 7;
@@ -16,13 +18,12 @@ Item {
 		anchors.fill: parent;
 		anchors.leftMargin: -10;
 		anchors.rightMargin: -10;
-		anchors.topMargin: -500;
-		anchors.bottomMargin: -500;
+		anchors.topMargin: -100;
+		anchors.bottomMargin: -100;
 		hoverEnabled: true;
-		//acceptedButtons: Qt.RightButton;
-		property bool b_Active: true;
+		acceptedButtons: Qt.RightButton;
 		onPressed: b_Active = true;
-		//onReleased: b_Active = false;
+		onReleased: b_Active = false;
 
 		onPositionChanged: {
 			if(b_Active) {

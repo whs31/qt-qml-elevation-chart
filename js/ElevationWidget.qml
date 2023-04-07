@@ -32,7 +32,7 @@ Rectangle { id: c_ImplRoot;
 		anchors.topMargin: vec_Offsets.y;
 
 		interactive: false;
-		//flickableDirection: Flickable.HorizontalAndVerticalFlick;
+		flickableDirection: Flickable.HorizontalAndVerticalFlick;
 
 		CDeclarativePolygon { id: c_ImplProfile;
 			objectName: "qml_gl_profile_polygon"; //! required!

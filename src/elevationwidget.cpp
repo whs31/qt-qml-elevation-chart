@@ -33,7 +33,7 @@ ElevationWidget::ElevationWidget(QObject *parent)
                        "%{if-info}\033[01;38;05;146m%{endif}"
                        "%{if-warning}\033[1;33m%{endif}"
                        "%{if-critical}\033[1;31m%{endif}"
-                       "%{if-fatal}F%\033[1;31m%{endif}%{message}\033[0m");
+                       "%{if-fatal}FATAL ERROR \033[1;31m%{endif}%{message}\033[0m");
     #endif
 
     initialize_qrc_file_within_namespace_1("charts");
