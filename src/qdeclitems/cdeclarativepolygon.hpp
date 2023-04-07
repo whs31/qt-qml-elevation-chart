@@ -11,10 +11,13 @@ namespace ChartsOpenGL {
     {
         Q_OBJECT
         Q_PROPERTY(QString fillColor READ fillColor WRITE setFillColor NOTIFY fillColorChanged)
+        Q_PROPERTY(QString drawingMode READ drawingMode WRITE setDrawingMode NOTIFY drawingModeChanged)
 
         QString m_fillColor = "#FF00DC"; // error color
         list<QPointF> m_points;
         int m_loopmode = LoopMode::LoopByItemRect;
+        QString m_drawingMode;
+        uint32_t m_glDrawMode = 0x000;
 
         public:
             enum LoopMode
@@ -31,8 +34,12 @@ namespace ChartsOpenGL {
 
             void setLoopMode(LoopMode mode);
 
+            QString drawingMode() const;
+            void setDrawingMode(const QString& newDrawingMode);
+
             signals:
                 void fillColorChanged();
+                void drawingModeChanged();
 
         protected:
             virtual QSGNode* updatePaintNode(QSGNode* old_node, UpdatePaintNodeData* update_paint_node_data) override;

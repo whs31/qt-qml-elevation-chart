@@ -175,6 +175,7 @@ void ElevationWidgetPrivate::linkWithQML(QQuickItem* rootObject)
     m_metricsPolyline = rootObject->findChild<ChartsOpenGL::CDeclarativePolyline*>("qml_gl_metrics_polyline");
     m_envelopePolyline = rootObject->findChild<ChartsOpenGL::CDeclarativePolyline*>("qml_gl_envelope_polyline");
     m_profilePolygon = rootObject->findChild<ChartsOpenGL::CDeclarativePolygon*>("qml_gl_profile_polygon");
+    m_intersectsPolygon = rootObject->findChild<ChartsOpenGL::CDeclarativePolygon*>("qml_gl_intersects_polygon");
 
     if(not m_pathPolyline)
         qCritical() << "<charts> Failed to link with QML at qml_gl_path_polyline";
@@ -194,7 +195,18 @@ void ElevationWidgetPrivate::linkWithQML(QQuickItem* rootObject)
     if(not m_profilePolygon)
         qCritical() << "<charts> Failed to link with QML at qml_gl_profile_polygon";
     else
+    {
+        m_profilePolygon->setDrawingMode("Line strip");
         qInfo() << "<charts> qml_gl_profile_polygon linked successfully";
+    }
+
+    if(not m_intersectsPolygon)
+        qCritical() << "<charts> Failed to link with QML at qml_gl_intersects_polygon";
+    else
+    {
+        m_intersectsPolygon->setDrawingMode("Points");
+        qInfo() << "<charts> qml_gl_intersects_polygon linked successfully";
+    }
 }
 
 list<GeoPoint> ElevationWidgetPrivate::getRoute()
@@ -342,6 +354,7 @@ void ElevationWidgetPrivate::update(UpdateMode mode, float force_y_axis_height)
     m_envelopePolyline->clear();
 
     calculateMetrics();
+    calculateIntersects();
 }
 
 void ElevationWidgetPrivate::sync(QVector<QPointF> vec)
@@ -502,12 +515,31 @@ void ElevationWidgetPrivate::calculateEnvelopeFinished(quint8 progress, const El
 
 void ElevationWidgetPrivate::calculateIntersects()
 {
-
+    routeParser->testRouteIntersectGround(fromRoute(m_route));
 }
 
 void ElevationWidgetPrivate::calculateIntersectsFinished(quint8 progress, const QVector<Elevation::Point>& resultPath)
 {
+    list<QPointF> intersect_list;
 
+    m_intersects = false;
+    for(Elevation::Point point : resultPath)
+    {
+        if(point.orientation() == Elevation::Point::OrientationFromTheGround::Air)
+            continue;
+        QPointF pixel_point(point.distance(), point.altitude());
+        intersect_list.push_back(toPixelCoords(pixel_point, axis.x.maxValue, axis.y.maxValue, axis.stretch,
+                                 m_intersectsPolygon->width(), m_intersectsPolygon->height()));
+        if(not m_intersects)
+            m_intersects = true;
+    }
+
+    Q_Q(ElevationWidget);
+    if(m_intersects)
+        emit(q->intersectingStateChanged(m_intersects));
+
+    qDebug() << intersect_list;
+    m_intersectsPolygon->setList(intersect_list);
 }
 
 QPointF ElevationWidgetPrivate::toPixelCoords(const QPointF& point, float x_max, float y_max, float y_stretch, float pixel_width, float pixel_height)

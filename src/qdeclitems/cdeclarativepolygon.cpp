@@ -64,7 +64,7 @@ QSGNode* CDeclarativePolygon::updatePaintNode(QSGNode *old_node, UpdatePaintNode
 
     // ставим геометрии параметры отрисовки
     geometry = node->geometry();                                                          
-    geometry->setDrawingMode(GL_LINE_STRIP/*GL_QUAD_STRIP*/);
+    geometry->setDrawingMode(GL_LINE_STRIP);
     geometry->setLineWidth(5);
 
     // создаем вектор точек (Vertex = Point2D, VertexT = TexturedPoint2D)
@@ -111,4 +111,21 @@ void CDeclarativePolygon::setFillColor(const QString& col) {
 void ChartsOpenGL::CDeclarativePolygon::setLoopMode(LoopMode mode)
 {
     m_loopmode = mode;
+}
+
+QString CDeclarativePolygon::drawingMode() const { return m_drawingMode; }
+void CDeclarativePolygon::setDrawingMode(const QString& mode) {
+    if (m_drawingMode == mode) return;
+    m_drawingMode = mode;
+    if(mode == "Points")
+        m_glDrawMode == GL_POINTS;
+    else if(mode == "Line strip")
+        m_glDrawMode == GL_LINE_STRIP;
+    else if(mode == "Quad strip")
+        m_glDrawMode == GL_QUAD_STRIP;
+    else if(mode == "Triangle strip")
+        m_glDrawMode == GL_TRIANGLE_STRIP;
+    else
+        m_glDrawMode == GL_TRIANGLE_FAN;
+    emit drawingModeChanged();
 }

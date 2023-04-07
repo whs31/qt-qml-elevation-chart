@@ -105,6 +105,12 @@ Rectangle { id: c_ImplRoot;
 			lineColor: c_ImplRoot.s_RouteColor;
 			visible: true;
 		}
+		CDeclarativePolygon { id: c_ImplIntersects;
+			objectName: "qml_gl_intersects_polygon"; //! required!
+			anchors.fill: parent;
+			fillColor: c_ImplRoot.s_ErrorColor;
+			visible: true;
+		}
 		Repeater
 		{
 			clip: false;
