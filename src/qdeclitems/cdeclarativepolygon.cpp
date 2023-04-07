@@ -64,8 +64,8 @@ QSGNode* CDeclarativePolygon::updatePaintNode(QSGNode *old_node, UpdatePaintNode
 
     // ставим геометрии параметры отрисовки
     geometry = node->geometry();                                                          
-    geometry->setDrawingMode(GL_QUAD_STRIP);
-    geometry->setLineWidth(1);
+    geometry->setDrawingMode(GL_LINE_STRIP/*GL_QUAD_STRIP*/);
+    geometry->setLineWidth(5);
 
     // создаем вектор точек (Vertex = Point2D, VertexT = TexturedPoint2D)
     // задаем в него точки графика в пиксельных координатах и координаты UV (опционально)
@@ -82,10 +82,11 @@ QSGNode* CDeclarativePolygon::updatePaintNode(QSGNode *old_node, UpdatePaintNode
         glPoints.push_back(VertexT(point.x(), height(), point.x() / max.x, height() / max.y));
     }
 
-    glPoints.push_back(VertexT(m_points.back().x(), height(), m_points.back().x() / max.x, height() / max.y));
+    if(glPoints.size() % 2 != 0)
+        glPoints.push_back(VertexT(m_points.back().x(), height(), m_points.back().x() / max.x, height() / max.y));
 
     // после создания всех точек аллоцируем память под этот вектор + 1 точку
-    geometry->allocate(m_loopmode == LoopMode::LoopByItemRect ? glPoints.size() + 1 : glPoints.size() + 1);
+    geometry->allocate(glPoints.size());
 
     // задаем в геометрию графа эти точки
     for(size_t i = 0; i < glPoints.size(); ++i)

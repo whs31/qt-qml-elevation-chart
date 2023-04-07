@@ -4,7 +4,10 @@ using namespace Charts;
 
 PointsModel::PointsModel(QObject *parent)
     : QAbstractListModel(parent)
+    , m_segfaultTimer(new QTimer(this))
 {
+    m_segfaultTimer.setInterval(20);
+    m_segfaultTimer.setSingleShot(true);
 }
 
 int PointsModel::rowCount(const QModelIndex &parent) const
@@ -75,14 +78,16 @@ void PointsModel::removePath()
 
 void PointsModel::changePointAltitude(const int _index, const float _altitude)
 {
-    m_points[_index].altitude = _altitude;
-    emit pointChanged(_index);
-    emit dataChanged(createIndex(_index, 0), createIndex(_index, 0));
+    if(not m_segfaultTimer.isActive())
+    {
+        m_points[_index].altitude = _altitude;
+        emit pointChanged(_index);
+        emit dataChanged(createIndex(_index, 0), createIndex(_index, 0));
+        m_segfaultTimer.start(5);
+    }
 }
-
 
 ChartPoint PointsModel::getPoint(const int _index)
 {
     return m_points.at(_index);
 }
-

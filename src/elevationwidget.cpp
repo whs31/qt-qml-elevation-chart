@@ -349,7 +349,7 @@ void ElevationWidgetPrivate::sync(QVector<QPointF> vec)
     m_profilePolygon->asyncAppend(packet);
 }
 
-void ElevationWidgetPrivate::syncPointsWithPath(const int _index)
+void ElevationWidgetPrivate::syncPointsWithPath(int _index)
 {
     ChartPoint point = model->getPoint(_index);
     QPointF geo_point = fromPixelCoords(QPointF(point.distance, point.altitude), axis.x.maxValue, axis.y.maxValue,
@@ -357,10 +357,14 @@ void ElevationWidgetPrivate::syncPointsWithPath(const int _index)
 
     auto l_begin = m_route.begin();
     std::advance(l_begin, _index);
-    //qDebug() << geo_point.y();
     l_begin->setAltitude(geo_point.y());
 
-    if(geo_point.y() < axis.y.maxValue)
+//    float max_y = 0;
+//    for(QGeoCoordinate coordinate : fromRoute(m_route).path())
+//        if(coordinate.altitude() > max_y)
+//            max_y = coordinate.altitude();
+
+    if(0/*qFuzzyCompare(max_y, axis.y.maxValue)*/)
         update(UpdateMode::KeepProfile);
     else
         update(UpdateMode::RebuildProfile);

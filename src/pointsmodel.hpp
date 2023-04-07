@@ -3,6 +3,7 @@
 #include <QAbstractListModel>
 #include <vector>
 #include <QPointF>
+#include <QTimer>
 
 using std::vector;
 
@@ -38,6 +39,7 @@ namespace Charts
     {
         Q_OBJECT
         vector<ChartPoint> m_points;
+        QTimer m_segfaultTimer;
 
         public:
             enum PointRoles
@@ -64,6 +66,6 @@ namespace Charts
             ChartPoint getPoint(const int _index);
 
             signals:
-                void pointChanged(const int _index);
+                void pointChanged(int _index);
     };
 }

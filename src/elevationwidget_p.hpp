@@ -106,7 +106,7 @@ namespace Charts
 
             // points
             private slots:
-                void syncPointsWithPath(const int _index);
+                void syncPointsWithPath(int _index);
 
             // envelope
             void calculateEnvelope();
