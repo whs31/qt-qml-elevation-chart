@@ -261,7 +261,8 @@ void ElevationWidgetPrivate::setGlobalVelocity(float velocity)
 
 void ElevationWidgetPrivate::applyMetricsCorrection()
 {
-
+    m_route = toRoute(m_metricsPath);
+    update(UpdateMode::RebuildProfile);
 }
 
 bool ElevationWidgetPrivate::isMatchingMetrics()
@@ -395,12 +396,12 @@ void ElevationWidgetPrivate::calculateMetrics()
         m_metricsPolyline->clear();
         return;
     }
-    correct_path.addCoordinate(route_geopath.path().first());
+    correct_path.addCoordinate(route_geopath.path().at(0));
     m_matchingMetrics = true;
-    for(size_t i = 1; i < route_geopath.path().size(); ++i)
+    for(size_t i = 1; i < route_geopath.path().length(); i++)
     {
         const float delta_x = route_geopath.path().at(i).distanceTo(route_geopath.path().at(i-1));
-        const float delta_y = route_geopath.path().at(i).altitude() - route_geopath.path().at(i-1).altitude();
+        const float delta_y = route_geopath.path().at(i).altitude() - correct_path.path().at(i-1).altitude();
         float delta_y_min, delta_y_max;
 
         if(allow_individual_speeds)
