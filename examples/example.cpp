@@ -95,3 +95,15 @@ void IntegrationExample::on_pushButton_6_clicked()
     qDebug() << "<example> Moved UAV to" << lat << "," << lon;
 }
 
+
+void IntegrationExample::on_horizontalSlider_0_valueChanged(int value)
+{
+    elevationWidget->setRoute({ Charts::GeoPoint(60, 30, 50, 50),
+                                Charts::GeoPoint(60.1, 30.1, 100, 100),
+                                Charts::GeoPoint(60.2, 30.2, 25, 50),
+                                Charts::GeoPoint(60.3, 30.3, 45, 50),
+                                Charts::GeoPoint(60.4, 30.4, 35, 50),
+                                Charts::GeoPoint(60.5, 30.5, 50, 50),
+                                Charts::GeoPoint(60 + (float)value / 100, 30 + (float)value / 100, 50, 50)
+                              });
+}
