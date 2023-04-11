@@ -8,6 +8,24 @@ Rectangle { id: gui_thread_freeze_indicator;
 	height: i_Size;
 	radius: i_Size / 2;
 	color: "#BF616A";
+	Rectangle { id: c_ClockHandle;
+		width: 4;
+		height: i_Size / 2;
+		radius: 4;
+		color: "#2E3440";
+		anchors.bottom: parent.verticalCenter;
+		anchors.left: parent.horizontalCenter;
+		anchors.leftMargin: -2;
+		transformOrigin: Item.Bottom;
+		NumberAnimation on rotation {
+			duration: 1000;
+			from: 0;
+			to: 360;
+			loops: Animation.Infinite;
+			running: true;
+		}
+	}
+
 	SequentialAnimation {
 		NumberAnimation {
 			target: gui_thread_freeze_indicator;
@@ -18,7 +36,7 @@ Rectangle { id: gui_thread_freeze_indicator;
 		NumberAnimation {
 			target: gui_thread_freeze_indicator;
 			property: "opacity";
-			to: 0;
+			to: 0.7;
 			duration: u_BlinkFrequency;
 		}
 		loops: Animation.Infinite;
