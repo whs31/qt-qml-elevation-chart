@@ -82,13 +82,13 @@ void PointsModel::removePath()
 
 void PointsModel::changePointAltitude(const int _index, const float _altitude)
 {
-    if(not m_segfaultTimer.isActive())
-    {
-        m_points[_index].altitude = _altitude;
-        emit pointChanged(_index);
-        emit dataChanged(createIndex(_index, 0), createIndex(_index, 0));
-        m_segfaultTimer.start(5);
-    }
+    if(m_segfaultTimer.isActive())
+        return;
+
+    m_points[_index].altitude = _altitude;
+    emit pointChanged(_index);
+    emit dataChanged(createIndex(_index, 0), createIndex(_index, 0));
+    m_segfaultTimer.start(5);
 }
 
 ChartPoint PointsModel::getPoint(const int _index)

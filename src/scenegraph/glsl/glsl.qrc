@@ -6,5 +6,7 @@
         <file>point.vert</file>
         <file>multipolygon.frag</file>
         <file>multipolygon.vert</file>
+        <file>line.frag</file>
+        <file>line.vert</file>
     </qresource>
 </RCC>

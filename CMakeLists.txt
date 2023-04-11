@@ -54,6 +54,7 @@ set (PROJECT_SOURCES
 		src/scenegraph/glpolygonshader.hpp
 		src/scenegraph/glpointshader.hpp
 		src/scenegraph/glmultipolygonshader.hpp
+		src/scenegraph/gllineshader.hpp
 )
 
 if(LIBRARY_COMPILE)

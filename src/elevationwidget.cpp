@@ -378,6 +378,7 @@ void ElevationWidgetPrivate::syncPointsWithPath(int _index)
     std::advance(l_begin, _index);
     l_begin->setAltitude(geo_point.y());
 
+    // эта херня ужасно сегфолит)
 //    float max_y = 0;
 //    for(QGeoCoordinate coordinate : fromRoute(m_route).path())
 //        if(coordinate.altitude() > max_y)
