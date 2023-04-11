@@ -12,6 +12,7 @@ namespace Elevation {
 namespace ChartsOpenGL {
     class CDeclarativePolyline;
     class CDeclarativePolygon;
+    class CDeclarativeMultipolygon;
 }
 
 using std::list;
@@ -70,7 +71,7 @@ namespace Charts
         ChartsOpenGL::CDeclarativePolygon* m_profilePolygon = nullptr;
         ChartsOpenGL::CDeclarativePolyline* m_metricsPolyline = nullptr;
         ChartsOpenGL::CDeclarativePolyline* m_envelopePolyline = nullptr;
-        ChartsOpenGL::CDeclarativePolygon* m_intersectsPolygon = nullptr;
+        ChartsOpenGL::CDeclarativeMultipolygon* m_intersectsPolygon = nullptr;
 
         public:
             explicit ElevationWidgetPrivate(ElevationWidget* parent);

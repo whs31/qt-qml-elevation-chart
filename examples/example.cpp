@@ -75,6 +75,7 @@ void IntegrationExample::on_pushButton_2_clicked()
                                 Charts::GeoPoint(60.4, 30.4, 35, 50),
                                 Charts::GeoPoint(60.5, 30.5, 50, 50)
                               });
+
 }
 
 void IntegrationExample::on_pushButton_3_clicked() {

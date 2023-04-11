@@ -4,7 +4,7 @@ project(GLCharts VERSION 1.1 LANGUAGES CXX)
 set(LIBRARY_COMPILE FALSE)
 
 if(NOT LIBRARY_COMPILE)
-	set(CMAKE_AUTOUIC ON)
+	#set(CMAKE_AUTOUIC ON)
 	set(CMAKE_AUTOMOC ON)
 	set(CMAKE_AUTORCC ON)
 
@@ -20,11 +20,12 @@ include_directories(include)
 
 set (EXAMPLES
     # EXAMPLES
+    examples/example.ui
     examples/main.cpp
     examples/example.cpp
     examples/example.h
-    examples/example.ui
     examples/example.qrc
+    examples/ui_example.h
 )
 set (PROJECT_SOURCES
 	# QML|JS
@@ -42,6 +43,7 @@ set (PROJECT_SOURCES
 		src/qdeclitems/cdeclarativepolyline.hpp src/qdeclitems/cdeclarativepolyline.cpp
 		src/qdeclitems/cdeclarativepolygon.hpp src/qdeclitems/cdeclarativepolygon.cpp
 		src/qdeclitems/cdeclarativepoint.hpp src/qdeclitems/cdeclarativepoint.cpp
+		src/qdeclitems/cdeclarativemultipolygon.hpp src/qdeclitems/cdeclarativemultipolygon.cpp
 
 		# GLSL & SCENE GRAPH
 		src/scenegraph/glsl/glsl.qrc
@@ -50,6 +52,7 @@ set (PROJECT_SOURCES
 		# SHADERS
 		src/scenegraph/glpolygonshader.hpp
 		src/scenegraph/glpointshader.hpp
+		src/scenegraph/glmultipolygonshader.hpp
 )
 
 if(LIBRARY_COMPILE)

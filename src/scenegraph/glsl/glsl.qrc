@@ -4,5 +4,7 @@
         <file>polygon.frag</file>
         <file>point.frag</file>
         <file>point.vert</file>
+        <file>multipolygon.frag</file>
+        <file>multipolygon.vert</file>
     </qresource>
 </RCC>

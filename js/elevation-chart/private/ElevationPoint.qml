@@ -1,6 +1,6 @@
 import QtQuick 2.15
-import CDeclarativePoint 1.0
-import PointModel 1.0
+import GLShapes 1.0
+import ElevationWidgetModule 1.0
 
 Item {
 	width: 15;
@@ -9,7 +9,7 @@ Item {
 	y: altitude - height / 2;
 	property bool b_Active: false;
 
-	CDeclarativePoint {
+	GLPoint {
 		anchors.fill: parent;
 		radius: 7;
 		color: c_ImplRoot.s_RouteColor;

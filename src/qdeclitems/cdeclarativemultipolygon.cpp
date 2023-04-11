@@ -1,6 +1,5 @@
-#include "cdeclarativepolygon.hpp"
-#include "../scenegraph/glpolygonshader.hpp"
-#include "../scenegraph/glvertextype.hpp"
+#include "cdeclarativemultipolygon.hpp"
+#include "../scenegraph/glmultipolygonshader.hpp"
 
 #include <cmath>
 #include <QSGGeometryNode>
@@ -9,33 +8,40 @@
 using namespace ChartsOpenGL;
 using std::vector;
 
-CDeclarativePolygon::CDeclarativePolygon(QQuickItem* parent)
+CDeclarativeMultipolygon::CDeclarativeMultipolygon(QQuickItem* parent)
     : QQuickItem{parent}
 {
     setFlag(ItemHasContents);
-    qDebug() << "<charts> CDeclarativePolygon initialized";
+    qDebug() << "<charts> CDeclarativeMultipolygon initialized";
 }
 
-void CDeclarativePolygon::setList(const std::list<QPointF>& points)
+void CDeclarativeMultipolygon::setList(const std::list<QPointF>& points)
 {
     m_points = points;
+
+    float max_altitude = 0;
+    for(QPointF point : points)
+        if(point.y() > max_altitude)
+            max_altitude = point.y();
+
+    m_uvmax = max_altitude;
     this->update();
 }
 
-void CDeclarativePolygon::asyncAppend(const std::list<QPointF>& points)
+void CDeclarativeMultipolygon::asyncAppend(const std::list<QPointF>& points)
 {
     for(QPointF point : points)
         m_points.push_back(point);
     this->update();
 }
 
-void CDeclarativePolygon::clear()
+void CDeclarativeMultipolygon::clear()
 {
     m_points.clear();
     //this->update();
 }
 
-QSGNode* CDeclarativePolygon::updatePaintNode(QSGNode *old_node, UpdatePaintNodeData *update_paint_node_data)
+QSGNode* CDeclarativeMultipolygon::updatePaintNode(QSGNode *old_node, UpdatePaintNodeData *update_paint_node_data)
 {
     Q_UNUSED(update_paint_node_data);
 
@@ -52,7 +58,7 @@ QSGNode* CDeclarativePolygon::updatePaintNode(QSGNode *old_node, UpdatePaintNode
         // ремарка: материалы, использующие UV (fragment shader), должны использовать VertexT
         // в качестве точек ноды. Остальные более простые материалы (напр. flatcolormat) можно
         // ассоциировать с более простым типом Vertex.
-        QSGSimpleMaterial<State>* material = GLPolygonShader::createMaterial();
+        QSGSimpleMaterial<State>* material = GLMultipolygonShader::createMaterial();
         //material->setFlag(QSGMaterial::Blending);
         node->setMaterial(material);
         node->setFlag(QSGNode::OwnsMaterial);
@@ -63,9 +69,9 @@ QSGNode* CDeclarativePolygon::updatePaintNode(QSGNode *old_node, UpdatePaintNode
     }
 
     // ставим геометрии параметры отрисовки
-    geometry = node->geometry();                                                          
-    geometry->setDrawingMode(GL_LINE_STRIP);
-    geometry->setLineWidth(5);
+    geometry = node->geometry();
+    geometry->setDrawingMode(GL_LINES);
+    geometry->setLineWidth(10);
 
     // создаем вектор точек (Vertex = Point2D, VertexT = TexturedPoint2D)
     // задаем в него точки графика в пиксельных координатах и координаты UV (опционально)
@@ -77,12 +83,12 @@ QSGNode* CDeclarativePolygon::updatePaintNode(QSGNode *old_node, UpdatePaintNode
     max.x = m_points.back().x();
     for(QPointF point : m_points)
     {
-        glPoints.push_back(VertexT(point.x(), point.y(), point.x() / max.x, point.y() / max.y));
-        glPoints.push_back(VertexT(point.x(), height(), point.x() / max.x, height() / max.y));
+        glPoints.push_back(VertexT(point.x(), point.y(), point.x() / max.x, point.y() / m_uvmax));
+        glPoints.push_back(VertexT(point.x(), height(), point.x() / max.x, height() / m_uvmax));
     }
 
     if(glPoints.size() % 2 != 0)
-        glPoints.push_back(VertexT(m_points.back().x(), height(), m_points.back().x() / max.x, height() / max.y));
+        glPoints.push_back(VertexT(m_points.back().x(), height(), m_points.back().x() / max.x, height() / m_uvmax));
 
     // после создания всех точек аллоцируем память под этот вектор + 1 точку
     geometry->allocate(glPoints.size());
@@ -100,31 +106,9 @@ QSGNode* CDeclarativePolygon::updatePaintNode(QSGNode *old_node, UpdatePaintNode
     return node;
 }
 
-QString CDeclarativePolygon::fillColor() const { return m_fillColor; }
-void CDeclarativePolygon::setFillColor(const QString& col) {
+QString CDeclarativeMultipolygon::fillColor() const { return m_fillColor; }
+void CDeclarativeMultipolygon::setFillColor(const QString& col) {
     if (m_fillColor == col) return;
     m_fillColor = col;
     emit fillColorChanged();
-}
-
-void ChartsOpenGL::CDeclarativePolygon::setLoopMode(LoopMode mode)
-{
-    m_loopmode = mode;
-}
-
-QString CDeclarativePolygon::drawingMode() const { return m_drawingMode; }
-void CDeclarativePolygon::setDrawingMode(const QString& mode) {
-    if (m_drawingMode == mode) return;
-    m_drawingMode = mode;
-    if(mode == "Points")
-        m_glDrawMode == GL_POINTS;
-    else if(mode == "Line strip")
-        m_glDrawMode == GL_LINE_STRIP;
-    else if(mode == "Quad strip")
-        m_glDrawMode == GL_QUAD_STRIP;
-    else if(mode == "Triangle strip")
-        m_glDrawMode == GL_TRIANGLE_STRIP;
-    else
-        m_glDrawMode == GL_TRIANGLE_FAN;
-    emit drawingModeChanged();
 }

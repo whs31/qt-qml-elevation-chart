@@ -6,6 +6,7 @@
 #include "qdeclitems/cdeclarativepolyline.hpp"
 #include "qdeclitems/cdeclarativepolygon.hpp"
 #include "qdeclitems/cdeclarativepoint.hpp"
+#include "qdeclitems/cdeclarativemultipolygon.hpp"
 
 #include <qqml.h>
 #include <cmath>
@@ -149,10 +150,11 @@ ElevationWidgetPrivate::ElevationWidgetPrivate(ElevationWidget* parent)
     qRegisterMetaType<QVector<Elevation::Point>>("QVector<Point>");
     qRegisterMetaType<Elevation::RouteAndElevationProfiles>("RouteAndElevationProfiles");
 
-    qmlRegisterType<ChartsOpenGL::CDeclarativePolyline>("CDeclarativePolyline", 1, 0, "CDeclarativePolyline");
-    qmlRegisterType<ChartsOpenGL::CDeclarativePolygon>("CDeclarativePolygon", 1, 0, "CDeclarativePolygon");
-    qmlRegisterType<ChartsOpenGL::CDeclarativePoint>("CDeclarativePoint", 1, 0, "CDeclarativePoint");
-    qmlRegisterSingletonInstance<PointsModel>("PointModel", 1, 0, "PointModel", model);
+    qmlRegisterType<ChartsOpenGL::CDeclarativePolyline>("GLShapes", 1, 0, "GLPolyline");
+    qmlRegisterType<ChartsOpenGL::CDeclarativePolygon>("GLShapes", 1, 0, "GLPolygon");
+    qmlRegisterType<ChartsOpenGL::CDeclarativePoint>("GLShapes", 1, 0, "GLPoint");
+    qmlRegisterType<ChartsOpenGL::CDeclarativeMultipolygon>("GLShapes", 1, 0, "GLMultipolygon");
+    qmlRegisterSingletonInstance<PointsModel>("ElevationWidgetModule", 1, 0, "PointModel", model);
 
     connect(heightmapParser, &Elevation::Elevation::profileAsyncNotification, this, [](unsigned int return_code){
         qDebug() << "<charts> Received notification from async calc:" << Qt::hex << return_code << Qt::dec;
@@ -175,7 +177,7 @@ void ElevationWidgetPrivate::linkWithQML(QQuickItem* rootObject)
     m_metricsPolyline = rootObject->findChild<ChartsOpenGL::CDeclarativePolyline*>("qml_gl_metrics_polyline");
     m_envelopePolyline = rootObject->findChild<ChartsOpenGL::CDeclarativePolyline*>("qml_gl_envelope_polyline");
     m_profilePolygon = rootObject->findChild<ChartsOpenGL::CDeclarativePolygon*>("qml_gl_profile_polygon");
-    m_intersectsPolygon = rootObject->findChild<ChartsOpenGL::CDeclarativePolygon*>("qml_gl_intersects_polygon");
+    m_intersectsPolygon = rootObject->findChild<ChartsOpenGL::CDeclarativeMultipolygon*>("qml_gl_intersects_polygon");
 
     if(not m_pathPolyline)
         qCritical() << "<charts> Failed to link with QML at qml_gl_path_polyline";
@@ -195,18 +197,12 @@ void ElevationWidgetPrivate::linkWithQML(QQuickItem* rootObject)
     if(not m_profilePolygon)
         qCritical() << "<charts> Failed to link with QML at qml_gl_profile_polygon";
     else
-    {
-        m_profilePolygon->setDrawingMode("Line strip");
         qInfo() << "<charts> qml_gl_profile_polygon linked successfully";
-    }
 
     if(not m_intersectsPolygon)
         qCritical() << "<charts> Failed to link with QML at qml_gl_intersects_polygon";
     else
-    {
-        m_intersectsPolygon->setDrawingMode("Points");
         qInfo() << "<charts> qml_gl_intersects_polygon linked successfully";
-    }
 }
 
 list<GeoPoint> ElevationWidgetPrivate::getRoute()
@@ -538,7 +534,6 @@ void ElevationWidgetPrivate::calculateIntersectsFinished(quint8 progress, const 
     if(m_intersects)
         emit(q->intersectingStateChanged(m_intersects));
 
-    qDebug() << intersect_list;
     m_intersectsPolygon->setList(intersect_list);
 }
 

@@ -1,9 +1,7 @@
 import QtQuick 2.15
 
-import CDeclarativePolyline 1.0
-import CDeclarativePolygon 1.0
-import PointModel 1.0
-
+import GLShapes 1.0
+import ElevationWidgetModule 1.0
 import "elevation-chart/private" as Private
 
 Rectangle { id: c_ImplRoot;
@@ -34,14 +32,14 @@ Rectangle { id: c_ImplRoot;
 		interactive: false;
 		flickableDirection: Flickable.HorizontalAndVerticalFlick;
 
-		CDeclarativePolygon { id: c_ImplProfile;
+		GLPolygon { id: c_ImplProfile;
 			objectName: "qml_gl_profile_polygon"; //! required!
 			anchors.fill: parent;
 			fillColor: c_ImplRoot.s_ProfileColor;
 			visible: true;
 		}
 
-		CDeclarativePolyline { id: c_ImplMetricsPath;
+		GLPolyline { id: c_ImplMetricsPath;
 			objectName: "qml_gl_metrics_polyline"; //! required!
 			anchors.fill: c_ImplProfile;
 			lineColor: c_ImplRoot.s_WarnColor;
@@ -70,7 +68,7 @@ Rectangle { id: c_ImplRoot;
 			}
 		}
 
-		CDeclarativePolyline { id: c_ImplEnvelopePath;
+		GLPolyline { id: c_ImplEnvelopePath;
 			objectName: "qml_gl_envelope_polyline"; //! required!
 			anchors.fill: c_ImplProfile;
 			lineColor: c_ImplRoot.s_InfoColor;
@@ -99,18 +97,20 @@ Rectangle { id: c_ImplRoot;
 			}
 		}
 
-		CDeclarativePolyline { id: c_ImplBasePath;
-			objectName: "qml_gl_path_polyline"; //! required!
-			anchors.fill: c_ImplProfile;
-			lineColor: c_ImplRoot.s_RouteColor;
-			visible: true;
-		}
-		CDeclarativePolygon { id: c_ImplIntersects;
+		GLMultipolygon { id: c_ImplIntersects;
 			objectName: "qml_gl_intersects_polygon"; //! required!
 			anchors.fill: parent;
 			fillColor: c_ImplRoot.s_ErrorColor;
 			visible: true;
 		}
+
+		GLPolyline { id: c_ImplBasePath;
+			objectName: "qml_gl_path_polyline"; //! required!
+			anchors.fill: c_ImplProfile;
+			lineColor: c_ImplRoot.s_RouteColor;
+			visible: true;
+		}
+
 		Repeater
 		{
 			clip: false;
