@@ -18,13 +18,6 @@ CDeclarativeMultipolygon::CDeclarativeMultipolygon(QQuickItem* parent)
 void CDeclarativeMultipolygon::setList(const std::list<QPointF>& points)
 {
     m_points = points;
-
-    float max_altitude = 0;
-    for(QPointF point : points)
-        if(point.y() > max_altitude)
-            max_altitude = point.y();
-
-    m_uvmax = max_altitude;
     this->update();
 }
 
@@ -59,7 +52,7 @@ QSGNode* CDeclarativeMultipolygon::updatePaintNode(QSGNode *old_node, UpdatePain
         // в качестве точек ноды. Остальные более простые материалы (напр. flatcolormat) можно
         // ассоциировать с более простым типом Vertex.
         QSGSimpleMaterial<State>* material = GLMultipolygonShader::createMaterial();
-        //material->setFlag(QSGMaterial::Blending);
+        material->setFlag(QSGMaterial::Blending);
         node->setMaterial(material);
         node->setFlag(QSGNode::OwnsMaterial);
         static_cast<QSGSimpleMaterial<State>*>(node->material())->state()->color = QColor(m_fillColor);
@@ -70,7 +63,7 @@ QSGNode* CDeclarativeMultipolygon::updatePaintNode(QSGNode *old_node, UpdatePain
 
     // ставим геометрии параметры отрисовки
     geometry = node->geometry();
-    geometry->setDrawingMode(GL_LINES);
+    geometry->setDrawingMode(GL_QUADS);
     geometry->setLineWidth(10);
 
     // создаем вектор точек (Vertex = Point2D, VertexT = TexturedPoint2D)
@@ -81,23 +74,33 @@ QSGNode* CDeclarativeMultipolygon::updatePaintNode(QSGNode *old_node, UpdatePain
         if(point.y() > max.y)
             max.y = point.y();
     max.x = m_points.back().x();
+    max.y *= 1.05;
+    bool flip = false;
     for(QPointF point : m_points)
     {
-        glPoints.push_back(VertexT(point.x(), point.y(), point.x() / max.x, point.y() / m_uvmax));
-        glPoints.push_back(VertexT(point.x(), height(), point.x() / max.x, height() / m_uvmax));
+        if(flip)
+        {
+            glPoints.push_back(VertexT(point.x(), point.y(), point.x() / max.x, point.y() / max.y));
+            glPoints.push_back(VertexT(point.x(), height(), point.x() / max.x, height() / max.y));
+            flip = !flip;
+        }
+        else
+        {
+            glPoints.push_back(VertexT(point.x(), height(), point.x() / max.x, height() / max.y));
+            glPoints.push_back(VertexT(point.x(), point.y(), point.x() / max.x, point.y() / max.y));
+            flip = !flip;
+        }
     }
 
     if(glPoints.size() % 2 != 0)
-        glPoints.push_back(VertexT(m_points.back().x(), height(), m_points.back().x() / max.x, height() / m_uvmax));
+        glPoints.push_back(VertexT(m_points.back().x(), height(), m_points.back().x() / max.x, height() / max.y));
 
     // после создания всех точек аллоцируем память под этот вектор + 1 точку
     geometry->allocate(glPoints.size());
 
     // задаем в геометрию графа эти точки
     for(size_t i = 0; i < glPoints.size(); ++i)
-    {
         geometry->vertexDataAsTexturedPoint2D()[i].set(glPoints.at(i).x, glPoints.at(i).y, glPoints.at(i).u, glPoints.at(i).v);
-    }
 
     // говорим куэмэлю что ему надо задуматься о перерисовке графика
     node->markDirty(QSGNode::DirtyGeometry);

@@ -64,7 +64,7 @@ QSGNode* CDeclarativePolygon::updatePaintNode(QSGNode *old_node, UpdatePaintNode
 
     // ставим геометрии параметры отрисовки
     geometry = node->geometry();                                                          
-    geometry->setDrawingMode(GL_LINE_STRIP);
+    geometry->setDrawingMode(GL_LINES);
     geometry->setLineWidth(5);
 
     // создаем вектор точек (Vertex = Point2D, VertexT = TexturedPoint2D)

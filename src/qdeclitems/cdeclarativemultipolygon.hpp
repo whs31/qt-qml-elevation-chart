@@ -14,7 +14,6 @@ namespace ChartsOpenGL {
 
         QString m_fillColor = "#FF00DC"; // error color
         list<QPointF> m_points;
-        float m_uvmax = 0;
 
         public:
             CDeclarativeMultipolygon(QQuickItem* parent = nullptr);

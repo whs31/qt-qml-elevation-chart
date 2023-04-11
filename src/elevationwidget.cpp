@@ -521,7 +521,15 @@ void ElevationWidgetPrivate::calculateIntersectsFinished(quint8 progress, const 
     m_intersects = false;
     for(Elevation::Point point : resultPath)
     {
-        if(point.orientation() == Elevation::Point::OrientationFromTheGround::Air)
+        if(point.isBase() && point.orientation() == Elevation::Point::OrientationFromTheGround::Ground)
+        {
+            QPointF pixel_point(toPixelCoords(QPointF(point.distance(), point.altitude()), axis.x.maxValue, axis.y.maxValue, axis.stretch,
+                                              m_intersectsPolygon->width(), m_intersectsPolygon->height()));
+            intersect_list.push_back(pixel_point);
+            intersect_list.push_back(pixel_point);
+        }
+        if(point.orientation() == Elevation::Point::OrientationFromTheGround::Air or
+           point.orientation() == Elevation::Point::OrientationFromTheGround::Ground)
             continue;
         QPointF pixel_point(point.distance(), point.altitude());
         intersect_list.push_back(toPixelCoords(pixel_point, axis.x.maxValue, axis.y.maxValue, axis.stretch,
