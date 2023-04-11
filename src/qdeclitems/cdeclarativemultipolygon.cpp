@@ -12,7 +12,9 @@ CDeclarativeMultipolygon::CDeclarativeMultipolygon(QQuickItem* parent)
     : QQuickItem{parent}
 {
     setFlag(ItemHasContents);
-    qDebug() << "<charts> CDeclarativeMultipolygon initialized";
+    #ifdef QT_DEBUG
+        qDebug() << "<charts> CDeclarativeMultipolygon initialized";
+    #endif
 }
 
 void CDeclarativeMultipolygon::setList(const std::list<QPointF>& points)

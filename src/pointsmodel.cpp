@@ -1,4 +1,5 @@
 #include "pointsmodel.hpp"
+#include <QDebug>
 
 using namespace Charts;
 
@@ -50,17 +51,28 @@ QHash<int, QByteArray> PointsModel::roleNames() const
 
 void PointsModel::setPath(const std::vector<ChartPoint>& _points)
 {
-    beginResetModel();     //если не работает, закоментировать и поменять на нижнее
-    m_points = _points;    //если не работает, закоментировать и поменять на нижнее
-    endResetModel();       //если не работает, закоментировать и поменять на нижнее
 
-//    if(rowCount() != 0){
-//        removePath();
-//    }
-//    beginInsertRows(QModelIndex(), 0, _points.size());
-//    m_points = _points;
-//    endInsertRows();
+//    beginResetModel();     //если не работает, закоментировать и поменять на нижнее
+//    m_points = _points;    //если не работает, закоментировать и поменять на нижнее
+//    endResetModel();       //если не работает, закоментировать и поменять на нижнее
 
+        if(rowCount() != 0)
+            removePath();
+
+        beginInsertRows(QModelIndex(), 0, _points.size());
+        m_points = _points;
+        endInsertRows();
+}
+
+void PointsModel::updatePath(const vector<ChartPoint>& _points)
+{
+    if(_points.size() != m_points.size())
+    {
+        qCritical() << "<charts> Update path failed.";
+        return;
+    }
+    m_points = _points;
+    emit dataChanged(createIndex(0, 0), createIndex(rowCount(), 0));
 }
 
 void PointsModel::updatePoint(const int _index, const ChartPoint& _point)

@@ -57,7 +57,8 @@ namespace Charts
             QVariant data(const QModelIndex &index, int role) const override;
             QHash<int, QByteArray> roleNames() const override;
 
-            void setPath(const vector<ChartPoint> &_points);
+            void setPath(const vector<ChartPoint>& _points);
+            void updatePath(const vector<ChartPoint>& _points);
             void updatePoint(const int _index, const ChartPoint &_point);
             void removePath();
 

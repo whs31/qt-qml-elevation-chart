@@ -99,12 +99,17 @@ namespace Charts
 
         private:
             // common + profile
-            enum UpdateMode
+            enum ProfileUpdateBehaviour
             {
                 RebuildProfile,
                 KeepProfile
             };
-            void update(UpdateMode mode, float force_y_axis_height = 0);
+            enum ModelUpdateBehaviour
+            {
+                Update,
+                Keep
+            };
+            void update(ProfileUpdateBehaviour mode, float force_y_axis_height = 0, ModelUpdateBehaviour model_behaviour = ModelUpdateBehaviour::Update);
             void sync(QVector<QPointF> vec);
 
             // points

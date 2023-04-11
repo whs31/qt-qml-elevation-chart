@@ -32,6 +32,12 @@ Rectangle { id: c_ImplRoot;
 		interactive: false;
 		flickableDirection: Flickable.HorizontalAndVerticalFlick;
 
+		MouseArea { id: c_ImplGlobalMouseArea;
+			anchors.fill: parent;
+			hoverEnabled: true;
+			//propagateComposedEvents: true;
+		}
+
 		GLPolygon { id: c_ImplProfile;
 			objectName: "qml_gl_profile_polygon"; //! required!
 			anchors.fill: parent;
@@ -45,19 +51,18 @@ Rectangle { id: c_ImplRoot;
 			lineColor: c_ImplRoot.s_WarnColor;
 			visible: true;
 			opacity: 0.5;
-			dashed: true;
 			SequentialAnimation {
 				PropertyAnimation {
 					target: c_ImplMetricsPath;
 					property: "opacity";
-					to: 0.5;
+					to: 0;
 					duration: 500;
 					easing.type: Easing.InOutQuad;
 				}
 				PropertyAnimation {
 					target: c_ImplMetricsPath;
 					property: "opacity";
-					to: 1.0;
+					to: 0.5;
 					duration: 500;
 					easing.type: Easing.InOutQuad;
 				}
@@ -74,19 +79,18 @@ Rectangle { id: c_ImplRoot;
 			lineColor: c_ImplRoot.s_InfoColor;
 			visible: true;
 			opacity: 0.5;
-			dashed: true;
 			SequentialAnimation {
 				PropertyAnimation {
 					target: c_ImplEnvelopePath;
 					property: "opacity";
-					to: 0.5;
+					to: 0;
 					duration: 500;
 					easing.type: Easing.InOutQuad;
 				}
 				PropertyAnimation {
 					target: c_ImplEnvelopePath;
 					property: "opacity";
-					to: 1.0;
+					to: 0.5;
 					duration: 500;
 					easing.type: Easing.InOutQuad;
 				}

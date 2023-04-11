@@ -10,7 +10,9 @@ CDeclarativePolyline::CDeclarativePolyline(QQuickItem* parent)
     : QQuickItem{parent}
 {
     setFlag(ItemHasContents);
-    qDebug() << "<charts> CDeclarativePolyline initialized";
+    #ifdef QT_DEBUG
+        qDebug() << "<charts> CDeclarativePolyline initialized";
+    #endif
 }
 
 void CDeclarativePolyline::setList(const std::list<QPointF>& points)

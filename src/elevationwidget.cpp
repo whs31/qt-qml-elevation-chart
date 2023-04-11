@@ -214,7 +214,7 @@ void ElevationWidgetPrivate::setRoute(const std::list<GeoPoint>& route)
 {
     m_route = route;
     if(not route.empty() and m_pathPolyline != nullptr)
-        this->update(UpdateMode::RebuildProfile);
+        this->update(ProfileUpdateBehaviour::RebuildProfile);
 }
 
 void ElevationWidgetPrivate::setUAVPosition(const QGeoCoordinate& position)
@@ -224,7 +224,7 @@ void ElevationWidgetPrivate::setUAVPosition(const QGeoCoordinate& position)
     m_uavPosition = position;
     axis.relative_height = heightmapParser->elevation(m_uavPosition.latitude(), m_uavPosition.longitude());
     qInfo() << "<charts> Using UAV relative height" << axis.relative_height << "meters";
-    update(UpdateMode::RebuildProfile);
+    update(ProfileUpdateBehaviour::RebuildProfile);
     // velocity xd
 }
 
@@ -235,7 +235,7 @@ void ElevationWidgetPrivate::setUAVPosition(double latitude, double longitude)
     m_uavPosition = QGeoCoordinate(latitude, longitude);
     axis.relative_height = heightmapParser->elevation(m_uavPosition.latitude(), m_uavPosition.longitude());
     qInfo() << "<charts> Using UAV relative height" << axis.relative_height << "meters";
-    update(UpdateMode::RebuildProfile);
+    update(ProfileUpdateBehaviour::RebuildProfile);
     // velocity xd
 }
 
@@ -252,25 +252,25 @@ bool ElevationWidgetPrivate::isValid()
 void ElevationWidgetPrivate::setClimbRate(float rate)
 {
     aircraftMetrics.climbRate = rate;
-    update(UpdateMode::KeepProfile);
+    update(ProfileUpdateBehaviour::KeepProfile);
 }
 
 void ElevationWidgetPrivate::setDescendRate(float rate)
 {
     aircraftMetrics.descendRate = rate;
-    update(UpdateMode::KeepProfile);
+    update(ProfileUpdateBehaviour::KeepProfile);
 }
 
 void ElevationWidgetPrivate::setGlobalVelocity(float velocity)
 {
     aircraftMetrics.velocity = velocity;
-    update(UpdateMode::KeepProfile);
+    update(ProfileUpdateBehaviour::KeepProfile);
 }
 
 void ElevationWidgetPrivate::applyMetricsCorrection()
 {
     m_route = toRoute(m_metricsPath);
-    update(UpdateMode::RebuildProfile);
+    update(ProfileUpdateBehaviour::RebuildProfile);
 }
 
 bool ElevationWidgetPrivate::isMatchingMetrics()
@@ -302,9 +302,9 @@ void ElevationWidgetPrivate::applyEnvelopeCorrection()
 
 #pragma region IMPLEMENTATION
 
-void ElevationWidgetPrivate::update(UpdateMode mode, float force_y_axis_height)
+void ElevationWidgetPrivate::update(ProfileUpdateBehaviour mode, float force_y_axis_height, ModelUpdateBehaviour model_behaviour)
 {
-    if(mode == UpdateMode::RebuildProfile)
+    if(mode == ProfileUpdateBehaviour::RebuildProfile)
     {
         m_profilePolygon->clear();            // TODO: это нужно для асинхронной загрузки профиля по частям. пока выключил.
         QPointF bounds =  heightmapParser->buildProfileChartAsync(fromRoute(m_route));//, axis.relative_height);
@@ -345,7 +345,11 @@ void ElevationWidgetPrivate::update(UpdateMode mode, float force_y_axis_height)
     std::vector<ChartPoint> model_points;
     for(QPointF p : path_polyline)
         model_points.push_back(ChartPoint(p));
-    model->setPath(model_points);
+
+    if(model_behaviour == ModelUpdateBehaviour::Update)
+        model->setPath(model_points);
+    else
+        model->updatePath(model_points);
 
     m_envelopePolyline->clear();
 
@@ -380,9 +384,9 @@ void ElevationWidgetPrivate::syncPointsWithPath(int _index)
 //            max_y = coordinate.altitude();
 
     if(0/*qFuzzyCompare(max_y, axis.y.maxValue)*/)
-        update(UpdateMode::KeepProfile);
+        update(ProfileUpdateBehaviour::KeepProfile, 0, ModelUpdateBehaviour::Keep);
     else
-        update(UpdateMode::RebuildProfile);
+        update(ProfileUpdateBehaviour::RebuildProfile, 0, ModelUpdateBehaviour::Keep);
 }
 
 void ElevationWidgetPrivate::calculateMetrics()
@@ -492,7 +496,7 @@ void ElevationWidgetPrivate::calculateEnvelopeFinished(quint8 progress, const El
         if(coord.altitude() > _local_y_max)
             _local_y_max = coord.altitude();
     }
-    update(UpdateMode::RebuildProfile, _local_y_max);
+    update(ProfileUpdateBehaviour::RebuildProfile, _local_y_max);
 
     list<QPointF> _list;
     float prev_distance = 0;

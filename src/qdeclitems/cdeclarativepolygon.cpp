@@ -13,7 +13,9 @@ CDeclarativePolygon::CDeclarativePolygon(QQuickItem* parent)
     : QQuickItem{parent}
 {
     setFlag(ItemHasContents);
-    qDebug() << "<charts> CDeclarativePolygon initialized";
+    #ifdef QT_DEBUG
+        qDebug() << "<charts> CDeclarativePolygon initialized";
+    #endif
 }
 
 void CDeclarativePolygon::setList(const std::list<QPointF>& points)
