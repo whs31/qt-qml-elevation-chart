@@ -16,30 +16,11 @@ Item { id: c_ImplPoint;
 	}
 	MouseArea { id: pointMouseArea;
 		anchors.fill: parent;
-//		anchors.leftMargin: -10;
-//		anchors.rightMargin: -10;
-//		anchors.topMargin: -100;
-//		anchors.bottomMargin: -100;
-		//hoverEnabled: true;
-		//acceptedButtons: Qt.RightButton;
-//		onPressed: b_Active = true;
-//		onReleased: b_Active = false;
 		property var pt_GlobalPosition: mapToItem(c_ImplGlobalMouseArea, mouseX, mouseY);
-		onContainsMouseChanged: console.error("contains", containsMouse);
-		onPressedChanged: console.error("pressed", pressed);
-		onPt_GlobalPositionChanged: console.info(pt_GlobalPosition);
 
 		onPressed: c_ImplView.interactive = false;
 		onReleased: c_ImplView.interactive = true;
 		onCanceled: c_ImplView.interactive = true;
-		onPositionChanged: {
-//			let x_coord = (pt_GlobalPosition.x < width / 2) ? width / 2 :
-			PointModel.changePointAltitude(index, pt_GlobalPosition.y);
-//			if(pressed) {
-//				let global_pos = mapToItem(c_ImplView, mouseX, mouseY);
-//				console.log(global_pos.y);
-//				PointModel.changePointAltitude(index, global_pos.y);
-//			}
-		}
+		onPositionChanged: PointModel.changePointAltitude(index, pt_GlobalPosition.y);
 	}
 }

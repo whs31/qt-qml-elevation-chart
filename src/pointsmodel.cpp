@@ -51,26 +51,18 @@ QHash<int, QByteArray> PointsModel::roleNames() const
 
 void PointsModel::setPath(const std::vector<ChartPoint>& _points)
 {
+    if(rowCount() != 0)
+        removePath();
 
-//    beginResetModel();     //если не работает, закоментировать и поменять на нижнее
-//    m_points = _points;    //если не работает, закоментировать и поменять на нижнее
-//    endResetModel();       //если не работает, закоментировать и поменять на нижнее
-
-        if(rowCount() != 0)
-            removePath();
-
-        beginInsertRows(QModelIndex(), 0, _points.size());
-        m_points = _points;
-        endInsertRows();
+    beginInsertRows(QModelIndex(), 0, _points.size() - 1);
+    m_points = _points;
+    endInsertRows();
 }
 
 void PointsModel::updatePath(const vector<ChartPoint>& _points)
 {
-    if(_points.size() != m_points.size())
-    {
-        qCritical() << "<charts> Update path failed.";
+    if(_points.empty() or _points.size() != m_points.size())
         return;
-    }
     m_points = _points;
     emit dataChanged(createIndex(0, 0), createIndex(rowCount(), 0));
 }

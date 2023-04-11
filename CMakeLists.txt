@@ -37,6 +37,7 @@ set (PROJECT_SOURCES
 
 	# SOURCE BASE
 	src/elevationwidget_p.hpp src/elevationwidget.cpp
+	src/geopoint.cpp
         src/pointsmodel.hpp src/pointsmodel.cpp
 
 		# DECLARATIVE ITEMS

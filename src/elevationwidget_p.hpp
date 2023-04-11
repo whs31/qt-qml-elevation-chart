@@ -109,7 +109,7 @@ namespace Charts
                 Update,
                 Keep
             };
-            void update(ProfileUpdateBehaviour mode, float force_y_axis_height = 0, ModelUpdateBehaviour model_behaviour = ModelUpdateBehaviour::Update);
+            void update(ProfileUpdateBehaviour mode, float force_y_axis_height = 0, ModelUpdateBehaviour model_behaviour = ModelUpdateBehaviour::Keep);
             void sync(QVector<QPointF> vec);
 
             // points

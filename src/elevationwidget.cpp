@@ -214,7 +214,7 @@ void ElevationWidgetPrivate::setRoute(const std::list<GeoPoint>& route)
 {
     m_route = route;
     if(not route.empty() and m_pathPolyline != nullptr)
-        this->update(ProfileUpdateBehaviour::RebuildProfile);
+        this->update(ProfileUpdateBehaviour::RebuildProfile, 0 , ModelUpdateBehaviour::Update);
 }
 
 void ElevationWidgetPrivate::setUAVPosition(const QGeoCoordinate& position)
@@ -224,7 +224,7 @@ void ElevationWidgetPrivate::setUAVPosition(const QGeoCoordinate& position)
     m_uavPosition = position;
     axis.relative_height = heightmapParser->elevation(m_uavPosition.latitude(), m_uavPosition.longitude());
     qInfo() << "<charts> Using UAV relative height" << axis.relative_height << "meters";
-    update(ProfileUpdateBehaviour::RebuildProfile);
+    this->update(ProfileUpdateBehaviour::RebuildProfile);
     // velocity xd
 }
 
@@ -235,7 +235,7 @@ void ElevationWidgetPrivate::setUAVPosition(double latitude, double longitude)
     m_uavPosition = QGeoCoordinate(latitude, longitude);
     axis.relative_height = heightmapParser->elevation(m_uavPosition.latitude(), m_uavPosition.longitude());
     qInfo() << "<charts> Using UAV relative height" << axis.relative_height << "meters";
-    update(ProfileUpdateBehaviour::RebuildProfile);
+    this->update(ProfileUpdateBehaviour::RebuildProfile);
     // velocity xd
 }
 
@@ -252,25 +252,25 @@ bool ElevationWidgetPrivate::isValid()
 void ElevationWidgetPrivate::setClimbRate(float rate)
 {
     aircraftMetrics.climbRate = rate;
-    update(ProfileUpdateBehaviour::KeepProfile);
+    this->update(ProfileUpdateBehaviour::KeepProfile);
 }
 
 void ElevationWidgetPrivate::setDescendRate(float rate)
 {
     aircraftMetrics.descendRate = rate;
-    update(ProfileUpdateBehaviour::KeepProfile);
+    this->update(ProfileUpdateBehaviour::KeepProfile);
 }
 
 void ElevationWidgetPrivate::setGlobalVelocity(float velocity)
 {
     aircraftMetrics.velocity = velocity;
-    update(ProfileUpdateBehaviour::KeepProfile);
+    this->update(ProfileUpdateBehaviour::KeepProfile);
 }
 
 void ElevationWidgetPrivate::applyMetricsCorrection()
 {
     m_route = toRoute(m_metricsPath);
-    update(ProfileUpdateBehaviour::RebuildProfile);
+    this->update(ProfileUpdateBehaviour::RebuildProfile, 0, ModelUpdateBehaviour::Update);
 }
 
 bool ElevationWidgetPrivate::isMatchingMetrics()
@@ -353,8 +353,8 @@ void ElevationWidgetPrivate::update(ProfileUpdateBehaviour mode, float force_y_a
 
     m_envelopePolyline->clear();
 
-    calculateMetrics();
-    calculateIntersects();
+    this->calculateMetrics();
+    this->calculateIntersects();
 }
 
 void ElevationWidgetPrivate::sync(QVector<QPointF> vec)
