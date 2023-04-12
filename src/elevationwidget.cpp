@@ -38,6 +38,7 @@ ElevationWidget::ElevationWidget(QObject *parent)
     #endif
 
     initialize_qrc_file_within_namespace_1("charts");
+    qmlRegisterSingletonInstance<ElevationWidgetPrivate>("ElevationWidgetModule", 1, 0, "ElevationWidgetBackend", d_ptr);
 }
 
 void ElevationWidget::linkWithQML(QQuickItem* rootObject)
@@ -156,10 +157,14 @@ ElevationWidgetPrivate::ElevationWidgetPrivate(ElevationWidget* parent)
     qmlRegisterType<ChartsOpenGL::CDeclarativeMultipolygon>("GLShapes", 1, 0, "GLMultipolygon");
     qmlRegisterSingletonInstance<PointsModel>("ElevationWidgetModule", 1, 0, "PointModel", model);
 
-    connect(heightmapParser, &Elevation::Elevation::profileAsyncNotification, this, [](unsigned int return_code){
-        qDebug() << "<charts> Received notification from async calc:" << Qt::hex << return_code << Qt::dec;
+    connect(heightmapParser, &Elevation::Elevation::profileAsyncNotification, this, [this](unsigned int return_code){
         if(return_code == 0xFF)
+        {
             qWarning() << "<charts> Some elevation profiles are missing from /elevations folder.";
+            this->setState(WidgetState::ElevationsMissing);
+        }
+//        if(return_code == 0x00 && state() == WidgetState::ElevationsMissing)
+//            this->setState(WidgetState::Fine);
     });
 
     connect(heightmapParser, &Elevation::Elevation::profileAsyncPacket, this, &ElevationWidgetPrivate::sync);
@@ -214,7 +219,12 @@ void ElevationWidgetPrivate::setRoute(const std::list<GeoPoint>& route)
 {
     m_route = route;
     if(not route.empty() and m_pathPolyline != nullptr)
+    {
         this->update(ProfileUpdateBehaviour::RebuildProfile, 0 , ModelUpdateBehaviour::Update);
+        this->setState(WidgetState::Fine);
+    }
+    else
+        this->setState(WidgetState::PathMissing);
 }
 
 void ElevationWidgetPrivate::setUAVPosition(const QGeoCoordinate& position)
@@ -579,6 +589,13 @@ QGeoPath ElevationWidgetPrivate::fromRoute(const std::list<GeoPoint> route)
     for(GeoPoint point : route)
         ret.addCoordinate(point.coordinate());
     return ret;
+}
+
+ElevationWidgetPrivate::WidgetState ElevationWidgetPrivate::state() const { return m_state; }
+void ElevationWidgetPrivate::setState(WidgetState _state) {
+    if (m_state == _state) return;
+    m_state = _state;
+    emit stateChanged();
 }
 
 #pragma endregion IMPLEMENTATION

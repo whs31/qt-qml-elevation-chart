@@ -1,4 +1,4 @@
-#include "example.h"
+ #include "example.h"
 #include "./ui_example.h"
 #include <qqml.h>
 

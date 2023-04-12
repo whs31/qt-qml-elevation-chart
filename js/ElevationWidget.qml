@@ -29,8 +29,11 @@ Rectangle { id: c_ImplRoot;
 		anchors.rightMargin: vec_Offsets.z;
 		anchors.topMargin: vec_Offsets.y;
 
-		interactive: false;
+		interactive: true;
 		flickableDirection: Flickable.HorizontalAndVerticalFlick;
+
+		visible: ElevationWidgetBackend.state === ElevationWidgetBackend.WidgetState.Fine;
+		enabled: visible;
 
 		MouseArea { id: c_ImplGlobalMouseArea;
 			anchors.fill: parent;
@@ -123,4 +126,28 @@ Rectangle { id: c_ImplRoot;
 			delegate: Private.ElevationPoint { }
 		}
 	}
+
+	Text { id: c_ImplLabelElevationsMissing;
+		anchors.fill: parent;
+		color: s_ErrorColor;
+		text: "ОТСУТСТВУЮТ ИСХОДНЫЕ ДАННЫЕ ПО ВЫСОТЕ";
+		font.bold: true;
+		font.pixelSize: width / 30;
+		font.family: s_FontFamily;
+		horizontalAlignment: Text.AlignHCenter;
+		verticalAlignment: Text.AlignVCenter;
+		visible: ElevationWidgetBackend.state === ElevationWidgetBackend.WidgetState.ElevationsMissing;
+	}
+	Text { id: c_ImplLabelPathMissing;
+		anchors.fill: parent;
+		color: s_WarnColor;
+		text: "НЕ ЗАДАН МАРШРУТ";
+		font.bold: true;
+		font.pixelSize: width / 30;
+		font.family: s_FontFamily;
+		horizontalAlignment: Text.AlignHCenter;
+		verticalAlignment: Text.AlignVCenter;
+		visible: ElevationWidgetBackend.state === ElevationWidgetBackend.WidgetState.PathMissing;
+	}
+
 }

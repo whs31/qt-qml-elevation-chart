@@ -20,11 +20,12 @@ using std::list;
 namespace Charts
 {
     class PointsModel;
-    /// @private
     class ElevationWidgetPrivate : public QObject
     {
         Q_OBJECT
         Q_DECLARE_PUBLIC(ElevationWidget)
+
+        Q_PROPERTY(WidgetState state READ state WRITE setState NOTIFY stateChanged)
 
         Elevation::Elevation* heightmapParser;
         Elevation::ElevationTools* routeParser;
@@ -35,6 +36,7 @@ namespace Charts
         QGeoPath m_envelope;
         QGeoPath m_metricsPath;
 
+        Q_INVOKABLE
         QGeoCoordinate m_uavPosition;
 
         bool m_valid = true;
@@ -74,10 +76,25 @@ namespace Charts
         ChartsOpenGL::CDeclarativeMultipolygon* m_intersectsPolygon = nullptr;
 
         public:
+            enum class WidgetState : int
+            {
+                Fine,
+                PathMissing,
+                ElevationsMissing
+            };
+            Q_ENUM(WidgetState)
+
+        private:
+            WidgetState m_state = WidgetState::PathMissing;
+
+        public:
+
             explicit ElevationWidgetPrivate(ElevationWidget* parent);
             virtual ~ElevationWidgetPrivate() = default;
-            void linkWithQML(QQuickItem* rootObject);
 
+            /******************************************************/
+
+            void linkWithQML(QQuickItem* rootObject);
             list<GeoPoint> getRoute();
             void setRoute(const list<GeoPoint>& route);
             void setUAVPosition(const QGeoCoordinate& position);
@@ -93,6 +110,11 @@ namespace Charts
             void setEnvelopeCoridorSize(float distance);
             void estimateEnvelope();
             void applyEnvelopeCorrection();
+
+            /******************************************************/
+
+            signals:
+                void stateChanged();
 
         protected:
             ElevationWidget* q_ptr;
@@ -134,8 +156,11 @@ namespace Charts
             QPointF fromPixelCoords(const QPointF& point, float x_max, float y_max, float y_stretch, float pixel_width, float pixel_height);
             list<GeoPoint> toRoute(const QGeoPath& path);
             QGeoPath fromRoute(const list<GeoPoint> route);
+
+            WidgetState state() const;
+            void setState(WidgetState newState);
     };
-} ///namespace Charts;
+} //namespace Charts;
 
 inline void initialize_qrc_file_within_namespace_1(const char* comment)
 {
