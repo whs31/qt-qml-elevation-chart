@@ -12,7 +12,8 @@ CDeclarativeAxis::CDeclarativeAxis(QQuickItem* parent)
 
 void CDeclarativeAxis::paint(QPainter* painter)
 {
-    QBrush brush(QColor("#121212"));
+    QColor col(m_color);
+    QBrush brush(col);
 
     painter->setBrush(brush);
     painter->setPen(Qt::NoPen);
@@ -34,4 +35,5 @@ void CDeclarativeAxis::setColor(const QString& col) {
     if (m_color == col) return;
     m_color = col;
     emit colorChanged();
+    this->update();
 }
