@@ -269,6 +269,11 @@ void ElevationWidgetPrivate::setGlobalVelocity(float velocity)
 
 void ElevationWidgetPrivate::applyMetricsCorrection()
 {
+    if(m_matchingMetrics)
+    {
+        qDebug() << "<charts> Path already matching metrics, no correction will be applied";
+        return;
+    }
     m_route = toRoute(m_metricsPath);
     this->update(ProfileUpdateBehaviour::RebuildProfile, 0, ModelUpdateBehaviour::Update);
 }
