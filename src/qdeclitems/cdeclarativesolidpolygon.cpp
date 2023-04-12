@@ -1,4 +1,4 @@
-#include "cdeclarativepolygon.hpp"
+#include "cdeclarativesolidpolygon.hpp"
 #include "../scenegraph/glpolygonshader.hpp"
 #include "../scenegraph/glvertextype.hpp"
 
@@ -9,7 +9,7 @@
 using namespace ChartsOpenGL;
 using std::vector;
 
-CDeclarativePolygon::CDeclarativePolygon(QQuickItem* parent)
+CDeclarativeSolidPolygon::CDeclarativeSolidPolygon(QQuickItem* parent)
     : QQuickItem{parent}
 {
     setFlag(ItemHasContents);
@@ -18,26 +18,26 @@ CDeclarativePolygon::CDeclarativePolygon(QQuickItem* parent)
     #endif
 }
 
-void CDeclarativePolygon::setList(const std::list<QPointF>& points)
+void CDeclarativeSolidPolygon::setList(const std::list<QPointF>& points)
 {
     m_points = points;
     this->update();
 }
 
-void CDeclarativePolygon::asyncAppend(const std::list<QPointF>& points)
+void CDeclarativeSolidPolygon::asyncAppend(const std::list<QPointF>& points)
 {
     for(QPointF point : points)
         m_points.push_back(point);
     this->update();
 }
 
-void CDeclarativePolygon::clear()
+void CDeclarativeSolidPolygon::clear()
 {
     m_points.clear();
-    //this->update();
+    this->update();
 }
 
-QSGNode* CDeclarativePolygon::updatePaintNode(QSGNode *old_node, UpdatePaintNodeData *update_paint_node_data)
+QSGNode* CDeclarativeSolidPolygon::updatePaintNode(QSGNode *old_node, UpdatePaintNodeData *update_paint_node_data)
 {
     Q_UNUSED(update_paint_node_data);
 
@@ -55,7 +55,7 @@ QSGNode* CDeclarativePolygon::updatePaintNode(QSGNode *old_node, UpdatePaintNode
         // в качестве точек ноды. Остальные более простые материалы (напр. flatcolormat) можно
         // ассоциировать с более простым типом Vertex.
         QSGSimpleMaterial<State>* material = GLPolygonShader::createMaterial();
-        //material->setFlag(QSGMaterial::Blending);
+        material->setFlag(QSGMaterial::Blending);
         node->setMaterial(material);
         node->setFlag(QSGNode::OwnsMaterial);
         static_cast<QSGSimpleMaterial<State>*>(node->material())->state()->color = QColor(m_fillColor);
@@ -66,7 +66,7 @@ QSGNode* CDeclarativePolygon::updatePaintNode(QSGNode *old_node, UpdatePaintNode
 
     // ставим геометрии параметры отрисовки
     geometry = node->geometry();                                                          
-    geometry->setDrawingMode(GL_LINES); // GL_QUAD_STRIP
+    geometry->setDrawingMode(GL_QUAD_STRIP); // GL_QUAD_STRIP
     geometry->setLineWidth(5);
 
     // создаем вектор точек (Vertex = Point2D, VertexT = TexturedPoint2D)
@@ -111,20 +111,20 @@ QSGNode* CDeclarativePolygon::updatePaintNode(QSGNode *old_node, UpdatePaintNode
     return node;
 }
 
-QString CDeclarativePolygon::fillColor() const { return m_fillColor; }
-void CDeclarativePolygon::setFillColor(const QString& col) {
+QString CDeclarativeSolidPolygon::fillColor() const { return m_fillColor; }
+void CDeclarativeSolidPolygon::setFillColor(const QString& col) {
     if (m_fillColor == col) return;
     m_fillColor = col;
     emit fillColorChanged();
 }
 
-void ChartsOpenGL::CDeclarativePolygon::setLoopMode(LoopMode mode)
+void ChartsOpenGL::CDeclarativeSolidPolygon::setLoopMode(LoopMode mode)
 {
     m_loopmode = mode;
 }
 
-QString CDeclarativePolygon::drawingMode() const { return m_drawingMode; }
-void CDeclarativePolygon::setDrawingMode(const QString& mode) {
+QString CDeclarativeSolidPolygon::drawingMode() const { return m_drawingMode; }
+void CDeclarativeSolidPolygon::setDrawingMode(const QString& mode) {
     if (m_drawingMode == mode) return;
     m_drawingMode = mode;
     if(mode == "Points")

@@ -7,6 +7,7 @@
 #include "qdeclitems/cdeclarativepolygon.hpp"
 #include "qdeclitems/cdeclarativepoint.hpp"
 #include "qdeclitems/cdeclarativemultipolygon.hpp"
+#include "qdeclitems/cdeclarativesolidpolygon.hpp"
 
 #include <qqml.h>
 #include <cmath>
@@ -155,6 +156,7 @@ ElevationWidgetPrivate::ElevationWidgetPrivate(ElevationWidget* parent)
     qmlRegisterType<ChartsOpenGL::CDeclarativePolygon>("GLShapes", 1, 0, "GLPolygon");
     qmlRegisterType<ChartsOpenGL::CDeclarativePoint>("GLShapes", 1, 0, "GLPoint");
     qmlRegisterType<ChartsOpenGL::CDeclarativeMultipolygon>("GLShapes", 1, 0, "GLMultipolygon");
+    qmlRegisterType<ChartsOpenGL::CDeclarativeSolidPolygon>("GLShapes", 1, 0, "GLSolidpolygon");
     qmlRegisterSingletonInstance<PointsModel>("ElevationWidgetModule", 1, 0, "PointModel", model);
 
     connect(heightmapParser, &Elevation::Elevation::profileAsyncNotification, this, [this](unsigned int return_code){
@@ -183,31 +185,15 @@ void ElevationWidgetPrivate::linkWithQML(QQuickItem* rootObject)
     m_envelopePolyline = rootObject->findChild<ChartsOpenGL::CDeclarativePolyline*>("qml_gl_envelope_polyline");
     m_profilePolygon = rootObject->findChild<ChartsOpenGL::CDeclarativePolygon*>("qml_gl_profile_polygon");
     m_intersectsPolygon = rootObject->findChild<ChartsOpenGL::CDeclarativeMultipolygon*>("qml_gl_intersects_polygon");
+    m_coridorPolygon = rootObject->findChild<ChartsOpenGL::CDeclarativeSolidPolygon*>("qml_gl_coridor_polygon");
+    if(m_coridorPolygon)
+        m_coridorPolygon->setLoopMode(ChartsOpenGL::CDeclarativeSolidPolygon::LoopMode::None);
 
-    if(not m_pathPolyline)
-        qCritical() << "<charts> Failed to link with QML at qml_gl_path_polyline";
+    if(not m_pathPolyline or not m_metricsPolyline or not m_envelopePolyline or not m_profilePolygon
+                                                 or not m_intersectsPolygon or not m_coridorPolygon)
+        qCritical() << "<charts> Failed to link with QML at some point.";
     else
-        qInfo() << "<charts> qml_gl_path_polyline linked successfully";
-
-    if(not m_metricsPolyline)
-        qCritical() << "<charts> Failed to link with QML at qml_gl_metrics_polyline";
-    else
-        qInfo() << "<charts> qml_gl_metrics_polyline linked successfully";
-
-    if(not m_envelopePolyline)
-        qCritical() << "<charts> Failed to link with QML at qml_gl_envelope_polyline";
-    else
-        qInfo() << "<charts> qml_gl_envelope_polyline linked successfully";
-
-    if(not m_profilePolygon)
-        qCritical() << "<charts> Failed to link with QML at qml_gl_profile_polygon";
-    else
-        qInfo() << "<charts> qml_gl_profile_polygon linked successfully";
-
-    if(not m_intersectsPolygon)
-        qCritical() << "<charts> Failed to link with QML at qml_gl_intersects_polygon";
-    else
-        qInfo() << "<charts> qml_gl_intersects_polygon linked successfully";
+        qInfo() << "<charts> Linked with QML successfully";
 }
 
 list<GeoPoint> ElevationWidgetPrivate::getRoute()
@@ -367,6 +353,7 @@ void ElevationWidgetPrivate::update(ProfileUpdateBehaviour mode, float force_y_a
         model->updatePath(model_points);
 
     m_envelopePolyline->clear();
+    m_coridorPolygon->clear();
 
     this->calculateMetrics();
     this->calculateIntersects();
@@ -526,7 +513,22 @@ void ElevationWidgetPrivate::calculateEnvelopeFinished(quint8 progress, const El
         _list.push_back(toPixelCoords(point, axis.x.maxValue, axis.y.maxValue, axis.stretch,
                                       m_envelopePolyline->width(), m_envelopePolyline->height()));
     }
+
+    list<QPointF> coridor_list;
+    size_t min_size = deltaResult.lowBound().size() - deltaResult.highBound().size();
+    if(min_size >= 0)
+    {
+        for(size_t i = 0; i < deltaResult.highBound().size(); ++i)
+        {
+            coridor_list.push_back(toPixelCoords(deltaResult.highBound().at(i), axis.x.maxValue, axis.y.maxValue, axis.stretch,
+                                                 m_coridorPolygon->width(), m_coridorPolygon->height()));
+            coridor_list.push_back(toPixelCoords(deltaResult.lowBound().at(i), axis.x.maxValue, axis.y.maxValue, axis.stretch,
+                                                 m_coridorPolygon->width(), m_coridorPolygon->height()));
+        }
+
+    }
     m_envelopePolyline->setList(_list);
+    m_coridorPolygon->setList(coridor_list);
 }
 
 void ElevationWidgetPrivate::calculateIntersects()

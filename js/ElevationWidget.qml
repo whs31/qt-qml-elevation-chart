@@ -76,6 +76,14 @@ Rectangle { id: c_ImplRoot;
 			}
 		}
 
+		GLSolidpolygon { id: c_ImplCoridor;
+			objectName: "qml_gl_coridor_polygon"; //! required!
+			anchors.fill: parent;
+			fillColor: c_ImplRoot.s_WarnColor;
+			opacity: 0.2;
+			visible: true;
+		}
+
 		GLPolyline { id: c_ImplEnvelopePath;
 			objectName: "qml_gl_envelope_polyline"; //! required!
 			anchors.fill: c_ImplProfile;
