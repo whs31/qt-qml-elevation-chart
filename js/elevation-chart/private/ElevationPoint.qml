@@ -13,6 +13,28 @@ Item { id: c_ImplPoint;
 		anchors.fill: parent;
 		radius: 7;
 		color: c_ImplRoot.s_RouteColor;
+
+		Rectangle {
+			visible: c_ImplRoot.b_ShowIndexes;
+			width: 15;
+			height: 13;
+			color: c_ImplRoot.s_RouteColor;
+			radius: 3;
+			anchors.bottom: parent.top;
+			anchors.bottomMargin: 3;
+			anchors.horizontalCenter: parent.horizontalCenter;
+
+			Text {
+				text: Number(index + 1);
+				color: c_ImplRoot.s_BackgroundColor;
+				font.pixelSize: 10;
+				font.bold: true;
+				anchors.centerIn: parent;
+				horizontalAlignment: Text.AlignHCenter;
+				verticalAlignment: Text.AlignVCenter;
+				font.family: c_ImplRoot.s_FontFamily;
+			}
+		}
 	}
 	MouseArea { id: pointMouseArea;
 		anchors.fill: parent;

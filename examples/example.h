@@ -3,9 +3,7 @@
 #include <QMainWindow>
 #include "charts/elevationwidget.hpp"
 
-QT_BEGIN_NAMESPACE
 namespace Ui { class IntegrationExample; }
-QT_END_NAMESPACE
 
 class IntegrationExample : public QMainWindow
 {
@@ -18,8 +16,6 @@ class IntegrationExample : public QMainWindow
     private:
         Ui::IntegrationExample* ui;
         Charts::ElevationWidget* elevationWidget;
-
-        void uiSetup();
 
         private slots:
             void on_checkBox_toggled(bool checked);

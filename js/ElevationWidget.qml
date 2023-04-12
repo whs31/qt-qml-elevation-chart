@@ -14,7 +14,7 @@ Rectangle { id: c_ImplRoot;
 	property color s_InfoColor: "#81a1c1";
 
 	property string s_FontFamily: "Ubuntu Mono";
-
+	property bool b_ShowIndexes: true;
 	property vector4d vec_Offsets: Qt.vector4d(30, 0, 15, 7); // left top right bottom : x y z w
 
 	// private:
