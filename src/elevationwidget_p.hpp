@@ -14,6 +14,7 @@ namespace ChartsOpenGL {
     class CDeclarativePolygon;
     class CDeclarativeMultipolygon;
     class CDeclarativeSolidPolygon;
+    class CDeclarativeAxis;
 }
 
 using std::list;
@@ -76,6 +77,8 @@ namespace Charts
         ChartsOpenGL::CDeclarativePolyline* m_envelopePolyline = nullptr;
         ChartsOpenGL::CDeclarativeMultipolygon* m_intersectsPolygon = nullptr;
         ChartsOpenGL::CDeclarativeSolidPolygon* m_coridorPolygon = nullptr;
+        ChartsOpenGL::CDeclarativeAxis* m_yaxis = nullptr;
+        ChartsOpenGL::CDeclarativeAxis* m_xaxis = nullptr;
 
         public:
             enum class WidgetState : int

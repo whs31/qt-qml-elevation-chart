@@ -8,6 +8,7 @@
 #include "qdeclitems/cdeclarativepoint.hpp"
 #include "qdeclitems/cdeclarativemultipolygon.hpp"
 #include "qdeclitems/cdeclarativesolidpolygon.hpp"
+#include "qdeclitems/cdeclarativeaxis.hpp"
 
 #include <qqml.h>
 #include <cmath>
@@ -146,7 +147,7 @@ ElevationWidgetPrivate::ElevationWidgetPrivate(ElevationWidget* parent)
     : QObject{parent}
     , q_ptr(parent)
     , model(new PointsModel(this))
-    , heightmapParser(new Elevation::Elevation(this))
+    , heightmapParser(Elevation::Elevation::get(this))
     , routeParser(new Elevation::ElevationTools(this))
 {
     qRegisterMetaType<QVector<Elevation::Point>>("QVector<Point>");
@@ -157,6 +158,7 @@ ElevationWidgetPrivate::ElevationWidgetPrivate(ElevationWidget* parent)
     qmlRegisterType<ChartsOpenGL::CDeclarativePoint>("GLShapes", 1, 0, "GLPoint");
     qmlRegisterType<ChartsOpenGL::CDeclarativeMultipolygon>("GLShapes", 1, 0, "GLMultipolygon");
     qmlRegisterType<ChartsOpenGL::CDeclarativeSolidPolygon>("GLShapes", 1, 0, "GLSolidpolygon");
+    qmlRegisterType<ChartsOpenGL::CDeclarativeAxis>("GLShapes", 1, 0, "GLAxis");
     qmlRegisterSingletonInstance<PointsModel>("ElevationWidgetModule", 1, 0, "PointModel", model);
 
     connect(heightmapParser, &Elevation::Elevation::profileAsyncNotification, this, [this](unsigned int return_code){
@@ -186,11 +188,14 @@ void ElevationWidgetPrivate::linkWithQML(QQuickItem* rootObject)
     m_profilePolygon = rootObject->findChild<ChartsOpenGL::CDeclarativePolygon*>("qml_gl_profile_polygon");
     m_intersectsPolygon = rootObject->findChild<ChartsOpenGL::CDeclarativeMultipolygon*>("qml_gl_intersects_polygon");
     m_coridorPolygon = rootObject->findChild<ChartsOpenGL::CDeclarativeSolidPolygon*>("qml_gl_coridor_polygon");
+    m_xaxis = rootObject->findChild<ChartsOpenGL::CDeclarativeAxis*>("qml_gl_x_axis");
+    m_yaxis = rootObject->findChild<ChartsOpenGL::CDeclarativeAxis*>("qml_gl_y_axis");
     if(m_coridorPolygon)
         m_coridorPolygon->setLoopMode(ChartsOpenGL::CDeclarativeSolidPolygon::LoopMode::None);
 
     if(not m_pathPolyline or not m_metricsPolyline or not m_envelopePolyline or not m_profilePolygon
-                                                 or not m_intersectsPolygon or not m_coridorPolygon)
+                                                 or not m_intersectsPolygon or not m_coridorPolygon
+                                                 or not m_xaxis or not m_yaxis)
         qCritical() << "<charts> Failed to link with QML at some point.";
     else
         qInfo() << "<charts> Linked with QML successfully";

@@ -117,3 +117,4 @@ void CDeclarativeMultipolygon::setFillColor(const QString& col) {
     m_fillColor = col;
     emit fillColorChanged();
 }
+

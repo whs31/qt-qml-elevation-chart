@@ -133,6 +133,20 @@ Rectangle { id: c_ImplRoot;
 			anchors.fill: c_ImplProfile;
 			delegate: Private.ElevationPoint { }
 		}
+
+		GLAxis {
+		objectName: "qml_gl_x_axis"; //! required!
+		anchors.fill: parent;
+		color: c_ImplRoot.s_ForegroundColor;
+		visible: true;
+	}
+
+		GLAxis {
+			objectName: "qml_gl_y_axis"; //! required!
+			anchors.fill: parent;
+			color: c_ImplRoot.s_ForegroundColor;
+			visible: true;
+		}
 	}
 
 	Text { id: c_ImplLabelElevationsMissing;

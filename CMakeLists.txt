@@ -46,6 +46,7 @@ set (PROJECT_SOURCES
 		src/qdeclitems/cdeclarativepoint.hpp src/qdeclitems/cdeclarativepoint.cpp
 		src/qdeclitems/cdeclarativesolidpolygon.hpp src/qdeclitems/cdeclarativesolidpolygon.cpp
 		src/qdeclitems/cdeclarativemultipolygon.hpp src/qdeclitems/cdeclarativemultipolygon.cpp
+		src/qdeclitems/cdeclarativeaxis.hpp src/qdeclitems/cdeclarativeaxis.cpp
 
 		# GLSL & SCENE GRAPH
 		src/scenegraph/glsl/glsl.qrc
