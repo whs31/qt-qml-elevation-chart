@@ -88,6 +88,13 @@
         </widget>
        </item>
        <item>
+        <widget class="QPushButton" name="pushButton_6">
+         <property name="text">
+          <string>Переместить БПЛА</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
           <widget class="QLabel" name="label">
@@ -402,6 +409,19 @@
         <widget class="QPushButton" name="pushButton_5">
          <property name="text">
           <string>Применить огибание</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSlider" name="horizontalSlider_0">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="invertedAppearance">
+          <bool>false</bool>
+         </property>
+         <property name="invertedControls">
+          <bool>false</bool>
          </property>
         </widget>
        </item>

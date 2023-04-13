@@ -1,158 +1,170 @@
 #pragma once
 
-#include "elevationwidget.hpp"
-#include "RouteTools/elevationtools.h"
+#include "charts/elevationwidget.hpp"
+#include <QGeoPath>
+#define __signal void
 
 namespace Elevation {
     class Elevation;
+    class ElevationTools;
+    class RouteAndElevationProfiles;
+    class Point;
 }
+namespace ChartsOpenGL {
+    class CDeclarativePolyline;
+    class CDeclarativePolygon;
+    class CDeclarativeMultipolygon;
+    class CDeclarativeSolidPolygon;
+    class CDeclarativeAxis;
+}
+
+using std::list;
 
 namespace Charts
 {
-    /// @private
+    class PointsModel;
     class ElevationWidgetPrivate : public QObject
     {
         Q_OBJECT
         Q_DECLARE_PUBLIC(ElevationWidget)
 
+        Q_PROPERTY(WidgetState state READ state WRITE setState NOTIFY stateChanged)
+
+        Elevation::Elevation* heightmapParser;
+        Elevation::ElevationTools* routeParser;
+        PointsModel* model;
+
+        // variables
+        list<GeoPoint> m_route;
+        QGeoPath m_envelope;
+        QGeoPath m_metricsPath;
+
+        Q_INVOKABLE
+        QGeoCoordinate m_uavPosition;
+
+        bool m_valid = true;
+        bool m_matchingMetrics = true;
+        bool m_intersects = false;
+
+        struct AircraftMetrics {
+            float velocity = 75;
+            float climbRate = 1;
+            float descendRate = 1;
+            float envelopeHeight = 100;
+            float envelopeSize = 100;
+        } aircraftMetrics;
+
+        struct Input {
+            bool showIndex = true;
+        } input;
+
+        struct Axes {
+            struct Axis {
+                float max;
+            };
+            Axis x, y;
+            const float stretch = 1.15;
+            float relative_height = 0;
+        } axis;
+
+        // qml instances
+        ChartsOpenGL::CDeclarativePolyline* m_pathPolyline = nullptr;
+        ChartsOpenGL::CDeclarativePolygon* m_profilePolygon = nullptr;
+        ChartsOpenGL::CDeclarativePolyline* m_metricsPolyline = nullptr;
+        ChartsOpenGL::CDeclarativePolyline* m_envelopePolyline = nullptr;
+        ChartsOpenGL::CDeclarativeMultipolygon* m_intersectsPolygon = nullptr;
+        ChartsOpenGL::CDeclarativeSolidPolygon* m_coridorPolygon = nullptr;
+        ChartsOpenGL::CDeclarativeAxis* m_yaxis = nullptr;
+        ChartsOpenGL::CDeclarativeAxis* m_xaxis = nullptr;
+
         public:
+            enum class WidgetState : int
+            {
+                Fine,
+                PathMissing,
+                ElevationsMissing
+            };
+            Q_ENUM(WidgetState)
+
+        private:
+            WidgetState m_state = WidgetState::PathMissing;
+
+        public:
+
             explicit ElevationWidgetPrivate(ElevationWidget* parent);
             virtual ~ElevationWidgetPrivate() = default;
-            ElevationWidget* q_ptr;
-            Elevation::Elevation* heightmapParser;
-            Elevation::ElevationTools* routeParser;
 
-            Q_INVOKABLE void resize(float w, float h, float zoom_w, float zoom_h = 1);
-            Q_INVOKABLE QPointF iterateOverRange(float rangeStart, float rangeStop);
-            Q_INVOKABLE void changeFlightPointAltitude(int index, float delta);
+            /******************************************************/
 
-            QGeoPath geopath;
-            QGeoPath metricsCorrectedGeopath;
-            QGeoPath envelopePath;
+            void linkWithQML(QQuickItem* rootObject);
+            list<GeoPoint> getRoute();
+            void setRoute(const list<GeoPoint>& route);
+            void setUAVPosition(const QGeoCoordinate& position);
+            void setUAVPosition(double latitude, double longitude);
+            bool isIntersecting();
+            bool isValid();
+            void setClimbRate(float rate);
+            void setDescendRate(float rate);
+            void setGlobalVelocity(float velocity);
+            void applyMetricsCorrection();
+            bool isMatchingMetrics();
+            void setEnvelopeMinimumAltitude(float altitude);
+            void setEnvelopeCoridorSize(float distance);
+            void estimateEnvelope();
+            void applyEnvelopeCorrection();
 
-            const int32_t ALTITUDE_MIN = 5; // m
-            const int32_t ALTITUDE_MAX = 15'000; // m
-
-            public slots:
-                void intersectCalculationFinished(quint8 progress, const QVector<Elevation::Point> &resultPath);
-                void routeToolsCalculationFinished(quint8 progress, const Elevation::RouteAndElevationProfiles &deltaResult);
+            /******************************************************/
 
             signals:
-                void requestAll();
-                void requestPath();
-                void requestIntersects();
-                void requestEnvelope();
+                __signal stateChanged();
 
-                void colorsChanged();
-                void profileChanged();
-                void keyValuesChanged();
-                void showIndexChanged();
-                void pathChanged();
-                void intersectionsChanged();
-                void envelopeChanged();
-                void correctedPathChanged();
-                void fileIntegrityChanged();
-                void validChanged();
-
-                void endElevationCalculate();
+        protected:
+            ElevationWidget* q_ptr;
 
         private:
-            QPointF toPixel(const QPointF& point);
-            void recalculate(bool emitFlag = false, float predefined_envelope_height = 0);
-            void recalculateWithGeopathChanged();
-            void recalculateEnvelope();
-            void recalculateEnvelopeForUI();
-            void calculatePath();
-            void calculateCorrectedPath();
-            void calculateCorrectedPathForUI(QGeoPath c_geopath);
-            void setAcceptCalculate();
-
-        private:
-            Q_PROPERTY(QVector<QPointF> profile READ profile WRITE setProfile NOTIFY profileChanged)
-            QVector<QPointF> m_profile;
-            QVector<QPointF> profile() const;    void setProfile(const QVector<QPointF>& vec);
-
-            Q_PROPERTY(QList<QPointF> path READ path WRITE setPath NOTIFY pathChanged)
-            QList<QPointF> m_path;
-            QList<QPointF> path() const;         void setPath(const QList<QPointF>& list);
-
-            Q_PROPERTY(QList<QPointF> correctedPath READ correctedPath WRITE setCorrectedPath NOTIFY correctedPathChanged)
-            QList<QPointF> m_correctedPath;
-            QList<QPointF> correctedPath() const;void setCorrectedPath(const QList<QPointF>& list);
-
-            Q_PROPERTY(QList<QPointF> intersections READ intersections WRITE setIntersections NOTIFY intersectionsChanged)
-            QList<QPointF> m_intersections;
-            QList<QPointF> intersections() const;void setIntersections(const QList<QPointF>& list);
-
-            Q_PROPERTY(QList<QPointF> envelope READ envelope WRITE setEnvelope NOTIFY envelopeChanged)
-            QList<QPointF> m_envelope;
-            QList<QPointF> envelope() const;     void setEnvelope(const QList<QPointF>& list);
-
-            Q_PROPERTY(QList<QString> colors READ colors WRITE setColors NOTIFY colorsChanged)
-            QList<QString> m_colors = { "#000000", "#ffffff", "#888888",
-                                        "#00ff00", "#ffff00", "#ff0000",
-                                        "#88C0D0" };
-            QList<QString> colors() const;       void setColors(const QList<QString>& list);
-
-            Q_PROPERTY(QList<float> keyValues READ keyValues WRITE setKeyValues NOTIFY keyValuesChanged)
-            QList<float> m_keyValues;
-            QList<float> keyValues() const;      void setKeyValues(const QList<float>& values);
-
-            Q_PROPERTY(bool showIndex READ showIndex WRITE setShowIndex NOTIFY showIndexChanged)
-            bool showIndex() const;              void setShowIndex(bool state);
-
-            Q_PROPERTY(bool fileIntegrity READ fileIntegrity WRITE setFileIntegrity NOTIFY fileIntegrityChanged)
-            bool m_fileIntegrity = true;
-            bool fileIntegrity() const;          void setFileIntegrity(bool state);
-
-            Q_PROPERTY(bool valid READ valid WRITE setValid NOTIFY validChanged)
-            bool m_valid = true;
-            bool valid() const;          void setValid(bool state);
-
-            struct Layout {
-                float width = 500;
-                float height = 100;
-                float horizontal_zoom = 1;
-                float vertical_zoom = 1;
-            }; Layout layout;
-
-            struct AircraftMetrics {
-                float velocity = 75;
-                float climbRate = 1;
-                float descendRate = 1;
-                float envelopeHeight = 100;
-                float envelopeSize = 100;
-            }; AircraftMetrics aircraftMetrics;
-
-            struct Input {
-                bool showIndex = true;
-            }; Input input;
-
-            struct Axes {
-                struct Axis {
-                    float maxValue;
-                    float roundMaxValue;
-                    int scaleValue;
-                    float scaleCount;
-                    float scalePixelSize;
-                };
-                Axis x, y;
-                const float stretch = 1.15;
-            }; Axes axis;
-
-            struct Iterator
+            // common + profile
+            enum ProfileUpdateBehaviour
             {
-                int rangeMin = 0;
-                int rangeMax = 0;
-                int range = 0;
-                bool rangeSet = false;
-            }; Iterator iterator;
+                RebuildProfile,
+                KeepProfile
+            };
+            enum ModelUpdateBehaviour
+            {
+                Update,
+                Keep
+            };
+            void update(ProfileUpdateBehaviour mode, float force_y_axis_height = 0, ModelUpdateBehaviour model_behaviour = ModelUpdateBehaviour::Keep);
+            void sync(QVector<QPointF> vec);
 
-            bool m_isIntersecting = false;
-            bool m_isMatchingMetrics = true;
+            // points
+            private slots:
+                void syncPointsWithPath(int _index);
 
-            quint8 m_acceptCalculate = 0;
+            // metrics
+            void calculateMetrics();
 
-        std::vector<uint8_t> m_speeds; // Вектор для скоростей, индивидуальных для каждой точки)
+            // envelope
+            void calculateEnvelope();
+            private slots:
+                void calculateEnvelopeFinished(quint8 progress, const Elevation::RouteAndElevationProfiles& deltaResult);
+
+            // intersects
+            void calculateIntersects();
+            private slots:
+                void calculateIntersectsFinished(quint8 progress, const QVector<Elevation::Point>& resultPath);
+
+            // shared
+            QPointF toPixelCoords(const QPointF& point, float x_max, float y_max, float y_stretch, float pixel_width, float pixel_height);
+            QPointF fromPixelCoords(const QPointF& point, float x_max, float y_max, float y_stretch, float pixel_width, float pixel_height);
+            list<GeoPoint> toRoute(const QGeoPath& path);
+            QGeoPath fromRoute(const list<GeoPoint> route);
+
+            WidgetState state() const;
+            void setState(WidgetState newState);
     };
-} //namespace charts
+} //namespace Charts;
+
+inline void initialize_qrc_file_within_namespace_1(const char* comment)
+{
+    Q_INIT_RESOURCE(charts);
+}

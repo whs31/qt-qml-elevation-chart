@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.13)
 
-project(QPlot VERSION 1.0 LANGUAGES CXX)
-set(LIBRARY_COMPILE TRUE)
+project(GLCharts VERSION 1.1 LANGUAGES CXX)
+set(LIBRARY_COMPILE FALSE)
 
 if(NOT LIBRARY_COMPILE)
-	set(CMAKE_AUTOUIC ON)
+	#set(CMAKE_AUTOUIC ON)
 	set(CMAKE_AUTOMOC ON)
 	set(CMAKE_AUTORCC ON)
 
@@ -20,24 +20,43 @@ include_directories(include)
 
 set (EXAMPLES
     # EXAMPLES
+    examples/example.ui
     examples/main.cpp
     examples/example.cpp
     examples/example.h
-    examples/example.ui
-    examples/QPlot-example.qrc
+    examples/example.qrc
+    examples/ui_example.h
 )
 set (PROJECT_SOURCES
 	# QML|JS
-	js/QPlot.qrc
-	js/qplotjs.qrc
+	js/charts.qrc
 
 	# API
-	include/elevationwidget.hpp
+	include/charts/elevationwidget.hpp
+	include/charts/geopoint.hpp
 
-	# IMPLEMENTATION
-	src/elevationwidget.cpp
-	src/elevationwidget_p.hpp
+	# SOURCE BASE
+	src/elevationwidget_p.hpp src/elevationwidget.cpp
+	src/geopoint.cpp
+        src/pointsmodel.hpp src/pointsmodel.cpp
 
+		# DECLARATIVE ITEMS
+		src/qdeclitems/cdeclarativepolyline.hpp src/qdeclitems/cdeclarativepolyline.cpp
+		src/qdeclitems/cdeclarativepolygon.hpp src/qdeclitems/cdeclarativepolygon.cpp
+		src/qdeclitems/cdeclarativepoint.hpp src/qdeclitems/cdeclarativepoint.cpp
+		src/qdeclitems/cdeclarativesolidpolygon.hpp src/qdeclitems/cdeclarativesolidpolygon.cpp
+		src/qdeclitems/cdeclarativemultipolygon.hpp src/qdeclitems/cdeclarativemultipolygon.cpp
+		src/qdeclitems/cdeclarativeaxis.hpp src/qdeclitems/cdeclarativeaxis.cpp
+
+		# GLSL & SCENE GRAPH
+		src/scenegraph/glsl/glsl.qrc
+		src/scenegraph/glvertextype.hpp
+
+		# SHADERS
+		src/scenegraph/glpolygonshader.hpp
+		src/scenegraph/glpointshader.hpp
+		src/scenegraph/glmultipolygonshader.hpp
+		src/scenegraph/gllineshader.hpp
 )
 
 if(LIBRARY_COMPILE)

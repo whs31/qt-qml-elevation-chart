@@ -1,165 +1,222 @@
 import QtQuick 2.15
-import QtQuick.Controls 2.15
-import ElevationWidgetImpl 1.0
-import QtGraphicalEffects 1.15
 
-import "private" as Private;
-import "private/delegates" as Delegates
+import GLShapes 1.0
+import ElevationWidgetModule 1.0
+import "elevation-chart/private" as Private
 
-Rectangle { id: base;
-	required property string sFontFamily;
-	focus: true;
-	clip: true;
-	color: Impl.colors[0];
-	function requestAll()
-	{
-		correctPathImpl.refresh();
-		pathImpl.refresh();
-		legendImpl.refresh();
-		profileImpl.refresh();
-		envelopeImpl.refresh();
-	}
-	Component.onCompleted:
-	{
-		Impl.resize((base.width - base.offset), height, property_handler.zoomW, 1);
-	}
-	onWidthChanged: Impl.resize((base.width - base.offset), height, property_handler.zoomW, 1);
-	onHeightChanged: Impl.resize((base.width - base.offset), height, property_handler.zoomW, 1);
+Rectangle { id: c_ImplRoot;
+	property color s_BackgroundColor: Qt.darker("#2E3440", 1.2);
+	property color s_ForegroundColor: "#d8dee9";
+	property color s_ProfileColor: "#4c566a";
+	property color s_RouteColor: "#a3be8c";
+	property color s_WarnColor: "#ebcb8b";
+	property color s_ErrorColor: "#bf616a";
+	property color s_InfoColor: "#81a1c1";
 
-	Item { id: property_handler;
-		property real zoomW: 1;
-		Behavior on zoomW { NumberAnimation { duration: 250; } }
-		onZoomWChanged: {
-			if(zoomW > wheelHandler.maxZoom)
-				zoomW = wheelHandler.maxZoom;
-			if(zoomW < 1)
-				zoomW = 1;
-			Impl.resize((base.width - base.offset), base.height, zoomW, 1);
-		}
-	}
+	property string s_FontFamily: "Ubuntu Mono";
+	property bool b_ShowIndexes: true;
+	property vector4d vec_Offsets: Qt.vector4d(30, 0, 7, 15); // left top right bottom : x y z w
 
-	property real widthScaled: (base.width - base.offset) * z_w;
-	property real z_w: property_handler.zoomW;
-	property int offset: 30;
-	MouseArea { id: globalMouseArea;
-		acceptedButtons: Qt.RightButton;
+	// private:
+	color: s_BackgroundColor;
+	layer.enabled: true;
+	layer.samples: 8;
+
+	Flickable { id: c_ImplView;
 		anchors.fill: parent;
-		hoverEnabled: true;
-		onPositionChanged: {
-			mouseCrossImpl.requestPaint();
-			trueMouseX = mouseX;
-		}
-		property real trueMouseX: 0;
+		anchors.leftMargin: vec_Offsets.x;
+		anchors.bottomMargin: vec_Offsets.w;
+		anchors.rightMargin: vec_Offsets.z;
+		anchors.topMargin: vec_Offsets.y;
 
-		Connections {
-			target: Impl;
-			function onRequestAll() {
-				requestAll();
-			}
-			function onRequestIntersects() {
-				intersectsImpl.refresh();
-			}
+		boundsBehavior: Flickable.StopAtBounds;
+		interactive: true;
+		flickableDirection: Flickable.HorizontalAndVerticalFlick;
 
-			function onRequestPath() {
-				correctPathImpl.refresh();
-				pathImpl.refresh();
-				legendImpl.refresh();
-			}
+		visible: ElevationWidgetBackend.state === ElevationWidgetBackend.WidgetState.Fine;
+		enabled: visible;
 
-			function onRequestEnvelope() {
-				envelopeImpl.refresh();
-			}
+		MouseArea { id: c_ImplGlobalMouseArea;
+			anchors.fill: parent;
+			hoverEnabled: true;
+			//propagateComposedEvents: true;
 		}
 
-		ListModel { id: pathModel; }
-		ScrollBar { id: scrollbar;
-			anchors.top: view.top;
-			anchors.left: view.left;
-			anchors.right: view.right;
-			implicitHeight: 10;
-			contentItem: Rectangle {
-				radius: scrollbar.height / 2;
-				color: scrollbar.pressed ? Qt.lighter(Impl.colors[2], .5) : Impl.colors[2];
+		GLPolygon { id: c_ImplProfile;
+			objectName: "qml_gl_profile_polygon"; //! required!
+			anchors.fill: parent;
+			fillColor: c_ImplRoot.s_ProfileColor;
+			visible: true;
+		}
+
+		GLPolyline { id: c_ImplMetricsPath;
+			objectName: "qml_gl_metrics_polyline"; //! required!
+			anchors.fill: c_ImplProfile;
+			lineColor: c_ImplRoot.s_WarnColor;
+			visible: true;
+			opacity: 0.5;
+			SequentialAnimation {
+				PropertyAnimation {
+					target: c_ImplMetricsPath;
+					property: "opacity";
+					to: 0;
+					duration: 500;
+					easing.type: Easing.InOutQuad;
+				}
+				PropertyAnimation {
+					target: c_ImplMetricsPath;
+					property: "opacity";
+					to: 0.5;
+					duration: 500;
+					easing.type: Easing.InOutQuad;
+				}
+
+				loops: Animation.Infinite;
+				running: true;
+				Component.onCompleted: start();
 			}
 		}
-		Flickable { id: view;
-			anchors.fill: legendImpl;
-			anchors.leftMargin: base.offset;
-			contentWidth: (base.width - base.offset) * property_handler.zoomW;
-			contentHeight: base.height;
-			flickableDirection: Flickable.HorizontalAndVerticalFlick;
-			interactive: false;
-			boundsMovement: Flickable.StopAtBounds;
+
+		GLSolidpolygon { id: c_ImplCoridor;
+			objectName: "qml_gl_coridor_polygon"; //! required!
+			anchors.fill: parent;
+			fillColor: c_ImplRoot.s_WarnColor;
+			opacity: 0.2;
+			visible: true;
+		}
+
+		GLPolyline { id: c_ImplEnvelopePath;
+			objectName: "qml_gl_envelope_polyline"; //! required!
+			anchors.fill: c_ImplProfile;
+			lineColor: c_ImplRoot.s_InfoColor;
+			visible: true;
+			opacity: 0.5;
+			SequentialAnimation {
+				PropertyAnimation {
+					target: c_ImplEnvelopePath;
+					property: "opacity";
+					to: 0;
+					duration: 500;
+					easing.type: Easing.InOutQuad;
+				}
+				PropertyAnimation {
+					target: c_ImplEnvelopePath;
+					property: "opacity";
+					to: 0.5;
+					duration: 500;
+					easing.type: Easing.InOutQuad;
+				}
+
+				loops: Animation.Infinite;
+				running: true;
+				Component.onCompleted: start();
+			}
+		}
+
+		GLMultipolygon { id: c_ImplIntersects;
+			objectName: "qml_gl_intersects_polygon"; //! required!
+			anchors.fill: parent;
+			fillColor: c_ImplRoot.s_ErrorColor;
+			visible: true;
+		}
+
+		GLPolyline { id: c_ImplBasePath;
+			objectName: "qml_gl_path_polyline"; //! required!
+			anchors.fill: c_ImplProfile;
+			lineColor: c_ImplRoot.s_RouteColor;
+			visible: true;
+		}
+
+		Repeater
+		{
 			clip: false;
-			pixelAligned: true;
-			ScrollBar.horizontal: scrollbar;
-			onMovementEnded: requestAll();
-
-			Private.ElevationWidgetProfile { id: profileImpl; visible: Impl.valid && Impl.fileIntegrity; }
-			Private.ElevationWidgetCorrectPath { id: correctPathImpl; visible: Impl.valid && Impl.fileIntegrity; }
-			Glow { anchors.fill: correctPathImpl; color: Impl.colors[4]; source: correctPathImpl; opacity: 0.3; visible: Impl.valid && Impl.fileIntegrity; }
-			Private.ElevationWidgetEnvelope { id: envelopeImpl; visible: Impl.valid && Impl.fileIntegrity; }
-			Glow { anchors.fill: envelopeImpl; color: Impl.colors[6]; source: envelopeImpl; opacity: 0.3; visible: Impl.valid && Impl.fileIntegrity; }
-			Private.ElevationWidgetPath { id: pathImpl; visible: Impl.valid && Impl.fileIntegrity; }
-			Private.ElevationWidgetIntersections { id: intersectsImpl; visible: Impl.valid && Impl.fileIntegrity; }
-			Glow { anchors.fill: intersectsImpl; color: Impl.colors[5]; source: intersectsImpl; opacity: 0.3; visible: Impl.valid && Impl.fileIntegrity; }
-			Repeater
-			{
-				clip: false;
-				model: pathModel;
-				delegate: Delegates.ElevationWidgetPoint { }
-			}
-		}
-
-		Private.ElevationWidgetLegend { id: legendImpl; anchors.fill: parent; visible: Impl.valid && Impl.fileIntegrity; }
-		Private.ElevationWidgetMouseCross { id: mouseCrossImpl; anchors.fill: view; anchors.rightMargin: 10; visible: Impl.valid && Impl.fileIntegrity; }
-
-		Keys.onPressed: { if (event.key === Qt.Key_Shift) { wheelHandler.shiftPressed = true } }
-		Keys.onReleased: { if (event.key === Qt.Key_Shift) { wheelHandler.shiftPressed = false } }
-		WheelHandler { id: wheelHandler;
-			property real maxZoom: 1000;
-			readonly property real zoom_sensivity: 3;
-			property bool shiftPressed: false;
-
-            onWheel: (event) =>
-					 {
-						 if(Impl.valid && Impl.fileIntegrity)
-						 {
-							 if(!shiftPressed) {
-								 if(event.angleDelta.y > 0 && property_handler.zoomW <= maxZoom)
-									property_handler.zoomW += (1 / zoom_sensivity) * property_handler.zoomW;
-								 else if(event.angleDelta.y < 0 && property_handler.zoomW >= 1)
-									property_handler.zoomW -= (1 / zoom_sensivity) * property_handler.zoomW;
-							 } else {
-								 if(event.angleDelta.y > 0)
-									view.flick(1000, 0);
-								 else if(event.angleDelta.y < 0)
-									view.flick(-1000, 0);
-							 }
-						 }
-					 }
+			model: PointModel;
+			anchors.fill: c_ImplProfile;
+			delegate: Private.ElevationPoint { }
 		}
 	}
-	Text { id: warningLabel;
+
+	GLAxis { id: c_ImplXAxis;
+		objectName: "qml_gl_x_axis"; //! required!
 		anchors.fill: parent;
-		color: Impl.colors[5];
+		color: c_ImplRoot.s_ForegroundColor;
+		visible: ElevationWidgetBackend.state === ElevationWidgetBackend.WidgetState.Fine;
+		offsets: vec_Offsets;
+		opacity: 0.7;
+	}
+
+	Rectangle {
+		anchors.top: parent.bottom;
+		anchors.topMargin: -vec_Offsets.w;
+		anchors.right: parent.right;
+		color: c_ImplRoot.s_ForegroundColor;
+		visible: ElevationWidgetBackend.state === ElevationWidgetBackend.WidgetState.Fine;
+		height: vec_Offsets.w;
+		width: 100;
+		opacity: c_ImplXAxis.opacity;
+
+		Text {
+			anchors.centerIn: parent;
+			horizontalAlignment: Text.AlignHCenter;
+			verticalAlignment: Text.AlignVCenter;
+			font.family: s_FontFamily;
+			color: s_BackgroundColor;
+			font.pixelSize: vec_Offsets.w;
+			font.bold: true;
+			text: "РАССТОЯНИЕ";
+		}
+	}
+
+	Rectangle {
+		anchors.top: parent.top;
+		anchors.left: parent.left;
+		anchors.leftMargin: vec_Offsets.x;
+		color: c_ImplRoot.s_ForegroundColor;
+		visible: ElevationWidgetBackend.state === ElevationWidgetBackend.WidgetState.Fine;
+		height: vec_Offsets.w;
+		width: 65;
+		opacity: c_ImplXAxis.opacity;
+
+		Text {
+			anchors.centerIn: parent;
+			horizontalAlignment: Text.AlignHCenter;
+			verticalAlignment: Text.AlignVCenter;
+			font.family: s_FontFamily;
+			font.bold: true;
+			color: s_BackgroundColor;
+			font.pixelSize: vec_Offsets.w;
+			text: "ВЫСОТА";
+		}
+	}
+
+	GLAxis { id: c_ImplYAxis;
+		objectName: "qml_gl_y_axis"; //! required!
+		anchors.fill: parent;
+		color: c_ImplRoot.s_ForegroundColor;
+		visible: false;
+	}
+
+	Text { id: c_ImplLabelElevationsMissing;
+		anchors.fill: parent;
+		color: s_ErrorColor;
 		text: "ОТСУТСТВУЮТ ИСХОДНЫЕ ДАННЫЕ ПО ВЫСОТЕ";
 		font.bold: true;
 		font.pixelSize: width / 30;
-		font.family: sFontFamily;
+		font.family: s_FontFamily;
 		horizontalAlignment: Text.AlignHCenter;
 		verticalAlignment: Text.AlignVCenter;
-		visible: !Impl.valid ? false : !Impl.fileIntegrity;
+		visible: ElevationWidgetBackend.state === ElevationWidgetBackend.WidgetState.ElevationsMissing;
 	}
-	Text { id: warningLabel2;
+	Text { id: c_ImplLabelPathMissing;
 		anchors.fill: parent;
-		color: Impl.colors[4];
+		color: s_WarnColor;
 		text: "НЕ ЗАДАН МАРШРУТ";
 		font.bold: true;
 		font.pixelSize: width / 30;
-		font.family: sFontFamily;
+		font.family: s_FontFamily;
 		horizontalAlignment: Text.AlignHCenter;
 		verticalAlignment: Text.AlignVCenter;
-		visible: !Impl.valid;
+		visible: ElevationWidgetBackend.state === ElevationWidgetBackend.WidgetState.PathMissing;
 	}
+
 }

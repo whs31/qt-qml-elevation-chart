@@ -1,614 +1,601 @@
-#include "elevationwidget.hpp"
+#include "charts/elevationwidget.hpp"
 #include "elevationwidget_p.hpp"
+#include "Elevation/elevation.h"
+#include "RouteTools/elevationtools.h"
+#include "pointsmodel.hpp"
+#include "qdeclitems/cdeclarativepolyline.hpp"
+#include "qdeclitems/cdeclarativepolygon.hpp"
+#include "qdeclitems/cdeclarativepoint.hpp"
+#include "qdeclitems/cdeclarativemultipolygon.hpp"
+#include "qdeclitems/cdeclarativesolidpolygon.hpp"
+#include "qdeclitems/cdeclarativeaxis.hpp"
 
 #include <qqml.h>
 #include <cmath>
-#include "Elevation/elevation.h"
+#include <vector>
+#include <iterator>
 #include <QMetaType>
+#include <QQuickItem>
+#include <QGeoPath>
+#include <QVector>
 
-inline void initMyResource() { Q_INIT_RESOURCE(qplotjs); }
 using namespace Charts;
+
+#pragma region PUBLIC
 
 ElevationWidget::ElevationWidget(QObject *parent)
     : QObject{parent}
     , d_ptr(new ElevationWidgetPrivate(this))
 {
-    connect(d_ptr, &ElevationWidgetPrivate::endElevationCalculate, this, &ElevationWidget::endElevationCalculate);
-    qmlRegisterSingletonInstance("ElevationWidgetImpl", 1, 0, "Impl", d_ptr);
-    qSetMessagePattern("[%{time process}] [%{category}] %{if-debug}\033[01;38;05;15m%{endif}%{if-info}\033[01;38;05;146m%{endif}%{if-warning}\033[1;33m%{endif}%{if-critical}\033[1;31m%{endif}%{if-fatal}F%{endif}%{message}\033[0m");
-    initMyResource();
+    //qmlRegisterSingletonInstance("ElevationWidgetImpl", 1, 0, "Impl", d_ptr);
+
+    #ifndef CUSTOM_DEBUG_OUTPUT
+    #define CUSTOM_DEBUG_OUTPUT
+    qSetMessagePattern("[%{time process}] [%{category}] "
+                       "%{if-debug}\033[01;38;05;15m%{endif}"
+                       "%{if-info}\033[01;38;05;146m%{endif}"
+                       "%{if-warning}\033[1;33m%{endif}"
+                       "%{if-critical}\033[1;31m%{endif}"
+                       "%{if-fatal}FATAL ERROR \033[1;31m%{endif}%{message}\033[0m");
+    #endif
+
+    initialize_qrc_file_within_namespace_1("charts");
+    qmlRegisterSingletonInstance<ElevationWidgetPrivate>("ElevationWidgetModule", 1, 0, "ElevationWidgetBackend", d_ptr);
 }
 
-QGeoPath ElevationWidget::getGeopath()
+void ElevationWidget::linkWithQML(QQuickItem* rootObject)
 {
     Q_D(ElevationWidget);
-    return d->geopath;
+    d->linkWithQML(rootObject);
 }
 
-void ElevationWidget::setGeopath(const QGeoPath& path)
+list<GeoPoint> ElevationWidget::getRoute()
 {
     Q_D(ElevationWidget);
-    if(path == d->geopath and not path.isEmpty())
-        return;
-    d->geopath = path;
-    qDebug() << "<qplot> Задан маршрут.";
-    d->recalculateWithGeopathChanged();
+    return d->getRoute();
 }
 
-bool ElevationWidget::isPathMatchingMetrics()
+void ElevationWidget::setRoute(const std::list<GeoPoint>& route)
 {
     Q_D(ElevationWidget);
-    return d->m_isMatchingMetrics;
+    d->setRoute(route);
 }
 
-bool ElevationWidget::isIntersecting(void)
+void ElevationWidget::setUAVPosition(const QGeoCoordinate& position)
 {
     Q_D(ElevationWidget);
-    return d->m_isIntersecting;
+    d->setUAVPosition(position);
 }
 
-bool ElevationWidget::isValidPath()
+void ElevationWidget::setUAVPosition(double latitude, double longitude)
 {
     Q_D(ElevationWidget);
-    return d->fileIntegrity();
+    d->setUAVPosition(latitude, longitude);
 }
 
-void ElevationWidget::setVelocity(float velocity)
+bool ElevationWidget::isIntersecting()
 {
     Q_D(ElevationWidget);
-    d->aircraftMetrics.velocity = velocity;
-    d->recalculate();
+    return d->isIntersecting();
 }
 
-void ElevationWidget::setVelocity(const std::vector<uint8_t>& points)
+bool ElevationWidget::isValid()
 {
     Q_D(ElevationWidget);
-    qDebug() << "<qplot> Задан массив скоростей.";
-    if(d->geopath.path().size() == points.size())
-        d->m_speeds = points;
-    else
-        qCritical() << "<qplot> Массив скоростей для точек некорректен.";
-}
-
-std::vector<uint8_t> ElevationWidget::getVelocity()
-{
-    Q_D(ElevationWidget);
-    return d->m_speeds;
+    return d->isValid();
 }
 
 void ElevationWidget::setClimbRate(float rate)
 {
     Q_D(ElevationWidget);
-    d->aircraftMetrics.climbRate = rate;
-    d->recalculate();
+    d->setClimbRate(rate);
 }
 
 void ElevationWidget::setDescendRate(float rate)
 {
     Q_D(ElevationWidget);
-    d->aircraftMetrics.descendRate = rate;
-    d->recalculate();
+    d->setDescendRate(rate);
 }
 
-QGeoPath ElevationWidget::applyMetricsCorrection()
+void ElevationWidget::setGlobalVelocity(float velocity)
 {
     Q_D(ElevationWidget);
-    if(isPathMatchingMetrics())
-    {
-        qWarning() << "<qplot> Пути совпадают, изменения пути не будут применены";
-        return QGeoPath();
-    }
-
-    QGeoPath returnPath = d->geopath;
-    for(size_t i = 0; i < d->geopath.path().length(); i++)
-    {
-        if(i < d->metricsCorrectedGeopath.path().length())
-            returnPath.replaceCoordinate(i, d->metricsCorrectedGeopath.path()[i]);
-    }
-
-    d->metricsCorrectedGeopath = returnPath;
-    setGeopath(returnPath);
-
-    qInfo() << "<qplot> Изменения применены";
-    return getGeopath();
+    d->setGlobalVelocity(velocity);
 }
 
-void ElevationWidget::setEnvelopeMinHeight(float height)
+void ElevationWidget::applyMetricsCorrection()
 {
     Q_D(ElevationWidget);
-    d->aircraftMetrics.envelopeHeight = height;
+    d->applyMetricsCorrection();
+}
+
+bool ElevationWidget::isMatchingMetrics()
+{
+    Q_D(ElevationWidget);
+    return d->isMatchingMetrics();
+}
+
+void ElevationWidget::setEnvelopeMinimumAltitude(float altitude)
+{
+    Q_D(ElevationWidget);
+    d->setEnvelopeMinimumAltitude(altitude);
 }
 
 void ElevationWidget::setEnvelopeCoridorSize(float distance)
 {
     Q_D(ElevationWidget);
-    d->aircraftMetrics.envelopeSize = distance;
+    d->setEnvelopeCoridorSize(distance);
 }
 
-void ElevationWidget::calculateTerrainEnvelope()
+void ElevationWidget::estimateEnvelope()
 {
     Q_D(ElevationWidget);
-    d->recalculateEnvelope();
+    d->estimateEnvelope();
 }
 
-void ElevationWidget::applyTerrainEnvelope()
+void ElevationWidget::applyEnvelopeCorrection()
 {
     Q_D(ElevationWidget);
-    d->m_speeds.clear();
-
-    QGeoPath envelope_apply = d->envelopePath;
-    for(size_t i = 0; i < envelope_apply.path().size(); ++i)
-        d->m_speeds.push_back(d->aircraftMetrics.velocity);
-
-    d->envelopePath = QGeoPath();
-    d->setEnvelope(QList<QPointF>());
-    setGeopath(envelope_apply);
+    d->applyEnvelopeCorrection();
 }
 
-void ElevationWidget::showIndexes(bool state)
-{
-    Q_D(ElevationWidget);
-    d->setShowIndex(state);
-}
+#pragma endregion PUBLIC
 
-void ElevationWidget::setPallete(QString backgroundColor, QString foregroundColor, QString chartColor,
-                                 QString successColor, QString warningColor, QString errorColor, QString subColor)
-{
-    Q_D(ElevationWidget);
-    d->setColors({ backgroundColor, foregroundColor, chartColor, successColor, warningColor, errorColor, subColor });
+#pragma region PRIVATE
 
-}
-
-/*
-███████████████████████████          🔒 PRIVATE IMPLEMENTATION 🔒          ███████████████████████████████──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────f
-*/
 ElevationWidgetPrivate::ElevationWidgetPrivate(ElevationWidget* parent)
     : QObject{parent}
     , q_ptr(parent)
+    , model(new PointsModel(this))
+    , heightmapParser(Elevation::Elevation::get(this))
+    , routeParser(new Elevation::ElevationTools(this))
 {
-    heightmapParser = new Elevation::Elevation(this);
-    routeParser = new Elevation::ElevationTools(this);
-
     qRegisterMetaType<QVector<Elevation::Point>>("QVector<Point>");
     qRegisterMetaType<Elevation::RouteAndElevationProfiles>("RouteAndElevationProfiles");
-    connect(routeParser, &Elevation::ElevationTools::progressTestRouteIntersectGround,
-            this, &ElevationWidgetPrivate::intersectCalculationFinished);
-    connect(routeParser, &Elevation::ElevationTools::progressBuildRouteAndElevationProfiles,
-            this, &ElevationWidgetPrivate::routeToolsCalculationFinished);
-}
 
-QPointF ElevationWidgetPrivate::toPixel(const QPointF& point)
-{
-    return QPointF(point.x() * layout.width / axis.x.maxValue,
-                   layout.height - point.y() * layout.height / (axis.y.maxValue * axis.stretch));
-}
+    qmlRegisterType<ChartsOpenGL::CDeclarativePolyline>("GLShapes", 1, 0, "GLPolyline");
+    qmlRegisterType<ChartsOpenGL::CDeclarativePolygon>("GLShapes", 1, 0, "GLPolygon");
+    qmlRegisterType<ChartsOpenGL::CDeclarativePoint>("GLShapes", 1, 0, "GLPoint");
+    qmlRegisterType<ChartsOpenGL::CDeclarativeMultipolygon>("GLShapes", 1, 0, "GLMultipolygon");
+    qmlRegisterType<ChartsOpenGL::CDeclarativeSolidPolygon>("GLShapes", 1, 0, "GLSolidpolygon");
+    qmlRegisterType<ChartsOpenGL::CDeclarativeAxis>("GLShapes", 1, 0, "GLAxis");
+    qmlRegisterSingletonInstance<PointsModel>("ElevationWidgetModule", 1, 0, "PointModel", model);
 
-void ElevationWidgetPrivate::recalculate(bool emitFlag, float predefined_envelope_height)
-{
-    if(profile().isEmpty()){
-        calculatePath();
-        calculateCorrectedPath();
-        setKeyValues({});
-        emit requestAll();
-        return;
-    }
-
-    float _emit_check = axis.y.maxValue;
-    bool _emit_checkflag = false;
-
-    iterator.range = 0;
-    iterator.rangeSet = false;
-
-    axis.x.maxValue = profile().last().x();
-    axis.x.roundMaxValue = 0;
-    axis.y.maxValue = predefined_envelope_height;
-    axis.y.roundMaxValue = 0;
-
-    // проверка на целостность профиля высот
-    setFileIntegrity(true);
-    for(QPointF point : profile())
-    {
-        if(point.y() > __INT16_MAX__ - 1'000)
+    connect(heightmapParser, &Elevation::Elevation::profileAsyncNotification, this, [this](unsigned int return_code){
+        if(return_code == 0xFF)
         {
-            qWarning() << "<qplot> Некоторые профили высот отсутствуют в папке.";
-            setFileIntegrity(false);
-            return;
+            qWarning() << "<charts> Some elevation profiles are missing from /elevations folder.";
+            this->setState(WidgetState::ElevationsMissing);
         }
-    }
+//        if(return_code == 0x00 && state() == WidgetState::ElevationsMissing)
+//            this->setState(WidgetState::Fine);
+    });
 
-    for(QGeoCoordinate coord : geopath.path())
-    {
-        if(coord.altitude() > axis.y.maxValue)
-            axis.y.maxValue = coord.altitude();
-    }
-    if(_emit_check != axis.y.maxValue)
-        _emit_checkflag = true;
+    connect(heightmapParser, &Elevation::Elevation::profileAsyncPacket, this, &ElevationWidgetPrivate::sync);
+    connect(routeParser, &Elevation::ElevationTools::progressBuildRouteAndElevationProfiles, this,
+            &ElevationWidgetPrivate::calculateEnvelopeFinished);
+    connect(routeParser, &Elevation::ElevationTools::progressTestRouteIntersectGround, this,
+            &ElevationWidgetPrivate::calculateIntersectsFinished);
 
-    int _power_x = axis.x.maxValue > 0 ? (int) log10 ((float) axis.x.maxValue) : 1;
-    int _power_y = axis.y.maxValue > 0 ? (int) log10 ((float) axis.y.maxValue) : 1;
-    while(axis.x.roundMaxValue < axis.x.maxValue)
-    {
-        axis.x.roundMaxValue += pow(10, _power_x);
-    }
-    while(axis.y.roundMaxValue < axis.y.maxValue)
-    {
-        axis.y.roundMaxValue += pow(10, _power_y);
-    }
-    axis.x.scaleValue = pow(10, _power_x);
-    axis.y.scaleValue = pow(10, _power_y);
-    axis.x.scaleCount = (float)axis.x.maxValue / (float)axis.x.scaleValue;
-    axis.y.scaleCount = (float)axis.y.maxValue * axis.stretch / (float)axis.y.scaleValue;
-    axis.x.scalePixelSize = layout.width / axis.x.scaleCount;
-    axis.y.scalePixelSize = layout.height / axis.y.scaleCount;
-    setKeyValues({  axis.stretch,                                                                               // 0
-                    axis.x.maxValue, axis.y.maxValue,                                                           // 1-2
-                    axis.x.roundMaxValue, axis.y.roundMaxValue,                                                 // 3-4
-                    static_cast<float>(axis.x.scaleValue), static_cast<float>(axis.y.scaleValue),               // 5-6
-                    axis.x.scaleCount, axis.y.scaleCount,                                                       // 7-8
-                    axis.x.scalePixelSize, axis.y.scalePixelSize  });                                           // 9-10
+    connect(model, &PointsModel::pointChanged, this, &ElevationWidgetPrivate::syncPointsWithPath);
+}
 
-    calculatePath();
-    calculateCorrectedPath();
-    recalculateEnvelopeForUI();
-    setAcceptCalculate();
-    routeParser->testRouteIntersectGround(geopath);
+void ElevationWidgetPrivate::linkWithQML(QQuickItem* rootObject)
+{
+    m_pathPolyline = rootObject->findChild<ChartsOpenGL::CDeclarativePolyline*>("qml_gl_path_polyline");
+    m_metricsPolyline = rootObject->findChild<ChartsOpenGL::CDeclarativePolyline*>("qml_gl_metrics_polyline");
+    m_envelopePolyline = rootObject->findChild<ChartsOpenGL::CDeclarativePolyline*>("qml_gl_envelope_polyline");
+    m_profilePolygon = rootObject->findChild<ChartsOpenGL::CDeclarativePolygon*>("qml_gl_profile_polygon");
+    m_intersectsPolygon = rootObject->findChild<ChartsOpenGL::CDeclarativeMultipolygon*>("qml_gl_intersects_polygon");
+    m_coridorPolygon = rootObject->findChild<ChartsOpenGL::CDeclarativeSolidPolygon*>("qml_gl_coridor_polygon");
+    m_xaxis = rootObject->findChild<ChartsOpenGL::CDeclarativeAxis*>("qml_gl_x_axis");
+    m_yaxis = rootObject->findChild<ChartsOpenGL::CDeclarativeAxis*>("qml_gl_y_axis");
+    if(m_coridorPolygon)
+        m_coridorPolygon->setLoopMode(ChartsOpenGL::CDeclarativeSolidPolygon::LoopMode::None);
 
-    if(emitFlag or profile().isEmpty() or _emit_checkflag)
-        emit requestAll();
+    if(not m_pathPolyline or not m_metricsPolyline or not m_envelopePolyline or not m_profilePolygon
+                                                 or not m_intersectsPolygon or not m_coridorPolygon
+                                                 or not m_xaxis or not m_yaxis)
+        qCritical() << "<charts> Failed to link with QML at some point.";
     else
-        emit requestPath();
+        qInfo() << "<charts> Linked with QML successfully";
 }
 
-
-void ElevationWidgetPrivate::recalculateWithGeopathChanged()
+list<GeoPoint> ElevationWidgetPrivate::getRoute()
 {
-    if(geopath.isEmpty())
+    return m_route;
+}
+
+void ElevationWidgetPrivate::setRoute(const std::list<GeoPoint>& route)
+{
+    m_route = route;
+    if(not route.empty() and m_pathPolyline != nullptr)
     {
-        setValid(false);
-        qWarning() << "<qplot> Пустой путь";
+        this->update(ProfileUpdateBehaviour::RebuildProfile, 0 , ModelUpdateBehaviour::Update);
+        this->setState(WidgetState::Fine);
+    }
+    else
+        this->setState(WidgetState::PathMissing);
+}
+
+void ElevationWidgetPrivate::setUAVPosition(const QGeoCoordinate& position)
+{
+    if(position == m_uavPosition)
+        return;
+    m_uavPosition = position;
+    axis.relative_height = heightmapParser->elevation(m_uavPosition.latitude(), m_uavPosition.longitude());
+    qInfo() << "<charts> Using UAV relative height" << axis.relative_height << "meters";
+    this->update(ProfileUpdateBehaviour::RebuildProfile);
+    // velocity xd
+}
+
+void ElevationWidgetPrivate::setUAVPosition(double latitude, double longitude)
+{
+    if(m_uavPosition == QGeoCoordinate(latitude, longitude))
+        return;
+    m_uavPosition = QGeoCoordinate(latitude, longitude);
+    axis.relative_height = heightmapParser->elevation(m_uavPosition.latitude(), m_uavPosition.longitude());
+    qInfo() << "<charts> Using UAV relative height" << axis.relative_height << "meters";
+    this->update(ProfileUpdateBehaviour::RebuildProfile);
+    // velocity xd
+}
+
+bool ElevationWidgetPrivate::isIntersecting()
+{
+    return m_intersects;
+}
+
+bool ElevationWidgetPrivate::isValid()
+{
+    return m_valid;
+}
+
+void ElevationWidgetPrivate::setClimbRate(float rate)
+{
+    aircraftMetrics.climbRate = rate;
+    this->update(ProfileUpdateBehaviour::KeepProfile);
+}
+
+void ElevationWidgetPrivate::setDescendRate(float rate)
+{
+    aircraftMetrics.descendRate = rate;
+    this->update(ProfileUpdateBehaviour::KeepProfile);
+}
+
+void ElevationWidgetPrivate::setGlobalVelocity(float velocity)
+{
+    aircraftMetrics.velocity = velocity;
+    this->update(ProfileUpdateBehaviour::KeepProfile);
+}
+
+void ElevationWidgetPrivate::applyMetricsCorrection()
+{
+    if(m_matchingMetrics)
+    {
+        qDebug() << "<charts> Path already matching metrics, no correction will be applied";
         return;
     }
-    setValid(true);
-    setProfile(heightmapParser->buildGroundProfileForChart(geopath));
-    recalculate(true);
+    m_route = toRoute(m_metricsPath);
+    this->update(ProfileUpdateBehaviour::RebuildProfile, 0, ModelUpdateBehaviour::Update);
 }
 
-void ElevationWidgetPrivate::recalculateEnvelope()
+bool ElevationWidgetPrivate::isMatchingMetrics()
 {
-    if(geopath.isEmpty())
+    return m_matchingMetrics;
+}
+
+void ElevationWidgetPrivate::setEnvelopeMinimumAltitude(float altitude)
+{
+    this->aircraftMetrics.envelopeHeight = altitude;
+}
+
+void ElevationWidgetPrivate::setEnvelopeCoridorSize(float distance)
+{
+    this->aircraftMetrics.envelopeSize = distance;
+}
+
+void ElevationWidgetPrivate::estimateEnvelope()
+{
+    this->calculateEnvelope();
+}
+
+void ElevationWidgetPrivate::applyEnvelopeCorrection()
+{
+    setRoute(toRoute(m_envelope));
+}
+
+#pragma endregion PRIVATE
+
+#pragma region IMPLEMENTATION
+
+void ElevationWidgetPrivate::update(ProfileUpdateBehaviour mode, float force_y_axis_height, ModelUpdateBehaviour model_behaviour)
+{
+    if(mode == ProfileUpdateBehaviour::RebuildProfile)
     {
-        qWarning() << "<qplot> Маршрут не содержит точек, вычисление огибающей не будет выполнено!";
+        m_profilePolygon->clear();            // TODO: это нужно для асинхронной загрузки профиля по частям. пока выключил.
+        QPointF bounds =  heightmapParser->buildProfileChartAsync(fromRoute(m_route));//, axis.relative_height);
+
+        axis.x.max = bounds.x();
+        axis.y.max = force_y_axis_height ? force_y_axis_height : bounds.y();
+    }
+
+    list<QPointF> path_polyline;
+    QGeoCoordinate prev_coord = m_route.front().coordinate();
+    float distance_cap = 0;
+    for(GeoPoint& point : m_route)
+    {
+        distance_cap += point.coordinate().distanceTo(prev_coord);
+        QPointF distance_height_point = QPointF(distance_cap, point.altitude());
+        path_polyline.push_back(toPixelCoords(distance_height_point, axis.x.max, axis.y.max,
+                                              axis.stretch, m_pathPolyline->width(), m_pathPolyline->height()));
+        prev_coord = point.coordinate();
+    }
+
+    m_pathPolyline->setList(path_polyline);
+
+    std::vector<ChartPoint> model_points;
+    for(QPointF p : path_polyline)
+        model_points.push_back(ChartPoint(p));
+
+    if(model_behaviour == ModelUpdateBehaviour::Update)
+        model->setPath(model_points);
+    else
+        model->updatePath(model_points);
+
+    m_envelopePolyline->clear();
+    m_coridorPolygon->clear();
+
+    this->calculateMetrics();
+    this->calculateIntersects();
+
+    m_xaxis->set(axis.stretch, axis.x.max, axis.y.max);
+}
+
+void ElevationWidgetPrivate::sync(QVector<QPointF> vec)
+{
+    list<QPointF> packet;
+    for(size_t i = 0; i < vec.size(); ++i)
+    {
+        packet.push_back(toPixelCoords(vec.at(i), axis.x.max, axis.y.max,
+                         axis.stretch, m_pathPolyline->width(), m_pathPolyline->height()));
+    }
+    m_profilePolygon->asyncAppend(packet);
+}
+
+void ElevationWidgetPrivate::syncPointsWithPath(int _index)
+{
+    ChartPoint point = model->getPoint(_index);
+    QPointF geo_point = fromPixelCoords(QPointF(point.distance, point.altitude), axis.x.max, axis.y.max,
+                                        axis.stretch, m_pathPolyline->width(), m_pathPolyline->height());
+
+    float alt = geo_point.y();
+    if(alt < 1)
+        alt = 1;
+    if(alt > 20'000)
+        alt = 20'000;
+
+    auto l_begin = m_route.begin();
+    std::advance(l_begin, _index);
+    l_begin->setAltitude(alt);
+
+    // эта херня ужасно сегфолит)
+    float max_y = 0;
+    for(auto coordinate : m_route)
+        if(coordinate.altitude() > max_y)
+            max_y = coordinate.altitude();
+
+    if(qFuzzyCompare(max_y, axis.y.max))
+        update(ProfileUpdateBehaviour::KeepProfile, 0, ModelUpdateBehaviour::Keep);
+    else
+        update(ProfileUpdateBehaviour::RebuildProfile, 0, ModelUpdateBehaviour::Keep);
+}
+
+void ElevationWidgetPrivate::calculateMetrics()
+{
+    QGeoPath correct_path;
+    QGeoPath route_geopath = fromRoute(m_route);
+    list<QPointF> correct_route_pixel;
+    bool allow_individual_speeds = m_route.front().velocity() > 0;
+    vector<float> velocities;
+
+    for(GeoPoint point : m_route)
+    {
+        velocities.push_back(point.velocity());
+        if(point.velocity() == 0)
+            allow_individual_speeds = false;
+    }
+
+    if(route_geopath.isEmpty())
+    {
+        m_metricsPolyline->clear();
         return;
     }
-    #ifdef QT_DEBUG
-        qDebug() << "<qplot> Вычисление огибающей.";
-    #endif
-    routeParser->buildRouteAndElevationProfiles(geopath, aircraftMetrics.envelopeHeight, aircraftMetrics.envelopeSize, aircraftMetrics.velocity,
-                                                         aircraftMetrics.climbRate, aircraftMetrics.descendRate);
-}
-
-void ElevationWidgetPrivate::routeToolsCalculationFinished(quint8 progress, const Elevation::RouteAndElevationProfiles& deltaResult)
-{
-    QVector<Elevation::Point> route = deltaResult.route();
-    envelopePath.clearPath();
-    float _local_y_max = 0;
-    for(const Elevation::Point& point : route)
+    correct_path.addCoordinate(route_geopath.path().at(0));
+    m_matchingMetrics = true;
+    for(size_t i = 1; i < route_geopath.path().length(); i++)
     {
-        QGeoCoordinate coord(point.latitude(), point.longitude(), point.altitude());
-        envelopePath.addCoordinate(coord);
-        if(coord.altitude() > _local_y_max)
-            _local_y_max = coord.altitude();
-    }
-    #ifdef QT_DEBUG
-        qDebug() << "<qplot> Применено выравнивание для оси Y по огибающей: " << _local_y_max << "м";
-    #endif
-    recalculate(false, _local_y_max);
-}
-
-void ElevationWidgetPrivate::recalculateEnvelopeForUI()
-{
-    auto data = QList<QPointF>();
-    float _previous_distance = 0;
-    for(size_t i = 0; i < envelopePath.path().size(); i++)
-    {
-        float _delta_s = 0;
-        if(i > 0)
-            _delta_s = envelopePath.path()[i].distanceTo(envelopePath.path()[i-1]);
-        _previous_distance += _delta_s;
-        QPointF point(_previous_distance, envelopePath.path()[i].altitude());
-        data.append(toPixel(point));
-    }
-    setEnvelope(data);
-    emit requestEnvelope();
-}
-
-void ElevationWidgetPrivate::calculatePath()
-{
-    auto data = QList<QPointF>();
-    float previous_distance = 0;
-    for(size_t i = 0; i < geopath.path().length(); i++)
-    {
-        float delta_s = 0;
-        if(i > 0)
-            delta_s = geopath.path()[i].distanceTo(geopath.path()[i-1]);
-        previous_distance += delta_s;
-        QPointF point(previous_distance, geopath.path()[i].altitude());
-        data.append(toPixel(point));
-    }
-    setPath(data);
-}
-
-void ElevationWidgetPrivate::calculateCorrectedPath()
-{
-    QGeoPath correctPath;
-    if (geopath.isEmpty()){
-        calculateCorrectedPathForUI(correctPath);
-        return;
-    }
-
-    correctPath.addCoordinate(geopath.path()[0]);
-    m_isMatchingMetrics = true;
-    const bool _allow_individual_speeds = (m_speeds.size() == geopath.path().size());
-    #ifdef QT_DEBUG
-        if(_allow_individual_speeds)
-            qDebug() << "<qplot> Используются индивидуальные скорости для каждой точки";
-    #endif
-    for(size_t i = 1; i < geopath.path().length(); i++)
-    {
-        const float delta_x = geopath.path()[i].distanceTo(geopath.path()[i-1]);
-        const float delta_y = geopath.path()[i].altitude() - correctPath.path()[i-1].altitude();
+        const float delta_x = route_geopath.path().at(i).distanceTo(route_geopath.path().at(i-1));
+        const float delta_y = route_geopath.path().at(i).altitude() - correct_path.path().at(i-1).altitude();
         float delta_y_min, delta_y_max;
 
-        if(_allow_individual_speeds)
+        if(allow_individual_speeds)
         {
-            delta_y_min = aircraftMetrics.descendRate * delta_x / static_cast<float>(m_speeds[i]);
-            delta_y_max = aircraftMetrics.climbRate * delta_x / static_cast<float>(m_speeds[i]);
+            delta_y_min = aircraftMetrics.descendRate * delta_x / static_cast<float>(velocities.at(i));
+            delta_y_max = aircraftMetrics.climbRate * delta_x / static_cast<float>(velocities.at(i));
         }
         else
         {
             delta_y_min = aircraftMetrics.descendRate * delta_x / aircraftMetrics.velocity;
             delta_y_max = aircraftMetrics.climbRate * delta_x / aircraftMetrics.velocity;
         }
-        QGeoCoordinate coordinate = QGeoCoordinate(geopath.path()[i]);
+        QGeoCoordinate coordinate_to_correct_path = route_geopath.path().at(i);
 
         // correct case
         if((delta_y >= 0 and delta_y < delta_y_max) or (delta_y <= 0 and abs(delta_y) < delta_y_min))
         {
-            correctPath.addCoordinate(geopath.path()[i]);
+            correct_path.addCoordinate(coordinate_to_correct_path);
             continue;
         }
 
         // climbs too fast
         else if(delta_y > 0 and delta_y > delta_y_max)
         {
-            coordinate.setAltitude(correctPath.path()[i-1].altitude() + delta_y_max);
-            m_isMatchingMetrics = false;
+            coordinate_to_correct_path.setAltitude(correct_path.path().at(i-1).altitude() + delta_y_max);
+            m_matchingMetrics = false;
         }
-        // descends too fast
+
+        // descend too fast
         else if(delta_y < 0 and abs(delta_y) > delta_y_min)
         {
-            coordinate.setAltitude(correctPath.path()[i-1].altitude() - delta_y_min);
-            m_isMatchingMetrics = false;
+            coordinate_to_correct_path.setAltitude(correct_path.path().at(i-1).altitude() - delta_y_min);
+            m_matchingMetrics = false;
         }
-        correctPath.addCoordinate(coordinate);
-
-        if(not m_isMatchingMetrics)
-            metricsCorrectedGeopath = correctPath;
+        correct_path.addCoordinate(coordinate_to_correct_path);
     }
-    calculateCorrectedPathForUI(correctPath);
+    if(not m_matchingMetrics)
+        m_metricsPath = correct_path;
 
-}
-
-void ElevationWidgetPrivate::calculateCorrectedPathForUI(QGeoPath c_geopath)
-{
-    QList<QPointF> data;
     float previous_distance = 0;
-    for(size_t i = 0; i < c_geopath.path().length(); i++)
+    for(size_t i = 0; i < correct_path.path().size(); ++i)
     {
         QPointF point;
         float delta_s = 0;
-        point.setY(layout.height - c_geopath.path()[i].altitude() * layout.height / (axis.y.maxValue * axis.stretch));
+        point.setY(m_metricsPolyline->height() - correct_path.path().at(i).altitude() * m_metricsPolyline->height()
+                    / (axis.y.max * axis.stretch));
         if(i > 0)
-            delta_s = c_geopath.path()[i].distanceTo(c_geopath.path()[i-1]);
+            delta_s = correct_path.path().at(i).distanceTo(correct_path.path().at(i-1));
         previous_distance += delta_s;
-        point.setX(previous_distance * layout.width / axis.x.maxValue);
-        data.append(point);
+        point.setX(previous_distance * m_metricsPolyline->width() / axis.x.max);
+        correct_route_pixel.push_back(point);
     }
-    setCorrectedPath(data);
+    m_metricsPolyline->setList(correct_route_pixel);
 }
 
-void ElevationWidgetPrivate::setAcceptCalculate()
+void ElevationWidgetPrivate::calculateEnvelope()
 {
-    m_acceptCalculate += 1;
-    if (m_acceptCalculate == 2){
-        m_acceptCalculate = 0;
-        emit endElevationCalculate();
-    }
-}
-
-void ElevationWidgetPrivate::intersectCalculationFinished(quint8 progress, const QVector<Elevation::Point>& resultPath)
-{
-    QList<QPointF> _intersectList;
-
-    // check for first & last point lies inside ground:
-    bool _first_point_in_ground = false;
-    bool _last_point_in_ground = false;
-    if((float)routeParser->elevationGeoPoint(geopath.path().first().latitude(), geopath.path().first().longitude()) > geopath.path().first().altitude())
-        _first_point_in_ground = true;
-    if((float)routeParser->elevationGeoPoint(geopath.path().last().latitude(), geopath.path().last().longitude()) > geopath.path().last().altitude())
-        _last_point_in_ground = true;
-
-    if(_first_point_in_ground)
-        _intersectList.append(QPointF(0, layout.height - geopath.path().first().altitude() * layout.height / (axis.y.maxValue * axis.stretch)));
-
-    // эта херня будет отвечать за то, лежит ли любая часть маршрута внутри рельефа)
-    // bool _intersects_flag = false;
-    m_isIntersecting = false;
-    for(size_t i = 0; i < resultPath.length(); i++)
+    if(m_route.empty())
     {
-        if(resultPath[i].isBase())
-            continue;
-        QPointF _point(resultPath[i].distance(), resultPath[i].altitude());
-        _intersectList.append(toPixel(_point));
-        if(not m_isIntersecting)
-            m_isIntersecting = true;
-    }
-
-    // additional check if all desired points lies inside graph
-    if(not m_isIntersecting and heightmapParser->elevation(geopath.path().first().latitude(), geopath.path().first().longitude()) > geopath.path().first().altitude())
-        m_isIntersecting = true;
-    Q_Q(ElevationWidget);
-    if(m_isIntersecting)
-        emit(q->intersectingStateChanged());
-    setAcceptCalculate();
-    if(_last_point_in_ground)
-        _intersectList.append(QPointF(layout.width, layout.height - geopath.path().last().altitude() * layout.height / (axis.y.maxValue * axis.stretch)));
-    setIntersections(_intersectList);
-    emit requestIntersects();
-}
-
-void ElevationWidgetPrivate::resize(float w, float h, float zoom_w, float zoom_h)
-{
-    const float RIGHT_OFFSET = 10;
-    if(w == layout.width and h == layout.height and
-       zoom_w == layout.horizontal_zoom and zoom_h == layout.vertical_zoom)
+        qWarning() << "<charts> Route does not contain any points, envelope calculation will not be executed.";
         return;
-    layout.width = w - RIGHT_OFFSET;
-    layout.height = h;
-    layout.horizontal_zoom = zoom_w;
-    layout.vertical_zoom = zoom_h;
-    if(not geopath.isEmpty() and layout.width * layout.height > 0)
-    {
-        recalculate();
     }
+    QGeoPath path_to_process;
+    for(GeoPoint point : m_route)
+        path_to_process.addCoordinate(point.coordinate());
+    routeParser->buildRouteAndElevationProfiles(path_to_process, aircraftMetrics.envelopeHeight, aircraftMetrics.envelopeSize,
+                                                aircraftMetrics.velocity, aircraftMetrics.climbRate, aircraftMetrics.descendRate);
 }
 
-QPointF ElevationWidgetPrivate::iterateOverRange(float rangeStart, float rangeStop)
+void ElevationWidgetPrivate::calculateEnvelopeFinished(quint8 progress, const Elevation::RouteAndElevationProfiles& deltaResult)
 {
-    if(geopath.isEmpty())
-        return QPointF(-1, -1);
-    if(not iterator.rangeSet)
+    QVector<Elevation::Point> _route = deltaResult.route();
+    float _local_y_max = 0;
+    m_envelope.clearPath();
+    for(const Elevation::Point& point : _route)
     {
-        iterator.rangeMin = -1;
-        iterator.rangeMax = -1;
-        iterator.range = 0;
-        if(rangeStart == 0)
-            iterator.rangeMin = 0;
-        if(rangeStop == 1)
-            iterator.rangeMax = m_profile.length() - 1;
-        if(rangeStart != 0 and rangeStop != 1)
+        QGeoCoordinate coord(point.latitude(), point.longitude(), point.altitude());
+        m_envelope.addCoordinate(coord);
+        if(coord.altitude() > _local_y_max)
+            _local_y_max = coord.altitude();
+    }
+    update(ProfileUpdateBehaviour::RebuildProfile, _local_y_max);
+
+    list<QPointF> _list;
+    float prev_distance = 0;
+    for(size_t i = 0; i < m_envelope.path().size(); i++)
+    {
+        float ds = 0;
+        if(i > 0)
+            ds = m_envelope.path()[i].distanceTo(m_envelope.path()[i-1]);
+        prev_distance += ds;
+        QPointF point(prev_distance, m_envelope.path()[i].altitude()); //- axis.relative_height);
+        _list.push_back(toPixelCoords(point, axis.x.max, axis.y.max, axis.stretch,
+                                      m_envelopePolyline->width(), m_envelopePolyline->height()));
+    }
+
+    list<QPointF> coridor_list;
+    size_t min_size = deltaResult.lowBound().size() - deltaResult.highBound().size();
+    if(min_size >= 0)
+    {
+        for(size_t i = 0; i < deltaResult.highBound().size(); ++i)
         {
-            int lval1 = rangeStart * axis.x.maxValue;
-            int lval2 = rangeStop * axis.x.maxValue;
-            bool _rangeMinFlag = false;
-            for(int i = 0; i < m_profile.length(); i++)
-            {
-                int rval = m_profile[i].x();
-                if(lval1 < rval and not _rangeMinFlag)
-                {
-                    iterator.rangeMin = i > 0 ? i - 1 : 0;
-                    _rangeMinFlag = true;
-                }
-                if(lval2 >= rval)
-                    iterator.rangeMax = i < m_profile.length() - 1 ? i + 1 : i;
-            }
+            coridor_list.push_back(toPixelCoords(deltaResult.highBound().at(i), axis.x.max, axis.y.max, axis.stretch,
+                                                 m_coridorPolygon->width(), m_coridorPolygon->height()));
+            coridor_list.push_back(toPixelCoords(deltaResult.lowBound().at(i), axis.x.max, axis.y.max, axis.stretch,
+                                                 m_coridorPolygon->width(), m_coridorPolygon->height()));
         }
-        if (iterator.rangeMax == -1) {
-            return QPointF(-1, -1);
-        }
-        Q_ASSERT_X(iterator.rangeMax < m_profile.length(), "<qplot> Итератор: ", "макс. значение больше размера профиля высот.");
-        Q_ASSERT_X(iterator.rangeMin >= 0, "<qplot> Итератор:", "мин. значение меньше нуля.");
-        iterator.rangeSet = true;
-        iterator.range = iterator.rangeMin;
+
     }
-    iterator.range++;
-    if(iterator.range < iterator.rangeMax)
-    {
-        return QPointF(m_profile[iterator.range].x() * layout.width / axis.x.maxValue,
-                m_profile[iterator.range].y() * layout.height / (axis.y.maxValue * axis.stretch));
-    } else {
-        iterator.range = 0;
-        iterator.rangeSet = false;
-        return QPointF(-1, -1);
-    }
+    m_envelopePolyline->setList(_list);
+    m_coridorPolygon->setList(coridor_list);
 }
 
-void ElevationWidgetPrivate::changeFlightPointAltitude(int index, float delta)
+void ElevationWidgetPrivate::calculateIntersects()
 {
-    QGeoCoordinate coord = geopath.coordinateAt(index);
-    coord.setAltitude(coord.altitude() + delta * (coord.altitude() / axis.y.roundMaxValue * .1 + .01));
-    if(coord.altitude() <= ALTITUDE_MIN)
-        coord.setAltitude(ALTITUDE_MIN);
-    if(coord.altitude() >= ALTITUDE_MAX)
+    routeParser->testRouteIntersectGround(fromRoute(m_route));
+}
+
+void ElevationWidgetPrivate::calculateIntersectsFinished(quint8 progress, const QVector<Elevation::Point>& resultPath)
+{
+    list<QPointF> intersect_list;
+
+    m_intersects = false;
+    for(Elevation::Point point : resultPath)
     {
-        coord.setAltitude(ALTITUDE_MAX);
-        qInfo() << "?)";
+        if(point.isBase() && point.orientation() == Elevation::Point::OrientationFromTheGround::Ground)
+        {
+            QPointF pixel_point(toPixelCoords(QPointF(point.distance(), point.altitude()), axis.x.max, axis.y.max, axis.stretch,
+                                              m_intersectsPolygon->width(), m_intersectsPolygon->height()));
+            intersect_list.push_back(pixel_point);
+            intersect_list.push_back(pixel_point);
+        }
+        if(point.orientation() == Elevation::Point::OrientationFromTheGround::Air or
+           point.orientation() == Elevation::Point::OrientationFromTheGround::Ground)
+            continue;
+        QPointF pixel_point(point.distance(), point.altitude());
+        intersect_list.push_back(toPixelCoords(pixel_point, axis.x.max, axis.y.max, axis.stretch,
+                                 m_intersectsPolygon->width(), m_intersectsPolygon->height()));
+        if(not m_intersects)
+            m_intersects = true;
     }
-    geopath.replaceCoordinate(index, coord);
-    recalculate();
 
     Q_Q(ElevationWidget);
-    emit(q->geopathChanged());
+    if(m_intersects)
+        emit(q->intersectingStateChanged(m_intersects));
+
+    m_intersectsPolygon->setList(intersect_list);
 }
 
-QList<QString> ElevationWidgetPrivate::colors() const { return m_colors; }
-void ElevationWidgetPrivate::setColors(const QList<QString>& list) {
-    if (m_colors == list) return;
-    m_colors = list;
-    emit colorsChanged();
+QPointF ElevationWidgetPrivate::toPixelCoords(const QPointF& point, float x_max, float y_max, float y_stretch, float pixel_width, float pixel_height)
+{
+    return QPointF(point.x() * pixel_width / x_max, pixel_height - point.y() * pixel_height / (y_max * y_stretch));
 }
-QVector<QPointF> ElevationWidgetPrivate::profile() const { return m_profile; }
-void ElevationWidgetPrivate::setProfile(const QVector<QPointF>& vec) {
-    if (m_profile == vec) return;
-    m_profile = vec;
-    emit profileChanged();
-    recalculateWithGeopathChanged();
+
+QPointF ElevationWidgetPrivate::fromPixelCoords(const QPointF& point, float x_max, float y_max, float y_stretch, float pixel_width, float pixel_height)
+{
+    return QPointF(point.x() * x_max / pixel_width, (pixel_height - point.y()) * y_max * y_stretch / pixel_height);
 }
-QList<QPointF> ElevationWidgetPrivate::path() const { return m_path; }
-void ElevationWidgetPrivate::setPath(const QList<QPointF>& list) {
-    if (m_path == list) return;
-    m_path = list;
-    emit pathChanged();
+
+list<GeoPoint> ElevationWidgetPrivate::toRoute(const QGeoPath& path)
+{
+    list<GeoPoint> ret;
+    for(QGeoCoordinate coord : path.path())
+        ret.push_back(GeoPoint(coord, aircraftMetrics.velocity));
+    return ret;
 }
-QList<QPointF> ElevationWidgetPrivate::correctedPath() const { return m_correctedPath; }
-void ElevationWidgetPrivate::setCorrectedPath(const QList<QPointF>& list) {
-    if (m_correctedPath == list) return;
-    m_correctedPath = list;
-    emit correctedPathChanged();
+
+QGeoPath ElevationWidgetPrivate::fromRoute(const std::list<GeoPoint> route)
+{
+    QGeoPath ret;
+    for(GeoPoint point : route)
+        ret.addCoordinate(point.coordinate());
+    return ret;
 }
-QList<float> ElevationWidgetPrivate::keyValues() const { return m_keyValues; }
-void ElevationWidgetPrivate::setKeyValues(const QList<float>& values) {
-    if (m_keyValues == values) return;
-    m_keyValues = values;
-    emit keyValuesChanged();
+
+ElevationWidgetPrivate::WidgetState ElevationWidgetPrivate::state() const { return m_state; }
+void ElevationWidgetPrivate::setState(WidgetState _state) {
+    if (m_state == _state) return;
+    m_state = _state;
+    emit stateChanged();
 }
-bool ElevationWidgetPrivate::showIndex() const { return input.showIndex; }
-void ElevationWidgetPrivate::setShowIndex(bool state) {
-    if (input.showIndex == state) return;
-    input.showIndex = state;
-    emit showIndexChanged();
-}
-QList<QPointF> ElevationWidgetPrivate::intersections() const { return m_intersections; }
-void ElevationWidgetPrivate::setIntersections(const QList<QPointF>& list) {
-    if (m_intersections == list) return;
-    m_intersections = list;
-    emit intersectionsChanged();
-}
-QList<QPointF> ElevationWidgetPrivate::envelope() const { return m_envelope; }
-void ElevationWidgetPrivate::setEnvelope(const QList<QPointF>& list) {
-    if (m_envelope == list) return;
-    m_envelope = list;
-    emit envelopeChanged();
-}
-bool ElevationWidgetPrivate::fileIntegrity() const { return m_fileIntegrity; }
-void ElevationWidgetPrivate::setFileIntegrity(bool state) {
-    if (m_fileIntegrity == state) return;
-    m_fileIntegrity = state;
-    emit fileIntegrityChanged();
-}
-bool ElevationWidgetPrivate::valid() const { return m_valid; }
-void ElevationWidgetPrivate::setValid(bool state) {
-    if (m_valid == state) return;
-    m_valid = state;
-    emit validChanged();
-}
+
+#pragma endregion IMPLEMENTATION

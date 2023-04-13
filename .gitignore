@@ -1,1 +1,20 @@
-CMakeLists.txt.user
+build*/
+logs*/
+doc/html
+doc/doxy.log
+*.user
+*.autosave
+settings/userSettings.json
+settings/*.cfg
+# Generated files
+moc_*
+ui_*
+*.o
+*.moc
+*.prl
+
+
+# doxygen
+src/html/
+src/latex/
+
