@@ -277,6 +277,10 @@ void ElevationWidgetPrivate::applyMetricsCorrection()
     }
     m_route = toRoute(m_metricsPath);
     this->update(ProfileUpdateBehaviour::RebuildProfile, 0, ModelUpdateBehaviour::Update);
+
+    // дублируем еще раз потому что потому
+    m_route = toRoute(m_metricsPath);
+    this->update(RebuildProfile, 0, Update);
 }
 
 bool ElevationWidgetPrivate::isMatchingMetrics()
@@ -506,6 +510,7 @@ void ElevationWidgetPrivate::calculateEnvelopeFinished(quint8 progress, const El
         float ds = 0;
         if(i > 0)
             ds = m_envelope.path()[i].distanceTo(m_envelope.path()[i-1]);
+
         prev_distance += ds;
         QPointF point(prev_distance, m_envelope.path()[i].altitude()); //- axis.relative_height);
         _list.push_back(toPixelCoords(point, axis.x.max, axis.y.max, axis.stretch,
@@ -523,7 +528,6 @@ void ElevationWidgetPrivate::calculateEnvelopeFinished(quint8 progress, const El
             coridor_list.push_back(toPixelCoords(deltaResult.lowBound().at(i), axis.x.max, axis.y.max, axis.stretch,
                                                  m_coridorPolygon->width(), m_coridorPolygon->height()));
         }
-
     }
     m_envelopePolyline->setList(_list);
     m_coridorPolygon->setList(coridor_list);

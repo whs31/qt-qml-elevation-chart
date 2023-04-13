@@ -13,6 +13,8 @@ CDeclarativeAxis::CDeclarativeAxis(QQuickItem* parent)
 
 void CDeclarativeAxis::paint(QPainter* painter)
 {
+    if(axis_x.max < 0)
+        return;
     QColor col(m_color);
     QBrush brush(col);
     QPen pen(brush, 2, Qt::PenStyle::DashLine, Qt::PenCapStyle::SquareCap, Qt::PenJoinStyle::BevelJoin);
@@ -54,7 +56,9 @@ void CDeclarativeAxis::paint(QPainter* painter)
         bool meters = dist < 1'000 - 1;
         if(not meters)
             dist /= 1'000;
-        painter->drawText(QRectF(x_cap + 3, this->height() - offsets().w(), 50, 16), QString::number(dist - 1, 'f', 0) + (meters ? "м" : "км"));
+        int dist_rounded = (int)dist;
+        dist_rounded += (dist_rounded % 10 == 9 ? -1 : (dist_rounded % 10 == 1 ? 1 : 0));
+        painter->drawText(QRectF(x_cap + 3, this->height() - offsets().w(), 50, 16), QString::number(dist_rounded) + (meters ? "м" : "км")); //a
     }
 }
 
