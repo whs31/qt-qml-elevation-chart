@@ -1,7 +1,7 @@
 #include "pointsmodel.hpp"
 #include <QDebug>
 
-using namespace Charts;
+using namespace GLCharts;
 
 PointsModel::PointsModel(QObject *parent)
     : QAbstractListModel(parent)

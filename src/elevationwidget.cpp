@@ -19,7 +19,7 @@
 #include <QGeoPath>
 #include <QVector>
 
-using namespace Charts;
+using namespace GLCharts;
 
 #pragma region PUBLIC
 

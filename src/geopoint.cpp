@@ -1,6 +1,6 @@
 #include "../include/charts/geopoint.hpp"
 
-using namespace Charts;
+using namespace GLCharts;
 
 GeoPoint::GeoPoint(const QGeoCoordinate &coordinate, float velocity)
     : m_coordinate(coordinate)
