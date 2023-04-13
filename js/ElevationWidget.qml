@@ -143,6 +143,7 @@ Rectangle { id: c_ImplRoot;
 		visible: ElevationWidgetBackend.state === ElevationWidgetBackend.WidgetState.Fine;
 		offsets: vec_Offsets;
 		opacity: 0.7;
+//		fontfamily: c_ImplRoot.s_FontFamily;
 	}
 
 	Rectangle {
