@@ -386,12 +386,12 @@ void ElevationWidgetPrivate::syncPointsWithPath(int _index)
     l_begin->setAltitude(geo_point.y());
 
     // эта херня ужасно сегфолит)
-//    float max_y = 0;
-//    for(QGeoCoordinate coordinate : fromRoute(m_route).path())
-//        if(coordinate.altitude() > max_y)
-//            max_y = coordinate.altitude();
+    float max_y = 0;
+    for(auto coordinate : m_route)
+        if(coordinate.altitude() > max_y)
+            max_y = coordinate.altitude();
 
-    if(0/*qFuzzyCompare(max_y, axis.y.maxValue)*/)
+    if(qFuzzyCompare(max_y, axis.y.maxValue))
         update(ProfileUpdateBehaviour::KeepProfile, 0, ModelUpdateBehaviour::Keep);
     else
         update(ProfileUpdateBehaviour::RebuildProfile, 0, ModelUpdateBehaviour::Keep);
