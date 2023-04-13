@@ -60,11 +60,7 @@ namespace Charts
 
         struct Axes {
             struct Axis {
-                float maxValue;
-                float roundMaxValue;
-                int scaleValue;
-                float scaleCount;
-                float scalePixelSize;
+                float max;
             };
             Axis x, y;
             const float stretch = 1.15;

@@ -12,14 +12,22 @@ namespace ChartsOpenGL {
 
         QString m_color = "#FF0000";
         QVector4D m_offsets;
-        float m_max = 0;
-        float m_min = 0;
+
+        struct Axis
+        {
+            float max = 0;
+            float min = 0;
+            float round_max;
+            int scale_value;
+            float scale_count;
+            float scale_pixel_size;
+        } axis_x, axis_y;
 
         public:
             CDeclarativeAxis(QQuickItem* parent = nullptr);
 
             void paint(QPainter* painter) override;
-            void set(float max, float min = 0);
+            void set(float stretch, float xmax, float ymax, float xmin = 0, float ymin = 0);
 
             signals:
                 __signal colorChanged();

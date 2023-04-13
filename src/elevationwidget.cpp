@@ -315,23 +315,8 @@ void ElevationWidgetPrivate::update(ProfileUpdateBehaviour mode, float force_y_a
         m_profilePolygon->clear();            // TODO: это нужно для асинхронной загрузки профиля по частям. пока выключил.
         QPointF bounds =  heightmapParser->buildProfileChartAsync(fromRoute(m_route));//, axis.relative_height);
 
-        axis.x.maxValue = bounds.x();
-        axis.x.roundMaxValue = 0;
-        axis.y.maxValue = force_y_axis_height ? force_y_axis_height : bounds.y();
-        axis.y.roundMaxValue = 0;
-
-        int power_of_x = axis.x.maxValue > 0 ? (int) log10 ((float) axis.x.maxValue) : 1;
-        int power_of_y = axis.y.maxValue > 0 ? (int) log10 ((float) axis.y.maxValue) : 1;
-        while(axis.x.roundMaxValue < axis.x.maxValue)
-            axis.x.roundMaxValue += pow(10, power_of_x);
-        while(axis.y.roundMaxValue < axis.y.maxValue)
-            axis.y.roundMaxValue += pow(10, power_of_y);
-        axis.x.scaleValue = pow(10, power_of_x);
-        axis.y.scaleValue = pow(10, power_of_y);
-        axis.x.scaleCount = (float)axis.x.maxValue / (float)axis.x.scaleValue;
-        axis.y.scaleCount = (float)axis.y.maxValue * axis.stretch / (float)axis.y.scaleValue;
-        axis.x.scalePixelSize = m_pathPolyline->width() / axis.x.scaleCount;
-        axis.y.scalePixelSize = m_pathPolyline->height() / axis.y.scaleCount;
+        axis.x.max = bounds.x();
+        axis.y.max = force_y_axis_height ? force_y_axis_height : bounds.y();
     }
 
     list<QPointF> path_polyline;
@@ -341,7 +326,7 @@ void ElevationWidgetPrivate::update(ProfileUpdateBehaviour mode, float force_y_a
     {
         distance_cap += point.coordinate().distanceTo(prev_coord);
         QPointF distance_height_point = QPointF(distance_cap, point.altitude());
-        path_polyline.push_back(toPixelCoords(distance_height_point, axis.x.maxValue, axis.y.maxValue,
+        path_polyline.push_back(toPixelCoords(distance_height_point, axis.x.max, axis.y.max,
                                               axis.stretch, m_pathPolyline->width(), m_pathPolyline->height()));
         prev_coord = point.coordinate();
     }
@@ -362,6 +347,8 @@ void ElevationWidgetPrivate::update(ProfileUpdateBehaviour mode, float force_y_a
 
     this->calculateMetrics();
     this->calculateIntersects();
+
+    m_xaxis->set(axis.stretch, axis.x.max, axis.y.max);
 }
 
 void ElevationWidgetPrivate::sync(QVector<QPointF> vec)
@@ -369,7 +356,7 @@ void ElevationWidgetPrivate::sync(QVector<QPointF> vec)
     list<QPointF> packet;
     for(size_t i = 0; i < vec.size(); ++i)
     {
-        packet.push_back(toPixelCoords(vec.at(i), axis.x.maxValue, axis.y.maxValue,
+        packet.push_back(toPixelCoords(vec.at(i), axis.x.max, axis.y.max,
                          axis.stretch, m_pathPolyline->width(), m_pathPolyline->height()));
     }
     m_profilePolygon->asyncAppend(packet);
@@ -378,12 +365,12 @@ void ElevationWidgetPrivate::sync(QVector<QPointF> vec)
 void ElevationWidgetPrivate::syncPointsWithPath(int _index)
 {
     ChartPoint point = model->getPoint(_index);
-    QPointF geo_point = fromPixelCoords(QPointF(point.distance, point.altitude), axis.x.maxValue, axis.y.maxValue,
+    QPointF geo_point = fromPixelCoords(QPointF(point.distance, point.altitude), axis.x.max, axis.y.max,
                                         axis.stretch, m_pathPolyline->width(), m_pathPolyline->height());
 
     float alt = geo_point.y();
-    if(alt < 0)
-        alt = 0;
+    if(alt < 1)
+        alt = 1;
     if(alt > 20'000)
         alt = 20'000;
 
@@ -397,7 +384,7 @@ void ElevationWidgetPrivate::syncPointsWithPath(int _index)
         if(coordinate.altitude() > max_y)
             max_y = coordinate.altitude();
 
-    if(qFuzzyCompare(max_y, axis.y.maxValue))
+    if(qFuzzyCompare(max_y, axis.y.max))
         update(ProfileUpdateBehaviour::KeepProfile, 0, ModelUpdateBehaviour::Keep);
     else
         update(ProfileUpdateBehaviour::RebuildProfile, 0, ModelUpdateBehaviour::Keep);
@@ -474,11 +461,11 @@ void ElevationWidgetPrivate::calculateMetrics()
         QPointF point;
         float delta_s = 0;
         point.setY(m_metricsPolyline->height() - correct_path.path().at(i).altitude() * m_metricsPolyline->height()
-                    / (axis.y.maxValue * axis.stretch));
+                    / (axis.y.max * axis.stretch));
         if(i > 0)
             delta_s = correct_path.path().at(i).distanceTo(correct_path.path().at(i-1));
         previous_distance += delta_s;
-        point.setX(previous_distance * m_metricsPolyline->width() / axis.x.maxValue);
+        point.setX(previous_distance * m_metricsPolyline->width() / axis.x.max);
         correct_route_pixel.push_back(point);
     }
     m_metricsPolyline->setList(correct_route_pixel);
@@ -521,7 +508,7 @@ void ElevationWidgetPrivate::calculateEnvelopeFinished(quint8 progress, const El
             ds = m_envelope.path()[i].distanceTo(m_envelope.path()[i-1]);
         prev_distance += ds;
         QPointF point(prev_distance, m_envelope.path()[i].altitude()); //- axis.relative_height);
-        _list.push_back(toPixelCoords(point, axis.x.maxValue, axis.y.maxValue, axis.stretch,
+        _list.push_back(toPixelCoords(point, axis.x.max, axis.y.max, axis.stretch,
                                       m_envelopePolyline->width(), m_envelopePolyline->height()));
     }
 
@@ -531,9 +518,9 @@ void ElevationWidgetPrivate::calculateEnvelopeFinished(quint8 progress, const El
     {
         for(size_t i = 0; i < deltaResult.highBound().size(); ++i)
         {
-            coridor_list.push_back(toPixelCoords(deltaResult.highBound().at(i), axis.x.maxValue, axis.y.maxValue, axis.stretch,
+            coridor_list.push_back(toPixelCoords(deltaResult.highBound().at(i), axis.x.max, axis.y.max, axis.stretch,
                                                  m_coridorPolygon->width(), m_coridorPolygon->height()));
-            coridor_list.push_back(toPixelCoords(deltaResult.lowBound().at(i), axis.x.maxValue, axis.y.maxValue, axis.stretch,
+            coridor_list.push_back(toPixelCoords(deltaResult.lowBound().at(i), axis.x.max, axis.y.max, axis.stretch,
                                                  m_coridorPolygon->width(), m_coridorPolygon->height()));
         }
 
@@ -556,7 +543,7 @@ void ElevationWidgetPrivate::calculateIntersectsFinished(quint8 progress, const 
     {
         if(point.isBase() && point.orientation() == Elevation::Point::OrientationFromTheGround::Ground)
         {
-            QPointF pixel_point(toPixelCoords(QPointF(point.distance(), point.altitude()), axis.x.maxValue, axis.y.maxValue, axis.stretch,
+            QPointF pixel_point(toPixelCoords(QPointF(point.distance(), point.altitude()), axis.x.max, axis.y.max, axis.stretch,
                                               m_intersectsPolygon->width(), m_intersectsPolygon->height()));
             intersect_list.push_back(pixel_point);
             intersect_list.push_back(pixel_point);
@@ -565,7 +552,7 @@ void ElevationWidgetPrivate::calculateIntersectsFinished(quint8 progress, const 
            point.orientation() == Elevation::Point::OrientationFromTheGround::Ground)
             continue;
         QPointF pixel_point(point.distance(), point.altitude());
-        intersect_list.push_back(toPixelCoords(pixel_point, axis.x.maxValue, axis.y.maxValue, axis.stretch,
+        intersect_list.push_back(toPixelCoords(pixel_point, axis.x.max, axis.y.max, axis.stretch,
                                  m_intersectsPolygon->width(), m_intersectsPolygon->height()));
         if(not m_intersects)
             m_intersects = true;
