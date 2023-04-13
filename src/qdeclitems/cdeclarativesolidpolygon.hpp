@@ -3,6 +3,7 @@
 #include <QQuickItem>
 #include <QPointF>
 #include <list>
+#define __signal void
 
 using std::list;
 
@@ -38,8 +39,8 @@ namespace ChartsOpenGL {
             void setDrawingMode(const QString& newDrawingMode);
 
             signals:
-                void fillColorChanged();
-                void drawingModeChanged();
+                __signal fillColorChanged();
+                __signal drawingModeChanged();
 
         protected:
             virtual QSGNode* updatePaintNode(QSGNode* old_node, UpdatePaintNodeData* update_paint_node_data) override;

@@ -4,6 +4,7 @@
 #include <vector>
 #include <QPointF>
 #include <QTimer>
+#define __signal void
 
 using std::vector;
 
@@ -67,6 +68,6 @@ namespace Charts
             ChartPoint getPoint(const int _index);
 
             signals:
-                void pointChanged(int _index);
+                __signal pointChanged(int _index);
     };
 }

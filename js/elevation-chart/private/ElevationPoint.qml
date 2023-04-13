@@ -8,6 +8,7 @@ Item { id: c_ImplPoint;
 	x: distance - width / 2;
 	y: altitude - height / 2;
 	property bool b_Active: false;
+	z: 100;
 
 	GLPoint {
 		anchors.fill: parent;

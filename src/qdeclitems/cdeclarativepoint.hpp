@@ -2,6 +2,7 @@
 
 #include <QQuickItem>
 #include <QPointF>
+#define __signal void
 
 namespace ChartsOpenGL {
     class CDeclarativePoint : public QQuickItem
@@ -23,8 +24,8 @@ namespace ChartsOpenGL {
             void setRadius(float val);
 
             signals:
-                void colorChanged();
-                void radiusChanged();
+                __signal colorChanged();
+                __signal radiusChanged();
 
         protected:
             virtual QSGNode* updatePaintNode(QSGNode* old_node, UpdatePaintNodeData* update_paint_node_data) override;

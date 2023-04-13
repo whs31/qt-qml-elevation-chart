@@ -3,6 +3,7 @@
 #include <QQuickItem>
 #include <QPointF>
 #include <list>
+#define __signal void
 
 using std::list;
 using std::vector;
@@ -33,7 +34,7 @@ namespace ChartsOpenGL {
             void setLineColor(const QString& col);
 
             signals:
-                void lineColorChanged();
+                __signal lineColorChanged();
 
         protected:
             virtual QSGNode* updatePaintNode(QSGNode* old_node, UpdatePaintNodeData* update_paint_node_data) override;

@@ -3,6 +3,7 @@
 #include <QQuickItem>
 #include <QPointF>
 #include <list>
+#define __signal void
 
 using std::list;
 
@@ -23,7 +24,7 @@ namespace ChartsOpenGL {
             void clear();
 
             signals:
-                void fillColorChanged();
+                __signal fillColorChanged();
 
         protected:
             virtual QSGNode* updatePaintNode(QSGNode* old_node, UpdatePaintNodeData* update_paint_node_data) override;

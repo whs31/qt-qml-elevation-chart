@@ -2,6 +2,7 @@
 
 #include "charts/elevationwidget.hpp"
 #include <QGeoPath>
+#define __signal void
 
 namespace Elevation {
     class Elevation;
@@ -119,7 +120,7 @@ namespace Charts
             /******************************************************/
 
             signals:
-                void stateChanged();
+                __signal stateChanged();
 
         protected:
             ElevationWidget* q_ptr;

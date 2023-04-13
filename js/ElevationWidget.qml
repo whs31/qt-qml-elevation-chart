@@ -15,7 +15,7 @@ Rectangle { id: c_ImplRoot;
 
 	property string s_FontFamily: "Ubuntu Mono";
 	property bool b_ShowIndexes: true;
-	property vector4d vec_Offsets: Qt.vector4d(30, 0, 15, 7); // left top right bottom : x y z w
+	property vector4d vec_Offsets: Qt.vector4d(30, 0, 7, 15); // left top right bottom : x y z w
 
 	// private:
 	color: s_BackgroundColor;
@@ -29,6 +29,7 @@ Rectangle { id: c_ImplRoot;
 		anchors.rightMargin: vec_Offsets.z;
 		anchors.topMargin: vec_Offsets.y;
 
+		boundsBehavior: Flickable.StopAtBounds;
 		interactive: true;
 		flickableDirection: Flickable.HorizontalAndVerticalFlick;
 
@@ -133,20 +134,66 @@ Rectangle { id: c_ImplRoot;
 			anchors.fill: c_ImplProfile;
 			delegate: Private.ElevationPoint { }
 		}
+	}
 
-		GLAxis {
+	GLAxis { id: c_ImplXAxis;
 		objectName: "qml_gl_x_axis"; //! required!
 		anchors.fill: parent;
 		color: c_ImplRoot.s_ForegroundColor;
-		visible: true;
+		visible: ElevationWidgetBackend.state === ElevationWidgetBackend.WidgetState.Fine;
+		offsets: vec_Offsets;
+		opacity: 0.7;
 	}
 
-		GLAxis {
-			objectName: "qml_gl_y_axis"; //! required!
-			anchors.fill: parent;
-			color: c_ImplRoot.s_ForegroundColor;
-			visible: true;
+	Rectangle {
+		anchors.top: parent.bottom;
+		anchors.topMargin: -vec_Offsets.w;
+		anchors.right: parent.right;
+		color: c_ImplRoot.s_ForegroundColor;
+		visible: ElevationWidgetBackend.state === ElevationWidgetBackend.WidgetState.Fine;
+		height: vec_Offsets.w;
+		width: 100;
+		opacity: c_ImplXAxis.opacity;
+
+		Text {
+			anchors.centerIn: parent;
+			horizontalAlignment: Text.AlignHCenter;
+			verticalAlignment: Text.AlignVCenter;
+			font.family: s_FontFamily;
+			color: s_BackgroundColor;
+			font.pixelSize: vec_Offsets.w;
+			font.bold: true;
+			text: "РАССТОЯНИЕ";
 		}
+	}
+
+	Rectangle {
+		anchors.top: parent.top;
+		anchors.left: parent.left;
+		anchors.leftMargin: vec_Offsets.x;
+		color: c_ImplRoot.s_ForegroundColor;
+		visible: ElevationWidgetBackend.state === ElevationWidgetBackend.WidgetState.Fine;
+		height: vec_Offsets.w;
+		width: 65;
+		opacity: c_ImplXAxis.opacity;
+
+		Text {
+			anchors.centerIn: parent;
+			horizontalAlignment: Text.AlignHCenter;
+			verticalAlignment: Text.AlignVCenter;
+			font.family: s_FontFamily;
+			font.bold: true;
+			color: s_BackgroundColor;
+			font.pixelSize: vec_Offsets.w;
+			text: "ВЫСОТА";
+		}
+	}
+
+	GLAxis { id: c_ImplYAxis;
+		objectName: "qml_gl_y_axis"; //! required!
+		anchors.fill: parent;
+		color: c_ImplRoot.s_ForegroundColor;
+		visible: false;
 	}
 
 	Text { id: c_ImplLabelElevationsMissing;
