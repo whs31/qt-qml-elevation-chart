@@ -4,12 +4,13 @@
 
 #include <QObject>
 #include <list>
+#define __signal void
 
 using std::list;
 class QQuickItem;
 
 /// @namespace Пространство имен для библиотеки построения графиков
-namespace Charts
+namespace GLCharts
 {
     /// @private Приватная имплементация профиля высот.
     class ElevationWidgetPrivate;
@@ -17,6 +18,8 @@ namespace Charts
     class ElevationWidget : public QObject
     {
         Q_OBJECT
+        Q_DECLARE_PRIVATE(ElevationWidget)
+
         public:
             explicit ElevationWidget(QObject *parent);
 
@@ -104,23 +107,20 @@ namespace Charts
 
             signals:
                 //! @brief Сигнал, сообщающий об изменении набора точек в виджете.
-                void routeChanged();
+                __signal routeChanged();
 
                 //! @brief Сигнал, сообщающий, что состояние пересечения изменилось.
                 //! @param intersects - состояние пересечения.
-                void intersectingStateChanged(bool intersects);
+                __signal intersectingStateChanged(bool intersects);
 
                 //! @brief Сигнал посылается при завершении вычислений в виджете.
-                void processFinished();
+                __signal processFinished();
 
                 //! @brief Сигнал посылается при изменении состояния расчета огибающей.
                 //! @param state - состояние расчета огибающей.
-                void envelopeCalculated(bool state);
+                __signal envelopeCalculated(bool state);
 
         protected:
             ElevationWidgetPrivate* const d_ptr;
-
-        private:
-            Q_DECLARE_PRIVATE(ElevationWidget)
     };
-} /// namespace charts;
+} // namespace charts;

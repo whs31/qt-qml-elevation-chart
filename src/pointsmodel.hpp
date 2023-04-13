@@ -8,7 +8,7 @@
 
 using std::vector;
 
-namespace Charts
+namespace GLCharts
 {
     struct ChartPoint
     {

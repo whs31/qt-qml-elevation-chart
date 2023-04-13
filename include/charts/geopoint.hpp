@@ -2,7 +2,7 @@
 #include <QGeoCoordinate>
 
 /// @namespace Пространство имен для библиотеки построения графиков.
-namespace Charts
+namespace GLCharts
 {
     //! @class Точка на земной поверхности с определенной скоростью.
     class GeoPoint

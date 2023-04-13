@@ -15,7 +15,7 @@ void CDeclarativeAxis::paint(QPainter* painter)
 {
     QColor col(m_color);
     QBrush brush(col);
-    QPen pen(brush, 2, Qt::PenStyle::SolidLine, Qt::PenCapStyle::SquareCap, Qt::PenJoinStyle::BevelJoin);
+    QPen pen(brush, 2, Qt::PenStyle::DashLine, Qt::PenCapStyle::SquareCap, Qt::PenJoinStyle::BevelJoin);
 
     painter->setBrush(brush);
     painter->setPen(pen);

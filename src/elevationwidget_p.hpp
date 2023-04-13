@@ -20,7 +20,7 @@ namespace ChartsOpenGL {
 
 using std::list;
 
-namespace Charts
+namespace GLCharts
 {
     class PointsModel;
     class ElevationWidgetPrivate : public QObject

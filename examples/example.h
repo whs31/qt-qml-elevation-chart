@@ -15,7 +15,7 @@ class IntegrationExample : public QMainWindow
 
     private:
         Ui::IntegrationExample* ui;
-        Charts::ElevationWidget* elevationWidget;
+        GLCharts::ElevationWidget* elevationWidget;
 
         private slots:
             void on_checkBox_toggled(bool checked);
