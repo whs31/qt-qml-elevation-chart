@@ -210,7 +210,7 @@ Rectangle { id: c_ImplRoot;
 	}
 	Text { id: c_ImplLabelPathMissing;
 		anchors.fill: parent;
-		color: s_WarnColor;
+		color: Qt.lighter(s_BackgroundColor, 1.5);
 		text: "НЕ ЗАДАН МАРШРУТ";
 		font.bold: true;
 		font.pixelSize: width / 30;
