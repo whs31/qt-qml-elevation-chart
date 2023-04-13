@@ -381,9 +381,15 @@ void ElevationWidgetPrivate::syncPointsWithPath(int _index)
     QPointF geo_point = fromPixelCoords(QPointF(point.distance, point.altitude), axis.x.maxValue, axis.y.maxValue,
                                         axis.stretch, m_pathPolyline->width(), m_pathPolyline->height());
 
+    float alt = geo_point.y();
+    if(alt < 0)
+        alt = 0;
+    if(alt > 20'000)
+        alt = 20'000;
+
     auto l_begin = m_route.begin();
     std::advance(l_begin, _index);
-    l_begin->setAltitude(geo_point.y());
+    l_begin->setAltitude(alt);
 
     // эта херня ужасно сегфолит)
     float max_y = 0;
