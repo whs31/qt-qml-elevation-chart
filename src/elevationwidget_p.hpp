@@ -155,4 +155,4 @@ namespace Charts
 
         std::vector<uint8_t> m_speeds; // Вектор для скоростей, индивидуальных для каждой точки)
     };
-} ///namespace Charts;
+} //namespace charts
