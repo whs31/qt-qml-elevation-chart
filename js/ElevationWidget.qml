@@ -17,6 +17,8 @@ Rectangle { id: c_ImplRoot;
 	property bool b_ShowIndexes: true;
 	property vector4d vec_Offsets: Qt.vector4d(30, 0, 30, 15); // left top right bottom : x y z w
 
+	property bool b_ZoomToPoint: false;
+
 	// private:
 	color: s_BackgroundColor;
 	layer.enabled: true;
@@ -43,9 +45,14 @@ Rectangle { id: c_ImplRoot;
 
 		visible: ElevationWidgetBackend.state === ElevationWidgetBackend.WidgetState.Fine;
 		enabled: visible;
-		contentWidth: c_ImplGlobalMouseArea.zoom * c_ImplView.width; // <==
+		//contentWidth: c_ImplGlobalMouseArea.zoom * c_ImplView.width; // <==
 
-		onContentWidthChanged: ElevationWidgetBackend.qmlDrawCall();
+		// реимплементирую эту херню на плюсовой стороне
+		onContentWidthChanged:
+		{
+			ElevationWidgetBackend.qmlDrawCall();
+			returnToBounds();
+		}
 
 		MouseArea { id: c_ImplGlobalMouseArea;
 			readonly property real fl_MaxZoom: 15000;
@@ -57,15 +64,17 @@ Rectangle { id: c_ImplRoot;
 			onWheel: {
 				if(wheel.angleDelta.y > 0 && zoom * fl_ZoomStep <= fl_MaxZoom)
 					zoom *= fl_ZoomStep;
-				else
-				{
+				else {
 					if(zoom / fl_ZoomStep >= 1)
 						zoom /= fl_ZoomStep;
 					else
 						zoom = 1;
 				}
 			}
-			Behavior on zoom { NumberAnimation { duration: 250; } }
+			onZoomChanged: c_ImplView.resizeContent(c_ImplGlobalMouseArea.zoom * c_ImplView.width, c_ImplView.height,
+									 b_ZoomToPoint ? Qt.point(c_ImplGlobalMouseArea.mouseX, c_ImplGlobalMouseArea.mouseY) : Qt.point(0, 0));
+
+			Behavior on zoom { NumberAnimation { duration: 100; } }
 		}
 
 		GLPolygon { id: c_ImplProfile;
