@@ -355,6 +355,11 @@ void ElevationWidgetPrivate::update(ProfileUpdateBehaviour mode, float force_y_a
     m_xaxis->set(axis.stretch, axis.x.max, axis.y.max);
 }
 
+void ElevationWidgetPrivate::qmlDrawCall()
+{
+    this->update(ProfileUpdateBehaviour::RebuildProfile, 0, ModelUpdateBehaviour::Keep);
+}
+
 void ElevationWidgetPrivate::sync(QVector<QPointF> vec)
 {
     list<QPointF> packet;

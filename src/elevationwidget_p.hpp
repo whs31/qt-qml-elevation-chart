@@ -114,6 +114,7 @@ namespace GLCharts
             void applyEnvelopeCorrection();
 
             /******************************************************/
+            Q_INVOKABLE void qmlDrawCall();
 
             signals:
                 __signal stateChanged();

@@ -15,7 +15,7 @@ Rectangle { id: c_ImplRoot;
 
 	property string s_FontFamily: "Ubuntu Mono";
 	property bool b_ShowIndexes: true;
-	property vector4d vec_Offsets: Qt.vector4d(30, 0, 7, 15); // left top right bottom : x y z w
+	property vector4d vec_Offsets: Qt.vector4d(30, 0, 30, 15); // left top right bottom : x y z w
 
 	// private:
 	color: s_BackgroundColor;
@@ -35,11 +35,28 @@ Rectangle { id: c_ImplRoot;
 
 		visible: ElevationWidgetBackend.state === ElevationWidgetBackend.WidgetState.Fine;
 		enabled: visible;
+		contentWidth: c_ImplGlobalMouseArea.zoom * c_ImplView.width; // <==
 
 		MouseArea { id: c_ImplGlobalMouseArea;
+			readonly property real fl_MaxZoom: 15000;
+			property real zoom: 1;
 			anchors.fill: parent;
 			hoverEnabled: true;
-			//propagateComposedEvents: true;
+
+			onWheel: {
+				if(wheel.angleDelta.y > 0)
+					zoom *= 1.1;
+				else
+					zoom /= 1.1;
+				console.log(zoom);
+			}
+			onZoomChanged: {
+				if(zoom <= 1)
+					zoom = 1;
+				if(zoom >= fl_MaxZoom)
+					zoom = fl_MaxZoom;
+				ElevationWidgetBackend.qmlDrawCall();
+			}
 		}
 
 		GLPolygon { id: c_ImplProfile;
@@ -170,12 +187,12 @@ Rectangle { id: c_ImplRoot;
 
 	Rectangle {
 		anchors.top: parent.top;
-		anchors.left: parent.left;
-		anchors.leftMargin: vec_Offsets.x;
+		anchors.right: parent.right;
+		anchors.rightMargin: vec_Offsets.z;
 		color: c_ImplRoot.s_ForegroundColor;
 		visible: ElevationWidgetBackend.state === ElevationWidgetBackend.WidgetState.Fine;
 		height: vec_Offsets.w;
-		width: 65;
+		width: 100;
 		opacity: c_ImplXAxis.opacity;
 
 		Text {
@@ -186,7 +203,29 @@ Rectangle { id: c_ImplRoot;
 			font.bold: true;
 			color: s_BackgroundColor;
 			font.pixelSize: vec_Offsets.w;
-			text: "ВЫСОТА";
+			text: "АБС. ВЫСОТА";
+		}
+	}
+
+	Rectangle {
+		anchors.top: parent.top;
+		anchors.left: parent.left;
+		anchors.leftMargin: vec_Offsets.x;
+		color: c_ImplRoot.s_ForegroundColor;
+		visible: ElevationWidgetBackend.state === ElevationWidgetBackend.WidgetState.Fine;
+		height: vec_Offsets.w;
+		width: 100;
+		opacity: c_ImplXAxis.opacity;
+
+		Text {
+			anchors.centerIn: parent;
+			horizontalAlignment: Text.AlignHCenter;
+			verticalAlignment: Text.AlignVCenter;
+			font.family: s_FontFamily;
+			font.bold: true;
+			color: s_BackgroundColor;
+			font.pixelSize: vec_Offsets.w;
+			text: "ОТН. ВЫСОТА";
 		}
 	}
 
