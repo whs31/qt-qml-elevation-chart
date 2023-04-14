@@ -38,6 +38,8 @@ void CDeclarativeAxis::paint(QPainter* painter)
     float y_cap = this->height() - offsets().w();
     while(y_cap > 0)
     {
+        if(axis_y.scale_pixel_size <= 1)
+            break;
         painter->drawLine(offsets().x(), y_cap, offsets().x() / 2, y_cap);
         float alt = ((this->height() - offsets().w()) - y_cap) *  axis_y.max *  axis_y.stretch / (this->height() - offsets().w());
         bool meters = alt < 1'000 - 1;
@@ -50,6 +52,8 @@ void CDeclarativeAxis::paint(QPainter* painter)
     float x_cap = offsets().x();
     while(x_cap < this->width() - offsets().z())
     {
+        if(axis_x.scale_pixel_size <= 1 or x_cap <= 1 or this->width() - offsets().z() <= 1)
+            break;
         painter->drawLine(x_cap, this->height() - offsets().w(), x_cap, this->height());
         x_cap += axis_x.scale_pixel_size;
         float dist = (x_cap) *  axis_x.max / (this->width() - offsets().z());
@@ -58,7 +62,7 @@ void CDeclarativeAxis::paint(QPainter* painter)
             dist /= 1'000;
         int dist_rounded = (int)dist;
         dist_rounded += (dist_rounded % 10 == 9 ? -1 : (dist_rounded % 10 == 1 ? 1 : 0));
-        painter->drawText(QRectF(x_cap + 3, this->height() - offsets().w(), 50, 16), QString::number(dist_rounded) + (meters ? "м" : "км")); //a
+        painter->drawText(QRectF(x_cap + 3, this->height() - offsets().w(), 50, 16), QString::number(dist_rounded) + (meters ? "м" : "км"));
     }
 }
 

@@ -48,6 +48,11 @@ Rectangle { id: c_ImplRoot;
 			fillColor: c_ImplRoot.s_ProfileColor;
 			visible: true;
 			fl_LineWidth: 3;
+			NumberAnimation on fl_LineWidth {
+				to: 20;
+				duration: 10000;
+				running: true;
+			}
 		}
 
 		GLPolyline { id: c_ImplMetricsPath;
