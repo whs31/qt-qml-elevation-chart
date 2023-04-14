@@ -22,6 +22,13 @@ Rectangle { id: c_ImplRoot;
 	layer.enabled: true;
 	layer.samples: 8;
 
+	Connections {
+		target: ElevationWidgetBackend;
+		function onRouteChanged() {
+			c_ImplGlobalMouseArea.zoom = 1;
+		}
+	}
+
 	Flickable { id: c_ImplView;
 		anchors.fill: parent;
 		anchors.leftMargin: vec_Offsets.x;
@@ -30,12 +37,14 @@ Rectangle { id: c_ImplRoot;
 		anchors.topMargin: vec_Offsets.y;
 
 		boundsBehavior: Flickable.StopAtBounds;
+		boundsMovement: Flickable.StopAtBounds;
 		interactive: true;
 		flickableDirection: Flickable.HorizontalAndVerticalFlick;
 
 		visible: ElevationWidgetBackend.state === ElevationWidgetBackend.WidgetState.Fine;
 		enabled: visible;
 		contentWidth: c_ImplGlobalMouseArea.zoom * c_ImplView.width; // <==
+
 		onContentWidthChanged: ElevationWidgetBackend.qmlDrawCall();
 
 		MouseArea { id: c_ImplGlobalMouseArea;
@@ -46,9 +55,9 @@ Rectangle { id: c_ImplRoot;
 
 			onWheel: {
 				if(wheel.angleDelta.y > 0)
-					zoom *= 1.1;
+					zoom *= 1.3;
 				else
-					zoom /= 1.1;
+					zoom /= 1.3;
 				console.log(zoom);
 			}
 			onZoomChanged: {

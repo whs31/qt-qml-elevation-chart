@@ -118,6 +118,7 @@ namespace GLCharts
 
             signals:
                 __signal stateChanged();
+                __signal routeChanged();
 
         protected:
             ElevationWidget* q_ptr;

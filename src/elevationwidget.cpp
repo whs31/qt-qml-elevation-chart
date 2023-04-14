@@ -216,6 +216,8 @@ void ElevationWidgetPrivate::setRoute(const std::list<GeoPoint>& route)
     }
     else
         this->setState(WidgetState::PathMissing);
+
+    emit routeChanged(); // needed by qml side to reset zoom value)
 }
 
 void ElevationWidgetPrivate::setUAVPosition(const QGeoCoordinate& position)
