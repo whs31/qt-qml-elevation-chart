@@ -49,22 +49,21 @@ Rectangle { id: c_ImplRoot;
 
 		MouseArea { id: c_ImplGlobalMouseArea;
 			readonly property real fl_MaxZoom: 15000;
+			readonly property real fl_ZoomStep: 1.3;
 			property real zoom: 1;
 			anchors.fill: parent;
 			hoverEnabled: true;
 
 			onWheel: {
-				if(wheel.angleDelta.y > 0)
-					zoom *= 1.3;
+				if(wheel.angleDelta.y > 0 && zoom * fl_ZoomStep <= fl_MaxZoom)
+					zoom *= fl_ZoomStep;
 				else
-					zoom /= 1.3;
-				console.log(zoom);
-			}
-			onZoomChanged: {
-				if(zoom <= 1)
-					zoom = 1;
-				if(zoom >= fl_MaxZoom)
-					zoom = fl_MaxZoom;
+				{
+					if(zoom / fl_ZoomStep >= 1)
+						zoom /= fl_ZoomStep;
+					else
+						zoom = 1;
+				}
 			}
 			Behavior on zoom { NumberAnimation { duration: 250; } }
 		}
