@@ -36,6 +36,7 @@ Rectangle { id: c_ImplRoot;
 		visible: ElevationWidgetBackend.state === ElevationWidgetBackend.WidgetState.Fine;
 		enabled: visible;
 		contentWidth: c_ImplGlobalMouseArea.zoom * c_ImplView.width; // <==
+		onContentWidthChanged: ElevationWidgetBackend.qmlDrawCall();
 
 		MouseArea { id: c_ImplGlobalMouseArea;
 			readonly property real fl_MaxZoom: 15000;
@@ -55,8 +56,8 @@ Rectangle { id: c_ImplRoot;
 					zoom = 1;
 				if(zoom >= fl_MaxZoom)
 					zoom = fl_MaxZoom;
-				ElevationWidgetBackend.qmlDrawCall();
 			}
+			Behavior on zoom { NumberAnimation { duration: 250; } }
 		}
 
 		GLPolygon { id: c_ImplProfile;

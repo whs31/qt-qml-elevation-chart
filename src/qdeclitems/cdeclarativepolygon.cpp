@@ -29,7 +29,6 @@ void CDeclarativePolygon::asyncAppend(const std::list<QPointF>& points)
     for(QPointF point : points)
         m_points.push_back(point);
     this->update();
-    qDebug() << "async";
 }
 
 void CDeclarativePolygon::clear()

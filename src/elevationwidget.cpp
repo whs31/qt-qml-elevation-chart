@@ -316,7 +316,7 @@ void ElevationWidgetPrivate::update(ProfileUpdateBehaviour mode, float force_y_a
 {
     if(mode == ProfileUpdateBehaviour::RebuildProfile)
     {
-        m_profilePolygon->clear();            // TODO: это нужно для асинхронной загрузки профиля по частям. пока выключил.
+        //m_profilePolygon->clear();            // TODO: это нужно для асинхронной загрузки профиля по частям. пока выключил.
         QPointF bounds =  heightmapParser->buildProfileChartAsync(fromRoute(m_route));//, axis.relative_height);
 
         axis.x.max = bounds.x();
@@ -357,7 +357,9 @@ void ElevationWidgetPrivate::update(ProfileUpdateBehaviour mode, float force_y_a
 
 void ElevationWidgetPrivate::qmlDrawCall()
 {
-    this->update(ProfileUpdateBehaviour::RebuildProfile, 0, ModelUpdateBehaviour::Keep);
+    if(m_route.empty())
+        return;
+    this->update(ProfileUpdateBehaviour::RebuildProfile, 0, ModelUpdateBehaviour::Update);
 }
 
 void ElevationWidgetPrivate::sync(QVector<QPointF> vec)
