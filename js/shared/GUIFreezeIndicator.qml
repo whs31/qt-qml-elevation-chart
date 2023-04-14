@@ -1,7 +1,7 @@
 import QtQuick 2.15
 
 Rectangle { id: gui_thread_freeze_indicator;
-	property int i_Size: 50;
+	property int i_Size: 25;
 	property int u_BlinkFrequency: 1000;
 
 	width: i_Size;

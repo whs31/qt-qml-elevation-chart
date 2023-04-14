@@ -29,6 +29,7 @@ void CDeclarativePolygon::asyncAppend(const std::list<QPointF>& points)
     for(QPointF point : points)
         m_points.push_back(point);
     this->update();
+    qDebug() << "async";
 }
 
 void CDeclarativePolygon::clear()
@@ -66,8 +67,7 @@ QSGNode* CDeclarativePolygon::updatePaintNode(QSGNode *old_node, UpdatePaintNode
 
     // ставим геометрии параметры отрисовки
     geometry = node->geometry();                                                          
-    geometry->setDrawingMode(GL_LINES); // GL_QUAD_STRIP
-    geometry->setLineWidth(lineWidth());
+    geometry->setDrawingMode(GL_QUAD_STRIP);
 
     // создаем вектор точек (Vertex = Point2D, VertexT = TexturedPoint2D)
     // задаем в него точки графика в пиксельных координатах и координаты UV (опционально)
@@ -78,30 +78,17 @@ QSGNode* CDeclarativePolygon::updatePaintNode(QSGNode *old_node, UpdatePaintNode
             max.y = point.y();
     max.x = m_points.back().x();
 
-    bool flip = false;
     for(QPointF point : m_points)
     {
-        if(flip)
-        {
-            glPoints.push_back(VertexT(point.x(), point.y(), point.x() / max.x, point.y() / max.y));
-            if(m_loopmode == LoopMode::LoopByItemRect)
-                glPoints.push_back(VertexT(point.x(), height(), point.x() / max.x, height() / max.y));
-            flip = !flip;
-        }
-        else
-        {
-            if(m_loopmode == LoopMode::LoopByItemRect)
-                glPoints.push_back(VertexT(point.x(), height(), point.x() / max.x, height() / max.y));
-            glPoints.push_back(VertexT(point.x(), point.y(), point.x() / max.x, point.y() / max.y));
-            flip = !flip;
-        }
+        glPoints.push_back(VertexT(point.x(), height(), point.x() / max.x, height() / max.y));
+        glPoints.push_back(VertexT(point.x(), point.y(), point.x() / max.x, point.y() / max.y));
     }
 
     // после создания всех точек аллоцируем память под этот вектор + 1 точку
     geometry->allocate(glPoints.size());
 
     // задаем в геометрию графа эти точки
-    for(size_t i = 0; i < glPoints.size(); ++i)
+    for(size_t i = 0; i < glPoints.size(); i++)
         geometry->vertexDataAsTexturedPoint2D()[i].set(glPoints.at(i).x, glPoints.at(i).y, glPoints.at(i).u, glPoints.at(i).v);
 
     // говорим куэмэлю что ему надо задуматься о перерисовке графика
@@ -121,11 +108,4 @@ void CDeclarativePolygon::setFillColor(const QString& col) {
     if (m_fillColor == col) return;
     m_fillColor = col;
     emit fillColorChanged();
-}
-
-float CDeclarativePolygon::lineWidth() const { return m_lineWidth; }
-void CDeclarativePolygon::setLineWidth(float other) {
-    if (qFuzzyCompare(m_lineWidth, other)) return;
-    m_lineWidth = other;
-    emit lineWidthChanged();
 }

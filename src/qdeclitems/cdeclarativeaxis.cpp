@@ -26,7 +26,7 @@ void CDeclarativeAxis::paint(QPainter* painter)
     painter->setLayoutDirection(Qt::LayoutDirection::RightToLeft);
     painter->setBrush(brush);
     painter->setPen(pen);
-    painter->setRenderHint(QPainter::Antialiasing);  
+    painter->setRenderHint(QPainter::Antialiasing);
 
     painter->drawLine(offsets().x(), this->height() - offsets().w(), offsets().x(), 0);                              // OY
     painter->drawLine(offsets().x(), this->height() - offsets().w(), this->width(), this->height() - offsets().w()); // OX
@@ -38,7 +38,7 @@ void CDeclarativeAxis::paint(QPainter* painter)
     float y_cap = this->height() - offsets().w();
     while(y_cap > 0)
     {
-        if(axis_y.scale_pixel_size <= 1)
+        if(axis_y.scale_pixel_size <= 1 or y_cap <= 1)
             break;
         painter->drawLine(offsets().x(), y_cap, offsets().x() / 2, y_cap);
         float alt = ((this->height() - offsets().w()) - y_cap) *  axis_y.max *  axis_y.stretch / (this->height() - offsets().w());

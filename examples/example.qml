@@ -11,6 +11,6 @@ Rectangle { id: root;
 	Shared.GUIFreezeIndicator {
 		anchors.left: parent.left;
 		anchors.top: parent.top;
-		anchors.margins: 50;
+		anchors.margins: 20;
 	}
 }

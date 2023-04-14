@@ -361,9 +361,9 @@ void ElevationWidgetPrivate::sync(QVector<QPointF> vec)
     for(size_t i = 0; i < vec.size(); ++i)
     {
         packet.push_back(toPixelCoords(vec.at(i), axis.x.max, axis.y.max,
-                         axis.stretch, m_pathPolyline->width(), m_pathPolyline->height()));
+                         axis.stretch, m_profilePolygon->width(), m_profilePolygon->height()));
     }
-    m_profilePolygon->asyncAppend(packet);
+    m_profilePolygon->setList(packet);
 }
 
 void ElevationWidgetPrivate::syncPointsWithPath(int _index)
