@@ -47,6 +47,7 @@ Rectangle { id: c_ImplRoot;
 			anchors.fill: parent;
 			fillColor: c_ImplRoot.s_ProfileColor;
 			visible: true;
+			fl_LineWidth: 3;
 		}
 
 		GLPolyline { id: c_ImplMetricsPath;
