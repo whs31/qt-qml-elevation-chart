@@ -17,7 +17,7 @@ Rectangle { id: c_ImplRoot;
 	property bool b_ShowIndexes: true;
 	property vector4d vec_Offsets: Qt.vector4d(30, 0, 30, 15); // left top right bottom : x y z w
 
-	property bool b_ZoomToPoint: false;
+	property bool b_ZoomToPoint: true;
 
 	// private:
 	color: s_BackgroundColor;
@@ -56,7 +56,7 @@ Rectangle { id: c_ImplRoot;
 
 		MouseArea { id: c_ImplGlobalMouseArea;
 			readonly property real fl_MaxZoom: 15000;
-			readonly property real fl_ZoomStep: 1.3;
+			readonly property real fl_ZoomStep: 1.5;
 			property real zoom: 1;
 			anchors.fill: parent;
 			hoverEnabled: true;
@@ -71,12 +71,17 @@ Rectangle { id: c_ImplRoot;
 						zoom = 1;
 				}
 			}
-			onZoomChanged: c_ImplView.resizeContent(c_ImplGlobalMouseArea.zoom * c_ImplView.width, c_ImplView.height,
-									 b_ZoomToPoint ? Qt.point(c_ImplGlobalMouseArea.mouseX, c_ImplGlobalMouseArea.mouseY) : Qt.point(0, 0));
+			onZoomChanged: {
+				c_ImplView.resizeContent(c_ImplGlobalMouseArea.zoom * c_ImplView.width, c_ImplView.height,
+										 b_ZoomToPoint ? Qt.point(c_ImplGlobalMouseArea.mouseX, c_ImplGlobalMouseArea.mouseY) : Qt.point(0, 0));
+				c_ImplProfile.visible = false;
+				tmr_ZoomUpdate.restart();
+			}
 
-			Behavior on zoom { NumberAnimation { duration: 100; } }
+			//Behavior on zoom { NumberAnimation { duration: 100; } }
 		}
 
+		Timer { id: tmr_ZoomUpdate; interval: 100; running: false; repeat: false; onTriggered: c_ImplProfile.visible = true; }
 		GLPolygon { id: c_ImplProfile;
 			objectName: "qml_gl_profile_polygon"; //! required!
 			anchors.fill: parent;
