@@ -10,10 +10,12 @@ namespace ChartsOpenGL {
         Q_PROPERTY(QString color READ color WRITE setColor NOTIFY colorChanged)
         Q_PROPERTY(QVector4D offsets READ offsets WRITE setOffsets NOTIFY offsetsChanged)
         Q_PROPERTY(QString fontfamily READ fontfamily WRITE setFontfamily NOTIFY fontfamilyChanged)
+        Q_PROPERTY(qreal oxScrollPosition READ oxScrollPosition WRITE setOXScrollPosiition NOTIFY oxScrollPositionChanged)
 
         QString m_color = "#FF0000";
         QVector4D m_offsets;
         QString m_fontfamily;
+        qreal m_oxScrollPosition = 0;
 
         struct Axis
         {
@@ -36,6 +38,7 @@ namespace ChartsOpenGL {
                 __signal colorChanged();
                 __signal offsetsChanged();
                 __signal fontfamilyChanged();
+                __signal oxScrollPositionChanged();
 
         private:
             QString color() const;
@@ -44,5 +47,7 @@ namespace ChartsOpenGL {
             void setOffsets(const QVector4D& other);
             QString fontfamily() const;
             void setFontfamily(const QString& other);
+            qreal oxScrollPosition() const;
+            void setOXScrollPosiition(qreal other);
     };
 }

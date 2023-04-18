@@ -167,23 +167,27 @@ Rectangle { id: c_ImplRoot;
 			visible: true;
 		}
 
-		Repeater
-		{
+		GLAxis { id: c_ImplXAxis;
+			objectName: "qml_gl_x_axis"; //! required!
+			anchors.fill: parent;
+			color: c_ImplRoot.s_ForegroundColor;
+			visible: ElevationWidgetBackend.state === ElevationWidgetBackend.WidgetState.Fine;
+			offsets: vec_Offsets;
+			opacity: 0.7;
+			oxScrollPosition: c_ImplView.visibleArea.xPosition;
+
+			anchors.topMargin: -vec_Offsets.y;
+			anchors.bottomMargin: -vec_Offsets.w;
+			anchors.leftMargin: -vec_Offsets.x;
+			anchors.rightMargin: -vec_Offsets.z;
+		}
+
+		Repeater {
 			clip: false;
 			model: PointModel;
 			anchors.fill: c_ImplProfile;
 			delegate: Private.ElevationPoint { }
 		}
-	}
-
-	GLAxis { id: c_ImplXAxis;
-		objectName: "qml_gl_x_axis"; //! required!
-		anchors.fill: parent;
-		color: c_ImplRoot.s_ForegroundColor;
-		visible: ElevationWidgetBackend.state === ElevationWidgetBackend.WidgetState.Fine;
-		offsets: vec_Offsets;
-		opacity: 0.7;
-//		fontfamily: c_ImplRoot.s_FontFamily;
 	}
 
 	Rectangle {
@@ -250,13 +254,6 @@ Rectangle { id: c_ImplRoot;
 			font.pixelSize: vec_Offsets.w;
 			text: "ОТН. ВЫСОТА";
 		}
-	}
-
-	GLAxis { id: c_ImplYAxis;
-		objectName: "qml_gl_y_axis"; //! required!
-		anchors.fill: parent;
-		color: c_ImplRoot.s_ForegroundColor;
-		visible: false;
 	}
 
 	Text { id: c_ImplLabelElevationsMissing;

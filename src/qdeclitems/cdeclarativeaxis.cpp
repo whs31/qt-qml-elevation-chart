@@ -28,7 +28,8 @@ void CDeclarativeAxis::paint(QPainter* painter)
     painter->setPen(pen);
     painter->setRenderHint(QPainter::Antialiasing);
 
-    painter->drawLine(offsets().x(), this->height() - offsets().w(), offsets().x(), 0);                              // OY
+    painter->drawLine(offsets().x(), this->height() - offsets().w(), offsets().x(), 0);
+    painter->drawLine(this->width() - offsets().z(), this->height() - offsets().w(), this->width() - offsets().z(), 0);// OY
     painter->drawLine(offsets().x(), this->height() - offsets().w(), this->width(), this->height() - offsets().w()); // OX
 
 
@@ -40,12 +41,12 @@ void CDeclarativeAxis::paint(QPainter* painter)
     {
         if(axis_y.scale_pixel_size <= 1 or y_cap <= 1)
             break;
-        painter->drawLine(offsets().x(), y_cap, offsets().x() / 2, y_cap);
+        painter->drawLine(this->width() - offsets().z(), y_cap, this->width() - offsets().z() / 2, y_cap);
         float alt = ((this->height() - offsets().w()) - y_cap) *  axis_y.max *  axis_y.stretch / (this->height() - offsets().w());
         bool meters = alt < 1'000 - 1;
         if(not meters)
             alt /= 1'000;
-        painter->drawText(QRectF(0, y_cap, offsets().x(), 16), QString::number(alt, 'f', 0) + (meters ? "м" : "км"));
+        painter->drawText(QRectF(this->width() - offsets().z() / 1.05, y_cap, offsets().z(), 16), QString::number(alt, 'f', 0) + (meters ? "м" : "км"));
         y_cap -= axis_y.scale_pixel_size;
     }
 
@@ -104,4 +105,11 @@ void CDeclarativeAxis::setFontfamily(const QString& other) {
     if (m_fontfamily == other) return;
     m_fontfamily = other;
     emit fontfamilyChanged();
+}
+
+qreal CDeclarativeAxis::oxScrollPosition() const { return m_oxScrollPosition; }
+void CDeclarativeAxis::setOXScrollPosiition(qreal other) {
+    if (qFuzzyCompare(m_oxScrollPosition, other)) return;
+    m_oxScrollPosition = other;
+    emit oxScrollPositionChanged();
 }
