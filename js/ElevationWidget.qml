@@ -1,5 +1,5 @@
 import QtQuick 2.15
-
+import QtQuick.Controls 2.15
 import GLShapes 1.0
 import ElevationWidgetModule 1.0
 import "elevation-chart/private" as Private
@@ -19,6 +19,8 @@ Rectangle { id: c_ImplRoot;
 
 	property bool b_ZoomToPoint: true;
 
+    property real pointsScale: (groupItemScale.xScale < 1) ? 1 : groupItemScale.xScale;
+
 	// private:
 	color: s_BackgroundColor;
 	layer.enabled: true;
@@ -30,6 +32,28 @@ Rectangle { id: c_ImplRoot;
 			c_ImplGlobalMouseArea.zoom = 1;
 		}
 	}
+
+    ScrollBar {
+        id: horizontalScrollBar
+//        z:5
+        property bool isUpdatable: true
+        visible: true
+        hoverEnabled: true
+        active: hovered || pressed
+        orientation: Qt.Horizontal
+        size: groupItemScale.scaledItemsWidth / c_ImplView.width - 0.0001
+        policy: ScrollBar.AlwaysOn
+        height:10
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom;
+        position: groupItemScale.scaleWindowPosition / c_ImplView.width
+        onPositionChanged: {
+            if (isUpdatable) {
+                groupItemScale.origin.x = (c_ImplView.width / (1-size)) * position
+            }
+        }
+    }
 
 	Flickable { id: c_ImplView;
 		anchors.fill: parent;
@@ -45,172 +69,211 @@ Rectangle { id: c_ImplRoot;
 
 		visible: ElevationWidgetBackend.state === ElevationWidgetBackend.WidgetState.Fine;
 		enabled: visible;
-		//contentWidth: c_ImplGlobalMouseArea.zoom * c_ImplView.width; // <==
 
-		// реимплементирую эту херню на плюсовой стороне
-		onContentWidthChanged:
-		{
-			ElevationWidgetBackend.qmlDrawCall();
-			returnToBounds();
-		}
-
+        clip: true
 		MouseArea { id: c_ImplGlobalMouseArea;
 			readonly property real fl_MaxZoom: 15000;
 			readonly property real fl_ZoomStep: 1.5;
 			property real zoom: 1;
 			anchors.fill: parent;
 			hoverEnabled: true;
-
-			onWheel: {
-				if(wheel.angleDelta.y > 0 && zoom * fl_ZoomStep <= fl_MaxZoom)
-					zoom *= fl_ZoomStep;
-				else {
-					if(zoom / fl_ZoomStep >= 1)
-						zoom /= fl_ZoomStep;
-					else
-						zoom = 1;
-				}
-			}
-			onZoomChanged: {
-				c_ImplView.resizeContent(c_ImplGlobalMouseArea.zoom * c_ImplView.width, c_ImplView.height,
-										 b_ZoomToPoint ? Qt.point(c_ImplGlobalMouseArea.mouseX, c_ImplGlobalMouseArea.mouseY) : Qt.point(0, 0));
-				c_ImplProfile.visible = false;
-				tmr_ZoomUpdate.restart();
-			}
-
-			//Behavior on zoom { NumberAnimation { duration: 100; } }
 		}
 
-		Timer { id: tmr_ZoomUpdate; interval: 100; running: false; repeat: false; onTriggered: c_ImplProfile.visible = true; }
-		GLPolygon { id: c_ImplProfile;
-			objectName: "qml_gl_profile_polygon"; //! required!
-			anchors.fill: parent;
-			fillColor: c_ImplRoot.s_ProfileColor;
-			visible: true;
-		}
 
-		GLPolyline { id: c_ImplMetricsPath;
-			objectName: "qml_gl_metrics_polyline"; //! required!
-			anchors.fill: c_ImplProfile;
-			lineColor: c_ImplRoot.s_WarnColor;
-			visible: true;
-			opacity: 0.5;
-			SequentialAnimation {
-				PropertyAnimation {
-					target: c_ImplMetricsPath;
-					property: "opacity";
-					to: 0;
-					duration: 500;
-					easing.type: Easing.InOutQuad;
-				}
-				PropertyAnimation {
-					target: c_ImplMetricsPath;
-					property: "opacity";
-					to: 0.5;
-					duration: 500;
-					easing.type: Easing.InOutQuad;
-				}
 
-				loops: Animation.Infinite;
-				running: true;
-				Component.onCompleted: start();
-			}
-		}
+        Item{
+            id: groupItem
+            width:parent.width
+            height:parent.height
+            transform: Scale {
+                id: groupItemScale
+                property int scaledItemsWidth: c_ImplView.width / xScale
+                property int originX:magicMouseArea.mouseX
+                property int scaleWindowPosition: 0; //позиция окна после зума относительно основного изображения
+                origin.x: c_ImplView.width / 2
+                onScaleChanged: {
+                    console.log("scaledItemsWidth\t" + scaledItemsWidth / c_ImplView.width)
+                }
+                onXScaleChanged: {
+                    if (xScale <= 1) { xScale = 1; }
 
-		GLSolidpolygon { id: c_ImplCoridor;
-			objectName: "qml_gl_coridor_polygon"; //! required!
-			anchors.fill: parent;
-			fillColor: c_ImplRoot.s_WarnColor;
-			opacity: 0.2;
-			visible: true;
-		}
+                    {///calculate ScaleWindowPosition
+                        let originPrecent = origin.x / c_ImplView.width
+                        let delta = scaledItemsWidth * originPrecent
+                        scaleWindowPosition = origin.x - delta
+                    }
+                }
 
-		GLPolyline { id: c_ImplEnvelopePath;
-			objectName: "qml_gl_envelope_polyline"; //! required!
-			anchors.fill: c_ImplProfile;
-			lineColor: c_ImplRoot.s_InfoColor;
-			visible: true;
-			opacity: 0.5;
-			SequentialAnimation {
-				PropertyAnimation {
-					target: c_ImplEnvelopePath;
-					property: "opacity";
-					to: 0;
-					duration: 500;
-					easing.type: Easing.InOutQuad;
-				}
-				PropertyAnimation {
-					target: c_ImplEnvelopePath;
-					property: "opacity";
-					to: 0.5;
-					duration: 500;
-					easing.type: Easing.InOutQuad;
-				}
+                function changeXScale(newXOrigin, newXScale){
+                    let oldScale = groupItemScale.xScale;
+                    let oldOrigin = groupItemScale.origin.x;
+                    let oldOriginPrecent = oldOrigin / c_ImplView.width
+                    let newOriginPrecent = newXOrigin / c_ImplView.width
+                    let deltaPrecent = newOriginPrecent - oldOriginPrecent
+                    let deltaVelue = deltaPrecent * scaledItemsWidth;
+                    groupItemScale.origin.x += deltaVelue;
+                    groupItemScale.xScale = newXScale;
+//                    console.log("oldOriginPrecent\t" + oldOriginPrecent)
+//                    console.log("newOriginPrecent\t" + newOriginPrecent)
+//                    console.log("resultOriginPrecent\t" + groupItemScale.origin.x / c_ImplView.width)
+                }
+                function moveOriginXPosition(newXOrigin) { }
 
-				loops: Animation.Infinite;
-				running: true;
-				Component.onCompleted: start();
-			}
-		}
+            }
+            MouseArea{
+                id: magicMouseArea
+                anchors.fill: parent
+                hoverEnabled: true
+                propagateComposedEvents: true
+                onPositionChanged: {
+                    if (pressed) {
 
-		GLMultipolygon { id: c_ImplIntersects;
-			objectName: "qml_gl_intersects_polygon"; //! required!
-			anchors.fill: parent;
-			fillColor: c_ImplRoot.s_ErrorColor;
-			visible: true;
-		}
+                    }
+                }
+                onWheel: {
+                    horizontalScrollBar.isUpdatable = false
+                    if(wheel.angleDelta.y > 0 ) {
+                        groupItemScale.changeXScale(magicMouseArea.mouseX , groupItemScale.xScale * 1.1)
+                    }
+                    else if (wheel.angleDelta.y < 0 ) {
+                        groupItemScale.changeXScale(magicMouseArea.mouseX , groupItemScale.xScale / 1.1)
+                    }
+                    horizontalScrollBar.isUpdatable = true
 
-		GLPolyline { id: c_ImplBasePath;
-			objectName: "qml_gl_path_polyline"; //! required!
-			anchors.fill: c_ImplProfile;
-			lineColor: c_ImplRoot.s_RouteColor;
-			visible: true;
-		}
+                }
+            }
 
-		GLAxis { id: c_ImplXAxis;
-			objectName: "qml_gl_x_axis"; //! required!
-			anchors.fill: parent;
-			color: c_ImplRoot.s_ForegroundColor;
-			visible: ElevationWidgetBackend.state === ElevationWidgetBackend.WidgetState.Fine;
-			offsets: vec_Offsets;
-			opacity: 0.7;
-			oxScrollPosition: c_ImplView.visibleArea.xPosition;
+            GLPolygon { id: c_ImplProfile;
+                objectName: "qml_gl_profile_polygon"; //! required!
+                anchors.fill: parent;
+                fillColor: c_ImplRoot.s_ProfileColor;
+                visible: true;
+            }
 
-			anchors.topMargin: -vec_Offsets.y;
-			anchors.bottomMargin: -vec_Offsets.w;
-			anchors.leftMargin: -vec_Offsets.x;
-			anchors.rightMargin: -vec_Offsets.z;
-		}
+            GLPolyline { id: c_ImplMetricsPath;
+                objectName: "qml_gl_metrics_polyline"; //! required!
+                anchors.fill: parent;
+                lineColor: c_ImplRoot.s_WarnColor;
+                visible: true;
+                opacity: 0.5;
+                SequentialAnimation {
+                    PropertyAnimation {
+                        target: c_ImplMetricsPath;
+                        property: "opacity";
+                        to: 0;
+                        duration: 500;
+                        easing.type: Easing.InOutQuad;
+                    }
+                    PropertyAnimation {
+                        target: c_ImplMetricsPath;
+                        property: "opacity";
+                        to: 0.5;
+                        duration: 500;
+                        easing.type: Easing.InOutQuad;
+                    }
 
-		Repeater {
-			clip: false;
-			model: PointModel;
-			anchors.fill: c_ImplProfile;
-			delegate: Private.ElevationPoint { }
-		}
+                    loops: Animation.Infinite;
+                    running: true;
+                    Component.onCompleted: start();
+                }
+            }
+
+            GLSolidpolygon { id: c_ImplCoridor;
+                objectName: "qml_gl_coridor_polygon"; //! required!
+                anchors.fill: parent;
+                fillColor: c_ImplRoot.s_WarnColor;
+                opacity: 0.2;
+                visible: true;
+            }
+
+            GLPolyline { id: c_ImplEnvelopePath;
+                objectName: "qml_gl_envelope_polyline"; //! required!
+                anchors.fill: parent;
+                lineColor: c_ImplRoot.s_InfoColor;
+                visible: true;
+                opacity: 0.5;
+                SequentialAnimation {
+                    PropertyAnimation {
+                        target: c_ImplEnvelopePath;
+                        property: "opacity";
+                        to: 0;
+                        duration: 500;
+                        easing.type: Easing.InOutQuad;
+                    }
+                    PropertyAnimation {
+                        target: c_ImplEnvelopePath;
+                        property: "opacity";
+                        to: 0.5;
+                        duration: 500;
+                        easing.type: Easing.InOutQuad;
+                    }
+
+                    loops: Animation.Infinite;
+                    running: true;
+                    Component.onCompleted: start();
+                }
+            }
+
+            GLMultipolygon { id: c_ImplIntersects;
+                objectName: "qml_gl_intersects_polygon"; //! required!
+                anchors.fill: parent;
+                fillColor: c_ImplRoot.s_ErrorColor;
+                visible: true;
+            }
+
+            GLPolyline { id: c_ImplBasePath;
+                objectName: "qml_gl_path_polyline"; //! required!
+                anchors.fill: parent;
+                lineColor: c_ImplRoot.s_RouteColor;
+                visible: true;
+            }
+
+            Repeater {
+                clip: false;
+                model: PointModel;
+                anchors.fill: parent;
+                delegate: Private.ElevationPoint {scaleValue: pointsScale}
+            }
+        }
 	}
+    GLAxis { id: c_ImplXAxis;
+        objectName: "qml_gl_x_axis"; //! required!
+        anchors.fill: parent;
+        color: c_ImplRoot.s_ForegroundColor;
+        visible: ElevationWidgetBackend.state === ElevationWidgetBackend.WidgetState.Fine;
+        offsets: vec_Offsets;
+        opacity: 0.7;
+//        oxScrollPosition: c_ImplView.visibleArea.xPosition;
 
-	Rectangle {
-		anchors.top: parent.bottom;
-		anchors.topMargin: -vec_Offsets.w;
-		anchors.right: parent.right;
-		color: c_ImplRoot.s_ForegroundColor;
-		visible: ElevationWidgetBackend.state === ElevationWidgetBackend.WidgetState.Fine;
-		height: vec_Offsets.w;
-		width: 100;
-		opacity: c_ImplXAxis.opacity;
+//        anchors.topMargin: -vec_Offsets.y;
+//        anchors.bottomMargin: -vec_Offsets.w;
+//        anchors.leftMargin: -vec_Offsets.x;
+//        anchors.rightMargin: -vec_Offsets.z;
+    }
 
-		Text {
-			anchors.centerIn: parent;
-			horizontalAlignment: Text.AlignHCenter;
-			verticalAlignment: Text.AlignVCenter;
-			font.family: s_FontFamily;
-			color: s_BackgroundColor;
-			font.pixelSize: vec_Offsets.w;
-			font.bold: true;
-			text: "РАССТОЯНИЕ";
-		}
-	}
+    Rectangle {
+        anchors.top: parent.bottom;
+        anchors.topMargin: -vec_Offsets.w;
+        anchors.right: parent.right;
+        color: c_ImplRoot.s_ForegroundColor;
+        visible: ElevationWidgetBackend.state === ElevationWidgetBackend.WidgetState.Fine;
+        height: vec_Offsets.w;
+        width: 100;
+        opacity: c_ImplXAxis.opacity;
+
+        Text {
+            anchors.centerIn: parent;
+            horizontalAlignment: Text.AlignHCenter;
+            verticalAlignment: Text.AlignVCenter;
+            font.family: s_FontFamily;
+            color: s_BackgroundColor;
+            font.pixelSize: vec_Offsets.w;
+            font.bold: true;
+            text: "РАССТОЯНИЕ";
+        }
+    }
+
+
 
 	Rectangle {
 		anchors.top: parent.top;

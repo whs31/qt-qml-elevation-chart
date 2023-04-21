@@ -4,7 +4,7 @@ project(GLCharts VERSION 1.1 LANGUAGES CXX)
 set(LIBRARY_COMPILE FALSE)
 
 if(NOT LIBRARY_COMPILE)
-	#set(CMAKE_AUTOUIC ON)
+        set(CMAKE_AUTOUIC ON)
 	set(CMAKE_AUTOMOC ON)
 	set(CMAKE_AUTORCC ON)
 
@@ -25,7 +25,7 @@ set (EXAMPLES
     examples/example.cpp
     examples/example.h
     examples/example.qrc
-    examples/ui_example.h
+#    examples/ui_example.h
 )
 set (PROJECT_SOURCES
 	# QML|JS

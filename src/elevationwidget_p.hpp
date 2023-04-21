@@ -2,6 +2,7 @@
 
 #include "charts/elevationwidget.hpp"
 #include <QGeoPath>
+#include <QPointF>
 #define __signal void
 
 namespace Elevation {
