@@ -32,7 +32,6 @@ void CDeclarativeAxis::paint(QPainter* painter)
     painter->drawLine(width() - offsets().z(), height() - offsets().w(), width() - offsets().z(), 0);// OY
     painter->drawLine(offsets().x(), height() - offsets().w(), width(), height() - offsets().w()); // OX
 
-
     if(axis_x.scale_pixel_size <= 0 or axis_y.scale_pixel_size <= 0)
         return;
 
@@ -137,4 +136,13 @@ void CDeclarativeAxis::setOXScrollPosiition(qreal other) {
     if (qFuzzyCompare(m_oxScrollPosition, other)) return;
     m_oxScrollPosition = other;
     emit oxScrollPositionChanged();
+    qDebug() << other;
+}
+
+qreal CDeclarativeAxis::oxScrollSize() const { return m_oxScrollSize; }
+void CDeclarativeAxis::setOXScrollSize(qreal other) {
+    if (qFuzzyCompare(m_oxScrollSize, other)) return;
+    m_oxScrollSize = other;
+    emit oxScrollSizeChanged();
+    qInfo() << other;
 }

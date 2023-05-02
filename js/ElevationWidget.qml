@@ -45,6 +45,7 @@ Rectangle { id: c_ImplRoot;
 		anchors.right: parent.right;
         anchors.bottom: parent.bottom;
 		position: groupItemScale.scaleWindowPosition / c_ImplView.width;
+		Component.onCompleted: increase(); // без этой херни не работает
         onPositionChanged: {
 			if(isUpdatable) {
 				groupItemScale.origin.x = (c_ImplView.width / (1 - size)) * position;
@@ -225,6 +226,8 @@ Rectangle { id: c_ImplRoot;
         visible: ElevationWidgetBackend.state === ElevationWidgetBackend.WidgetState.Fine;
         offsets: vec_Offsets;
         opacity: 0.7;
+		oxScrollPosition: horizontalScrollBar.position;
+		oxScrollSize: horizontalScrollBar.size;
     }
 
     Rectangle {
