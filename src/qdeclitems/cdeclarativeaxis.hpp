@@ -17,7 +17,7 @@ namespace ChartsOpenGL {
         QVector4D m_offsets;
         QString m_fontfamily;
         qreal m_oxScrollPosition = 0;
-        qreal m_oxScrollSize = 0;
+        qreal m_oxScrollSize = 1;
 
         struct Axis
         {

@@ -35,18 +35,30 @@ void CDeclarativeAxis::paint(QPainter* painter)
     if(axis_x.scale_pixel_size <= 0 or axis_y.scale_pixel_size <= 0)
         return;
 
-    float rely_cap = height() - offsets().w() + axis_rely.pixel_offset;
+    float rely_cap = height() - offsets().w() - axis_rely.pixel_offset;
     while(rely_cap > 0)
     {
         if(axis_rely.scale_pixel_size <= 1 or rely_cap <= 1)
             break;
         painter->drawLine(offsets().x() / 2, rely_cap, offsets().x(), rely_cap);
-        float alt = ((height() - offsets().w()) - rely_cap) * axis_rely.max * axis_rely.stretch / (height() - offsets().w()) + axis_rely.offset;
+        float alt = ((height() - offsets().w()) - rely_cap) * axis_rely.max * axis_rely.stretch / (height() - offsets().w()) - axis_rely.offset;
         bool meters = alt < 1'000 - 1;
         if(not meters)
             alt /= 1'000;
         painter->drawText(QRectF(0, rely_cap, offsets().x(), 16), QString::number(alt, 'f', 0) + (meters ? "м" : "км"));
         rely_cap -= axis_rely.scale_pixel_size;
+    }
+
+    float rely_cap2 = height() - offsets().w() - axis_rely.pixel_offset;
+    while(rely_cap2 < height() - offsets().w())
+    {
+        painter->drawLine(offsets().x() / 2, rely_cap2, offsets().x(), rely_cap2);
+        float alt = ((height() - offsets().w()) - rely_cap2) * axis_rely.max * axis_rely.stretch / (height() - offsets().w()) - axis_rely.offset;
+        bool meters = alt < 1'000 - 1;
+        if(not meters)
+            alt /= 1'000;
+        painter->drawText(QRectF(0, rely_cap2, offsets().x(), 16), QString::number(alt, 'f', 0) + (meters ? "м" : "км"));
+        rely_cap2 += axis_rely.scale_pixel_size;
     }
 
     float y_cap = height() - offsets().w();
@@ -63,14 +75,14 @@ void CDeclarativeAxis::paint(QPainter* painter)
         y_cap -= axis_y.scale_pixel_size;
     }
 
-    float x_cap = offsets().x();
+    float x_cap = offsets().x() - axis_x.max * oxScrollPosition() / (width() * oxScrollSize());
     while(x_cap < width() - offsets().z())
     {
         if(axis_x.scale_pixel_size <= 1 or x_cap <= 1 or width() - offsets().z() <= 1)
             break;
         painter->drawLine(x_cap, height() - offsets().w(), x_cap, height());
         x_cap += axis_x.scale_pixel_size;
-        float dist = (x_cap) *  axis_x.max / (width() - offsets().z());
+        float dist = ((x_cap) *  axis_x.max) / (width() - offsets().z());
         bool meters = dist < 1'000 - 1;
         if(not meters)
             dist /= 1'000;
@@ -136,7 +148,7 @@ void CDeclarativeAxis::setOXScrollPosiition(qreal other) {
     if (qFuzzyCompare(m_oxScrollPosition, other)) return;
     m_oxScrollPosition = other;
     emit oxScrollPositionChanged();
-    qDebug() << other;
+    this->update();
 }
 
 qreal CDeclarativeAxis::oxScrollSize() const { return m_oxScrollSize; }
@@ -144,5 +156,5 @@ void CDeclarativeAxis::setOXScrollSize(qreal other) {
     if (qFuzzyCompare(m_oxScrollSize, other)) return;
     m_oxScrollSize = other;
     emit oxScrollSizeChanged();
-    qInfo() << other;
+    this->update();
 }
