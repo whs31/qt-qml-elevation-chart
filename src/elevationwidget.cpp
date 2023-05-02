@@ -189,13 +189,12 @@ void ElevationWidgetPrivate::linkWithQML(QQuickItem* rootObject)
     m_intersectsPolygon = rootObject->findChild<ChartsOpenGL::CDeclarativeMultipolygon*>("qml_gl_intersects_polygon");
     m_coridorPolygon = rootObject->findChild<ChartsOpenGL::CDeclarativeSolidPolygon*>("qml_gl_coridor_polygon");
     m_xaxis = rootObject->findChild<ChartsOpenGL::CDeclarativeAxis*>("qml_gl_x_axis");
-    m_yaxis = rootObject->findChild<ChartsOpenGL::CDeclarativeAxis*>("qml_gl_y_axis");
     if(m_coridorPolygon)
         m_coridorPolygon->setLoopMode(ChartsOpenGL::CDeclarativeSolidPolygon::LoopMode::None);
 
     if(not m_pathPolyline or not m_metricsPolyline or not m_envelopePolyline or not m_profilePolygon
                                                  or not m_intersectsPolygon or not m_coridorPolygon
-                                                 or not m_xaxis or not m_yaxis)
+                                                 or not m_xaxis)
         qCritical() << "<charts> Failed to link with QML at some point.";
     else
         qInfo() << "<charts> Linked with QML successfully";
@@ -354,7 +353,7 @@ void ElevationWidgetPrivate::update(ProfileUpdateBehaviour mode, float force_y_a
     this->calculateMetrics();
     this->calculateIntersects();
 
-    m_xaxis->set(axis.stretch, axis.x.max, axis.y.max);
+    m_xaxis->set(axis.stretch, axis.x.max, axis.y.max, axis.relative_height);
 }
 
 void ElevationWidgetPrivate::qmlDrawCall()

@@ -40,7 +40,6 @@ namespace GLCharts
         QGeoPath m_envelope;
         QGeoPath m_metricsPath;
 
-        Q_INVOKABLE
         QGeoCoordinate m_uavPosition;
 
         bool m_valid = true;
@@ -75,7 +74,6 @@ namespace GLCharts
         ChartsOpenGL::CDeclarativePolyline* m_envelopePolyline = nullptr;
         ChartsOpenGL::CDeclarativeMultipolygon* m_intersectsPolygon = nullptr;
         ChartsOpenGL::CDeclarativeSolidPolygon* m_coridorPolygon = nullptr;
-        ChartsOpenGL::CDeclarativeAxis* m_yaxis = nullptr;
         ChartsOpenGL::CDeclarativeAxis* m_xaxis = nullptr;
 
         public:
@@ -91,7 +89,6 @@ namespace GLCharts
             WidgetState m_state = WidgetState::PathMissing;
 
         public:
-
             explicit ElevationWidgetPrivate(ElevationWidget* parent);
             virtual ~ElevationWidgetPrivate() = default;
 
@@ -167,7 +164,4 @@ namespace GLCharts
     };
 } //namespace Charts;
 
-inline void initialize_qrc_file_within_namespace_1(const char* comment)
-{
-    Q_INIT_RESOURCE(charts);
-}
+inline void initialize_qrc_file_within_namespace_1(const char* comment) { Q_INIT_RESOURCE(charts); }

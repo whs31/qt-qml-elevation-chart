@@ -18,7 +18,6 @@ Rectangle { id: c_ImplRoot;
 	property vector4d vec_Offsets: Qt.vector4d(30, 0, 30, 15); // left top right bottom : x y z w
 
 	property bool b_ZoomToPoint: true;
-
     property real pointsScale: (groupItemScale.xScale < 1) ? 1 : groupItemScale.xScale;
 
 	// private:
@@ -33,24 +32,22 @@ Rectangle { id: c_ImplRoot;
 		}
 	}
 
-    ScrollBar {
-        id: horizontalScrollBar
-//        z:5
-        property bool isUpdatable: true
-        visible: true
-        hoverEnabled: true
-        active: hovered || pressed
-        orientation: Qt.Horizontal
-        size: groupItemScale.scaledItemsWidth / c_ImplView.width - 0.0001
-        policy: ScrollBar.AlwaysOn
-        height:10
-        anchors.left: parent.left
-        anchors.right: parent.right
+	ScrollBar { id: horizontalScrollBar;
+		property bool isUpdatable: true;
+		visible: true;
+		hoverEnabled: true;
+		active: hovered || pressed;
+		orientation: Qt.Horizontal;
+		size: groupItemScale.scaledItemsWidth / c_ImplView.width - 0.0001;
+		policy: ScrollBar.AlwaysOn;
+		height: 10;
+		anchors.left: parent.left;
+		anchors.right: parent.right;
         anchors.bottom: parent.bottom;
-        position: groupItemScale.scaleWindowPosition / c_ImplView.width
+		position: groupItemScale.scaleWindowPosition / c_ImplView.width;
         onPositionChanged: {
-            if (isUpdatable) {
-                groupItemScale.origin.x = (c_ImplView.width / (1-size)) * position
+			if(isUpdatable) {
+				groupItemScale.origin.x = (c_ImplView.width / (1 - size)) * position;
             }
         }
     }
@@ -64,13 +61,13 @@ Rectangle { id: c_ImplRoot;
 
 		boundsBehavior: Flickable.StopAtBounds;
 		boundsMovement: Flickable.StopAtBounds;
-		interactive: true;
+		interactive: false;
 		flickableDirection: Flickable.HorizontalAndVerticalFlick;
 
 		visible: ElevationWidgetBackend.state === ElevationWidgetBackend.WidgetState.Fine;
 		enabled: visible;
+		clip: true;
 
-        clip: true
 		MouseArea { id: c_ImplGlobalMouseArea;
 			readonly property real fl_MaxZoom: 15000;
 			readonly property real fl_ZoomStep: 1.5;
@@ -79,29 +76,24 @@ Rectangle { id: c_ImplRoot;
 			hoverEnabled: true;
 		}
 
-
-
-        Item{
-            id: groupItem
-            width:parent.width
-            height:parent.height
+		Item {
+			id: groupItem;
+			width: parent.width;
+			height: parent.height;
             transform: Scale {
-                id: groupItemScale
-                property int scaledItemsWidth: c_ImplView.width / xScale
-                property int originX:magicMouseArea.mouseX
+				id: groupItemScale;
+				property int scaledItemsWidth: c_ImplView.width / xScale;
+				property int originX:magicMouseArea.mouseX;
                 property int scaleWindowPosition: 0; //позиция окна после зума относительно основного изображения
-                origin.x: c_ImplView.width / 2
-                onScaleChanged: {
-                    console.log("scaledItemsWidth\t" + scaledItemsWidth / c_ImplView.width)
-                }
+				origin.x: c_ImplView.width / 2;
                 onXScaleChanged: {
-                    if (xScale <= 1) { xScale = 1; }
+					if(xScale <= 1)
+						xScale = 1;
 
-                    {///calculate ScaleWindowPosition
-                        let originPrecent = origin.x / c_ImplView.width
-                        let delta = scaledItemsWidth * originPrecent
-                        scaleWindowPosition = origin.x - delta
-                    }
+					let originPrecent = origin.x / c_ImplView.width;
+					let delta = scaledItemsWidth * originPrecent;
+					scaleWindowPosition = origin.x - delta;
+
                 }
 
                 function changeXScale(newXOrigin, newXScale){
@@ -113,33 +105,23 @@ Rectangle { id: c_ImplRoot;
                     let deltaVelue = deltaPrecent * scaledItemsWidth;
                     groupItemScale.origin.x += deltaVelue;
                     groupItemScale.xScale = newXScale;
-//                    console.log("oldOriginPrecent\t" + oldOriginPrecent)
-//                    console.log("newOriginPrecent\t" + newOriginPrecent)
-//                    console.log("resultOriginPrecent\t" + groupItemScale.origin.x / c_ImplView.width)
                 }
-                function moveOriginXPosition(newXOrigin) { }
 
             }
             MouseArea{
-                id: magicMouseArea
-                anchors.fill: parent
-                hoverEnabled: true
-                propagateComposedEvents: true
-                onPositionChanged: {
-                    if (pressed) {
-
-                    }
-                }
+				id: magicMouseArea;
+				anchors.fill: parent;
+				hoverEnabled: true;
+				propagateComposedEvents: true;
                 onWheel: {
-                    horizontalScrollBar.isUpdatable = false
+					horizontalScrollBar.isUpdatable = false;
                     if(wheel.angleDelta.y > 0 ) {
-                        groupItemScale.changeXScale(magicMouseArea.mouseX , groupItemScale.xScale * 1.1)
+						groupItemScale.changeXScale(magicMouseArea.mouseX , groupItemScale.xScale * 1.1);
                     }
-                    else if (wheel.angleDelta.y < 0 ) {
-                        groupItemScale.changeXScale(magicMouseArea.mouseX , groupItemScale.xScale / 1.1)
+					else if(wheel.angleDelta.y < 0 ) {
+						groupItemScale.changeXScale(magicMouseArea.mouseX , groupItemScale.xScale / 1.1);
                     }
-                    horizontalScrollBar.isUpdatable = true
-
+					horizontalScrollBar.isUpdatable = true;
                 }
             }
 
@@ -232,7 +214,7 @@ Rectangle { id: c_ImplRoot;
                 clip: false;
                 model: PointModel;
                 anchors.fill: parent;
-                delegate: Private.ElevationPoint {scaleValue: pointsScale}
+				delegate: Private.ElevationPoint { scaleValue : pointsScale }
             }
         }
 	}
@@ -243,12 +225,6 @@ Rectangle { id: c_ImplRoot;
         visible: ElevationWidgetBackend.state === ElevationWidgetBackend.WidgetState.Fine;
         offsets: vec_Offsets;
         opacity: 0.7;
-//        oxScrollPosition: c_ImplView.visibleArea.xPosition;
-
-//        anchors.topMargin: -vec_Offsets.y;
-//        anchors.bottomMargin: -vec_Offsets.w;
-//        anchors.leftMargin: -vec_Offsets.x;
-//        anchors.rightMargin: -vec_Offsets.z;
     }
 
     Rectangle {

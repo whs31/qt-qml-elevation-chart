@@ -9,14 +9,10 @@ Item { id: c_ImplPoint;
 	y: altitude - height / 2;
 	property bool b_Active: false;
     property int scaleValue: 1;
-    transform: Scale{
-        xScale: 1/scaleValue
-        origin.x: c_ImplPoint.width/2
-        onXScaleChanged: {
-            console.log(xScale)
-        }
+	transform: Scale {
+		xScale: 1 / scaleValue;
+		origin.x: c_ImplPoint.width / 2;
     }
-
 	z: 100;
 
 	GLPoint {

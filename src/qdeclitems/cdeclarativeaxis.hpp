@@ -26,13 +26,15 @@ namespace ChartsOpenGL {
             float scale_count;
             float scale_pixel_size;
             float stretch = 1.2;
-        } axis_x, axis_y;
+            float offset = 0;
+            float pixel_offset = 0;
+        } axis_x, axis_y, axis_rely;
 
         public:
             CDeclarativeAxis(QQuickItem* parent = nullptr);
 
             void paint(QPainter* painter) override;
-            void set(float stretch, float xmax, float ymax, float xmin = 0, float ymin = 0);
+            void set(float stretch, float xmax, float ymax, float yreloffset, float xmin = 0, float ymin = 0);
 
             signals:
                 __signal colorChanged();
