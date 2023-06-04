@@ -1,77 +1,59 @@
 cmake_minimum_required(VERSION 3.13)
 
-project(GLCharts VERSION 1.1 LANGUAGES CXX)
-set(LIBRARY_COMPILE TRUE)
+project(ElevationChart VERSION 1.1 LANGUAGES CXX)
+set(LIBRARY_COMPILE FALSE)
+
+set(COMPANY "Radar-MMS")
+set(COPYRIGHT "Copyright (c) 2023 ${COMPANY}. All rights reserved.")
+set(IDENTIFIER "${PROJECT_NAME}")
 
 if(NOT LIBRARY_COMPILE)
-	set(CMAKE_AUTOUIC ON)
-	set(CMAKE_AUTOMOC ON)
-	set(CMAKE_AUTORCC ON)
-
-	set(CMAKE_CXX_STANDARD 17)
-	set(CMAKE_CXX_STANDARD_REQUIRED ON)
+    set(CMAKE_AUTOUIC ON)
+    set(CMAKE_AUTOMOC ON)
+    set(CMAKE_AUTORCC ON)
+    set(CMAKE_CXX_STANDARD 17)
+    set(CMAKE_CXX_STANDARD_REQUIRED ON)
 endif()
 
-find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets Core)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets QuickWidgets)
+find_package(QT NAMES Qt6 Qt5 COMPONENTS Core)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS 
+    Core
+    Quick
+    Positioning
+    QuickControls2
+)
 
 include_directories(src)
 include_directories(include)
 
-set (EXAMPLES
-    # EXAMPLES
-    examples/example.ui
-    examples/main.cpp
-    examples/example.cpp
-    examples/example.h
-    examples/example.qrc
-    #examples/ui_example.h
+set(EXAMPLES
+    examples/main.c++
 )
-set (PROJECT_SOURCES
-	# QML|JS
-	js/charts.qrc
 
-	# API
-	include/charts/elevationwidget.hpp
-	include/charts/geopoint.hpp
+set(PROJECT_SOURCES
 
-	# SOURCE BASE
-	src/elevationwidget_p.hpp src/elevationwidget.cpp
-	src/geopoint.cpp
-        src/pointsmodel.hpp src/pointsmodel.cpp
-
-		# DECLARATIVE ITEMS
-		src/qdeclitems/cdeclarativepolyline.hpp src/qdeclitems/cdeclarativepolyline.cpp
-		src/qdeclitems/cdeclarativepolygon.hpp src/qdeclitems/cdeclarativepolygon.cpp
-		src/qdeclitems/cdeclarativepoint.hpp src/qdeclitems/cdeclarativepoint.cpp
-		src/qdeclitems/cdeclarativesolidpolygon.hpp src/qdeclitems/cdeclarativesolidpolygon.cpp
-		src/qdeclitems/cdeclarativemultipolygon.hpp src/qdeclitems/cdeclarativemultipolygon.cpp
-		src/qdeclitems/cdeclarativeaxis.hpp src/qdeclitems/cdeclarativeaxis.cpp
-
-		# GLSL & SCENE GRAPH
-		src/scenegraph/glsl/glsl.qrc
-		src/scenegraph/glvertextype.hpp
-
-		# SHADERS
-		src/scenegraph/glpolygonshader.hpp
-		src/scenegraph/glpointshader.hpp
-		src/scenegraph/glmultipolygonshader.hpp
-		src/scenegraph/gllineshader.hpp
 )
+
+#add_subdirectory(libs)
 
 if(LIBRARY_COMPILE)
-	add_library(${PROJECT_NAME} ${PROJECT_SOURCES})
+    add_library(${PROJECT_NAME} ${PROJECT_SOURCES})
 else()
-        add_executable(${PROJECT_NAME} ${PROJECT_SOURCES} ${EXAMPLES})
+    add_executable(${PROJECT_NAME} ${PROJECT_SOURCES} ${EXAMPLES})
 endif()
 
 target_include_directories(${PROJECT_NAME} PUBLIC src, include)
-target_link_libraries(${PROJECT_NAME} Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::QuickWidgets)
+target_link_libraries(${PROJECT_NAME} 
+    Qt${QT_VERSION_MAJOR}::Core
+    Qt${QT_VERSION_MAJOR}::Quick
+    Qt${QT_VERSION_MAJOR}::Positioning
+    Qt${QT_VERSION_MAJOR}::QuickControls2
+)
 
-add_subdirectory(submodule)
+add_definitions(
+    -DPROJECT_NAME="${PROJECT_NAME}"
+    -DPROJECT_VERSION="${PROJECT_VERSION}"
+    -DPROJECT_COMPANY="${COMPANY}"
+)
 
-
-execute_process(COMMAND git describe --tags --always WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} OUTPUT_VARIABLE GIT_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE)
-execute_process(COMMAND ${CMAKE_COMMAND} -E env TZ=UTC git log -1 --format=%cd --date=format-local:"%d.%m.%Y %H:%M:%S" WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} OUTPUT_VARIABLE GIT_SOURCE_DATE OUTPUT_STRIP_TRAILING_WHITESPACE)
-string(TIMESTAMP PROJECT_BUILD_DATE "%d.%m.%Y %H:%M:%S" UTC)
-add_definitions(-DPROJECT_NAME="${PROJECT_NAME}" -DPROJECT_VERSION="${GIT_VERSION}" -DPROJECT_SOURCE_DATE=${GIT_SOURCE_DATE} -DPROJECT_BUILD_DATE="${PROJECT_BUILD_DATE}")
+message("${PROJECT_NAME} version ${PROJECT_VERSION} compiled successfully")
