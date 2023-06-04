@@ -4,6 +4,8 @@
 #include <QtQml/QQmlContext>
 #include <QtQuick/QQuickWindow>
 #include <QtQuickControls2/QQuickStyle>
+#include <QtQml/qqml.h>
+#include "elevationchart.h"
 
 int main(int argc, char* argv[])
 {
@@ -18,6 +20,8 @@ int main(int argc, char* argv[])
 
     QQmlEngine engine;
     QObject::connect(&engine, &QQmlEngine::quit, qApp, &QCoreApplication::quit);
+
+    qmlRegisterType<Widgets::ElevationChart>("Widgets.impl", 1, 0, "ElevationChartBackend");
 
     QQmlComponent component(&engine);
     QQuickWindow::setDefaultAlphaBuffer(true);

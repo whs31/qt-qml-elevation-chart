@@ -12,10 +12,13 @@ ApplicationWindow {
     visible: true;
     Component.onCompleted: show();
 
-    color: "#181926";
+    color: "#dce0e8";
 
-    ElevationChartModule.ElevationChart
-    {
+    ElevationChartModule.ElevationChart {
         anchors.fill: parent;
+
+        backgroundColor: "#181926";
+        foregroundColor: "#b8c0e0";
+        plottingColor: "#5b6078";
     }
 }
