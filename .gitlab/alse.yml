@@ -1,0 +1,5 @@
+astra linux special edition:
+  stage: build
+  tags: [alse]
+  script:
+    - cmake . && make && strip $CI_PROJECT_TITLE
