@@ -1,0 +1,3 @@
+[submodule "libs/LPVL"]
+	path = libs/LPVL
+	url = ../../developers/graphics/lpvl

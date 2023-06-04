@@ -28,13 +28,14 @@ include_directories(include)
 
 set(EXAMPLES
     examples/main.c++
+    examples/examples.qrc
 )
 
 set(PROJECT_SOURCES
-
+    qml/qml.qrc
 )
 
-#add_subdirectory(libs)
+add_subdirectory(libs/LPVL)
 
 if(LIBRARY_COMPILE)
     add_library(${PROJECT_NAME} ${PROJECT_SOURCES})
@@ -48,6 +49,7 @@ target_link_libraries(${PROJECT_NAME}
     Qt${QT_VERSION_MAJOR}::Quick
     Qt${QT_VERSION_MAJOR}::Positioning
     Qt${QT_VERSION_MAJOR}::QuickControls2
+    LPVL
 )
 
 add_definitions(
