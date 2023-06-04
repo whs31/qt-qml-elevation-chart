@@ -33,6 +33,7 @@ set(EXAMPLES
 
 set(PROJECT_SOURCES
     qml/qml.qrc
+    src/elevationchart.h src/elevationchart.c++
 )
 
 add_subdirectory(libs/LPVL)
