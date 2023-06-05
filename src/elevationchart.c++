@@ -17,13 +17,14 @@ ElevationChart::ElevationChart(QQuickItem* parent)
 void ElevationChart::setPolyline(const QList<QVariant>& route, const QList<float> velocities)
 {
     stored.clear();
+    if(route.size() != velocities.size() and velocities.size() != 0)
+        throw std::invalid_argument("Route list and Velocities list are different sizes");
+
     for(size_t i = 0; i < route.size(); ++i)
     {
         auto coord = route[i].value<QGeoCoordinate>();
         stored.push_back({coord.latitude(), coord.longitude(), static_cast<float>(coord.altitude()), velocities[i]});
-        qDebug() << stored[i].latitude;
     }
-
 }
 
 QSGNode* ElevationChart::updatePaintNode(QSGNode* old_node, UpdatePaintNodeData*)
