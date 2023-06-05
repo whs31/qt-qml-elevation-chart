@@ -1,6 +1,8 @@
 #include "elevationchart.h"
+#include <stdexcept>
 #include <QtQuick/QSGGeometryNode>
 #include <QtQuick/QSGFlatColorMaterial>
+#include <QtPositioning/QGeoCoordinate>
 #include <LPVL/GLGeometry>
 
 namespace Widgets
@@ -12,9 +14,16 @@ ElevationChart::ElevationChart(QQuickItem* parent)
     setFlag(ItemHasContents);
 }
 
-void ElevationChart::setPolyline(const QList<VelocityPoint>& route)
+void ElevationChart::setPolyline(const QList<QVariant>& route, const QList<float> velocities)
 {
-    qDebug() << route.front().longitude();
+    stored.clear();
+    for(size_t i = 0; i < route.size(); ++i)
+    {
+        auto coord = route[i].value<QGeoCoordinate>();
+        stored.push_back({coord.latitude(), coord.longitude(), static_cast<float>(coord.altitude()), velocities[i]});
+        qDebug() << stored[i].latitude;
+    }
+
 }
 
 QSGNode* ElevationChart::updatePaintNode(QSGNode* old_node, UpdatePaintNodeData*)

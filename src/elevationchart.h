@@ -5,7 +5,8 @@
 #include <QtCore/QList>
 #include <QtQuick/QQuickItem>
 #include <LPVL/ChartBase>
-#include "velocitypoint.h"
+
+using std::vector;
 
 namespace Widgets
 {
@@ -13,15 +14,32 @@ namespace Widgets
     {
         Q_OBJECT
 
+        struct ChartPoint
+        {
+            double latitude;
+            double longitude;
+            float altitude;
+            float velocity;
+        };
+
         public:
             ElevationChart(QQuickItem* parent = nullptr);
 
-            Q_INVOKABLE void setPolyline(const QList<Widgets::VelocityPoint>& route);
+            /*! @brief setPolyline
+             *  @details
+             *  @param route
+             *  @param velocities
+             *  @throws std::invalid_argument, если route.size() != velocities.size()
+             *          and velocities.size() != 0.
+            !*/
+            Q_INVOKABLE void setPolyline(const QList<QVariant>& route, const QList<float> velocities = {});
 
-            signals:
+                signals:
 
         protected:
             QSGNode* updatePaintNode(QSGNode* old_node, UpdatePaintNodeData*) override;
 
+        private:
+            vector<ChartPoint> stored;
     };
 } // Widgets
