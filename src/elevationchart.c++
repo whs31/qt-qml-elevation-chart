@@ -2,13 +2,18 @@
 #include <stdexcept>
 #include <QtQuick/QSGGeometryNode>
 #include <QtQuick/QSGFlatColorMaterial>
-#include <QtPositioning/QGeoCoordinate>
 #include <QtPositioning/QGeoPath>
 #include <LPVL/GLGeometry>
 #include <DEM/GroundProfile>
 
 namespace Widgets
 {
+
+QGeoCoordinate ElevationChart::ChartPoint::toQGeoCoordinate() const noexcept
+{
+    return { latitude, longitude, altitude };
+}
+
 
 ElevationChart::ElevationChart(QQuickItem* parent)
     : LPVL::ChartBase{parent}
@@ -30,6 +35,31 @@ void ElevationChart::setPolyline(const QList<QVariant>& route, const QList<float
     }
 
     this->requestUpdate();
+}
+
+QList<QVariant> ElevationChart::getPolyline() const noexcept
+{
+
+}
+
+QList<float> ElevationChart::getVelocities() const noexcept
+{
+
+}
+
+void ElevationChart::applyMetricsCorrection() noexcept
+{
+
+}
+
+void ElevationChart::estimateEnvelope() noexcept
+{
+
+}
+
+void ElevationChart::applyEnvelopeCorrection() noexcept
+{
+
 }
 
 QSGNode* ElevationChart::updatePaintNode(QSGNode* old_node, UpdatePaintNodeData*)
@@ -66,9 +96,76 @@ void ElevationChart::requestUpdate()
     vector<DEM::GraphPoint> res = DEM::plotTerrainProfile(path);
 }
 
-QGeoCoordinate ElevationChart::ChartPoint::toQGeoCoordinate() const noexcept
-{
-    return { latitude, longitude, altitude };
+QGeoCoordinate ElevationChart::uavPosition() const { return m_uavPosition; }
+void ElevationChart::setUavPosition(const QGeoCoordinate& o) {
+    if (m_uavPosition == o)
+        return;
+    m_uavPosition = o;
+    emit uavPositionChanged();
+}
+
+bool ElevationChart::intersecting() const { return m_intersecting; }
+void ElevationChart::setIntersecting(bool o) {
+    if (m_intersecting == o)
+        return;
+    m_intersecting = o;
+    emit intersectingChanged();
+}
+
+bool ElevationChart::valid() const { return m_valid; }
+void ElevationChart::setValid(bool o) {
+    if (m_valid == o)
+        return;
+    m_valid = o;
+    emit validChanged();
+}
+
+float ElevationChart::climbRate() const { return m_climbRate; }
+void ElevationChart::setClimbRate(float o) {
+    if (qFuzzyCompare(m_climbRate, o))
+        return;
+    m_climbRate = o;
+    emit climbRateChanged();
+}
+
+float ElevationChart::descendRate() const { return m_descendRate; }
+void ElevationChart::setDescendRate(float o) {
+    if (qFuzzyCompare(m_descendRate, o))
+        return;
+    m_descendRate = o;
+    emit descendRateChanged();
+}
+
+float ElevationChart::fallbackVelocity() const { return m_fallbackVelocity; }
+void ElevationChart::setFallbackVelocity(float o) {
+    if (qFuzzyCompare(m_fallbackVelocity, o))
+        return;
+    m_fallbackVelocity = o;
+    emit fallbackVelocityChanged();
+}
+
+bool ElevationChart::matchingMetrics() const { return m_matchingMetrics; }
+void ElevationChart::setMatchingMetrics(bool o) {
+    if (m_matchingMetrics == o)
+        return;
+    m_matchingMetrics = o;
+    emit matchingMetricsChanged();
+}
+
+float ElevationChart::envelopeMinAltitude() const { return m_envelopeMinAltitude; }
+void ElevationChart::setEnvelopeMinAltitude(float o) {
+    if (qFuzzyCompare(m_envelopeMinAltitude, o))
+        return;
+    m_envelopeMinAltitude = o;
+    emit envelopeMinAltitudeChanged();
+}
+
+float ElevationChart::envelopeCoridorSize() const { return m_envelopeCoridorSize; }
+void ElevationChart::setEnvelopeCoridorSize(float o) {
+    if (qFuzzyCompare(m_envelopeCoridorSize, o))
+        return;
+    m_envelopeCoridorSize = o;
+    emit envelopeCoridorSizeChanged();
 }
 
 } // Widgets
