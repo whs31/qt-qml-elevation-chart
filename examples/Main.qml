@@ -34,6 +34,7 @@ ApplicationWindow {
             60,
             60,
             30,
+            30
         ];
 
         // Важно!

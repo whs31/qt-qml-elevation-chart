@@ -10,20 +10,21 @@ namespace Widgets
 
 ElevationChart::ElevationChart(QQuickItem* parent)
     : LPVL::ChartBase{parent}
+    , m_route({})
 {
     setFlag(ItemHasContents);
 }
 
 void ElevationChart::setPolyline(const QList<QVariant>& route, const QList<float> velocities)
 {
-    stored.clear();
+    m_route.clear();
     if(route.size() != velocities.size() and velocities.size() != 0)
         throw std::invalid_argument("Route list and Velocities list are different sizes");
 
     for(size_t i = 0; i < route.size(); ++i)
     {
         auto coord = route[i].value<QGeoCoordinate>();
-        stored.push_back({coord.latitude(), coord.longitude(), static_cast<float>(coord.altitude()), velocities[i]});
+        m_route.push_back({coord.latitude(), coord.longitude(), static_cast<float>(coord.altitude()), velocities[i]});
     }
 }
 
@@ -51,6 +52,11 @@ QSGNode* ElevationChart::updatePaintNode(QSGNode* old_node, UpdatePaintNodeData*
 
     node->markDirty(QSGNode::DirtyGeometry);
     return node;
+}
+
+void ElevationChart::requestUpdate()
+{
+
 }
 
 } // Widgets

@@ -37,6 +37,7 @@ set(PROJECT_SOURCES
 )
 
 add_subdirectory(libs/LPVL)
+add_subdirectory(libs/DEM)
 
 if(LIBRARY_COMPILE)
     add_library(${PROJECT_NAME} ${PROJECT_SOURCES})
@@ -51,6 +52,7 @@ target_link_libraries(${PROJECT_NAME}
     Qt${QT_VERSION_MAJOR}::Positioning
     Qt${QT_VERSION_MAJOR}::QuickControls2
     LPVL
+    DEM
 )
 
 add_definitions(

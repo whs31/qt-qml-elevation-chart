@@ -30,8 +30,7 @@ namespace Widgets
              *  @param route
              *  @param velocities
              *  @throws std::invalid_argument, если route.size() != velocities.size()
-             *          and velocities.size() != 0.
-            !*/
+             *          and velocities.size() != 0. !*/
             Q_INVOKABLE void setPolyline(const QList<QVariant>& route, const QList<float> velocities = {});
 
                 signals:
@@ -40,6 +39,9 @@ namespace Widgets
             QSGNode* updatePaintNode(QSGNode* old_node, UpdatePaintNodeData*) override;
 
         private:
-            vector<ChartPoint> stored;
+            void requestUpdate();
+
+        private:
+            vector<ChartPoint> m_route;
     };
 } // Widgets
