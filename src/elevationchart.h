@@ -8,6 +8,8 @@
 
 using std::vector;
 
+class QGeoCoordinate;
+
 namespace Widgets
 {
     class ElevationChart : public LPVL::ChartBase
@@ -16,6 +18,8 @@ namespace Widgets
 
         struct ChartPoint
         {
+            QGeoCoordinate toQGeoCoordinate() const noexcept;
+
             double latitude;
             double longitude;
             float altitude;

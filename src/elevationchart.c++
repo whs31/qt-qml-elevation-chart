@@ -3,7 +3,9 @@
 #include <QtQuick/QSGGeometryNode>
 #include <QtQuick/QSGFlatColorMaterial>
 #include <QtPositioning/QGeoCoordinate>
+#include <QtPositioning/QGeoPath>
 #include <LPVL/GLGeometry>
+#include <DEM/GroundProfile>
 
 namespace Widgets
 {
@@ -26,6 +28,8 @@ void ElevationChart::setPolyline(const QList<QVariant>& route, const QList<float
         auto coord = route[i].value<QGeoCoordinate>();
         m_route.push_back({coord.latitude(), coord.longitude(), static_cast<float>(coord.altitude()), velocities[i]});
     }
+
+    this->requestUpdate();
 }
 
 QSGNode* ElevationChart::updatePaintNode(QSGNode* old_node, UpdatePaintNodeData*)
@@ -56,7 +60,15 @@ QSGNode* ElevationChart::updatePaintNode(QSGNode* old_node, UpdatePaintNodeData*
 
 void ElevationChart::requestUpdate()
 {
+    QGeoPath path;
+    for(const auto& point : m_route)
+        path.addCoordinate(point.toQGeoCoordinate());
+    vector<DEM::GraphPoint> res = DEM::plotTerrainProfile(path);
+}
 
+QGeoCoordinate ElevationChart::ChartPoint::toQGeoCoordinate() const noexcept
+{
+    return { latitude, longitude, altitude };
 }
 
 } // Widgets
