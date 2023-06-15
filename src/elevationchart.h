@@ -6,6 +6,7 @@
 #include <QtQuick/QQuickItem>
 #include <QtPositioning/QGeoCoordinate>
 #include <LPVL/ChartBase>
+#include <LPVL/GLGeometry>
 
 using std::vector;
 
@@ -83,6 +84,7 @@ namespace Widgets
 
         private:
             vector<ChartPoint> m_route;
+            vector<LPVL::Point2D> m_profile;
 
             QGeoCoordinate m_uavPosition;
             bool m_intersecting;

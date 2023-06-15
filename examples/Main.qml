@@ -25,9 +25,9 @@ ApplicationWindow {
         show();
         var route = [
             QtPositioning.coordinate(60, 30, 0),
-            QtPositioning.coordinate(61, 30, 50),
-            QtPositioning.coordinate(60, 31, 40),
-            QtPositioning.coordinate(61, 31, 100)
+            QtPositioning.coordinate(60.5, 30, 50),
+            QtPositioning.coordinate(60, 30.5, 40),
+            QtPositioning.coordinate(60.5, 30.5, 100)
         ];
 
         var vels = [

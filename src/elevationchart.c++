@@ -93,6 +93,13 @@ void ElevationChart::requestUpdate()
     for(const auto& point : m_route)
         path.addCoordinate(point.toQGeoCoordinate());
     vector<DEM::GraphPoint> res = DEM::plotTerrainProfile(path);
+
+    m_profile.clear();
+    for(const auto& p : res)
+        m_profile.push_back(LPVL::Point2D(p.distance, p.elevation));
+
+    this->update();
+    qDebug() << m_profile.size();
 }
 
 QGeoCoordinate ElevationChart::uavPosition() const { return m_uavPosition; }
