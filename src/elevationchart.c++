@@ -14,7 +14,6 @@ QGeoCoordinate ElevationChart::ChartPoint::toQGeoCoordinate() const noexcept
     return { latitude, longitude, altitude };
 }
 
-
 ElevationChart::ElevationChart(QQuickItem* parent)
     : LPVL::ChartBase{parent}
     , m_route({})
