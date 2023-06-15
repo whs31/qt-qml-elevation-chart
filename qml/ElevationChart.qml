@@ -23,6 +23,5 @@ Item {
         antialiasing: true;
         smooth: true;
         rectSize: Qt.size(0.1, 0.1);
-
     }
 }
