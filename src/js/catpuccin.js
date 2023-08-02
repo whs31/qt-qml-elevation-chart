@@ -1,3 +1,5 @@
+.pragma library
+
 const latte = {
     rosewater: {
         hex: '#dc8a78',
