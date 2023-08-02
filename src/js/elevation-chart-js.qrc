@@ -1,5 +1,5 @@
 <RCC>
     <qresource prefix="/elevation-chart">
-
+        <file>catpuccin.js</file>
     </qresource>
 </RCC>
