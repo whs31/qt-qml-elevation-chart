@@ -30,16 +30,16 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS
 
 include_directories(src include examples)
 
-file(GLOB_RECURSE EC_CORE src/* )
-file(GLOB_RECURSE EC_CORE_INCLUDE include/* )
+file(GLOB_RECURSE EC_CORE src/c++/*)
+file(GLOB_RECURSE EC_CORE_INCLUDE include/*)
 file(GLOB_RECURSE EC_EXAMPLES examples/*)
 
 if(MAKE_LIBRARY)
     message("Making library...")
-    set(SRC ${EC_CORE} ${EC_CORE_INCLUDE} resources/elevation-chart-rc.qrc)
+    set(SRC ${EC_CORE} ${EC_CORE_INCLUDE} resources/elevation-chart-rc.qrc src/qml/elevation-chart.qrc src/js/elevation-chart-js.qrc)
 else()
     message("Making test executable...")
-    set(SRC ${EC_CORE} ${EC_CORE_INCLUDE} ${EC_EXAMPLES} resources/elevation-chart-rc.qrc)
+    set(SRC ${EC_CORE} ${EC_CORE_INCLUDE} ${EC_EXAMPLES} resources/elevation-chart-rc.qrc src/qml/elevation-chart.qrc src/js/elevation-chart-js.qrc)
 endif()
 
 if(MAKE_LIBRARY)
