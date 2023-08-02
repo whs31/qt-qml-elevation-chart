@@ -1,4 +1,4 @@
-![logo](./doc/header.png)
+![logo](./docs/header.png)
 
 ### Виджет для построения и работы с профилем высот для Qt/QML
 

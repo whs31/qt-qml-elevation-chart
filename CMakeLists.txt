@@ -1,18 +1,22 @@
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.15)
 
-project(ElevationChart VERSION 1.1 LANGUAGES CXX)
-set(LIBRARY_COMPILE FALSE)
+project(ElevationChart LANGUAGES CXX)
 
 set(COMPANY "Radar-MMS")
 set(COPYRIGHT "Copyright (c) 2023 ${COMPANY}. All rights reserved.")
 set(IDENTIFIER "${PROJECT_NAME}")
 
-if(NOT LIBRARY_COMPILE)
-    set(CMAKE_AUTOUIC ON)
-    set(CMAKE_AUTOMOC ON)
-    set(CMAKE_AUTORCC ON)
+option(MAKE_LIBRARY
+    "Exclude examples from build and make static library."
+    OFF
+)
+
+if(NOT MAKE_LIBRARY)
     set(CMAKE_CXX_STANDARD 17)
     set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+    set(CMAKE_AUTORCC ON)
+    set(CMAKE_AUTOMOC ON)
 endif()
 
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Core)
@@ -20,44 +24,46 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS
     Core
     Quick
     Positioning
+    Widgets
     QuickControls2
 )
 
-include_directories(src)
-include_directories(include)
+include_directories(src include examples)
 
-set(EXAMPLES
-    examples/main.c++
-    examples/examples.qrc
-)
+file(GLOB_RECURSE EC_CORE src/* )
+file(GLOB_RECURSE EC_CORE_INCLUDE include/* )
+file(GLOB_RECURSE EC_EXAMPLES examples/*)
 
-set(PROJECT_SOURCES
-    qml/qml.qrc
-    src/elevationchart.h src/elevationchart.c++
-)
-
-add_subdirectory(libs/LPVL)
-add_subdirectory(libs/DEM)
-
-if(LIBRARY_COMPILE)
-    add_library(${PROJECT_NAME} ${PROJECT_SOURCES})
+if(MAKE_LIBRARY)
+    message("Making library...")
+    set(SRC ${EC_CORE} ${EC_CORE_INCLUDE} resources/elevation-chart-rc.qrc)
 else()
-    add_executable(${PROJECT_NAME} ${PROJECT_SOURCES} ${EXAMPLES})
+    message("Making test executable...")
+    set(SRC ${EC_CORE} ${EC_CORE_INCLUDE} ${EC_EXAMPLES} resources/elevation-chart-rc.qrc)
 endif()
 
-target_include_directories(${PROJECT_NAME} PUBLIC src, include)
+if(MAKE_LIBRARY)
+    add_library(${PROJECT_NAME} ${SRC})
+else()
+    add_executable(${PROJECT_NAME} ${SRC})
+endif()
+
 target_link_libraries(${PROJECT_NAME} 
     Qt${QT_VERSION_MAJOR}::Core
     Qt${QT_VERSION_MAJOR}::Quick
+    Qt${QT_VERSION_MAJOR}::Widgets
     Qt${QT_VERSION_MAJOR}::Positioning
     Qt${QT_VERSION_MAJOR}::QuickControls2
-    LPVL
-    DEM
 )
+
+target_include_directories(${PROJECT_NAME} PUBLIC include src)
+
+execute_process(COMMAND git remote update WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+execute_process(COMMAND git describe --tags --abbrev=0 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} OUTPUT_VARIABLE GIT_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE)
 
 add_definitions(
     -DPROJECT_NAME="${PROJECT_NAME}"
-    -DPROJECT_VERSION="${PROJECT_VERSION}"
+    -DPROJECT_VERSION="${GIT_VERSION}"
     -DPROJECT_COMPANY="${COMPANY}"
 )
 

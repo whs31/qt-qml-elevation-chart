@@ -1,5 +1,5 @@
 <RCC>
     <qresource prefix="/elevation-chart">
-        <file>ElevationChart.qml</file>
+        
     </qresource>
 </RCC>

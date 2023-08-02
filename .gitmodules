@@ -1,6 +1,0 @@
-[submodule "libs/LPVL"]
-	path = libs/LPVL
-	url = ../../developers/graphics/lpvl
-[submodule "libs/DEM"]
-	path = libs/DEM
-	url = ../../developers/map/dem.git
