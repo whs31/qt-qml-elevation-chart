@@ -6,5 +6,4 @@
 
 #### Используемые библиотеки
 
-- ![Repo logo](https://avatars.githubusercontent.com/u/93489351?s=16&v=1) [**Catpuccin**](https://github.com/catppuccin/palette) - палитра цветов ![](https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E)
-
+- ![Repo logo](https://avatars.githubusercontent.com/u/93489351?s=16&v=1) [**Catpuccin**](https://github.com/catppuccin/palette) - цветовая схема для QML/JavaScript/CSS
