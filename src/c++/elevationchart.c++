@@ -12,12 +12,16 @@ namespace ElevationChart
     : QQuickItem(parent)
     , m_require_recolor(false)
     , m_background_node(nullptr) // !
-  {}
+  {
+    this->setFlag(ItemHasContents);
+  }
 
   SG::BasicPalette ChartItem::palette() const { return m_palette; }
   void ChartItem::setPalette(SG::BasicPalette x) {
     m_palette = x;
     emit paletteChanged();
+
+    this->update();
   }
 
   QSGNode* ChartItem::updatePaintNode(QSGNode* old_node, QQuickItem::UpdatePaintNodeData* unused)
@@ -30,7 +34,7 @@ namespace ElevationChart
 
       m_background_node = new QSGGeometryNode;
       auto* background_material = new QSGFlatColorMaterial;
-      background_material->setColor("red");
+      background_material->setColor(palette().background());
       m_background_node->setMaterial(background_material);
       auto* background_geometry = new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), 0, 0, QSGGeometry::UnsignedIntType);
       background_geometry->setDrawingMode(QSGGeometry::DrawTriangles);
@@ -50,9 +54,19 @@ namespace ElevationChart
     m_background_node->geometry()->vertexDataAsPoint2D()[1].set(static_cast<float>(width()), 0);
     m_background_node->geometry()->vertexDataAsPoint2D()[2].set(static_cast<float>(width()), static_cast<float>(height()));
     m_background_node->geometry()->vertexDataAsPoint2D()[3].set(static_cast<float>(width()), static_cast<float>(height()));
-    m_background_node->geometry()->vertexDataAsPoint2D()[3].set(0, static_cast<float>(height()));
-    m_background_node->geometry()->vertexDataAsPoint2D()[3].set(0, 0);
+    m_background_node->geometry()->vertexDataAsPoint2D()[4].set(0, static_cast<float>(height()));
+    m_background_node->geometry()->vertexDataAsPoint2D()[5].set(0, 0);
 
+    if(m_require_recolor)
+    {
+      m_background_node->markDirty(QSGNode::DirtyGeometry | QSGNode::DirtyMaterial);
+    }
+    else
+    {
+      m_background_node->markDirty(QSGNode::DirtyGeometry);
+    }
+
+    old_node->markDirty(QSGNode::DirtyGeometry | QSGNode::DirtyMaterial);
     return old_node;
   }
 } // ElevationChart
