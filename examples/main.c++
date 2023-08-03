@@ -11,6 +11,7 @@
 #include <QtQml/QQmlContext>
 #include <QtQuick/QQuickWindow>
 #include <QtQuickControls2/QQuickStyle>
+#include "../src/c++/register.h"
 
 #if defined Q_OS_WINDOWS
 #include <windows.h>
@@ -36,6 +37,9 @@ int main(int argc, char* argv[])
     qInfo().noquote() << QCoreApplication::applicationName() << "version" << QCoreApplication::applicationVersion();
 
     const QUrl qml_entry(QStringLiteral("qrc:/Main.qml"));
+
+    ElevationChart::registerQMLTypes();
+
     qputenv("QT_QUICK_CONTROLS_MATERIAL_VARIANT", "Dense");
     QQuickStyle::setStyle("Material");
 

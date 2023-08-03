@@ -22,19 +22,19 @@ namespace SG
    *
    * Класс зарегистрирован в мета-системе и доступен для встраивания в типы QML.
    */
-  class BasicPalette : public QObject
+  class BasicPalette
   {
-    Q_OBJECT
-      Q_PROPERTY(QColor background READ background WRITE setBackground NOTIFY backgroundChanged)
-      Q_PROPERTY(QColor foreground READ foreground WRITE setForeground NOTIFY foregroundChanged)
-      Q_PROPERTY(QColor overlay READ overlay WRITE setOverlay NOTIFY overlayChanged)
-      Q_PROPERTY(QColor accent READ accent WRITE setAccent NOTIFY accentChanged)
-      Q_PROPERTY(QColor warn READ warn WRITE setWarn NOTIFY warnChanged)
-      Q_PROPERTY(QColor error READ error WRITE setError NOTIFY errorChanged)
-      Q_PROPERTY(QColor info READ info WRITE setInfo NOTIFY infoChanged)
+    Q_GADGET
+    Q_PROPERTY(QColor background READ background WRITE setBackground)
+    Q_PROPERTY(QColor foreground READ foreground WRITE setForeground)
+    Q_PROPERTY(QColor overlay READ overlay WRITE setOverlay)
+    Q_PROPERTY(QColor accent READ accent WRITE setAccent)
+    Q_PROPERTY(QColor warn READ warn WRITE setWarn)
+    Q_PROPERTY(QColor error READ error WRITE setError)
+    Q_PROPERTY(QColor info READ info WRITE setInfo)
 
     public:
-      explicit BasicPalette(QObject* parent = nullptr);
+      BasicPalette();
 
       [[nodiscard]] QColor background() const; void setBackground(const QColor&);
       [[nodiscard]] QColor foreground() const; void setForeground(const QColor&);
@@ -43,15 +43,6 @@ namespace SG
       [[nodiscard]] QColor warn() const; void setWarn(const QColor& color);
       [[nodiscard]] QColor error() const; void setError(const QColor& color);
       [[nodiscard]] QColor info() const; void setInfo(const QColor& color);
-
-    signals:
-      void backgroundChanged();
-      void foregroundChanged();
-      void overlayChanged();
-      void accentChanged();
-      void warnChanged();
-      void errorChanged();
-      void infoChanged();
 
     private:
       QColor m_background;
@@ -65,4 +56,4 @@ namespace SG
 } // SG
 
 #include <QtCore/QMetaType>
-Q_DECLARE_METATYPE(SG::BasicPalette*)
+Q_DECLARE_METATYPE(SG::BasicPalette)

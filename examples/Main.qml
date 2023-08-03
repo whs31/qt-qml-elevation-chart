@@ -23,6 +23,6 @@ ApplicationWindow {
     color: Catpuccin.latte.base.hex
 
     ElevationChart {
-        anchors.centerIn: parent
+        anchors.fill: parent
     }
 }
