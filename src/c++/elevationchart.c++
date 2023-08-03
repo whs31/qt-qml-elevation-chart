@@ -14,6 +14,7 @@ namespace ElevationChart
     , m_background_node(nullptr) // !
   {
     this->setFlag(ItemHasContents);
+    qRegisterMetaType<ChartItem*>("ChartItem*");
   }
 
   SG::BasicPalette ChartItem::palette() const { return m_palette; }

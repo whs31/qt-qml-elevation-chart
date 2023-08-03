@@ -5,6 +5,7 @@ import "qrc:/elevation-chart/catpuccin.js" as Catpuccin
 Item {
     ElevationChartImpl
     {
+        id: impl
         anchors.fill: parent
         palette {
             background: Catpuccin.mocha.base.hex
@@ -15,5 +16,7 @@ Item {
             error: Catpuccin.mocha.red.hex
             info: Catpuccin.mocha.lavender.hex
         }
+
+        Component.onCompleted: ElevationChartCXXAPI.setSource(impl)
     }
 }

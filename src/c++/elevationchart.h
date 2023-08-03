@@ -36,3 +36,5 @@ namespace ElevationChart
       SG::BasicPalette m_palette;
   };
 } // ElevationChart
+
+Q_DECLARE_METATYPE(ElevationChart::ChartItem*);
