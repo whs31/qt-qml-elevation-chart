@@ -21,7 +21,7 @@ namespace ElevationChart
     m_palette = x;
     emit paletteChanged();
 
-    this->update();
+    this->requireRecolor();
   }
 
   QSGNode* ChartItem::updatePaintNode(QSGNode* old_node, QQuickItem::UpdatePaintNodeData* unused)
@@ -60,6 +60,7 @@ namespace ElevationChart
     if(m_require_recolor)
     {
       m_background_node->markDirty(QSGNode::DirtyGeometry | QSGNode::DirtyMaterial);
+      this->fulfillRecolor();
     }
     else
     {
@@ -69,4 +70,12 @@ namespace ElevationChart
     old_node->markDirty(QSGNode::DirtyGeometry | QSGNode::DirtyMaterial);
     return old_node;
   }
+
+  void ChartItem::requireRecolor()
+  {
+    m_require_recolor = true;
+    this->update();
+  }
+
+  void ChartItem::fulfillRecolor() { m_require_recolor = false; }
 } // ElevationChart

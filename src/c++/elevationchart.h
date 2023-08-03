@@ -25,6 +25,8 @@ namespace ElevationChart
 
     protected:
       QSGNode* updatePaintNode(QSGNode* old_node, UpdatePaintNodeData*) override;
+      void requireRecolor();
+      void fulfillRecolor();
 
     protected:
       bool m_require_recolor;
