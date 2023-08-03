@@ -4,6 +4,12 @@
 
 #include "elevationchart.h"
 
-namespace MapWidgets
+namespace ElevationChart
 {
-} // MapWidgets
+  ChartItem::ChartItem(QQuickItem* parent)
+    : QQuickItem(parent)
+    , m_palette(new SG::BasicPalette(this))
+  {}
+
+  SG::BasicPalette* ChartItem::palette() const { return m_palette; }
+} // ElevationChart

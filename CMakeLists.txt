@@ -34,6 +34,8 @@ file(GLOB_RECURSE EC_CORE src/c++/*)
 file(GLOB_RECURSE EC_CORE_INCLUDE include/*)
 file(GLOB_RECURSE EC_EXAMPLES examples/*)
 
+add_subdirectory(libs/libscenegraph)
+
 if(MAKE_LIBRARY)
     message("Making library...")
     set(SRC ${EC_CORE} ${EC_CORE_INCLUDE} resources/elevation-chart-rc.qrc src/qml/elevation-chart.qrc src/js/elevation-chart-js.qrc)
@@ -54,6 +56,7 @@ target_link_libraries(${PROJECT_NAME}
     Qt${QT_VERSION_MAJOR}::Widgets
     Qt${QT_VERSION_MAJOR}::Positioning
     Qt${QT_VERSION_MAJOR}::QuickControls2
+    libscenegraph
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC include src)
