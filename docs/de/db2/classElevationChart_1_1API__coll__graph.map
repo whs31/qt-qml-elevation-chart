@@ -1,0 +1,12 @@
+<map id="API" name="API">
+<area shape="rect" id="Node000001" title="Публичный интерфейс (C++) для виджета профиля высот." alt="" coords="25,273,70,301"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,79,34"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="45,49,50,272,44,273,40,49"/>
+<area shape="rect" id="Node000004" href="$d7/d4d/classQQuickItem.html" title=" " alt="" coords="63,83,160,112"/>
+<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="66,43,101,81,97,85,62,47"/>
+<area shape="rect" id="Node000003" href="$d1/d7c/classElevationChart_1_1ChartItem.html" title=" " alt="" coords="69,178,154,207"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="96,221,59,274,55,271,91,218"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="114,127,114,177,109,177,109,127"/>
+<area shape="rect" id="Node000005" href="$d8/d37/classSG_1_1BasicPalette.html" title="Простейшая палитра цветов." alt="" coords="183,83,285,112"/>
+<area shape="poly" id="edge5_Node000003_Node000005" title=" " alt="" coords="206,123,131,180,128,175,203,119"/>
+</map>

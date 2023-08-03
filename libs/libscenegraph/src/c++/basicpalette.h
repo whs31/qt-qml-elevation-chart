@@ -6,6 +6,14 @@
 #include <QtCore/QObject>
 #include <QtGui/QColor>
 
+/**
+ * \class QQuickItem
+ * \extends QObject
+ */
+
+/**
+ * \brief Пространство имен библиотеки Scenegraph.
+ */
 namespace SG
 {
   /**

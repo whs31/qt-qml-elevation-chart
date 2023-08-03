@@ -1,0 +1,9 @@
+<map id="ChartItem" name="ChartItem">
+<area shape="rect" id="Node000001" title=" " alt="" coords="103,178,188,207"/>
+<area shape="rect" id="Node000002" href="$d7/d4d/classQQuickItem.html" title=" " alt="" coords="5,83,102,112"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="79,121,134,175,130,179,75,124"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="17,5,90,34"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="56,49,56,83,51,83,51,49"/>
+<area shape="rect" id="Node000004" href="$d8/d37/classSG_1_1BasicPalette.html" title="Простейшая палитра цветов." alt="" coords="126,83,227,112"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="170,127,153,178,148,177,165,125"/>
+</map>
