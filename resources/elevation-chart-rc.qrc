@@ -2,5 +2,10 @@
     <qresource prefix="/elevation-chart">
         <file>fonts/Overpass.ttf</file>
         <file>fonts/UbuntuMono.ttf</file>
+        <file>icons/resize.svg</file>
+        <file>icons/match.svg</file>
+        <file>icons/polyline.svg</file>
+        <file>icons/inspect-graph.svg</file>
+        <file>icons/envelope.svg</file>
     </qresource>
 </RCC>
