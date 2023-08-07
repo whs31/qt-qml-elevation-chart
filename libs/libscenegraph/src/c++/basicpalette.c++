@@ -10,6 +10,7 @@ namespace SG
     : m_background("black")
     , m_foreground("white")
     , m_overlay("gray")
+    , m_overlay2("#777777")
     , m_accent("green")
     , m_warn("yellow")
     , m_error("red")
@@ -39,6 +40,14 @@ namespace SG
    */
   QColor BasicPalette::overlay() const { return m_overlay; }
   void BasicPalette::setOverlay(const QColor& x) { m_overlay = x; }
+
+  /**
+ * \property BasicPalette::overlay2
+ * \brief Цвет, промежуточный между #background и #foreground.
+ * \details По умолчанию равен <span style="background:#777777">#777777</span>.
+ */
+  QColor BasicPalette::overlay2() const { return m_overlay2; }
+  void BasicPalette::setOverlay2(const QColor& x) { m_overlay2 = x; }
 
   /**
    * \property BasicPalette::accent

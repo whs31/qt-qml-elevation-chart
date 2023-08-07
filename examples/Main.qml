@@ -9,10 +9,10 @@ ApplicationWindow {
     id: root
 
     Material.theme: Material.Dark
-    Material.accent: Catpuccin.mocha.blue.hex
-    Material.primary: Catpuccin.mocha.mauve.hex
-    Material.foreground: Catpuccin.mocha.text.hex
-    Material.background: Catpuccin.mocha.base.hex
+    Material.accent: Catpuccin.latte.blue.hex
+    Material.primary: Catpuccin.latte.mauve.hex
+    Material.foreground: Catpuccin.latte.text.hex
+    Material.background: Catpuccin.latte.base.hex
 
     title: "Elevation Chart Demo"
     minimumWidth: 720
@@ -20,7 +20,7 @@ ApplicationWindow {
     width: 1280
     height: 800
     visible: true
-    color: Catpuccin.mocha.base.hex
+    color: Catpuccin.latte.base.hex
 
     ElevationChart {
         anchors.fill: parent

@@ -50,19 +50,21 @@ Item {
         id: impl
         anchors.fill: parent
         palette {
-            background: Catpuccin.mocha.base.hex
-            foreground: Catpuccin.mocha.subtext1.hex
-            overlay: Catpuccin.mocha.surface0.hex
-            accent: Catpuccin.mocha.teal.hex
-            warn: Catpuccin.mocha.peach.hex
-            error: Catpuccin.mocha.red.hex
-            info: Catpuccin.mocha.lavender.hex
+            background: Catpuccin.latte.base.hex
+            foreground: Catpuccin.latte.subtext1.hex
+            overlay: Catpuccin.latte.surface0.hex
+            overlay2: Catpuccin.latte.surface1.hex
+            accent: Catpuccin.latte.teal.hex
+            warn: Catpuccin.latte.peach.hex
+            error: Catpuccin.latte.red.hex
+            info: Catpuccin.latte.lavender.hex
         }
 
         Component.onCompleted: ElevationChartCXXAPI.setSource(impl)
 
         Pane {
             id: panelTools
+            opacity: 0.75
             Material.background: impl.palette.overlay
             Material.elevation: 100
 
@@ -79,7 +81,22 @@ Item {
                     radius: 4
                     icon {
                         source: "qrc:/elevation-chart/icons/inspect-graph.svg"
+                        color: checked ? impl.palette.background : impl.palette.foreground
                     }
+
+                    Material.background: checked ? impl.palette.warn : impl.palette.overlay2
+                }
+
+                RoundButton {
+                    id: buttonEnvelope
+                    checkable: true
+                    radius: 4
+                    icon {
+                        source: "qrc:/elevation-chart/icons/envelope.svg"
+                        color: checked ? impl.palette.background : impl.palette.foreground
+                    }
+
+                    Material.background: checked ? impl.palette.info : impl.palette.overlay2
                 }
             }
         }
@@ -94,8 +111,8 @@ Item {
             width: shown ? implicitWidth : 0
             height: shown ? implicitHeight : 0
 
-            Behavior on width { NumberAnimation { duration: 250; easing.type: Easing.InOutQuad; } }
-            Behavior on height { NumberAnimation { duration: 250; easing.type: Easing.InOutQuad; } }
+            Behavior on width { NumberAnimation { duration: 150; easing.type: Easing.InOutQuad; } }
+            Behavior on height { NumberAnimation { duration: 150; easing.type: Easing.InOutQuad; } }
             clip: true
 
             anchors {
@@ -103,7 +120,7 @@ Item {
                 left: panelTools.left
             }
 
-            Material.background: impl.palette.overlay
+            Material.background: impl.palette.overlay2
             Material.elevation: 100
 
             ColumnLayout {
@@ -119,8 +136,11 @@ Item {
                         weight: Font.DemiBold
                         pixelSize: 14
                     }
-                    icon.source: "qrc:/elevation-chart/icons/match.svg"
-                    Material.background: impl.palette.overlay
+                    icon {
+                        source: "qrc:/elevation-chart/icons/match.svg"
+                    }
+
+                    Material.background: impl.palette.overlay2
                 }
             }
         }

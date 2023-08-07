@@ -23,6 +23,7 @@ namespace SG
    * - <span style="background:#000000">цвет заднего плана</span>
    * - <span style="background:#FFFFFF">цвет переднего плана</span>
    * - <span style="background:#666666">промежуточный цвет</span>
+   * - <span style="background:#777777">второй промежуточный цвет</span>
    * - <span style="background:#00FF00">акцентный цвет</span>
    * - <span style="background:#FFFF00">цвет предупреждений</span>
    * - <span style="background:#FF0000">цвет ошибок</span>
@@ -36,6 +37,7 @@ namespace SG
     Q_PROPERTY(QColor background READ background WRITE setBackground)
     Q_PROPERTY(QColor foreground READ foreground WRITE setForeground)
     Q_PROPERTY(QColor overlay READ overlay WRITE setOverlay)
+    Q_PROPERTY(QColor overlay2 READ overlay2 WRITE setOverlay2)
     Q_PROPERTY(QColor accent READ accent WRITE setAccent)
     Q_PROPERTY(QColor warn READ warn WRITE setWarn)
     Q_PROPERTY(QColor error READ error WRITE setError)
@@ -47,6 +49,7 @@ namespace SG
       [[nodiscard]] QColor background() const; void setBackground(const QColor&);
       [[nodiscard]] QColor foreground() const; void setForeground(const QColor&);
       [[nodiscard]] QColor overlay() const; void setOverlay(const QColor&);
+      [[nodiscard]] QColor overlay2() const; void setOverlay2(const QColor&);
       [[nodiscard]] QColor accent() const; void setAccent(const QColor&);
       [[nodiscard]] QColor warn() const; void setWarn(const QColor& color);
       [[nodiscard]] QColor error() const; void setError(const QColor& color);
@@ -56,6 +59,7 @@ namespace SG
       QColor m_background;
       QColor m_foreground;
       QColor m_overlay;
+      QColor m_overlay2;
       QColor m_accent;
       QColor m_warn;
       QColor m_error;
