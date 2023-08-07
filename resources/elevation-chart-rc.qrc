@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/elevation-chart">
-        
+        <file>fonts/Overpass.ttf</file>
+        <file>fonts/UbuntuMono.ttf</file>
     </qresource>
 </RCC>

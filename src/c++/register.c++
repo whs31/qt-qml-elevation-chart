@@ -12,7 +12,7 @@ namespace ElevationChart
 {
   void registerQMLTypes() noexcept
   {
-    #ifndef CUSTOM_DEBUG_OUTPUT
+    #if !defined(Q_OS_WIN) && !defined(CUSTOM_DEBUG_OUTPUT)
     #define CUSTOM_DEBUG_OUTPUT
     qSetMessagePattern("[%{time process}] [%{category}] "
                        "%{if-debug}\033[01;38;05;15m%{endif}"
