@@ -8,38 +8,113 @@ using std::vector;
 
 namespace ElevationChart
 {
+  /**
+   * \brief Набор последовательных точек на карте.
+   */
   class Route
   {
     public:
+      /// \brief Создает пустой путь.
       Route();
+
+      /**
+       * \brief Создает путь из данного QGeoPath с константной скоростью точек.
+       * \param path - набор координат с высотой.
+       * \param velocity - константная скорость для точек в метрах в секунду.
+       * <i>По умолчанию равно нулю</i>.
+       */
       explicit Route(const QGeoPath& path, float velocity = 0);
+
+      /**
+       * \brief Создает путь из данного вектора точек.
+       * \param vec - вектор точек RoutePoint.
+       */
       explicit Route(const vector<RoutePoint>& vec);
 
+      /**
+       * \brief Добавляет в конец пути точку.
+       * \param point - точка для добавления.
+       */
       void add(const RoutePoint& point);
+
+      /**
+       * \brief Добавляет в конец пути точку, созданную из координаты и значения скорости.
+       * \param coord - координата точки с высотой.
+       * \param velocity - скорость точки в метрах в секунду.
+       */
       void add(const QGeoCoordinate& coord, float velocity = 0);
 
+      /**
+       * \brief Удаляет из пути точку по индексу.
+       * \param index - индекс точки для удаления.
+       */
       void remove(int index);
+
+      /**
+       * \brief Удаляет из пути точку по значению
+       * \param point - значение точки для удаления.
+       * \note Удалено будет только первое вхождение.
+       */
       void remove(const RoutePoint& point);
 
+      /**
+       * \brief Заменяет точку по индексу.
+       * \param index - индекс точки для замены.
+       * \param point - новое значение точки.
+       */
       void replace(int index, const RoutePoint& point);
 
+      /// \brief Очищает путь.
       void clear();
 
+      /**
+       * \brief Задает путь из QGeoPath с константной скоростью точек.
+       * \param path - набор координат с высотой.
+       * \param velocity - константная скорость для точек в метрах в секунду.
+       * <i>По умолчанию равно нулю</i>.
+       */
       void set(const QGeoPath& path, float velocity = 0);
+
+      /**
+       * \brief Задает путь из вектора точек.
+       * \param vec - вектор точек RoutePoint.
+       */
       void set(const vector<RoutePoint>& vec);
 
+      /**
+       * \brief Задает константную общую скорость каждой точке в пути.
+       * \param velocity - скорость в метрах в секунду.
+       */
       void setVelocity(float velocity);
+
+      /**
+       * \brief Задает индивидуальную скорость из массива для каждой точки.
+       * \param velocities - массив скоростей точек в метрах в секунду.
+       * \param fallback - значение, которое будет использоваться, если массив
+       * скоростей меньше, чем количество точек в пути (м/с). <i>По умолчанию равно нулю</i>.
+       */
       void setVelocity(const vector<float>& velocities, float fallback = 0);
 
-      int size() const;
-      QGeoPath toGeoPath() const;
-      RoutePoint at(int index) const;
+      [[nodiscard]] int size() const;                       ///< Возвращает количество точек в пути.
+      [[nodiscard]] QGeoPath toGeoPath() const;             ///< Преобразует путь в QGeoPath и возвращает его.
+      [[nodiscard]] RoutePoint at(int index) const;         ///< Возвращает точку, лежащую по индексу, или пустую точку, если индекс невалидный.
 
-      bool contains(const RoutePoint& point);
-      bool valid() const;
+      [[nodiscard]] bool contains(const RoutePoint& point); ///< Возвращает <tt>true</tt>, если путь содержит указанную точку.
+      [[nodiscard]] bool valid() const;                     ///< Возвращает <tt>true</tt>, если путь корректный.
 
     public:
+      /**
+       * \brief Создает путь из данного QGeoPath с константной скоростью точек.
+       * \param path - набор координат с высотой.
+       * \param velocity - константная скорость для точек в метрах в секунду.
+       * <i>По умолчанию равно нулю</i>.
+       */
       static Route fromGeoPath(const QGeoPath& path, float velocity = 0);
+
+      /**
+       * \brief Создает путь из данного вектора точек.
+       * \param vec - вектор точек RoutePoint.
+       */
       static Route fromPointsVector(const vector<RoutePoint>& vec);
 
     private:
