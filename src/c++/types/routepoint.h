@@ -4,27 +4,48 @@
 
 namespace ElevationChart
 {
+  /**
+   * \brief Точка пути Route на карте.
+   * \details Представляет собой объект, хранящий координаты точки, ее высоту
+   * и скорость в метрах в секунду.
+   * \see Route
+   */
   class RoutePoint
   {
     public:
+      /// \brief Создает точку с невалидными координатами и нулевой скоростью.
       RoutePoint();
+
+      /**
+       * \brief Создает точку с указанными координатами, высотой и скоростью.
+       * \param latitude - широта точки.
+       * \param longitude - долгота точки.
+       * \param elevation - высота точки в метрах. <i>По умолчанию равна нулю.</i>
+       * \param velocity_ms - скорость точки в метрах в секунду. <i>По умолчанию равна нулю.</i>
+       */
       RoutePoint(double latitude, double longitude, float elevation = 0, float velocity_ms = 0);
+
+      /**
+       * \brief Создает точку с заданной скоростью из объекта QGeoCoordinate.
+       * \param coord - координаты, включая высоту в метрах.
+       * \param velocity_ms - скорость точки в метрах в секунду. <i>По умолчанию равна нулю.</i>
+       */
       explicit RoutePoint(const QGeoCoordinate& coord, float velocity_ms = 0);
 
-      [[nodiscard]] QGeoCoordinate coordinate() const;
-      void setCoordinate(const QGeoCoordinate&);
+      [[nodiscard]] QGeoCoordinate coordinate() const;      ///< Возвращает координату точки в виде QGeoCoordinate.
+      void setCoordinate(const QGeoCoordinate&);            ///< Задает координату точки в виде QGeoCoordinate.
 
-      [[nodiscard]] double latitude() const;
-      void setLatitude(double);
+      [[nodiscard]] double latitude() const;                ///< Возвращает широту точки.
+      void setLatitude(double);                             ///< Задает широту точки.
 
-      [[nodiscard]] double longitude() const;
-      void setLongitude(double);
+      [[nodiscard]] double longitude() const;               ///< Возвращает долготу точки.
+      void setLongitude(double);                            ///< Задает долготу точки.
 
-      [[nodiscard]] float altitude() const;
-      void setAltitude(float);
+      [[nodiscard]] float altitude() const;                 ///< Возвращает высоту точки в метрах.
+      void setAltitude(float);                              ///< Задает высоту точки в метрах.
 
-      [[nodiscard]] float velocity() const;
-      void setVelocity(float);
+      [[nodiscard]] float velocity() const;                 ///< Возвращает скорость точки в м/с.
+      void setVelocity(float);                              ///< Задает скорость точки в м/с.
 
     private:
       QGeoCoordinate m_coordinate;
