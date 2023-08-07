@@ -28,7 +28,7 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS
     QuickControls2
 )
 
-include_directories(src include examples)
+include_directories(src/c++ include examples)
 
 file(GLOB_RECURSE EC_CORE src/c++/*)
 file(GLOB_RECURSE EC_CORE_INCLUDE include/*)

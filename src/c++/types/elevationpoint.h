@@ -4,7 +4,7 @@ namespace ElevationChart
 {
   /**
    * \brief Точка профиля высот.
-   * \distance Двумерная точка в пространстве, хранящая координаты в виде
+   * \details Двумерная точка в пространстве, хранящая координаты в виде
    * расстояния и высоты.
    */
   class ElevationPoint
@@ -49,7 +49,7 @@ namespace ElevationChart
   inline void ElevationPoint::setDistance(float x) {
     if(x < 0)
       m_distance = 0;
-    m_distance = x; 
+    m_distance = x;
   }
   inline float ElevationPoint::elevation() const { return m_elevation; }
   inline void ElevationPoint::setElevation(float x) { m_elevation = x; }
