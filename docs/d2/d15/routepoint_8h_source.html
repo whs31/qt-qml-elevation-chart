@@ -1,0 +1,196 @@
+<!-- HTML header for doxygen 1.9.6-->
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ru">
+<head>
+  <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=11" />
+  <meta name="generator" content="Doxygen 1.9.7" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Elevation Chart: Исходный файл routepoint.h</title>
+  <link href="../../tabs.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="../../jquery.js"></script>
+  <script type="text/javascript" src="../../dynsections.js"></script>
+  <script type="text/javascript" src="../../doxygen-awesome-darkmode-toggle.js"></script>
+  <script type="text/javascript" src="../../doxygen-awesome-fragment-copy-button.js"></script>
+  <script type="text/javascript" src="../../doxygen-awesome-paragraph-link.js"></script>
+  <script type="text/javascript" src="../../doxygen-awesome-interactive-toc.js"></script>
+  <script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+  </script>
+  <link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+  <link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+  <link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+  <link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+    <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+      <div id="titlearea">
+        <table cellspacing="0" cellpadding="0">
+          <tbody>
+            <tr id="projectrow">
+              <td id="projectlogo"><img alt="Logo" src="../../logo.png" /></td>
+              <td id="projectalign">
+                <div id="projectname">Elevation Chart<span
+                    id="projectnumber">&#160;3.0.0</span>
+                </div>
+                <div id="projectbrief">Виджет профиля высот</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- end header part --><!-- Создано системой Doxygen 1.9.7 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','Поиск');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('d2/d15/routepoint_8h_source.html','../../'); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Загрузка...</div>
+<div class="SRStatus" id="Searching">Поиск...</div>
+<div class="SRStatus" id="NoMatches">Не найдено</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">routepoint.h</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;QtPositioning/QGeoCoordinate&gt;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d4/d04/namespace_elevation_chart.html">ElevationChart</a></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span>{</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="../../d4/de5/class_elevation_chart_1_1_route_point.html">   13</a></span>  <span class="keyword">class </span><a class="code hl_class" href="../../d4/de5/class_elevation_chart_1_1_route_point.html">RoutePoint</a></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>  {</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>      <a class="code hl_function" href="../../d4/de5/class_elevation_chart_1_1_route_point.html#acc479356509268af0729ad62b17fcbda">RoutePoint</a>();</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>      <a class="code hl_function" href="../../d4/de5/class_elevation_chart_1_1_route_point.html#acc479356509268af0729ad62b17fcbda">RoutePoint</a>(<span class="keywordtype">double</span> <a class="code hl_function" href="../../d4/de5/class_elevation_chart_1_1_route_point.html#a3f99e460a793739de2ef6976b2a034d4">latitude</a>, <span class="keywordtype">double</span> <a class="code hl_function" href="../../d4/de5/class_elevation_chart_1_1_route_point.html#a00f3340e5829cf7e97f73d9e174d0a57">longitude</a>, <span class="keywordtype">float</span> elevation = 0, <span class="keywordtype">float</span> velocity_ms = 0);</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>      <span class="keyword">explicit</span> <a class="code hl_function" href="../../d4/de5/class_elevation_chart_1_1_route_point.html#acc479356509268af0729ad62b17fcbda">RoutePoint</a>(<span class="keyword">const</span> QGeoCoordinate&amp; coord, <span class="keywordtype">float</span> velocity_ms = 0);</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>      [[nodiscard]] QGeoCoordinate <a class="code hl_function" href="../../d4/de5/class_elevation_chart_1_1_route_point.html#ae0c34e21b196ec16125b5b71252e5b93">coordinate</a>() <span class="keyword">const</span>;      </div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>      <span class="keywordtype">void</span> <a class="code hl_function" href="../../d4/de5/class_elevation_chart_1_1_route_point.html#aaa7171f4e68c1c66edf5a58251030a6c">setCoordinate</a>(<span class="keyword">const</span> QGeoCoordinate&amp;);            </div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>      [[nodiscard]] <span class="keywordtype">double</span> <a class="code hl_function" href="../../d4/de5/class_elevation_chart_1_1_route_point.html#a3f99e460a793739de2ef6976b2a034d4">latitude</a>() <span class="keyword">const</span>;                </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>      <span class="keywordtype">void</span> <a class="code hl_function" href="../../d4/de5/class_elevation_chart_1_1_route_point.html#a5ecc1e48920ff4ae4d61b4fe5b421040">setLatitude</a>(<span class="keywordtype">double</span>);                             </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>      [[nodiscard]] <span class="keywordtype">double</span> <a class="code hl_function" href="../../d4/de5/class_elevation_chart_1_1_route_point.html#a00f3340e5829cf7e97f73d9e174d0a57">longitude</a>() <span class="keyword">const</span>;               </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>      <span class="keywordtype">void</span> <a class="code hl_function" href="../../d4/de5/class_elevation_chart_1_1_route_point.html#a34d7c6faeefcc800e6ef256fd61b2619">setLongitude</a>(<span class="keywordtype">double</span>);                            </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>      [[nodiscard]] <span class="keywordtype">float</span> <a class="code hl_function" href="../../d4/de5/class_elevation_chart_1_1_route_point.html#a9ff140fd42e17896b9d5d38ee7d44a3e">altitude</a>() <span class="keyword">const</span>;                 </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>      <span class="keywordtype">void</span> <a class="code hl_function" href="../../d4/de5/class_elevation_chart_1_1_route_point.html#ae93e1acece0dcd127a6660467a0678c2">setAltitude</a>(<span class="keywordtype">float</span>);                              </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>      [[nodiscard]] <span class="keywordtype">float</span> <a class="code hl_function" href="../../d4/de5/class_elevation_chart_1_1_route_point.html#af93b053e52d6ea142476827232a181eb">velocity</a>() <span class="keyword">const</span>;                 </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>      <span class="keywordtype">void</span> <a class="code hl_function" href="../../d4/de5/class_elevation_chart_1_1_route_point.html#a0c387938b3e853c802a903003903c9a8">setVelocity</a>(<span class="keywordtype">float</span>);                              </div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>      QGeoCoordinate m_coordinate;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>      <span class="keywordtype">float</span> m_velocity;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  };</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="../../d4/de5/class_elevation_chart_1_1_route_point.html#acc479356509268af0729ad62b17fcbda">   55</a></span>  <span class="keyword">inline</span> <a class="code hl_function" href="../../d4/de5/class_elevation_chart_1_1_route_point.html#acc479356509268af0729ad62b17fcbda">RoutePoint::RoutePoint</a>()</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    : m_coordinate({0, 0, 0})</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    , m_velocity(0)</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  {}</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="../../d4/de5/class_elevation_chart_1_1_route_point.html#ae9c0f3e065b7e6d8147ccb5f6e7e47be">   60</a></span>  <span class="keyword">inline</span> <a class="code hl_function" href="../../d4/de5/class_elevation_chart_1_1_route_point.html#acc479356509268af0729ad62b17fcbda">RoutePoint::RoutePoint</a>(<span class="keywordtype">double</span> latitude, <span class="keywordtype">double</span> longitude, <span class="keywordtype">float</span> elevation, <span class="keywordtype">float</span> velocity_ms)</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    : m_coordinate(latitude, longitude, elevation)</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    , m_velocity(velocity_ms)</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  {}</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno"><a class="line" href="../../d4/de5/class_elevation_chart_1_1_route_point.html#ac6ff78e581f6079fef03ed7f537c5e89">   65</a></span>  <span class="keyword">inline</span> <a class="code hl_function" href="../../d4/de5/class_elevation_chart_1_1_route_point.html#acc479356509268af0729ad62b17fcbda">RoutePoint::RoutePoint</a>(<span class="keyword">const</span> QGeoCoordinate&amp; coord, <span class="keywordtype">float</span> velocity_ms)</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    : m_coordinate(coord)</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    , m_velocity(velocity_ms)</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  {}</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno"><a class="line" href="../../d4/de5/class_elevation_chart_1_1_route_point.html#ae0c34e21b196ec16125b5b71252e5b93">   70</a></span>  <span class="keyword">inline</span> QGeoCoordinate <a class="code hl_function" href="../../d4/de5/class_elevation_chart_1_1_route_point.html#ae0c34e21b196ec16125b5b71252e5b93">RoutePoint::coordinate</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_coordinate; }</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="../../d4/de5/class_elevation_chart_1_1_route_point.html#aaa7171f4e68c1c66edf5a58251030a6c">   71</a></span>  <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d4/de5/class_elevation_chart_1_1_route_point.html#aaa7171f4e68c1c66edf5a58251030a6c">RoutePoint::setCoordinate</a>(<span class="keyword">const</span> QGeoCoordinate&amp; x) { m_coordinate = x; }</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno"><a class="line" href="../../d4/de5/class_elevation_chart_1_1_route_point.html#a3f99e460a793739de2ef6976b2a034d4">   72</a></span>  <span class="keyword">inline</span> <span class="keywordtype">double</span> <a class="code hl_function" href="../../d4/de5/class_elevation_chart_1_1_route_point.html#a3f99e460a793739de2ef6976b2a034d4">RoutePoint::latitude</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_coordinate.latitude(); }</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="../../d4/de5/class_elevation_chart_1_1_route_point.html#a5ecc1e48920ff4ae4d61b4fe5b421040">   73</a></span>  <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d4/de5/class_elevation_chart_1_1_route_point.html#a5ecc1e48920ff4ae4d61b4fe5b421040">RoutePoint::setLatitude</a>(<span class="keywordtype">double</span> x) { m_coordinate.setLatitude(x); }</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno"><a class="line" href="../../d4/de5/class_elevation_chart_1_1_route_point.html#a00f3340e5829cf7e97f73d9e174d0a57">   74</a></span>  <span class="keyword">inline</span> <span class="keywordtype">double</span> <a class="code hl_function" href="../../d4/de5/class_elevation_chart_1_1_route_point.html#a00f3340e5829cf7e97f73d9e174d0a57">RoutePoint::longitude</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_coordinate.longitude(); }</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno"><a class="line" href="../../d4/de5/class_elevation_chart_1_1_route_point.html#a34d7c6faeefcc800e6ef256fd61b2619">   75</a></span>  <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d4/de5/class_elevation_chart_1_1_route_point.html#a34d7c6faeefcc800e6ef256fd61b2619">RoutePoint::setLongitude</a>(<span class="keywordtype">double</span> x) { m_coordinate.setLongitude(x); }</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno"><a class="line" href="../../d4/de5/class_elevation_chart_1_1_route_point.html#a9ff140fd42e17896b9d5d38ee7d44a3e">   76</a></span>  <span class="keyword">inline</span> <span class="keywordtype">float</span> <a class="code hl_function" href="../../d4/de5/class_elevation_chart_1_1_route_point.html#a9ff140fd42e17896b9d5d38ee7d44a3e">RoutePoint::altitude</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(m_coordinate.altitude()); }</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="../../d4/de5/class_elevation_chart_1_1_route_point.html#ae93e1acece0dcd127a6660467a0678c2">   77</a></span>  <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d4/de5/class_elevation_chart_1_1_route_point.html#ae93e1acece0dcd127a6660467a0678c2">RoutePoint::setAltitude</a>(<span class="keywordtype">float</span> x) { m_coordinate.setAltitude(x); }</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno"><a class="line" href="../../d4/de5/class_elevation_chart_1_1_route_point.html#af93b053e52d6ea142476827232a181eb">   78</a></span>  <span class="keyword">inline</span> <span class="keywordtype">float</span> <a class="code hl_function" href="../../d4/de5/class_elevation_chart_1_1_route_point.html#af93b053e52d6ea142476827232a181eb">RoutePoint::velocity</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_velocity; }</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="../../d4/de5/class_elevation_chart_1_1_route_point.html#a0c387938b3e853c802a903003903c9a8">   79</a></span>  <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d4/de5/class_elevation_chart_1_1_route_point.html#a0c387938b3e853c802a903003903c9a8">RoutePoint::setVelocity</a>(<span class="keywordtype">float</span> x) { <span class="keywordflow">if</span>(not qIsNaN(x)) m_velocity = x; }</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>} <span class="comment">// ElevationChart</span></div>
+<div class="ttc" id="aclass_elevation_chart_1_1_route_point_html"><div class="ttname"><a href="../../d4/de5/class_elevation_chart_1_1_route_point.html">ElevationChart::RoutePoint</a></div><div class="ttdoc">Точка пути Route на карте.</div><div class="ttdef"><b>Definition</b> <a href="../../d2/d15/routepoint_8h_source.html#l00013">routepoint.h:14</a></div></div>
+<div class="ttc" id="aclass_elevation_chart_1_1_route_point_html_a00f3340e5829cf7e97f73d9e174d0a57"><div class="ttname"><a href="../../d4/de5/class_elevation_chart_1_1_route_point.html#a00f3340e5829cf7e97f73d9e174d0a57">ElevationChart::RoutePoint::longitude</a></div><div class="ttdeci">double longitude() const</div><div class="ttdoc">Возвращает долготу точки.</div><div class="ttdef"><b>Definition</b> <a href="../../d2/d15/routepoint_8h_source.html#l00074">routepoint.h:74</a></div></div>
+<div class="ttc" id="aclass_elevation_chart_1_1_route_point_html_a0c387938b3e853c802a903003903c9a8"><div class="ttname"><a href="../../d4/de5/class_elevation_chart_1_1_route_point.html#a0c387938b3e853c802a903003903c9a8">ElevationChart::RoutePoint::setVelocity</a></div><div class="ttdeci">void setVelocity(float)</div><div class="ttdoc">Задает скорость точки в м/с.</div><div class="ttdef"><b>Definition</b> <a href="../../d2/d15/routepoint_8h_source.html#l00079">routepoint.h:79</a></div></div>
+<div class="ttc" id="aclass_elevation_chart_1_1_route_point_html_a34d7c6faeefcc800e6ef256fd61b2619"><div class="ttname"><a href="../../d4/de5/class_elevation_chart_1_1_route_point.html#a34d7c6faeefcc800e6ef256fd61b2619">ElevationChart::RoutePoint::setLongitude</a></div><div class="ttdeci">void setLongitude(double)</div><div class="ttdoc">Задает долготу точки.</div><div class="ttdef"><b>Definition</b> <a href="../../d2/d15/routepoint_8h_source.html#l00075">routepoint.h:75</a></div></div>
+<div class="ttc" id="aclass_elevation_chart_1_1_route_point_html_a3f99e460a793739de2ef6976b2a034d4"><div class="ttname"><a href="../../d4/de5/class_elevation_chart_1_1_route_point.html#a3f99e460a793739de2ef6976b2a034d4">ElevationChart::RoutePoint::latitude</a></div><div class="ttdeci">double latitude() const</div><div class="ttdoc">Возвращает широту точки.</div><div class="ttdef"><b>Definition</b> <a href="../../d2/d15/routepoint_8h_source.html#l00072">routepoint.h:72</a></div></div>
+<div class="ttc" id="aclass_elevation_chart_1_1_route_point_html_a5ecc1e48920ff4ae4d61b4fe5b421040"><div class="ttname"><a href="../../d4/de5/class_elevation_chart_1_1_route_point.html#a5ecc1e48920ff4ae4d61b4fe5b421040">ElevationChart::RoutePoint::setLatitude</a></div><div class="ttdeci">void setLatitude(double)</div><div class="ttdoc">Задает широту точки.</div><div class="ttdef"><b>Definition</b> <a href="../../d2/d15/routepoint_8h_source.html#l00073">routepoint.h:73</a></div></div>
+<div class="ttc" id="aclass_elevation_chart_1_1_route_point_html_a9ff140fd42e17896b9d5d38ee7d44a3e"><div class="ttname"><a href="../../d4/de5/class_elevation_chart_1_1_route_point.html#a9ff140fd42e17896b9d5d38ee7d44a3e">ElevationChart::RoutePoint::altitude</a></div><div class="ttdeci">float altitude() const</div><div class="ttdoc">Возвращает высоту точки в метрах.</div><div class="ttdef"><b>Definition</b> <a href="../../d2/d15/routepoint_8h_source.html#l00076">routepoint.h:76</a></div></div>
+<div class="ttc" id="aclass_elevation_chart_1_1_route_point_html_aaa7171f4e68c1c66edf5a58251030a6c"><div class="ttname"><a href="../../d4/de5/class_elevation_chart_1_1_route_point.html#aaa7171f4e68c1c66edf5a58251030a6c">ElevationChart::RoutePoint::setCoordinate</a></div><div class="ttdeci">void setCoordinate(const QGeoCoordinate &amp;)</div><div class="ttdoc">Задает координату точки в виде QGeoCoordinate.</div><div class="ttdef"><b>Definition</b> <a href="../../d2/d15/routepoint_8h_source.html#l00071">routepoint.h:71</a></div></div>
+<div class="ttc" id="aclass_elevation_chart_1_1_route_point_html_acc479356509268af0729ad62b17fcbda"><div class="ttname"><a href="../../d4/de5/class_elevation_chart_1_1_route_point.html#acc479356509268af0729ad62b17fcbda">ElevationChart::RoutePoint::RoutePoint</a></div><div class="ttdeci">RoutePoint()</div><div class="ttdoc">Создает точку с невалидными координатами и нулевой скоростью.</div><div class="ttdef"><b>Definition</b> <a href="../../d2/d15/routepoint_8h_source.html#l00055">routepoint.h:55</a></div></div>
+<div class="ttc" id="aclass_elevation_chart_1_1_route_point_html_ae0c34e21b196ec16125b5b71252e5b93"><div class="ttname"><a href="../../d4/de5/class_elevation_chart_1_1_route_point.html#ae0c34e21b196ec16125b5b71252e5b93">ElevationChart::RoutePoint::coordinate</a></div><div class="ttdeci">QGeoCoordinate coordinate() const</div><div class="ttdoc">Возвращает координату точки в виде QGeoCoordinate.</div><div class="ttdef"><b>Definition</b> <a href="../../d2/d15/routepoint_8h_source.html#l00070">routepoint.h:70</a></div></div>
+<div class="ttc" id="aclass_elevation_chart_1_1_route_point_html_ae93e1acece0dcd127a6660467a0678c2"><div class="ttname"><a href="../../d4/de5/class_elevation_chart_1_1_route_point.html#ae93e1acece0dcd127a6660467a0678c2">ElevationChart::RoutePoint::setAltitude</a></div><div class="ttdeci">void setAltitude(float)</div><div class="ttdoc">Задает высоту точки в метрах.</div><div class="ttdef"><b>Definition</b> <a href="../../d2/d15/routepoint_8h_source.html#l00077">routepoint.h:77</a></div></div>
+<div class="ttc" id="aclass_elevation_chart_1_1_route_point_html_af93b053e52d6ea142476827232a181eb"><div class="ttname"><a href="../../d4/de5/class_elevation_chart_1_1_route_point.html#af93b053e52d6ea142476827232a181eb">ElevationChart::RoutePoint::velocity</a></div><div class="ttdeci">float velocity() const</div><div class="ttdoc">Возвращает скорость точки в м/с.</div><div class="ttdef"><b>Definition</b> <a href="../../d2/d15/routepoint_8h_source.html#l00078">routepoint.h:78</a></div></div>
+<div class="ttc" id="anamespace_elevation_chart_html"><div class="ttname"><a href="../../d4/d04/namespace_elevation_chart.html">ElevationChart</a></div><div class="ttdoc">Пространство имен для виджета профиля высот.</div><div class="ttdef"><b>Definition</b> <a href="../../df/dcc/elevationchart_8c_09_09_source.html#l00009">elevationchart.c++:10</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="../../dir_fcb2a60e1810a51543a3cc3a113d0956.html">c++</a></li><li class="navelem"><a class="el" href="../../dir_aaec6c757664ae85866b648db831d32b.html">types</a></li><li class="navelem"><b>routepoint.h</b></li>
+    <li class="footer">Создано системой <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+  </ul>
+</div>
+</body>
+</html>

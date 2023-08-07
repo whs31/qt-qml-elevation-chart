@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['setsource_0',['setSource',['../dc/d79/classElevationChart_1_1API.html#a9d85561b9588ccec055e7f2868001b78',1,'ElevationChart::API']]],
-  ['sg_1',['SG',['../dd/d59/namespaceSG.html',1,'']]]
+  ['overlay_0',['overlay',['../d9/d20/class_s_g_1_1_basic_palette.html#ad18735e21b9100cb298ea247556c1868',1,'SG::BasicPalette']]]
 ];

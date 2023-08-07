@@ -1,0 +1,16 @@
+digraph "Иерархия классов. Графический вид."
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Arial,fontsize=11,labelfontname=Arial,labelfontsize=11];
+  node [fontname=Arial,fontsize=11,shape=box,height=0.2,width=0.4];
+  rankdir="LR";
+  Node0 [id="Node000000",label="QObject",height=0.2,width=0.4,color="grey60", fillcolor="#E0E0E0", style="filled",tooltip=" "];
+  Node0 -> Node1 [id="edge2_Node000000_Node000001",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node1 [id="Node000001",label="API",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$db/d99/class_elevation_chart_1_1_a_p_i.html",tooltip="Публичный интерфейс (C++) для виджета профиля высот."];
+  Node0 -> Node2 [id="edge3_Node000000_Node000002",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node2 [id="Node000002",label="QQuickItem",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$d0/d63/class_q_quick_item.html",tooltip=" "];
+  Node2 -> Node3 [id="edge4_Node000002_Node000003",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node3 [id="Node000003",label="ChartItem",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$dd/d62/class_elevation_chart_1_1_chart_item.html",tooltip=" "];
+}

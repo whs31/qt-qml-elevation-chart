@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['sg_0',['SG',['../dd/d59/namespaceSG.html',1,'']]]
+  ['sg_0',['SG',['../d4/d38/namespace_s_g.html',1,'']]]
 ];

@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['elevationchart_0',['ElevationChart',['../d6/d7f/namespaceElevationChart.html',1,'']]],
-  ['error_1',['error',['../d8/d37/classSG_1_1BasicPalette.html#af10dacfa214e2575bb2e0ee407c242e0',1,'SG::BasicPalette']]]
+  ['distance_0',['distance',['../d9/dac/class_elevation_chart_1_1_elevation_point.html#a858cf934b3668c4918ca0367e04686b6',1,'ElevationChart::ElevationPoint']]]
 ];

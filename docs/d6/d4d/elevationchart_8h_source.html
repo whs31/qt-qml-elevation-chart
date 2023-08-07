@@ -119,17 +119,17 @@ $(document).ready(function(){initNavTree('d6/d4d/elevationchart_8h_source.html',
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keyword">class </span>QSGGeometryNode;</div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d6/d7f/namespaceElevationChart.html">ElevationChart</a></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d4/d04/namespace_elevation_chart.html">ElevationChart</a></div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>{</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="../../d1/d7c/classElevationChart_1_1ChartItem.html">   13</a></span>  <span class="keyword">class </span><a class="code hl_class" href="../../d1/d7c/classElevationChart_1_1ChartItem.html">ChartItem</a> : <span class="keyword">public</span> <a class="code hl_class" href="../../d7/d4d/classQQuickItem.html">QQuickItem</a></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="../../dd/d62/class_elevation_chart_1_1_chart_item.html">   13</a></span>  <span class="keyword">class </span><a class="code hl_class" href="../../dd/d62/class_elevation_chart_1_1_chart_item.html">ChartItem</a> : <span class="keyword">public</span> <a class="code hl_class" href="../../d0/d63/class_q_quick_item.html">QQuickItem</a></div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>  {</div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    Q_OBJECT</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    Q_PROPERTY(<a class="code hl_class" href="../../d8/d37/classSG_1_1BasicPalette.html">SG::BasicPalette</a> palette READ palette WRITE setPalette NOTIFY paletteChanged)</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    Q_PROPERTY(<a class="code hl_class" href="../../d9/d20/class_s_g_1_1_basic_palette.html">SG::BasicPalette</a> palette READ palette WRITE setPalette NOTIFY paletteChanged)</div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>      <span class="keyword">explicit</span> <a class="code hl_class" href="../../d1/d7c/classElevationChart_1_1ChartItem.html">ChartItem</a>(<a class="code hl_class" href="../../d7/d4d/classQQuickItem.html">QQuickItem</a>* parent = <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>      <span class="keyword">explicit</span> <a class="code hl_class" href="../../dd/d62/class_elevation_chart_1_1_chart_item.html">ChartItem</a>(<a class="code hl_class" href="../../d0/d63/class_q_quick_item.html">QQuickItem</a>* parent = <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>      [[nodiscard]] <a class="code hl_class" href="../../d8/d37/classSG_1_1BasicPalette.html">SG::BasicPalette</a> palette() <span class="keyword">const</span>; <span class="keywordtype">void</span> setPalette(<a class="code hl_class" href="../../d8/d37/classSG_1_1BasicPalette.html">SG::BasicPalette</a>);</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>      [[nodiscard]] <a class="code hl_class" href="../../d9/d20/class_s_g_1_1_basic_palette.html">SG::BasicPalette</a> palette() <span class="keyword">const</span>; <span class="keywordtype">void</span> setPalette(<a class="code hl_class" href="../../d9/d20/class_s_g_1_1_basic_palette.html">SG::BasicPalette</a>);</div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    signals:</div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>      <span class="keywordtype">void</span> paletteChanged();</div>
@@ -144,15 +144,15 @@ $(document).ready(function(){initNavTree('d6/d4d/elevationchart_8h_source.html',
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>      QSGGeometryNode* m_background_node;</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>      <a class="code hl_class" href="../../d8/d37/classSG_1_1BasicPalette.html">SG::BasicPalette</a> m_palette;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>      <a class="code hl_class" href="../../d9/d20/class_s_g_1_1_basic_palette.html">SG::BasicPalette</a> m_palette;</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  };</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>} <span class="comment">// ElevationChart</span></div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>Q_DECLARE_METATYPE(<a class="code hl_class" href="../../d1/d7c/classElevationChart_1_1ChartItem.html">ElevationChart::ChartItem</a>*);</div>
-<div class="ttc" id="aclassElevationChart_1_1ChartItem_html"><div class="ttname"><a href="../../d1/d7c/classElevationChart_1_1ChartItem.html">ElevationChart::ChartItem</a></div><div class="ttdef"><b>Definition</b> <a href="../../d6/d4d/elevationchart_8h_source.html#l00013">elevationchart.h:14</a></div></div>
-<div class="ttc" id="aclassQQuickItem_html"><div class="ttname"><a href="../../d7/d4d/classQQuickItem.html">QQuickItem</a></div></div>
-<div class="ttc" id="aclassSG_1_1BasicPalette_html"><div class="ttname"><a href="../../d8/d37/classSG_1_1BasicPalette.html">SG::BasicPalette</a></div><div class="ttdoc">Простейшая палитра цветов.</div><div class="ttdef"><b>Definition</b> <a href="../../d8/df3/basicpalette_8h_source.html#l00033">basicpalette.h:34</a></div></div>
-<div class="ttc" id="anamespaceElevationChart_html"><div class="ttname"><a href="../../d6/d7f/namespaceElevationChart.html">ElevationChart</a></div><div class="ttdoc">Пространство имен для виджета профиля высот.</div><div class="ttdef"><b>Definition</b> <a href="../../df/dcc/elevationchart_8c_09_09_source.html#l00009">elevationchart.c++:10</a></div></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>Q_DECLARE_METATYPE(<a class="code hl_class" href="../../dd/d62/class_elevation_chart_1_1_chart_item.html">ElevationChart::ChartItem</a>*);</div>
+<div class="ttc" id="aclass_elevation_chart_1_1_chart_item_html"><div class="ttname"><a href="../../dd/d62/class_elevation_chart_1_1_chart_item.html">ElevationChart::ChartItem</a></div><div class="ttdef"><b>Definition</b> <a href="../../d6/d4d/elevationchart_8h_source.html#l00013">elevationchart.h:14</a></div></div>
+<div class="ttc" id="aclass_q_quick_item_html"><div class="ttname"><a href="../../d0/d63/class_q_quick_item.html">QQuickItem</a></div></div>
+<div class="ttc" id="aclass_s_g_1_1_basic_palette_html"><div class="ttname"><a href="../../d9/d20/class_s_g_1_1_basic_palette.html">SG::BasicPalette</a></div><div class="ttdoc">Простейшая палитра цветов.</div><div class="ttdef"><b>Definition</b> <a href="../../d8/df3/basicpalette_8h_source.html#l00033">basicpalette.h:34</a></div></div>
+<div class="ttc" id="anamespace_elevation_chart_html"><div class="ttname"><a href="../../d4/d04/namespace_elevation_chart.html">ElevationChart</a></div><div class="ttdoc">Пространство имен для виджета профиля высот.</div><div class="ttdef"><b>Definition</b> <a href="../../df/dcc/elevationchart_8c_09_09_source.html#l00009">elevationchart.c++:10</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

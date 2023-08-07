@@ -1,0 +1,13 @@
+digraph "provider"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Arial,fontsize=11,labelfontname=Arial,labelfontsize=11];
+  node [fontname=Arial,fontsize=11,shape=box,height=0.2,width=0.4];
+  compound=true
+  subgraph clusterdir_fcb2a60e1810a51543a3cc3a113d0956 {
+    graph [ bgcolor="#ece5ef", pencolor="grey50", label="c++", fontname=Arial,fontsize=11 style="filled,dashed", URL="dir_fcb2a60e1810a51543a3cc3a113d0956.html",tooltip=""]
+  dir_57bf5670139e6b7020bea693205143a5 [label="provider", fillcolor="#ece5ef", color="grey25", style="filled,bold", URL="dir_57bf5670139e6b7020bea693205143a5.html",tooltip=""];
+  }
+}
