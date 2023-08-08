@@ -140,7 +140,7 @@ namespace ElevationChart
        * \brief Возвращает <tt>true</tt>, если путь содержит указанную точку.
        * \note Эта функция может быть вызвана из QML через мета-объектную систему Qt.
        */
-      Q_INVOKABLE [[nodiscard]] bool contains(const RoutePoint& point); ///< Возвращает <tt>true</tt>, если путь содержит указанную точку.
+      Q_INVOKABLE [[nodiscard]] bool contains(const RoutePoint& point);
 
       /**
        * \brief Возвращает <tt>true</tt>, если путь корректный.
