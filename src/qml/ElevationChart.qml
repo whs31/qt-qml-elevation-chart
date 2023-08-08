@@ -47,7 +47,7 @@ Item {
                 pixelSize: 14
             }
             horizontalAlignment: Text.AlignRight
-            onEditingFinished: if(action) action.trigger()
+            onEditingFinished: if(action) action.trigger(this)
         }
     }
 
@@ -157,6 +157,66 @@ Item {
                     }
                     icon {
                         source: "qrc:/elevation-chart/icons/match.svg"
+                    }
+
+                    Material.background: impl.palette.overlay2
+                }
+            }
+        }
+
+        Pane {
+            id: panelEnvelope
+
+            property bool shown: impl.currentBar === 1
+            visible: width > 0
+            enabled: visible
+
+            width: shown ? implicitWidth : 0
+            height: shown ? implicitHeight : 0
+
+            Behavior on width { NumberAnimation { duration: 150; easing.type: Easing.InOutQuad; } }
+            Behavior on height { NumberAnimation { duration: 150; easing.type: Easing.InOutQuad; } }
+            clip: true
+
+            anchors {
+                top: panelTools.bottom
+                left: panelTools.left
+                leftMargin: 70
+            }
+
+            Material.background: impl.palette.overlay2
+            Material.elevation: 100
+
+            ColumnLayout {
+                DecimalInput { description: "Высота огибания"; defaultText: "100.0"; foregroundColor: impl.palette.foreground; }
+                DecimalInput { description: "Ширина коридора"; defaultText: "10.0"; foregroundColor: impl.palette.foreground; }
+                RoundButton {
+                    Layout.fillWidth: true
+                    text: "Вычислить огибающую"
+                    radius: 4
+                    font {
+                        family: mainfont
+                        weight: Font.DemiBold
+                        pixelSize: 14
+                    }
+                    icon {
+                        source: "qrc:/elevation-chart/icons/resize.svg"
+                    }
+
+                    Material.background: impl.palette.overlay2
+                }
+
+                RoundButton {
+                    Layout.fillWidth: true
+                    text: "Применить огибающую"
+                    radius: 4
+                    font {
+                        family: mainfont
+                        weight: Font.DemiBold
+                        pixelSize: 14
+                    }
+                    icon {
+                        source: "qrc:/elevation-chart/icons/polyline.svg"
                     }
 
                     Material.background: impl.palette.overlay2
