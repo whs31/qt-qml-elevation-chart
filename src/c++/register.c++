@@ -26,8 +26,18 @@ namespace ElevationChart
     qmlRegisterType<ChartItem>("ElevationChartWidget", 3, 0, "ElevationChartImpl");
     qmlRegisterAnonymousType<SG::BasicPalette>("ElevationChartWidget", 3);
     qmlRegisterSingletonInstance<API>("ElevationChartWidget", 3, 0, "ElevationChartCXXAPI", API::get());
+    qmlRegisterSingletonInstance<TypeFactory>("ElevationChartWidget", 3, 0, "Types", new TypeFactory(API::get()));
+
     qInfo() << "<elevation-chart> Registered type ElevationChartImpl in module ElevationChartWidget 3.0";
     qInfo() << "<elevation-chart> Registered anonymous type SG::BasicPalette in module ElevationChartWidget 3.X";
     qInfo() << "<elevation-chart> Registered singleton type ElevationChartCXXAPI in module ElevationChartWidget 3.0";
+    qInfo() << "<elevation-chart> Registered singleton type Types in module ElevationChartWidget 3.0";
   }
+
+  TypeFactory::TypeFactory(QObject* parent)
+    : QObject(parent)
+  {}
+
+  RoutePoint TypeFactory::routePoint(double la, double lo, float e, float v) { return {la, lo, e, v}; }
+  Route TypeFactory::route(const QGeoPath& path, float velocity) { return Route(path, velocity); }
 } // ElevationChart
