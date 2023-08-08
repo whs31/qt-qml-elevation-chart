@@ -8,19 +8,13 @@ import "qrc:/elevation-chart/catpuccin.js" as Catpuccin
 ApplicationWindow {
     id: root
 
-    Material.theme: Material.Dark
-    Material.accent: Catpuccin.latte.blue.hex
-    Material.primary: Catpuccin.latte.mauve.hex
-    Material.foreground: Catpuccin.latte.text.hex
-    Material.background: Catpuccin.latte.base.hex
-
     title: "Elevation Chart Demo"
     minimumWidth: 720
     minimumHeight: 360
     width: 1280
     height: 800
     visible: true
-    color: Catpuccin.latte.base.hex
+    color: Catpuccin.latte.red.hex
 
     ElevationChart {
         anchors.fill: parent

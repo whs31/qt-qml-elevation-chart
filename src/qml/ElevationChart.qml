@@ -6,6 +6,12 @@ import ElevationChartWidget 3.0
 import "qrc:/elevation-chart/catpuccin.js" as Catpuccin
 
 Item {
+    Material.theme: Material.Dark
+    Material.accent: impl.palette.info
+    Material.primary: impl.palette.accent
+    Material.foreground: impl.palette.foreground
+    Material.background: impl.palette.background
+
     FontLoader { id: font_Main; source: "qrc:/elevation-chart/fonts/Overpass.ttf"; }
     FontLoader { id: font_Mono; source: "qrc:/elevation-chart/fonts/UbuntuMono.ttf"; }
 
@@ -50,18 +56,19 @@ Item {
         id: impl
         anchors.fill: parent
         palette {
-            background: Catpuccin.latte.base.hex
-            foreground: Catpuccin.latte.subtext1.hex
-            overlay: Catpuccin.latte.surface0.hex
-            overlay2: Catpuccin.latte.surface1.hex
-            accent: Catpuccin.latte.teal.hex
-            warn: Catpuccin.latte.peach.hex
-            error: Catpuccin.latte.red.hex
-            info: Catpuccin.latte.lavender.hex
+            background: Catpuccin.mocha.base.hex
+            foreground: Catpuccin.mocha.subtext1.hex
+            overlay: Catpuccin.mocha.surface0.hex
+            overlay2: Catpuccin.mocha.surface1.hex
+            accent: Catpuccin.mocha.teal.hex
+            warn: Catpuccin.mocha.peach.hex
+            error: Catpuccin.mocha.red.hex
+            info: Catpuccin.mocha.lavender.hex
         }
 
         Component.onCompleted: ElevationChartCXXAPI.setSource(impl)
 
+        property int currentBar: -1
         Pane {
             id: panelTools
             opacity: 0.75
@@ -77,26 +84,38 @@ Item {
             RowLayout {
                 RoundButton {
                     id: buttonMetrics
-                    checkable: true
                     radius: 4
                     icon {
                         source: "qrc:/elevation-chart/icons/inspect-graph.svg"
-                        color: checked ? impl.palette.background : impl.palette.foreground
+                        color: impl.currentBar === 0 ? impl.palette.background : impl.palette.foreground
                     }
 
-                    Material.background: checked ? impl.palette.warn : impl.palette.overlay2
+                    Material.background: impl.currentBar === 0 ? impl.palette.warn : impl.palette.overlay2
+
+                    onPressed: {
+                        if(impl.currentBar !== 0)
+                            impl.currentBar = 0
+                        else
+                            impl.currentBar = -1
+                    }
                 }
 
                 RoundButton {
                     id: buttonEnvelope
-                    checkable: true
                     radius: 4
                     icon {
                         source: "qrc:/elevation-chart/icons/envelope.svg"
-                        color: checked ? impl.palette.background : impl.palette.foreground
+                        color: impl.currentBar === 1 ? impl.palette.background : impl.palette.foreground
                     }
 
-                    Material.background: checked ? impl.palette.info : impl.palette.overlay2
+                    Material.background: impl.currentBar === 1 ? impl.palette.info : impl.palette.overlay2
+
+                    onPressed: {
+                        if(impl.currentBar !== 1)
+                            impl.currentBar = 1
+                        else
+                            impl.currentBar = -1
+                    }
                 }
             }
         }
@@ -104,7 +123,7 @@ Item {
         Pane {
             id: panelMetrics
 
-            property bool shown: buttonMetrics.checked
+            property bool shown: impl.currentBar === 0
             visible: width > 0
             enabled: visible
 
