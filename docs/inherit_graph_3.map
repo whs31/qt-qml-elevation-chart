@@ -1,0 +1,9 @@
+<map id="Иерархия классов. Графический вид." name="Иерархия классов. Графический вид.">
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,32,79,61"/>
+<area shape="rect" id="Node000001" href="$dc/d79/classElevationChart_1_1API.html" title="Публичный интерфейс (C++) для виджета профиля высот." alt="" coords="152,5,198,34"/>
+<area shape="poly" id="edge2_Node000000_Node000001" title=" " alt="" coords="93,33,151,22,152,27,94,39"/>
+<area shape="rect" id="Node000002" href="$d7/d4d/classQQuickItem.html" title=" " alt="" coords="127,59,223,87"/>
+<area shape="poly" id="edge3_Node000000_Node000002" title=" " alt="" coords="94,54,127,61,125,66,93,59"/>
+<area shape="rect" id="Node000003" href="$d1/d7c/classElevationChart_1_1ChartItem.html" title=" " alt="" coords="271,59,356,87"/>
+<area shape="poly" id="edge4_Node000002_Node000003" title=" " alt="" coords="238,70,271,70,271,76,238,76"/>
+</map>

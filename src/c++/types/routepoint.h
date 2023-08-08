@@ -85,3 +85,6 @@ namespace ElevationChart
   inline float RoutePoint::velocity() const { return m_velocity; }
   inline void RoutePoint::setVelocity(float x) { if(not qIsNaN(x)) m_velocity = x; }
 } // ElevationChart
+
+#include <QtCore/QMetaType>
+Q_DECLARE_METATYPE(ElevationChart::RoutePoint)
