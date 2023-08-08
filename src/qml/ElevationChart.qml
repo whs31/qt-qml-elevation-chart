@@ -7,7 +7,7 @@ import ElevationChartWidget 3.0
 import "qrc:/elevation-chart/catpuccin.js" as Catpuccin
 
 Item {
-    Material.theme: Material.Dark
+    Material.theme: impl.light_theme ? Material.Light : Material.Dark
     Material.accent: impl.palette.accent
     Material.primary: impl.palette.accent
     Material.foreground: impl.palette.foreground
@@ -82,14 +82,23 @@ Item {
         id: impl
         anchors.fill: parent
         palette {
-            background: Catpuccin.mocha.base.hex
-            foreground: Catpuccin.mocha.subtext1.hex
-            overlay: Catpuccin.mocha.surface0.hex
-            overlay2: Catpuccin.mocha.surface1.hex
-            accent: Catpuccin.mocha.teal.hex
-            warn: Catpuccin.mocha.peach.hex
-            error: Catpuccin.mocha.red.hex
-            info: Catpuccin.mocha.lavender.hex
+            background: light_theme ? Catpuccin.latte.base.hex : Catpuccin.mocha.base.hex
+            foreground: light_theme ? Catpuccin.latte.subtext1.hex : Catpuccin.mocha.subtext1.hex
+            overlay: light_theme ? Catpuccin.latte.surface1.hex : Catpuccin.mocha.surface0.hex
+            overlay2: light_theme ? Catpuccin.latte.surface2.hex : Catpuccin.mocha.surface1.hex
+            accent: light_theme ? Catpuccin.latte.teal.hex : Catpuccin.mocha.teal.hex
+            warn: light_theme ? Catpuccin.latte.peach.hex : Catpuccin.mocha.peach.hex
+            error: light_theme ? Catpuccin.latte.red.hex : Catpuccin.mocha.red.hex
+            info: light_theme ? Catpuccin.latte.lavender.hex : Catpuccin.mocha.lavender.hex
+
+            Behavior on background { ColorAnimation { } }
+            Behavior on foreground { ColorAnimation { } }
+            Behavior on overlay { ColorAnimation { } }
+            Behavior on overlay2 { ColorAnimation { } }
+            Behavior on accent { ColorAnimation { } }
+            Behavior on warn { ColorAnimation { } }
+            Behavior on error { ColorAnimation { } }
+            Behavior on info { ColorAnimation { } }
         }
         route: Types.route(QtPositioning.path([QtPositioning.coordinate(60, 30),
                                                QtPositioning.coordinate(60.1, 30.1)]))
@@ -97,165 +106,182 @@ Item {
         Component.onCompleted: ElevationChartCXXAPI.setSource(impl)
 
         property int currentBar: -1
-        Pane {
-            id: panelTools
-            opacity: 0.75
-            Material.background: impl.palette.overlay
-            Material.elevation: 100
+        property bool light_theme: false
+    }
 
-            anchors {
-                top: parent.top
-                left: parent.left
-                margins: 10
+    Pane {
+        id: panelTools
+        opacity: 0.75
+        Material.background: impl.palette.overlay
+        Material.elevation: 100
+
+        anchors {
+            top: parent.top
+            left: parent.left
+            margins: 10
+        }
+
+        RowLayout {
+            RoundButton {
+                id: buttonMetrics
+                radius: 4
+                icon {
+                    source: "qrc:/elevation-chart/icons/inspect-graph.svg"
+                    color: impl.currentBar === 0 ? impl.palette.background : impl.palette.foreground
+                }
+
+                Material.background: impl.currentBar === 0 ? impl.palette.warn : impl.palette.overlay2
+
+                onPressed: {
+                    if(impl.currentBar !== 0)
+                        impl.currentBar = 0
+                    else
+                        impl.currentBar = -1
+                }
             }
 
-            RowLayout {
-                RoundButton {
-                    id: buttonMetrics
-                    radius: 4
-                    icon {
-                        source: "qrc:/elevation-chart/icons/inspect-graph.svg"
-                        color: impl.currentBar === 0 ? impl.palette.background : impl.palette.foreground
-                    }
-
-                    Material.background: impl.currentBar === 0 ? impl.palette.warn : impl.palette.overlay2
-
-                    onPressed: {
-                        if(impl.currentBar !== 0)
-                            impl.currentBar = 0
-                        else
-                            impl.currentBar = -1
-                    }
+            RoundButton {
+                id: buttonEnvelope
+                radius: 4
+                icon {
+                    source: "qrc:/elevation-chart/icons/envelope.svg"
+                    color: impl.currentBar === 1 ? impl.palette.background : impl.palette.foreground
                 }
 
-                RoundButton {
-                    id: buttonEnvelope
-                    radius: 4
-                    icon {
-                        source: "qrc:/elevation-chart/icons/envelope.svg"
-                        color: impl.currentBar === 1 ? impl.palette.background : impl.palette.foreground
-                    }
+                Material.background: impl.currentBar === 1 ? impl.palette.info : impl.palette.overlay2
 
-                    Material.background: impl.currentBar === 1 ? impl.palette.info : impl.palette.overlay2
+                onPressed: {
+                    if(impl.currentBar !== 1)
+                        impl.currentBar = 1
+                    else
+                        impl.currentBar = -1
+                }
+            }
 
-                    onPressed: {
-                        if(impl.currentBar !== 1)
-                            impl.currentBar = 1
-                        else
-                            impl.currentBar = -1
-                    }
+            RoundButton {
+                id: buttonSettings
+                radius: 4
+                icon {
+                    source: "qrc:/elevation-chart/icons/settings.svg"
+                    color: impl.currentBar === 2 ? impl.palette.background : impl.palette.foreground
                 }
 
-                RoundButton {
-                    id: buttonSettings
-                    radius: 4
-                    icon {
-                        source: "qrc:/elevation-chart/icons/settings.svg"
-                        color: impl.currentBar === 2 ? impl.palette.background : impl.palette.foreground
-                    }
+                Material.background: impl.currentBar === 2 ? impl.palette.accent : impl.palette.overlay2
 
-                    Material.background: impl.currentBar === 2 ? impl.palette.accent : impl.palette.overlay2
-
-                    onPressed: {
-                        if(impl.currentBar !== 2)
-                            impl.currentBar = 2
-                        else
-                            impl.currentBar = -1
-                    }
+                onPressed: {
+                    if(impl.currentBar !== 2)
+                        impl.currentBar = 2
+                    else
+                        impl.currentBar = -1
                 }
             }
         }
+    }
 
-        CollapsiblePanel {
-            id: panelMetrics
-            index: 0
-            offset: 0
+    CollapsiblePanel {
+        id: panelMetrics
+        index: 0
+        offset: 0
 
-            ColumnLayout {
-                DecimalInput { description: "Скороподъемность"; defaultText: "10.0"; foregroundColor: impl.palette.foreground; }
-                DecimalInput { description: "Скорость спуска"; defaultText: "10.0"; foregroundColor: impl.palette.foreground; }
-                DecimalInput { description: "Горизонтальная скорость"; defaultText: "10.0"; foregroundColor: impl.palette.foreground; }
-                RoundButton {
-                    Layout.fillWidth: true
-                    text: "Применить коррекцию по ЛТХ"
-                    radius: 4
-                    font {
-                        family: mainfont
-                        weight: Font.DemiBold
-                        pixelSize: 14
-                    }
-                    icon {
-                        source: "qrc:/elevation-chart/icons/match.svg"
-                    }
-
-                    Material.background: impl.palette.overlay2
+        ColumnLayout {
+            DecimalInput { description: "Скороподъемность"; defaultText: "10.0"; foregroundColor: impl.palette.foreground; }
+            DecimalInput { description: "Скорость спуска"; defaultText: "10.0"; foregroundColor: impl.palette.foreground; }
+            DecimalInput { description: "Горизонтальная скорость"; defaultText: "10.0"; foregroundColor: impl.palette.foreground; }
+            RoundButton {
+                Layout.fillWidth: true
+                text: "Применить коррекцию по ЛТХ"
+                radius: 4
+                font {
+                    family: mainfont
+                    weight: Font.DemiBold
+                    pixelSize: 14
                 }
+                icon {
+                    source: "qrc:/elevation-chart/icons/match.svg"
+                }
+
+                Material.background: impl.palette.overlay2
             }
         }
+    }
 
-        CollapsiblePanel {
-            id: panelEnvelope
-            index: 1
-            offset: 70
+    CollapsiblePanel {
+        id: panelEnvelope
+        index: 1
+        offset: 70
 
-            ColumnLayout {
-                DecimalInput { description: "Высота огибания"; defaultText: "100.0"; foregroundColor: impl.palette.foreground; }
-                DecimalInput { description: "Ширина коридора"; defaultText: "10.0"; foregroundColor: impl.palette.foreground; }
-                RoundButton {
-                    Layout.fillWidth: true
-                    text: "Вычислить огибающую"
-                    radius: 4
-                    font {
-                        family: mainfont
-                        weight: Font.DemiBold
-                        pixelSize: 14
-                    }
-                    icon {
-                        source: "qrc:/elevation-chart/icons/resize.svg"
-                    }
-
-                    Material.background: impl.palette.overlay2
+        ColumnLayout {
+            DecimalInput { description: "Высота огибания"; defaultText: "100.0"; foregroundColor: impl.palette.foreground; }
+            DecimalInput { description: "Ширина коридора"; defaultText: "10.0"; foregroundColor: impl.palette.foreground; }
+            RoundButton {
+                Layout.fillWidth: true
+                text: "Вычислить огибающую"
+                radius: 4
+                font {
+                    family: mainfont
+                    weight: Font.DemiBold
+                    pixelSize: 14
+                }
+                icon {
+                    source: "qrc:/elevation-chart/icons/resize.svg"
                 }
 
-                RoundButton {
-                    Layout.fillWidth: true
-                    text: "Применить огибающую"
-                    radius: 4
-                    font {
-                        family: mainfont
-                        weight: Font.DemiBold
-                        pixelSize: 14
-                    }
-                    icon {
-                        source: "qrc:/elevation-chart/icons/polyline.svg"
-                    }
+                Material.background: impl.palette.overlay2
+            }
 
-                    Material.background: impl.palette.overlay2
+            RoundButton {
+                Layout.fillWidth: true
+                text: "Применить огибающую"
+                radius: 4
+                font {
+                    family: mainfont
+                    weight: Font.DemiBold
+                    pixelSize: 14
                 }
+                icon {
+                    source: "qrc:/elevation-chart/icons/polyline.svg"
+                }
+
+                Material.background: impl.palette.overlay2
             }
         }
+    }
 
-        CollapsiblePanel {
-            id: panelSettings
-            index: 2
-            offset: 125
+    CollapsiblePanel {
+        id: panelSettings
+        index: 2
+        offset: 125
 
-            ColumnLayout {
-                Switch {
-                    icon {
-                        source: "qqrc:/elevation-chart/icons/label.svg"
-                    }
-                    font {
-                        family: mainfont
-                        weight: Font.DemiBold
-                        pixelSize: 14
-                    }
-                    text: "Отображать индексы точек"
-                    checked: true
-
-                    Material.background: impl.palette.overlay2
-
+        ColumnLayout {
+            Switch {
+                icon {
+                    source: "qqrc:/elevation-chart/icons/label.svg"
                 }
+                font {
+                    family: mainfont
+                    weight: Font.DemiBold
+                    pixelSize: 14
+                }
+                text: "Отображать индексы точек"
+                checked: true
+
+                Material.background: impl.palette.overlay2
+
+            }
+
+            Button {
+                icon {
+                    source: impl.light_theme ? "qrc:/elevation-chart/icons/light.svg" : "qrc:/elevation-chart/icons/dark.svg"
+                }
+                font {
+                    family: mainfont
+                    weight: Font.DemiBold
+                    pixelSize: 14
+                }
+                flat: true
+                Layout.fillWidth: true
+                text: "Переключить тему"
+                onPressed: impl.light_theme = !impl.light_theme
             }
         }
     }

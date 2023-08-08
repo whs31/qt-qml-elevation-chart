@@ -9,5 +9,7 @@
         <file>icons/envelope.svg</file>
         <file>icons/label.svg</file>
         <file>icons/settings.svg</file>
+        <file>icons/light.svg</file>
+        <file>icons/dark.svg</file>
     </qresource>
 </RCC>
