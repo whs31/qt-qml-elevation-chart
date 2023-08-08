@@ -51,6 +51,31 @@ Item {
         }
     }
 
+    component CollapsiblePanel : Pane {
+        property int index: 0
+        property int offset: 0
+
+        property bool __shown: impl.currentBar === index
+        visible: width > 0
+        enabled: visible
+
+        width: __shown ? implicitWidth : 0
+        height: __shown ? implicitHeight : 0
+
+        Behavior on width { NumberAnimation { duration: 150; easing.type: Easing.InOutQuad; } }
+        Behavior on height { NumberAnimation { duration: 150; easing.type: Easing.InOutQuad; } }
+        clip: true
+
+        anchors {
+            top: panelTools.bottom
+            left: panelTools.left
+            leftMargin: offset
+        }
+
+        Material.background: impl.palette.overlay2
+        Material.elevation: 100
+    }
+
     ElevationChartImpl
     {
         id: impl
@@ -117,30 +142,31 @@ Item {
                             impl.currentBar = -1
                     }
                 }
+
+                RoundButton {
+                    id: buttonSettings
+                    radius: 4
+                    icon {
+                        source: "qrc:/elevation-chart/icons/settings.svg"
+                        color: impl.currentBar === 2 ? impl.palette.background : impl.palette.foreground
+                    }
+
+                    Material.background: impl.currentBar === 2 ? impl.palette.accent : impl.palette.overlay2
+
+                    onPressed: {
+                        if(impl.currentBar !== 2)
+                            impl.currentBar = 2
+                        else
+                            impl.currentBar = -1
+                    }
+                }
             }
         }
 
-        Pane {
+        CollapsiblePanel {
             id: panelMetrics
-
-            property bool shown: impl.currentBar === 0
-            visible: width > 0
-            enabled: visible
-
-            width: shown ? implicitWidth : 0
-            height: shown ? implicitHeight : 0
-
-            Behavior on width { NumberAnimation { duration: 150; easing.type: Easing.InOutQuad; } }
-            Behavior on height { NumberAnimation { duration: 150; easing.type: Easing.InOutQuad; } }
-            clip: true
-
-            anchors {
-                top: panelTools.bottom
-                left: panelTools.left
-            }
-
-            Material.background: impl.palette.overlay2
-            Material.elevation: 100
+            index: 0
+            offset: 0
 
             ColumnLayout {
                 DecimalInput { description: "Скороподъемность"; defaultText: "10.0"; foregroundColor: impl.palette.foreground; }
@@ -164,28 +190,10 @@ Item {
             }
         }
 
-        Pane {
+        CollapsiblePanel {
             id: panelEnvelope
-
-            property bool shown: impl.currentBar === 1
-            visible: width > 0
-            enabled: visible
-
-            width: shown ? implicitWidth : 0
-            height: shown ? implicitHeight : 0
-
-            Behavior on width { NumberAnimation { duration: 150; easing.type: Easing.InOutQuad; } }
-            Behavior on height { NumberAnimation { duration: 150; easing.type: Easing.InOutQuad; } }
-            clip: true
-
-            anchors {
-                top: panelTools.bottom
-                left: panelTools.left
-                leftMargin: 70
-            }
-
-            Material.background: impl.palette.overlay2
-            Material.elevation: 100
+            index: 1
+            offset: 70
 
             ColumnLayout {
                 DecimalInput { description: "Высота огибания"; defaultText: "100.0"; foregroundColor: impl.palette.foreground; }
@@ -220,6 +228,30 @@ Item {
                     }
 
                     Material.background: impl.palette.overlay2
+                }
+            }
+        }
+
+        CollapsiblePanel {
+            id: panelSettings
+            index: 2
+            offset: 125
+
+            ColumnLayout {
+                Switch {
+                    icon {
+                        source: "qqrc:/elevation-chart/icons/label.svg"
+                    }
+                    font {
+                        family: mainfont
+                        weight: Font.DemiBold
+                        pixelSize: 14
+                    }
+                    text: "Отображать индексы точек"
+                    checked: true
+
+                    Material.background: impl.palette.overlay2
+
                 }
             }
         }

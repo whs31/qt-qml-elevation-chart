@@ -7,5 +7,7 @@
         <file>icons/polyline.svg</file>
         <file>icons/inspect-graph.svg</file>
         <file>icons/envelope.svg</file>
+        <file>icons/label.svg</file>
+        <file>icons/settings.svg</file>
     </qresource>
 </RCC>
