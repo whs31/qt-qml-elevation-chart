@@ -12,17 +12,11 @@ namespace ElevationChart
     : QQuickItem(parent)
     , m_require_recolor(false)
     , m_background_node(nullptr) // !
+    , m_intersecting(false)
+    , m_valid(false)
   {
     this->setFlag(ItemHasContents);
     qRegisterMetaType<ChartItem*>("ChartItem*");
-  }
-
-  SG::BasicPalette ChartItem::palette() const { return m_palette; }
-  void ChartItem::setPalette(SG::BasicPalette x) {
-    m_palette = x;
-    emit paletteChanged();
-
-    this->requireRecolor();
   }
 
   QSGNode* ChartItem::updatePaintNode(QSGNode* old_node, QQuickItem::UpdatePaintNodeData* unused)
@@ -79,4 +73,28 @@ namespace ElevationChart
   }
 
   void ChartItem::fulfillRecolor() { m_require_recolor = false; }
+
+  SG::BasicPalette ChartItem::palette() const { return m_palette; }
+  void ChartItem::setPalette(SG::BasicPalette x) {
+    m_palette = x;
+    emit paletteChanged();
+
+    this->requireRecolor();
+  }
+
+  bool ChartItem::intersecting() const { return m_intersecting; }
+  void ChartItem::setIntersecting(bool x) {
+    if(x == m_intersecting)
+      return;
+    m_intersecting = x;
+    emit intersectingChanged();
+  }
+
+  bool ChartItem::valid() const { return m_valid; }
+  void ChartItem::setValid(bool x) {
+    if(x == m_valid)
+      return;
+    m_valid = x;
+    emit validChanged();
+  }
 } // ElevationChart

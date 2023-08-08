@@ -7,7 +7,7 @@ import "qrc:/elevation-chart/catpuccin.js" as Catpuccin
 
 Item {
     Material.theme: Material.Dark
-    Material.accent: impl.palette.info
+    Material.accent: impl.palette.accent
     Material.primary: impl.palette.accent
     Material.foreground: impl.palette.foreground
     Material.background: impl.palette.background

@@ -3,10 +3,8 @@
 //
 
 #pragma once
-#include <vector>
 #include <QtCore/QObject>
-
-using std::vector;
+#include "types/route.h"
 
 /**
  * \brief Пространство имен для виджета профиля высот.
@@ -61,6 +59,18 @@ namespace ElevationChart
        * \return Состояние оборачиваемого объекта.
        */
       [[nodiscard]] bool valid() const;
+
+      /**
+       * \brief Задает путь для построения профиля высот.
+       * \param route - набор точек с высотой относительно старта борта и скоростями в м/с.
+       */
+      void setRoute(const Route& route) noexcept;
+
+      void setUAVPosition(const QGeoCoordinate& coord);
+
+      void setUAVPosition(double latitude, double longitude);
+
+
 
     private:
       explicit API(QObject* parent = nullptr);
