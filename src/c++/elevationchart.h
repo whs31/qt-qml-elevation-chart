@@ -63,8 +63,15 @@ namespace ElevationChart
     protected:
       bool m_require_recolor;
       QSGGeometryNode* m_background_node;
+      QSGGeometryNode* m_profile_node;
 
     private:
+      struct Bound
+      {
+        float x_max;
+        float y_max;
+      };
+
       SG::BasicPalette m_palette;
       bool m_intersecting;
       bool m_valid;
@@ -74,6 +81,7 @@ namespace ElevationChart
       unique_ptr<RandomDataProvider> m_random_provider;
 
       vector<ElevationPoint> m_profile;
+      Bound m_bound;
   };
 } // ElevationChart
 

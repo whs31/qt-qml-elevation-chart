@@ -15,7 +15,7 @@ namespace ElevationChart
     ret.emplace_back();
     for(size_t i = 1; i <= length; ++i)
     {
-      auto point = ElevationPoint(i, ret.at(i - 1).elevation() + static_cast<float>(std::experimental::randint(-3, 4)));
+      auto point = ElevationPoint(i, ret.at(i - 1).elevation() + static_cast<float>(std::experimental::randint(-2, 2)));
       if(point.elevation() < 0)
         point.setElevation(0);
       ret.push_back(point);
