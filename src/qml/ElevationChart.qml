@@ -92,7 +92,7 @@ Item {
             info: Catpuccin.mocha.lavender.hex
         }
         route: Types.route(QtPositioning.path([QtPositioning.coordinate(60, 30),
-                                               QtPositioning.coordinate(61, 31)]))
+                                               QtPositioning.coordinate(60.1, 30.1)]))
 
         Component.onCompleted: ElevationChartCXXAPI.setSource(impl)
 

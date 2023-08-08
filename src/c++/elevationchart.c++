@@ -15,6 +15,8 @@ namespace ElevationChart
     , m_intersecting(false)
     , m_valid(false)
     , m_route(Route())
+    , m_uav_position(QGeoCoordinate(60, 30))
+    , m_random_provider(std::make_unique<RandomDataProvider>())
   {
     this->setFlag(ItemHasContents);
     qRegisterMetaType<ChartItem*>("ChartItem*");
@@ -75,6 +77,16 @@ namespace ElevationChart
 
   void ChartItem::fulfillRecolor() { m_require_recolor = false; }
 
+  void ChartItem::calculate() noexcept
+  {
+    m_profile = m_random_provider->plotElevationProfile(m_route.toGeoPath());
+    for(const auto& point : m_profile)
+      qCritical() << point.elevation() << point.distance();
+    qInfo() << m_profile.size();
+  }
+
+  // properties
+
   SG::BasicPalette ChartItem::palette() const { return m_palette; }
   void ChartItem::setPalette(SG::BasicPalette x) {
     m_palette = x;
@@ -103,5 +115,15 @@ namespace ElevationChart
   void ChartItem::setRoute(const Route& x) {
     m_route = x;
     emit routeChanged();
+
+    this->calculate();
+  }
+
+  QGeoCoordinate ChartItem::uavPosition() const { return m_uav_position; }
+  void ChartItem::setUavPosition(const QGeoCoordinate& x) {
+    if(x == m_uav_position)
+      return;
+    m_uav_position = x;
+    emit uavPositionChanged();
   }
 } // ElevationChart

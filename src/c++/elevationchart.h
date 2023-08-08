@@ -3,9 +3,14 @@
 //
 
 #pragma once
+
+#include <memory>
 #include <QtQuick/QQuickItem>
 #include <SG/BasicPalette>
 #include "types/route.h"
+#include "provider/randomdataprovider.h"
+
+using std::unique_ptr;
 
 class QSGGeometryNode;
 
@@ -30,26 +35,30 @@ namespace ElevationChart
     public:
       explicit ChartItem(QQuickItem* parent = nullptr);
 
-      [[nodiscard]] SG::BasicPalette palette() const; void setPalette(SG::BasicPalette);
-      [[nodiscard]] Route route() const;              void setRoute(const Route&);
+      [[nodiscard]] SG::BasicPalette palette() const;   void setPalette(SG::BasicPalette);
+      [[nodiscard]] Route route() const;                void setRoute(const Route&);
+      [[nodiscard]] QGeoCoordinate uavPosition() const; void setUavPosition(const QGeoCoordinate&);
 
-      [[nodiscard]] bool intersecting() const;        void setIntersecting(bool);
-      [[nodiscard]] bool valid() const;               void setValid(bool);
+      [[nodiscard]] bool intersecting() const;          void setIntersecting(bool);
+      [[nodiscard]] bool valid() const;                 void setValid(bool);
 
-      Q_INVOKABLE void applyMetricsCorrection() noexcept;
-      Q_INVOKABLE void estimateEnvelope() noexcept;
-      Q_INVOKABLE void applyEnvelopeCorrection() noexcept;
+      //Q_INVOKABLE void applyMetricsCorrection() noexcept;
+      //Q_INVOKABLE void estimateEnvelope() noexcept;
+      //Q_INVOKABLE void applyEnvelopeCorrection() noexcept;
 
     signals:
       void paletteChanged();
       void intersectingChanged();
       void validChanged();
       void routeChanged();
+      void uavPositionChanged();
 
     protected:
       QSGNode* updatePaintNode(QSGNode* old_node, UpdatePaintNodeData*) override;
       void requireRecolor();
       void fulfillRecolor();
+
+      void calculate() noexcept;
 
     protected:
       bool m_require_recolor;
@@ -60,6 +69,11 @@ namespace ElevationChart
       bool m_intersecting;
       bool m_valid;
       Route m_route;
+      QGeoCoordinate m_uav_position;
+
+      unique_ptr<RandomDataProvider> m_random_provider;
+
+      vector<ElevationPoint> m_profile;
   };
 } // ElevationChart
 
