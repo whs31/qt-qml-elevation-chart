@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Controls.Material 2.15
 import QtQuick.Layouts 1.15
+import QtPositioning 5.15
 import ElevationChartWidget 3.0
 import "qrc:/elevation-chart/catpuccin.js" as Catpuccin
 
@@ -90,6 +91,8 @@ Item {
             error: Catpuccin.mocha.red.hex
             info: Catpuccin.mocha.lavender.hex
         }
+        route: Types.route(QtPositioning.path([QtPositioning.coordinate(60, 30),
+                                               QtPositioning.coordinate(61, 31)]))
 
         Component.onCompleted: ElevationChartCXXAPI.setSource(impl)
 

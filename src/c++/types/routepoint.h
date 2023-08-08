@@ -5,6 +5,53 @@
 namespace ElevationChart
 {
   /**
+   * \property RoutePoint::coordinate
+   * \brief Координата точки.
+   * \details Представлена в виде QGeoCoordinate. Хранит широту, долготу и высоту в метрах.
+   * <table>
+   * <caption id="multi_row">Связанные функции</caption>
+   * <tr><th>Чтение             <th>Запись              <th>Оповещение
+   * <tr><td><i>coordinate</i>  <td><i>setCoordinate</i><td><i>--</i>
+   * </table>
+   *
+   * \property RoutePoint::latitude
+   * \brief Широта точки.
+   * \details
+   * <table>
+   * <caption id="multi_row">Связанные функции</caption>
+   * <tr><th>Чтение             <th>Запись              <th>Оповещение
+   * <tr><td><i>latitude</i>    <td><i>setLatitude</i>  <td><i>--</i>
+   * </table>
+   *
+   * \property RoutePoint::longitude
+   * \brief Широта точки.
+   * \details
+   * <table>
+   * <caption id="multi_row">Связанные функции</caption>
+   * <tr><th>Чтение             <th>Запись              <th>Оповещение
+   * <tr><td><i>longitude</i>   <td><i>setLongitude</i> <td><i>--</i>
+   * </table>
+   *
+   * \property RoutePoint::altitude
+   * \brief Высота точки в метрах.
+   * \details
+   * <table>
+   * <caption id="multi_row">Связанные функции</caption>
+   * <tr><th>Чтение             <th>Запись              <th>Оповещение
+   * <tr><td><i>altitude</i>    <td><i>setAltitude</i>  <td><i>--</i>
+   * </table>
+   *
+   * \property RoutePoint::velocity
+   * \brief Скорость в точке в метрах в секунду.
+   * \details
+   * <table>
+   * <caption id="multi_row">Связанные функции</caption>
+   * <tr><th>Чтение             <th>Запись              <th>Оповещение
+   * <tr><td><i>velocity</i>    <td><i>setVelocity</i>  <td><i>--</i>
+   * </table>
+   */
+
+  /**
    * \brief Точка пути Route на карте.
    * \details Представляет собой объект, хранящий координаты точки, ее высоту
    * и скорость в метрах в секунду.
@@ -74,52 +121,6 @@ namespace ElevationChart
     , m_velocity(velocity_ms)
   {}
 
-  /**
-   * \property RoutePoint::coordinate
-   * \brief Координата точки.
-   * \details Представлена в виде QGeoCoordinate. Хранит широту, долготу и высоту в метрах.
-   * <table>
-   * <caption id="multi_row">Связанные функции</caption>
-   * <tr><th>Чтение             <th>Запись              <th>Оповещение
-   * <tr><td><i>coordinate</i>  <td><i>setCoordinate</i><td><i>--</i>
-   * </table>
-   *
-   * \property RoutePoint::latitude
-   * \brief Широта точки.
-   * \details
-   * <table>
-   * <caption id="multi_row">Связанные функции</caption>
-   * <tr><th>Чтение             <th>Запись              <th>Оповещение
-   * <tr><td><i>latitude</i>    <td><i>setLatitude</i>  <td><i>--</i>
-   * </table>
-   *
-   * \property RoutePoint::longitude
-   * \brief Широта точки.
-   * \details
-   * <table>
-   * <caption id="multi_row">Связанные функции</caption>
-   * <tr><th>Чтение             <th>Запись              <th>Оповещение
-   * <tr><td><i>longitude</i>   <td><i>setLongitude</i> <td><i>--</i>
-   * </table>
-   *
-   * \property RoutePoint::altitude
-   * \brief Высота точки в метрах.
-   * \details
-   * <table>
-   * <caption id="multi_row">Связанные функции</caption>
-   * <tr><th>Чтение             <th>Запись              <th>Оповещение
-   * <tr><td><i>altitude</i>    <td><i>setAltitude</i>  <td><i>--</i>
-   * </table>
-   *
-   * \property RoutePoint::velocity
-   * \brief Скорость в точке в метрах в секунду.
-   * \details
-   * <table>
-   * <caption id="multi_row">Связанные функции</caption>
-   * <tr><th>Чтение             <th>Запись              <th>Оповещение
-   * <tr><td><i>velocity</i>    <td><i>setVelocity</i>  <td><i>--</i>
-   * </table>
-   */
   inline QGeoCoordinate RoutePoint::coordinate() const { return m_coordinate; }
   inline void RoutePoint::setCoordinate(const QGeoCoordinate& x) { m_coordinate = x; }
   inline double RoutePoint::latitude() const { return m_coordinate.latitude(); }

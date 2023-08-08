@@ -14,6 +14,7 @@ namespace ElevationChart
     , m_background_node(nullptr) // !
     , m_intersecting(false)
     , m_valid(false)
+    , m_route(Route())
   {
     this->setFlag(ItemHasContents);
     qRegisterMetaType<ChartItem*>("ChartItem*");
@@ -96,5 +97,11 @@ namespace ElevationChart
       return;
     m_valid = x;
     emit validChanged();
+  }
+
+  Route ChartItem::route() const { return m_route; }
+  void ChartItem::setRoute(const Route& x) {
+    m_route = x;
+    emit routeChanged();
   }
 } // ElevationChart

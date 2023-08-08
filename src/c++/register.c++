@@ -25,6 +25,8 @@ namespace ElevationChart
     qmlRegisterModule("ElevationChartWidget", 3, 0);
     qmlRegisterType<ChartItem>("ElevationChartWidget", 3, 0, "ElevationChartImpl");
     qmlRegisterAnonymousType<SG::BasicPalette>("ElevationChartWidget", 3);
+    qRegisterMetaType<Route>("ElevationChart::Route");
+    qRegisterMetaType<RoutePoint>("ElevationChart::RoutePoint");
     qmlRegisterSingletonInstance<API>("ElevationChartWidget", 3, 0, "ElevationChartCXXAPI", API::get());
     qmlRegisterSingletonInstance<TypeFactory>("ElevationChartWidget", 3, 0, "Types", new TypeFactory(API::get()));
 

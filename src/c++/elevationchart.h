@@ -17,6 +17,7 @@ namespace ElevationChart
     Q_PROPERTY(SG::BasicPalette palette READ palette WRITE setPalette NOTIFY paletteChanged FINAL)
     Q_PROPERTY(bool intersecting READ intersecting WRITE setIntersecting NOTIFY intersectingChanged FINAL)
     Q_PROPERTY(bool valid READ valid WRITE setValid NOTIFY validChanged FINAL)
+    Q_PROPERTY(ElevationChart::Route route READ route WRITE setRoute NOTIFY routeChanged FINAL)
 
     public:
       explicit ChartItem(QQuickItem* parent = nullptr);
@@ -24,11 +25,13 @@ namespace ElevationChart
       [[nodiscard]] SG::BasicPalette palette() const; void setPalette(SG::BasicPalette);
       [[nodiscard]] bool intersecting() const;        void setIntersecting(bool);
       [[nodiscard]] bool valid() const;               void setValid(bool);
+      [[nodiscard]] Route route() const;              void setRoute(const Route&);
 
     signals:
       void paletteChanged();
       void intersectingChanged();
       void validChanged();
+      void routeChanged();
 
     protected:
       QSGNode* updatePaintNode(QSGNode* old_node, UpdatePaintNodeData*) override;
@@ -43,6 +46,7 @@ namespace ElevationChart
       SG::BasicPalette m_palette;
       bool m_intersecting;
       bool m_valid;
+      Route m_route;
   };
 } // ElevationChart
 
