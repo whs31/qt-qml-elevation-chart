@@ -5,6 +5,7 @@
 #pragma once
 #include <QtQuick/QQuickItem>
 #include <SG/BasicPalette>
+#include "types/route.h"
 
 class QSGGeometryNode;
 

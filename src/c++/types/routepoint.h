@@ -12,6 +12,13 @@ namespace ElevationChart
    */
   class RoutePoint
   {
+    Q_GADGET
+    Q_PROPERTY(QGeoCoordinate coordinate READ coordinate WRITE setCoordinate FINAL)
+    Q_PROPERTY(double latitude READ latitude WRITE setLatitude STORED false FINAL)
+    Q_PROPERTY(double longitude READ longitude WRITE setLongitude STORED false FINAL)
+    Q_PROPERTY(float altitude READ altitude WRITE setAltitude STORED false FINAL)
+    Q_PROPERTY(float velocity READ velocity WRITE setVelocity FINAL)
+
     public:
       /// \brief Создает точку с невалидными координатами и нулевой скоростью.
       RoutePoint();

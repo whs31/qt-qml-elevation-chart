@@ -57,6 +57,13 @@ namespace ElevationChart
       ret.addCoordinate(point.coordinate());
     return ret;
   }
+  QVariantList Route::toVariantList() const
+  {
+    QVariantList ret;
+    for(const auto& point : m_vec)
+      ret.push_back(QVariant::fromValue(point.coordinate()));
+    return ret;
+  }
   RoutePoint Route::at(int index) const
   {
     if(index < 0 or index >= size())
