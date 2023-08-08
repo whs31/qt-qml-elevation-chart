@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['error_0',['error',['../d8/d37/classSG_1_1BasicPalette.html#af10dacfa214e2575bb2e0ee407c242e0',1,'SG::BasicPalette']]]
+  ['coordinate_0',['coordinate',['../d1/d3b/classElevationChart_1_1RoutePoint.html#af60b46fadcc538d48eecd470357b0e6d',1,'ElevationChart::RoutePoint']]]
 ];

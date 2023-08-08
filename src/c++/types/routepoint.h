@@ -39,20 +39,20 @@ namespace ElevationChart
        */
       explicit RoutePoint(const QGeoCoordinate& coord, float velocity_ms = 0);
 
-      [[nodiscard]] QGeoCoordinate coordinate() const;      ///< Возвращает координату точки в виде QGeoCoordinate.
-      void setCoordinate(const QGeoCoordinate&);            ///< Задает координату точки в виде QGeoCoordinate.
+      [[nodiscard]] QGeoCoordinate coordinate() const;
+      void setCoordinate(const QGeoCoordinate&);
 
-      [[nodiscard]] double latitude() const;                ///< Возвращает широту точки.
-      void setLatitude(double);                             ///< Задает широту точки.
+      [[nodiscard]] double latitude() const;
+      void setLatitude(double);
 
-      [[nodiscard]] double longitude() const;               ///< Возвращает долготу точки.
-      void setLongitude(double);                            ///< Задает долготу точки.
+      [[nodiscard]] double longitude() const;
+      void setLongitude(double);
 
-      [[nodiscard]] float altitude() const;                 ///< Возвращает высоту точки в метрах.
-      void setAltitude(float);                              ///< Задает высоту точки в метрах.
+      [[nodiscard]] float altitude() const;
+      void setAltitude(float);
 
-      [[nodiscard]] float velocity() const;                 ///< Возвращает скорость точки в м/с.
-      void setVelocity(float);                              ///< Задает скорость точки в м/с.
+      [[nodiscard]] float velocity() const;
+      void setVelocity(float);
 
     private:
       QGeoCoordinate m_coordinate;
@@ -74,6 +74,52 @@ namespace ElevationChart
     , m_velocity(velocity_ms)
   {}
 
+  /**
+   * \property RoutePoint::coordinate
+   * \brief Координата точки.
+   * \details Представлена в виде QGeoCoordinate. Хранит широту, долготу и высоту в метрах.
+   * <table>
+   * <caption id="multi_row">Связанные функции</caption>
+   * <tr><th>Чтение             <th>Запись              <th>Оповещение
+   * <tr><td><i>coordinate</i>  <td><i>setCoordinate</i><td><i>--</i>
+   * </table>
+   *
+   * \property RoutePoint::latitude
+   * \brief Широта точки.
+   * \details
+   * <table>
+   * <caption id="multi_row">Связанные функции</caption>
+   * <tr><th>Чтение             <th>Запись              <th>Оповещение
+   * <tr><td><i>latitude</i>    <td><i>setLatitude</i>  <td><i>--</i>
+   * </table>
+   *
+   * \property RoutePoint::longitude
+   * \brief Широта точки.
+   * \details
+   * <table>
+   * <caption id="multi_row">Связанные функции</caption>
+   * <tr><th>Чтение             <th>Запись              <th>Оповещение
+   * <tr><td><i>longitude</i>   <td><i>setLongitude</i> <td><i>--</i>
+   * </table>
+   *
+   * \property RoutePoint::altitude
+   * \brief Высота точки в метрах.
+   * \details
+   * <table>
+   * <caption id="multi_row">Связанные функции</caption>
+   * <tr><th>Чтение             <th>Запись              <th>Оповещение
+   * <tr><td><i>altitude</i>    <td><i>setAltitude</i>  <td><i>--</i>
+   * </table>
+   *
+   * \property RoutePoint::velocity
+   * \brief Скорость в точке в метрах в секунду.
+   * \details
+   * <table>
+   * <caption id="multi_row">Связанные функции</caption>
+   * <tr><th>Чтение             <th>Запись              <th>Оповещение
+   * <tr><td><i>velocity</i>    <td><i>setVelocity</i>  <td><i>--</i>
+   * </table>
+   */
   inline QGeoCoordinate RoutePoint::coordinate() const { return m_coordinate; }
   inline void RoutePoint::setCoordinate(const QGeoCoordinate& x) { m_coordinate = x; }
   inline double RoutePoint::latitude() const { return m_coordinate.latitude(); }

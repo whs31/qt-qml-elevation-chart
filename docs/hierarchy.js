@@ -7,6 +7,7 @@ var hierarchy =
     ] ],
     [ "QObject", null, [
       [ "API", "dc/d79/classElevationChart_1_1API.html", null ],
+      [ "TypeFactory", "d6/dda/classElevationChart_1_1TypeFactory.html", null ],
       [ "QQuickItem", "d7/d4d/classQQuickItem.html", [
         [ "ChartItem", "d1/d7c/classElevationChart_1_1ChartItem.html", null ]
       ] ]

@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['warn_0',['warn',['../d8/d37/classSG_1_1BasicPalette.html#a1454e1f770b337ecbb62cd2028662081',1,'SG::BasicPalette']]]
+  ['latitude_0',['latitude',['../d1/d3b/classElevationChart_1_1RoutePoint.html#a336b37ee42086dd8848e89c39af0fea4',1,'ElevationChart::RoutePoint']]],
+  ['longitude_1',['longitude',['../d1/d3b/classElevationChart_1_1RoutePoint.html#a6b2179bced5805aee7ac729e08473a00',1,'ElevationChart::RoutePoint']]]
 ];

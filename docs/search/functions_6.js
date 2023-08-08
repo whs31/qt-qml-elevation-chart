@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['latitude_0',['latitude',['../d1/d3b/classElevationChart_1_1RoutePoint.html#a3f99e460a793739de2ef6976b2a034d4',1,'ElevationChart::RoutePoint']]],
-  ['longitude_1',['longitude',['../d1/d3b/classElevationChart_1_1RoutePoint.html#a00f3340e5829cf7e97f73d9e174d0a57',1,'ElevationChart::RoutePoint']]]
+  ['plotelevationprofile_0',['plotElevationProfile',['../db/d9d/classElevationChart_1_1IElevationDataProvider.html#a1f9921da788b8e6cb4c54e670d97b6f8',1,'ElevationChart::IElevationDataProvider::plotElevationProfile()'],['../d3/d2f/classElevationChart_1_1RandomDataProvider.html#a081327e724cabe3e61e1c1959f83a9b7',1,'ElevationChart::RandomDataProvider::plotElevationProfile()']]]
 ];

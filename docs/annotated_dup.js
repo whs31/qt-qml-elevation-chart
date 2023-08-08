@@ -7,7 +7,8 @@ var annotated_dup =
       [ "IElevationDataProvider", "db/d9d/classElevationChart_1_1IElevationDataProvider.html", "db/d9d/classElevationChart_1_1IElevationDataProvider" ],
       [ "RandomDataProvider", "d3/d2f/classElevationChart_1_1RandomDataProvider.html", "d3/d2f/classElevationChart_1_1RandomDataProvider" ],
       [ "Route", "de/d39/classElevationChart_1_1Route.html", "de/d39/classElevationChart_1_1Route" ],
-      [ "RoutePoint", "d1/d3b/classElevationChart_1_1RoutePoint.html", "d1/d3b/classElevationChart_1_1RoutePoint" ]
+      [ "RoutePoint", "d1/d3b/classElevationChart_1_1RoutePoint.html", "d1/d3b/classElevationChart_1_1RoutePoint" ],
+      [ "TypeFactory", "d6/dda/classElevationChart_1_1TypeFactory.html", null ]
     ] ],
     [ "SG", "dd/d59/namespaceSG.html", [
       [ "BasicPalette", "d8/d37/classSG_1_1BasicPalette.html", "d8/d37/classSG_1_1BasicPalette" ]
