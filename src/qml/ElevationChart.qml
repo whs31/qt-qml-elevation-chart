@@ -74,7 +74,7 @@ Item {
         }
 
         Material.background: impl.palette.overlay2
-        Material.elevation: 100
+        Material.elevation: 200
     }
 
     ElevationChartImpl
@@ -91,14 +91,14 @@ Item {
             error: light_theme ? Catpuccin.latte.red.hex : Catpuccin.mocha.red.hex
             info: light_theme ? Catpuccin.latte.lavender.hex : Catpuccin.mocha.lavender.hex
 
-            Behavior on background { ColorAnimation { } }
-            Behavior on foreground { ColorAnimation { } }
-            Behavior on overlay { ColorAnimation { } }
-            Behavior on overlay2 { ColorAnimation { } }
-            Behavior on accent { ColorAnimation { } }
-            Behavior on warn { ColorAnimation { } }
-            Behavior on error { ColorAnimation { } }
-            Behavior on info { ColorAnimation { } }
+            Behavior on background { ColorAnimation { easing.type: Easing.InOutQuad } }
+            Behavior on foreground { ColorAnimation { easing.type: Easing.InOutQuad } }
+            Behavior on overlay { ColorAnimation { easing.type: Easing.InOutQuad } }
+            Behavior on overlay2 { ColorAnimation { easing.type: Easing.InOutQuad } }
+            Behavior on accent { ColorAnimation { easing.type: Easing.InOutQuad } }
+            Behavior on warn { ColorAnimation { easing.type: Easing.InOutQuad } }
+            Behavior on error { ColorAnimation { easing.type: Easing.InOutQuad } }
+            Behavior on info { ColorAnimation { easing.type: Easing.InOutQuad } }
         }
         route: Types.route(QtPositioning.path([QtPositioning.coordinate(60, 30),
                                                QtPositioning.coordinate(60.1, 30.1)]))
