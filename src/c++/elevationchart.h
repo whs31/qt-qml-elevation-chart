@@ -33,7 +33,15 @@ namespace ElevationChart
     // matching metrics
     // is busy
 
+    Q_PROPERTY(int shrinkMode READ shrinkMode WRITE setShrinkMode NOTIFY shrinkModeChanged FINAL)
+
     public:
+      enum ShrinkMode
+      {
+        ShrinkToProfileHeight,
+        ShrinkToRouteHeight
+      };
+
       explicit ChartItem(QQuickItem* parent = nullptr);
 
       [[nodiscard]] SG::BasicPalette palette() const;   void setPalette(SG::BasicPalette);
@@ -42,6 +50,8 @@ namespace ElevationChart
 
       [[nodiscard]] bool intersecting() const;          void setIntersecting(bool);
       [[nodiscard]] bool valid() const;                 void setValid(bool);
+
+      [[nodiscard]] int shrinkMode() const;             void setShrinkMode(int);
 
       //Q_INVOKABLE void applyMetricsCorrection() noexcept;
       //Q_INVOKABLE void estimateEnvelope() noexcept;
@@ -53,6 +63,7 @@ namespace ElevationChart
       void validChanged();
       void routeChanged();
       void uavPositionChanged();
+      void shrinkModeChanged();
 
     protected:
       QSGNode* updatePaintNode(QSGNode* old_node, UpdatePaintNodeData*) override;
@@ -93,6 +104,8 @@ namespace ElevationChart
 
       vector<ElevationPoint> m_profile;
       Bound m_bound;
+
+      ShrinkMode m_shrink_mode;
   };
 } // ElevationChart
 

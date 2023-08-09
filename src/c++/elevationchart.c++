@@ -21,6 +21,7 @@ namespace ElevationChart
     , m_uav_position(QGeoCoordinate(60, 30))
     , m_random_provider(std::make_unique<RandomDataProvider>())
     , m_bound({0, 0})
+    , m_shrink_mode(ShrinkMode::ShrinkToRouteHeight)
   {
     this->setFlag(ItemHasContents);
     qRegisterMetaType<ChartItem*>("ChartItem*");
@@ -110,11 +111,20 @@ namespace ElevationChart
 
   void ChartItem::updateBounds() noexcept
   {
-    m_bound = { m_profile.back().distance(),
-                std::max_element(m_profile.cbegin(), m_profile.cend(), [](const ElevationPoint& a, const ElevationPoint& b){
-                   return a.elevation() < b.elevation();
-                })->elevation()
-    };
+    if(not route().valid())
+      return;
+
+    m_bound = { m_profile.back().distance(), 0 };
+    auto path = route().toGeoPath().path();
+    for(const auto& coordinate : path)
+      if(coordinate.altitude() > m_bound.y_max)
+        m_bound.y_max = static_cast<float>(coordinate.altitude());
+
+    if(shrinkMode() == ShrinkToProfileHeight)
+      m_bound.y_max = std::max(m_bound.y_max, std::max_element(m_profile.cbegin(), m_profile.cend(),
+                               [](const ElevationPoint& a, const ElevationPoint& b){  return a.elevation() < b.elevation();
+                               })->elevation());
+
     this->update();
   }
 
@@ -193,5 +203,15 @@ namespace ElevationChart
       return;
     m_uav_position = x;
     emit uavPositionChanged();
+  }
+
+  int ChartItem::shrinkMode() const { return static_cast<int>(m_shrink_mode); }
+  void ChartItem::setShrinkMode(int x) {
+    if(x == m_shrink_mode)
+      return;
+    m_shrink_mode = static_cast<ShrinkMode>(x);
+    emit shrinkModeChanged();
+
+    this->updateBounds();
   }
 } // ElevationChart
