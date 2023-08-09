@@ -19,7 +19,7 @@ if(NOT MAKE_LIBRARY)
     set(CMAKE_AUTOMOC ON)
 endif()
 
-find_package(QT NAMES Qt6 Qt5 COMPONENTS Core)
+find_package(QT NAMES Qt5 COMPONENTS Core)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS 
     Core
     Quick

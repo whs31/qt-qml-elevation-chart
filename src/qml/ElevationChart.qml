@@ -101,6 +101,14 @@ Item {
             Behavior on info { ColorAnimation { easing.type: Easing.InOutQuad } }
         }
         route: Types.route(QtPositioning.path([QtPositioning.coordinate(60, 30),
+                                               QtPositioning.coordinate(60.02, 30),
+                                               QtPositioning.coordinate(60.04, 30),
+                                               QtPositioning.coordinate(60.06, 30),
+                                               QtPositioning.coordinate(60.08, 30),
+                                               QtPositioning.coordinate(60.1, 30.02),
+                                               QtPositioning.coordinate(60.1, 30.04),
+                                               QtPositioning.coordinate(60.1, 30.06),
+                                               QtPositioning.coordinate(60.1, 30.08),
                                                QtPositioning.coordinate(60.1, 30.1)]))
 
         Component.onCompleted: ElevationChartCXXAPI.setSource(impl)

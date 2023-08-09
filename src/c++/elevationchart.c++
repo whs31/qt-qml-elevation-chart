@@ -12,8 +12,9 @@ namespace ElevationChart
   ChartItem::ChartItem(QQuickItem* parent)
     : QQuickItem(parent)
     , m_require_recolor(false)
-    , m_background_node(nullptr) // !
-    , m_profile_node(nullptr) // !
+    , m_background_node(nullptr)
+    , m_profile_node(nullptr)
+    , m_route_node(nullptr)
     , m_intersecting(false)
     , m_valid(false)
     , m_route(Route())
@@ -51,47 +52,42 @@ namespace ElevationChart
       m_profile_node->setGeometry(profile_geometry);
       m_profile_node->setFlags(QSGNode::OwnsGeometry | QSGNode::OwnsMaterial);
 
+      m_route_node = new QSGGeometryNode;
+      auto* route_material = new QSGFlatColorMaterial;
+      route_material->setColor(palette().accent());
+      m_route_node->setMaterial(route_material);
+      auto* route_geometry = new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), 0, 0, QSGGeometry::UnsignedIntType);
+      m_route_node->setGeometry(route_geometry);
+      m_route_node->setFlags(QSGNode::OwnsGeometry | QSGNode::OwnsMaterial);
+
       old_node->appendChildNode(m_background_node);
       old_node->appendChildNode(m_profile_node);
+      old_node->appendChildNode(m_route_node);
     }
 
     if(m_require_recolor)
     {
       dynamic_cast<QSGFlatColorMaterial*>(m_background_node->material())->setColor(palette().background());
       dynamic_cast<QSGFlatColorMaterial*>(m_profile_node->material())->setColor(palette().overlay());
+      dynamic_cast<QSGFlatColorMaterial*>(m_route_node->material())->setColor(palette().accent());
     }
 
-    m_background_node->geometry()->allocate(6);
-    m_background_node->geometry()->vertexDataAsPoint2D()[0].set(0, 0);
-    m_background_node->geometry()->vertexDataAsPoint2D()[1].set(static_cast<float>(width()), 0);
-    m_background_node->geometry()->vertexDataAsPoint2D()[2].set(static_cast<float>(width()), static_cast<float>(height()));
-    m_background_node->geometry()->vertexDataAsPoint2D()[3].set(static_cast<float>(width()), static_cast<float>(height()));
-    m_background_node->geometry()->vertexDataAsPoint2D()[4].set(0, static_cast<float>(height()));
-    m_background_node->geometry()->vertexDataAsPoint2D()[5].set(0, 0);
-
-    vector<QSGGeometry::Point2D> profile_gl;
-    for(const auto& point : m_profile)
-    {
-      profile_gl.push_back({static_cast<float>(point.distance() / m_bound.x_max * width()),
-                               static_cast<float>(height())});
-      profile_gl.push_back({static_cast<float>(point.distance() / m_bound.x_max * width()),
-                            static_cast<float>(height() - (point.elevation() / m_bound.y_max * height()))});
-    }
-
-    m_profile_node->geometry()->allocate(static_cast<int>(profile_gl.size()));
-    for(size_t i = 0; i < profile_gl.size(); i++)
-      m_profile_node->geometry()->vertexDataAsPoint2D()[i] = profile_gl.at(i);
+    this->handleBackgroundNode();
+    this->handleProfileNode();
+    this->handleRouteNode();
 
     if(m_require_recolor)
     {
       m_background_node->markDirty(QSGNode::DirtyGeometry | QSGNode::DirtyMaterial);
       m_profile_node->markDirty(QSGNode::DirtyGeometry | QSGNode::DirtyMaterial);
+      m_route_node->markDirty(QSGNode::DirtyGeometry | QSGNode::DirtyMaterial);
       this->fulfillRecolor();
     }
     else
     {
       m_background_node->markDirty(QSGNode::DirtyGeometry);
       m_profile_node->markDirty(QSGNode::DirtyGeometry);
+      m_route_node->markDirty(QSGNode::DirtyGeometry);
     }
 
     old_node->markDirty(QSGNode::DirtyGeometry | QSGNode::DirtyMaterial);
@@ -106,13 +102,53 @@ namespace ElevationChart
 
   void ChartItem::fulfillRecolor() { m_require_recolor = false; }
 
-  void ChartItem::calculate() noexcept
+  void ChartItem::updateProfile() noexcept
   {
     m_profile = m_random_provider->plotElevationProfile(m_route.toGeoPath());
-    m_bound = { m_profile.back().distance(), std::max_element(m_profile.cbegin(), m_profile.cend(),
-                [](const ElevationPoint& a, const ElevationPoint& b){
-                  return a.elevation() < b.elevation(); })->elevation() };
-    qDebug() << m_bound.x_max << m_bound.y_max;
+    this->updateBounds();
+  }
+
+  void ChartItem::updateBounds() noexcept
+  {
+    m_bound = { m_profile.back().distance(),
+                std::max_element(m_profile.cbegin(), m_profile.cend(), [](const ElevationPoint& a, const ElevationPoint& b){
+                   return a.elevation() < b.elevation();
+                })->elevation()
+    };
+    this->update();
+  }
+
+  void ChartItem::handleBackgroundNode() noexcept
+  {
+    m_background_node->geometry()->allocate(6);
+    m_background_node->geometry()->vertexDataAsPoint2D()[0].set(0, 0);
+    m_background_node->geometry()->vertexDataAsPoint2D()[1].set(static_cast<float>(width()), 0);
+    m_background_node->geometry()->vertexDataAsPoint2D()[2].set(static_cast<float>(width()), static_cast<float>(height()));
+    m_background_node->geometry()->vertexDataAsPoint2D()[3].set(static_cast<float>(width()), static_cast<float>(height()));
+    m_background_node->geometry()->vertexDataAsPoint2D()[4].set(0, static_cast<float>(height()));
+    m_background_node->geometry()->vertexDataAsPoint2D()[5].set(0, 0);
+  }
+
+  void ChartItem::handleProfileNode() noexcept
+  {
+    vector<QSGGeometry::Point2D> profile_gl;
+    for(const auto& point : m_profile)
+    {
+      profile_gl.push_back({static_cast<float>(point.distance() / m_bound.x_max * width()),
+                               static_cast<float>(height())});
+      profile_gl.push_back({static_cast<float>(point.distance() / m_bound.x_max * width()),
+                               static_cast<float>(height() - (point.elevation() / m_bound.y_max * height()))});
+    }
+
+    m_profile_node->geometry()->allocate(static_cast<int>(profile_gl.size()));
+
+    for(size_t i = 0; i < profile_gl.size(); i++)
+      m_profile_node->geometry()->vertexDataAsPoint2D()[i] = profile_gl.at(i);
+  }
+
+  void ChartItem::handleRouteNode() noexcept
+  {
+
   }
 
   // properties
@@ -146,7 +182,7 @@ namespace ElevationChart
     m_route = x;
     emit routeChanged();
 
-    this->calculate();
+    this->updateProfile();
   }
 
   QGeoCoordinate ChartItem::uavPosition() const { return m_uav_position; }

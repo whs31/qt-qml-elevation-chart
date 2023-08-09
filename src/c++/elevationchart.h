@@ -58,12 +58,18 @@ namespace ElevationChart
       void requireRecolor();
       void fulfillRecolor();
 
-      void calculate() noexcept;
+      void updateProfile() noexcept;
+      void updateBounds() noexcept;
+
+      void handleBackgroundNode() noexcept;
+      void handleProfileNode() noexcept;
+      void handleRouteNode() noexcept;
 
     protected:
       bool m_require_recolor;
       QSGGeometryNode* m_background_node;
       QSGGeometryNode* m_profile_node;
+      QSGGeometryNode* m_route_node;
 
     private:
       struct Bound
