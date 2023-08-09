@@ -6,6 +6,7 @@
 
 #include <memory>
 #include <QtQuick/QQuickItem>
+#include <QtQuick/QSGGeometry>
 #include <SG/BasicPalette>
 #include "types/route.h"
 #include "provider/randomdataprovider.h"
@@ -64,6 +65,10 @@ namespace ElevationChart
       void handleBackgroundNode() noexcept;
       void handleProfileNode() noexcept;
       void handleRouteNode() noexcept;
+
+      QSGGeometry::Point2D toPixel(float x, float y, float x_max, float y_max) const;
+      float toPixelX(float x, float x_max) const;
+      float toPixelY(float y, float y_max) const;
 
     protected:
       bool m_require_recolor;

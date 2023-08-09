@@ -134,10 +134,8 @@ namespace ElevationChart
     vector<QSGGeometry::Point2D> profile_gl;
     for(const auto& point : m_profile)
     {
-      profile_gl.push_back({static_cast<float>(point.distance() / m_bound.x_max * width()),
-                               static_cast<float>(height())});
-      profile_gl.push_back({static_cast<float>(point.distance() / m_bound.x_max * width()),
-                               static_cast<float>(height() - (point.elevation() / m_bound.y_max * height()))});
+      profile_gl.push_back({toPixelX(point.distance(), m_bound.x_max), static_cast<float>(height())});
+      profile_gl.push_back(toPixel(point.distance(), point.elevation(), m_bound.x_max, m_bound.y_max));
     }
 
     m_profile_node->geometry()->allocate(static_cast<int>(profile_gl.size()));
@@ -150,6 +148,10 @@ namespace ElevationChart
   {
 
   }
+
+  QSGGeometry::Point2D ChartItem::toPixel(float x, float y, float x_max, float y_max) const { return { toPixelX(x, x_max), toPixelY(y, y_max) }; }
+  float ChartItem::toPixelX(float x, float x_max) const { return static_cast<float>(x / x_max * width()); }
+  float ChartItem::toPixelY(float y, float y_max) const { return static_cast<float>(height() - (y / y_max * height())); }
 
   // properties
 
