@@ -92,11 +92,11 @@ Item {
         palette {
             background: light_theme ? Catpuccin.latte.base.hex : Catpuccin.mocha.base.hex
             foreground: light_theme ? Catpuccin.latte.subtext1.hex : Catpuccin.mocha.subtext1.hex
-            overlay: light_theme ? Catpuccin.latte.surface1.hex : Catpuccin.mocha.surface0.hex
-            overlay2: light_theme ? Catpuccin.latte.surface2.hex : Catpuccin.mocha.surface1.hex
-            accent: light_theme ? Catpuccin.latte.green.hex : Catpuccin.mocha.green.hex
-            warn: light_theme ? Catpuccin.latte.peach.hex : Catpuccin.mocha.peach.hex
-            error: light_theme ? Catpuccin.latte.red.hex : Catpuccin.mocha.red.hex
+            overlay: light_theme ? Catpuccin.latte.surface2.hex : Catpuccin.mocha.surface0.hex
+            overlay2: light_theme ? Catpuccin.latte.overlay0.hex : Catpuccin.mocha.surface1.hex
+            accent: light_theme ? Catpuccin.latte.text.hex : Catpuccin.mocha.text.hex
+            warn: light_theme ? Catpuccin.latte.yellow.hex : Catpuccin.mocha.yellow.hex
+            error: light_theme ? Catpuccin.latte.maroon.hex : Catpuccin.mocha.maroon.hex
             info: light_theme ? Catpuccin.latte.lavender.hex : Catpuccin.mocha.lavender.hex
 
             Behavior on background { ColorAnimation { easing.type: Easing.InOutQuad } }
