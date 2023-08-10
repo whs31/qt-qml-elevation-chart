@@ -171,7 +171,7 @@ namespace ElevationChart
 
   QSGGeometry::Point2D ChartItem::toPixel(float x, float y, float x_max, float y_max) const { return { toPixelX(x, x_max), toPixelY(y, y_max) }; }
   float ChartItem::toPixelX(float x, float x_max) const { return static_cast<float>(x / x_max * width()); }
-  float ChartItem::toPixelY(float y, float y_max) const { return static_cast<float>(height() - (y / y_max * height())); }
+  float ChartItem::toPixelY(float y, float y_max) const { return static_cast<float>(height() - (y / (y_max * STRETCH) * height())); }
 
   // properties
 
