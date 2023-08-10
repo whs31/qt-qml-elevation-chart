@@ -110,11 +110,13 @@ namespace ElevationChart
   void ChartItem::updateProfile() noexcept
   {
     m_profile = m_random_provider->plotElevationProfile(route().toGeoPath());
+
+    this->updateBounds();
+
     auto t_route = route().toElevationGraph();
     model()->clear();
     for(const auto& point : t_route)
-      model()->add(point);
-    this->updateBounds();
+      model()->add(ElevationPoint(toPixelX(point.distance(), bounds().x_max), toPixelY(point.elevation(), bounds().y_max)));
   }
 
   void ChartItem::updateBounds() noexcept

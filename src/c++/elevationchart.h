@@ -5,6 +5,7 @@
 #pragma once
 
 #include <memory>
+#include <QtCore/QPointF>
 #include <QtQuick/QQuickItem>
 #include <QtQuick/QSGGeometry>
 #include <SG/BasicPalette>

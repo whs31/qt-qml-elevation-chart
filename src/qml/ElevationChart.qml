@@ -4,6 +4,8 @@ import QtQuick.Controls.Material 2.15
 import QtQuick.Layouts 1.15
 import QtPositioning 5.15
 import ElevationChartWidget 3.0
+
+import "private" as Private
 import "qrc:/elevation-chart/catpuccin.js" as Catpuccin
 
 Item {
@@ -121,6 +123,12 @@ Item {
 
         property int currentBar: -1
         property bool light_theme: false
+
+        Repeater {
+            anchors.fill: parent
+            model: impl.model
+            delegate: Private.ElevationChartPoint { }
+        }
     }
 
     Pane {
