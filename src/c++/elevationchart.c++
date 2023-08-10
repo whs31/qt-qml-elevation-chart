@@ -18,6 +18,7 @@ namespace ElevationChart
     , m_intersecting(false)
     , m_valid(false)
     , m_route(Route())
+    , m_model(new RouteModel(this))
     , m_uav_position(QGeoCoordinate(60, 30))
     , m_random_provider(std::make_unique<RandomDataProvider>())
     , m_bound({0, 0})
@@ -108,7 +109,11 @@ namespace ElevationChart
 
   void ChartItem::updateProfile() noexcept
   {
-    m_profile = m_random_provider->plotElevationProfile(m_route.toGeoPath());
+    m_profile = m_random_provider->plotElevationProfile(route().toGeoPath());
+    auto t_route = route().toElevationGraph();
+    model()->clear();
+    for(const auto& point : t_route)
+      model()->add(point);
     this->updateBounds();
   }
 
@@ -207,6 +212,8 @@ namespace ElevationChart
 
     this->updateProfile();
   }
+
+  RouteModel* ChartItem::model() const { return m_model; }
 
   QGeoCoordinate ChartItem::uavPosition() const { return m_uav_position; }
   void ChartItem::setUavPosition(const QGeoCoordinate& x) {

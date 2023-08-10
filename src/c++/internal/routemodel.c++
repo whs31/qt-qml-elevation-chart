@@ -45,6 +45,8 @@ namespace ElevationChart
       emit dataChanged(index, index, {role});
       return true;
     }
+
+    return false;
   }
 
   void RouteModel::add(const ElevationPoint& point)

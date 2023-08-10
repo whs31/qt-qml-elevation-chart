@@ -37,16 +37,19 @@ namespace ElevationChart
       explicit RouteModel(QObject* parent = nullptr);
 
       int rowCount(const QModelIndex& parent = QModelIndex()) const override;
-      QVariant data(const QModelIndex& index, int role) const override;
+      [[nodiscard]] QVariant data(const QModelIndex& index, int role) const override;
       bool setData(const QModelIndex& index, const QVariant& value, int role) override;
 
       void add(const ElevationPoint& point);
       void clear();
 
     protected:
-      QHash<int, QByteArray> roleNames() const override;
+      [[nodiscard]] QHash<int, QByteArray> roleNames() const override;
 
     private:
       vector<ElevationPoint> m_storage;
   };
 } // ElevationChart
+
+#include <QtCore/QMetaType>
+Q_DECLARE_METATYPE(ElevationChart::RouteModel*)

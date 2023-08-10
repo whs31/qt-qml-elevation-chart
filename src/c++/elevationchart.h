@@ -10,6 +10,7 @@
 #include <SG/BasicPalette>
 #include "types/route.h"
 #include "provider/randomdataprovider.h"
+#include "internal/routemodel.h"
 
 using std::unique_ptr;
 
@@ -22,6 +23,7 @@ namespace ElevationChart
     Q_OBJECT
     Q_PROPERTY(SG::BasicPalette palette READ palette WRITE setPalette NOTIFY paletteChanged FINAL)
     Q_PROPERTY(ElevationChart::Route route READ route WRITE setRoute NOTIFY routeChanged FINAL)
+    Q_PROPERTY(ElevationChart::RouteModel* model READ model CONSTANT)
     Q_PROPERTY(QGeoCoordinate uavPosition READ uavPosition WRITE setUavPosition NOTIFY uavPositionChanged FINAL)
 
     // metrics gadget
@@ -56,6 +58,7 @@ namespace ElevationChart
 
       [[nodiscard]] SG::BasicPalette palette() const;   void setPalette(SG::BasicPalette);
       [[nodiscard]] Route route() const;                void setRoute(const Route&);
+      [[nodiscard]] RouteModel* model() const;
       [[nodiscard]] QGeoCoordinate uavPosition() const; void setUavPosition(const QGeoCoordinate&);
 
       [[nodiscard]] bool intersecting() const;          void setIntersecting(bool);
@@ -103,6 +106,7 @@ namespace ElevationChart
       bool m_intersecting;
       bool m_valid;
       Route m_route;
+      RouteModel* m_model;
       QGeoCoordinate m_uav_position;
 
       unique_ptr<RandomDataProvider> m_random_provider;
