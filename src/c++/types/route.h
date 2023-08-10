@@ -135,7 +135,7 @@ namespace ElevationChart
        * \note Эта функция может быть вызвана из QML через мета-объектную систему Qt.
        * \return Точка пути RoutePoint
        */
-      Q_INVOKABLE [[nodiscard]] RoutePoint at(int index) const;
+      Q_INVOKABLE [[nodiscard]] RoutePoint& at(int index);
 
       /**
        * \brief Возвращает <tt>true</tt>, если путь содержит указанную точку.

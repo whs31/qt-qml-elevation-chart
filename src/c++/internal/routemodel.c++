@@ -78,9 +78,10 @@ namespace ElevationChart
   {
     if(i < 0 or i >= rowCount())
       return;
-    m_storage.at(i).setElevation(m_storage.at(i).elevation() + delta / 100);
+    m_storage.at(i).setElevation(m_storage.at(i).elevation() + delta / 30);
     if(m_storage.at(i).elevation() <= 0)
       m_storage.at(i).setElevation(0);
     emit dataChanged(index(i), index(i), {Altitude});
+    emit requireRebuild(i, m_storage.at(i).elevation());
   }
 } // ElevationChart

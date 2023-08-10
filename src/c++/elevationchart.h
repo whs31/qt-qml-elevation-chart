@@ -81,8 +81,8 @@ namespace ElevationChart
       void requireRecolor();
       void fulfillRecolor();
 
-      void updateProfile() noexcept;
-      void updateBounds() noexcept;
+      Q_SLOT void updateProfile() noexcept;
+      Q_SLOT void updateBounds() noexcept;
 
       void handleBackgroundNode() noexcept;
       void handleProfileNode() noexcept;

@@ -64,12 +64,7 @@ namespace ElevationChart
       ret.push_back(QVariant::fromValue(point.coordinate()));
     return ret;
   }
-  RoutePoint Route::at(int index) const
-  {
-    if(index < 0 or index >= size())
-      return {};
-    return m_vec.at(index);
-  }
+  RoutePoint& Route::at(int index) { return m_vec.at(index); }
   bool Route::contains(const ElevationChart::RoutePoint& x)
   {
     return std::any_of(m_vec.cbegin(), m_vec.cend(), [x](const RoutePoint& point){

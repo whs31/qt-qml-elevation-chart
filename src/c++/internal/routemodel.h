@@ -44,6 +44,9 @@ namespace ElevationChart
       Q_INVOKABLE void clear();
       Q_INVOKABLE void move(int index, float delta);
 
+    signals:
+      void requireRebuild(int index, float new_altitude);
+
     protected:
       [[nodiscard]] QHash<int, QByteArray> roleNames() const override;
 

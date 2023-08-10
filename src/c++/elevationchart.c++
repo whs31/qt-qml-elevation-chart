@@ -26,6 +26,12 @@ namespace ElevationChart
   {
     this->setFlag(ItemHasContents);
     qRegisterMetaType<ChartItem*>("ChartItem*");
+
+    connect(model(), &RouteModel::requireRebuild, this, [this](int index, float new_altitude){
+      m_route.at(index).setAltitude(new_altitude);
+      emit routeChanged();
+      this->updateBounds();
+    });
   }
 
   QSGNode* ChartItem::updatePaintNode(QSGNode* old_node, QQuickItem::UpdatePaintNodeData* unused)
