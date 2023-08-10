@@ -12,7 +12,7 @@ RoundButton {
     width: 25
     height: 25
 
-    x: distance - width / 2
-    y: altitude - height / 2
+    x: (distance / impl.bounds.x * impl.width) - width / 2
+    y: (impl.height - (altitude / (impl.bounds.y * 1.15) * impl.height)) - height / 2
     onDistanceChanged: console.error(x, y)
 }
