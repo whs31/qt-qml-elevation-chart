@@ -8,13 +8,14 @@ import ElevationChartWidget 3.0
 import "private" as Private
 import "qrc:/elevation-chart/catpuccin.js" as Catpuccin
 
-Item {
+Rectangle {
     id: ec
     Material.theme: impl.light_theme ? Material.Light : Material.Dark
     Material.accent: impl.palette.accent
     Material.primary: impl.palette.accent
     Material.foreground: impl.palette.foreground
     Material.background: impl.palette.background
+    color: impl.palette.background
 
     FontLoader { id: font_Main; source: "qrc:/elevation-chart/fonts/Overpass.ttf"; }
     FontLoader { id: font_Mono; source: "qrc:/elevation-chart/fonts/UbuntuMono.ttf"; }
@@ -91,7 +92,12 @@ Item {
     ElevationChartImpl
     {
         id: impl
-        anchors.fill: parent
+        anchors {
+            fill: parent
+            leftMargin: 10
+            rightMargin: 10
+            bottomMargin: 10
+        }
         palette {
             background: light_theme ? Catpuccin.latte.base.hex : Catpuccin.mocha.base.hex
             foreground: light_theme ? Catpuccin.latte.subtext1.hex : Catpuccin.mocha.subtext1.hex

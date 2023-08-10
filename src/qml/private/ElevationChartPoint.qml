@@ -22,7 +22,7 @@ RoundButton {
     component TT : ToolTip { id: control;
         property string txt: "Tooltip";
 
-        visible: parent.hovered || parent.down
+        visible: parent.hovered || parent.pressed
         font {
             pixelSize: 13
             family: mainfont
@@ -36,7 +36,7 @@ RoundButton {
             color: impl.palette.foreground
             radius: 3
         }
-        delay: 300
+        delay: 0
     }
 
     TT { txt: "<b>Высота точки: </b>" + Number(altitude).toFixed(1) + " м<br><b>Удаленность точки: </b>" + Number(distance).toFixed(0) + " м" }
