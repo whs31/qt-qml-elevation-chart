@@ -9,10 +9,15 @@ RoundButton {
     required property bool valid
     required property bool intersects
 
+    Material.background: impl.palette.accent
+
     width: 25
     height: 25
 
     x: (distance / impl.bounds.x * impl.width) - width / 2
-    y: (impl.height - (altitude / (impl.bounds.y * 1.15) * impl.height)) - height / 2
-    onDistanceChanged: console.error(x, y)
+    y: (impl.height - (altitude / (impl.bounds.y * impl.bounds.stretch) * impl.height)) - height / 2
+
+    onPressYChanged: {
+        impl.model.move(index, -pressY)
+    }
 }

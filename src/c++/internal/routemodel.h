@@ -41,7 +41,8 @@ namespace ElevationChart
       bool setData(const QModelIndex& index, const QVariant& value, int role) override;
 
       void add(const ElevationPoint& point);
-      void clear();
+      Q_INVOKABLE void clear();
+      Q_INVOKABLE void move(int index, float delta);
 
     protected:
       [[nodiscard]] QHash<int, QByteArray> roleNames() const override;

@@ -41,7 +41,6 @@ namespace ElevationChart
     Q_PROPERTY(int shrinkMode READ shrinkMode WRITE setShrinkMode NOTIFY shrinkModeChanged FINAL)
 
     constexpr static const float ROUTE_LINE_WIDTH = 5.0f;
-    constexpr static const float STRETCH = 1.15f;
 
     public:
       enum ShrinkMode

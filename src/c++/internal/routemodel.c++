@@ -73,4 +73,14 @@ namespace ElevationChart
     roles[Intersects] = "intersects";
     return roles;
   }
+
+  void RouteModel::move(int i, float delta)
+  {
+    if(i < 0 or i >= rowCount())
+      return;
+    m_storage.at(i).setElevation(m_storage.at(i).elevation() + delta / 100);
+    if(m_storage.at(i).elevation() <= 0)
+      m_storage.at(i).setElevation(0);
+    emit dataChanged(index(i), index(i), {Altitude});
+  }
 } // ElevationChart
