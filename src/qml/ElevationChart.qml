@@ -9,6 +9,7 @@ import "private" as Private
 import "qrc:/elevation-chart/catpuccin.js" as Catpuccin
 
 Item {
+    id: ec
     Material.theme: impl.light_theme ? Material.Light : Material.Dark
     Material.accent: impl.palette.accent
     Material.primary: impl.palette.accent
@@ -26,6 +27,8 @@ Item {
 
     property string mainfont: font_Main.name
     property string monofont: font_Mono.name
+
+    property bool showIndexes: true
 
     component DecimalInput: RowLayout {
         property string description: "None"
@@ -288,7 +291,7 @@ Item {
                 checked: true
 
                 Material.background: impl.palette.overlay2
-
+                onCheckedChanged: showIndexes = checked
             }
 
             Button {
