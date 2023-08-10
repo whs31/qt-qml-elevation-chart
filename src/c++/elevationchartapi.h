@@ -12,7 +12,7 @@
  */
 namespace ElevationChart
 {
-  class ChartItem;
+  class ElevationChartItem;
 
   /**
    * \brief Публичный интерфейс (<b>C++</b>) для виджета профиля высот.
@@ -52,7 +52,7 @@ namespace ElevationChart
        * как будет вызвана любая другая функция API (кроме valid).
        * \param item - указатель на объект ChartItem.
        */
-      Q_INVOKABLE void setSource(ElevationChart::ChartItem* item);
+      Q_INVOKABLE void setSource(ElevationChart::ElevationChartItem* item);
 
       /**
        * \brief Возвращает <tt>true</tt>, если С++ обертка имеет валидный указатель на объект ChartItem.
@@ -78,6 +78,6 @@ namespace ElevationChart
       API& operator=(const API&);
 
     private:
-      ChartItem* m_source;
+      ElevationChartItem* m_source;
   };
 } // ElevationChart

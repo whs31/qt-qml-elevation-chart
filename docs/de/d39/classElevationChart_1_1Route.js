@@ -16,9 +16,10 @@ var classElevationChart_1_1Route =
     [ "size", "de/d39/classElevationChart_1_1Route.html#af9593d4a5ff4274efaf429cb4f9e57cc", null ],
     [ "toGeoPath", "de/d39/classElevationChart_1_1Route.html#a2ac0c1be855674fe64bc8dcdad9d1dbc", null ],
     [ "toVariantList", "de/d39/classElevationChart_1_1Route.html#ab14f16812544053a3388d9bbccc2f124", null ],
-    [ "at", "de/d39/classElevationChart_1_1Route.html#a047d16387345e2c11ba7c674162954fa", null ],
+    [ "at", "de/d39/classElevationChart_1_1Route.html#a78c68b8609f5e4a7aed9e2901e679332", null ],
     [ "contains", "de/d39/classElevationChart_1_1Route.html#aa415781c7b03016cbc196c4ef5d73971", null ],
     [ "valid", "de/d39/classElevationChart_1_1Route.html#a315419f26d3c59fa143b49b90a019049", null ],
+    [ "toElevationGraph", "de/d39/classElevationChart_1_1Route.html#a00ee27e4c825100d447083e5ea410895", null ],
     [ "fromGeoPath", "de/d39/classElevationChart_1_1Route.html#af7ed81fe2ab389e64488a4a06f66500b", null ],
     [ "fromPointsVector", "de/d39/classElevationChart_1_1Route.html#a981383732495440769ce54a3a3cfc9e6", null ]
 ];

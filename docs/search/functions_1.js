@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['clear_0',['clear',['../de/d39/classElevationChart_1_1Route.html#ac8bb3912a3ce86b15842e79d0b421204',1,'ElevationChart::Route']]],
-  ['contains_1',['contains',['../de/d39/classElevationChart_1_1Route.html#aa415781c7b03016cbc196c4ef5d73971',1,'ElevationChart::Route']]]
+  ['bounds_0',['Bounds',['../d6/d1e/classElevationChart_1_1Bounds.html#a2915f9789571dd94afa2b30cce2b7ce1',1,'ElevationChart::Bounds::Bounds()'],['../d6/d1e/classElevationChart_1_1Bounds.html#a9ec2ee3dbd8a5983468038500368de64',1,'ElevationChart::Bounds::Bounds(float x, float y, float stretch=1.15f)']]]
 ];

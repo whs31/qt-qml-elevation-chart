@@ -14,7 +14,7 @@ namespace ElevationChart
     , m_source(nullptr) // !
   {}
 
-  void API::setSource(ChartItem* item) {
+  void API::setSource(ElevationChartItem* item) {
     m_source = item;
     qDebug() << "<elevation-chart> Source set for C++ wrapper:" << item;
   }

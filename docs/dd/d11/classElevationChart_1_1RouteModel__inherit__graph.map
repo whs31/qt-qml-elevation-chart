@@ -1,0 +1,9 @@
+<map id="RouteModel" name="RouteModel">
+<area shape="rect" id="Node000001" title="Модель точек пути для профиля высот." alt="" coords="32,235,131,264"/>
+<area shape="rect" id="Node000002" href="$d5/d2d/classQAbstractListModel.html" title=" " alt="" coords="8,159,155,187"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="84,202,84,235,79,235,79,202"/>
+<area shape="rect" id="Node000003" href="$d0/d5a/classQAbstractItemModel.html" title=" " alt="" coords="5,82,158,111"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="84,126,84,158,79,158,79,126"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="45,5,118,34"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="84,49,84,82,79,82,79,49"/>
+</map>

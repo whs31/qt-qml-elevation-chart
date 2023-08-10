@@ -23,7 +23,7 @@ namespace ElevationChart
     #endif
 
     qmlRegisterModule("ElevationChartWidget", 3, 0);
-    qmlRegisterType<ChartItem>("ElevationChartWidget", 3, 0, "ElevationChartImpl");
+    qmlRegisterType<ElevationChartItem>("ElevationChartWidget", 3, 0, "ElevationChartImpl");
     qmlRegisterAnonymousType<SG::BasicPalette>("ElevationChartWidget", 3);
     qRegisterMetaType<Route>("ElevationChart::Route");
     qRegisterMetaType<RoutePoint>("ElevationChart::RoutePoint");

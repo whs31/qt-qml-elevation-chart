@@ -36,6 +36,9 @@ var NAVTREE =
       [ "Члены классов", "functions.html", [
         [ "Указатель", "functions.html", null ],
         [ "Функции", "functions_func.html", null ],
+        [ "Переменные", "functions_vars.html", null ],
+        [ "Перечисления", "functions_enum.html", null ],
+        [ "Элементы перечислений", "functions_eval.html", null ],
         [ "Свойства", "functions_prop.html", null ]
       ] ]
     ] ],
@@ -47,7 +50,8 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"annotated.html"
+"annotated.html",
+"dir_1a9852a19a2db34b2990ef662217d17c.html"
 ];
 
 var SYNCONMSG = 'нажмите на выключить для синхронизации панелей';

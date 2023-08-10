@@ -9,7 +9,7 @@
 
 namespace ElevationChart
 {
-  ChartItem::ChartItem(QQuickItem* parent)
+  ElevationChartItem::ElevationChartItem(QQuickItem* parent)
     : QQuickItem(parent)
     , m_require_recolor(false)
     , m_background_node(nullptr)
@@ -25,7 +25,7 @@ namespace ElevationChart
     , m_shrink_mode(ShrinkMode::ShrinkToRouteHeight)
   {
     this->setFlag(ItemHasContents);
-    qRegisterMetaType<ChartItem*>("ChartItem*");
+    qRegisterMetaType<ElevationChartItem*>("ChartItem*");
 
     connect(model(), &RouteModel::requireRebuild, this, [this](int index, float new_altitude){
       m_route.at(index).setAltitude(new_altitude);
@@ -34,7 +34,7 @@ namespace ElevationChart
     });
   }
 
-  QSGNode* ChartItem::updatePaintNode(QSGNode* old_node, QQuickItem::UpdatePaintNodeData* unused)
+  QSGNode* ElevationChartItem::updatePaintNode(QSGNode* old_node, QQuickItem::UpdatePaintNodeData* unused)
   {
     (void)unused;
 
@@ -104,15 +104,15 @@ namespace ElevationChart
     return old_node;
   }
 
-  void ChartItem::requireRecolor()
+  void ElevationChartItem::requireRecolor()
   {
     m_require_recolor = true;
     this->update();
   }
 
-  void ChartItem::fulfillRecolor() { m_require_recolor = false; }
+  void ElevationChartItem::fulfillRecolor() { m_require_recolor = false; }
 
-  void ChartItem::updateProfile() noexcept
+  void ElevationChartItem::updateProfile() noexcept
   {
     m_profile = m_random_provider->plotElevationProfile(route().toGeoPath());
 
@@ -124,7 +124,7 @@ namespace ElevationChart
       model()->add(point);
   }
 
-  void ChartItem::updateBounds() noexcept
+  void ElevationChartItem::updateBounds() noexcept
   {
     if(not route().valid())
       return;
@@ -143,7 +143,7 @@ namespace ElevationChart
     this->update();
   }
 
-  void ChartItem::handleBackgroundNode() noexcept
+  void ElevationChartItem::handleBackgroundNode() noexcept
   {
     m_background_node->geometry()->allocate(6);
     m_background_node->geometry()->vertexDataAsPoint2D()[0].set(0, 0);
@@ -154,7 +154,7 @@ namespace ElevationChart
     m_background_node->geometry()->vertexDataAsPoint2D()[5].set(0, 0);
   }
 
-  void ChartItem::handleProfileNode() noexcept
+  void ElevationChartItem::handleProfileNode() noexcept
   {
     vector<QSGGeometry::Point2D> gl;
     for(const auto& point : m_profile)
@@ -169,7 +169,7 @@ namespace ElevationChart
       m_profile_node->geometry()->vertexDataAsPoint2D()[i] = gl.at(i);
   }
 
-  void ChartItem::handleRouteNode() noexcept
+  void ElevationChartItem::handleRouteNode() noexcept
   {
     vector<ElevationPoint> t_route = route().toElevationGraph();
     vector<QSGGeometry::Point2D> gl;
@@ -182,62 +182,62 @@ namespace ElevationChart
       m_route_node->geometry()->vertexDataAsPoint2D()[i] = gl.at(i);
   }
 
-  QSGGeometry::Point2D ChartItem::toPixel(float x, float y, float x_max, float y_max) const { return { toPixelX(x, x_max), toPixelY(y, y_max) }; }
-  float ChartItem::toPixelX(float x, float x_max) const { return static_cast<float>(x / x_max * width()); }
-  float ChartItem::toPixelY(float y, float y_max) const { return static_cast<float>(height() - (y / (y_max * bounds().stretch()) * height())); }
+  QSGGeometry::Point2D ElevationChartItem::toPixel(float x, float y, float x_max, float y_max) const { return {toPixelX(x, x_max), toPixelY(y, y_max) }; }
+  float ElevationChartItem::toPixelX(float x, float x_max) const { return static_cast<float>(x / x_max * width()); }
+  float ElevationChartItem::toPixelY(float y, float y_max) const { return static_cast<float>(height() - (y / (y_max * bounds().stretch()) * height())); }
 
   // properties
 
-  SG::BasicPalette ChartItem::palette() const { return m_palette; }
-  void ChartItem::setPalette(SG::BasicPalette x) {
+  SG::BasicPalette ElevationChartItem::palette() const { return m_palette; }
+  void ElevationChartItem::setPalette(SG::BasicPalette x) {
     m_palette = std::move(x);
     emit paletteChanged();
 
     this->requireRecolor();
   }
 
-  Bounds ChartItem::bounds() const { return m_bounds; }
-  void ChartItem::setBounds(ElevationChart::Bounds x) {
+  Bounds ElevationChartItem::bounds() const { return m_bounds; }
+  void ElevationChartItem::setBounds(ElevationChart::Bounds x) {
     m_bounds = x;
     emit boundsChanged();
   }
 
-  bool ChartItem::intersecting() const { return m_intersecting; }
-  void ChartItem::setIntersecting(bool x) {
+  bool ElevationChartItem::intersecting() const { return m_intersecting; }
+  void ElevationChartItem::setIntersecting(bool x) {
     if(x == m_intersecting)
       return;
     m_intersecting = x;
     emit intersectingChanged();
   }
 
-  bool ChartItem::valid() const { return m_valid; }
-  void ChartItem::setValid(bool x) {
+  bool ElevationChartItem::valid() const { return m_valid; }
+  void ElevationChartItem::setValid(bool x) {
     if(x == m_valid)
       return;
     m_valid = x;
     emit validChanged();
   }
 
-  Route ChartItem::route() const { return m_route; }
-  void ChartItem::setRoute(const Route& x) {
+  Route ElevationChartItem::route() const { return m_route; }
+  void ElevationChartItem::setRoute(const Route& x) {
     m_route = x;
     emit routeChanged();
 
     this->updateProfile();
   }
 
-  RouteModel* ChartItem::model() const { return m_model; }
+  RouteModel* ElevationChartItem::model() const { return m_model; }
 
-  QGeoCoordinate ChartItem::uavPosition() const { return m_uav_position; }
-  void ChartItem::setUavPosition(const QGeoCoordinate& x) {
+  QGeoCoordinate ElevationChartItem::uavPosition() const { return m_uav_position; }
+  void ElevationChartItem::setUavPosition(const QGeoCoordinate& x) {
     if(x == m_uav_position)
       return;
     m_uav_position = x;
     emit uavPositionChanged();
   }
 
-  int ChartItem::shrinkMode() const { return static_cast<int>(m_shrink_mode); }
-  void ChartItem::setShrinkMode(int x) {
+  int ElevationChartItem::shrinkMode() const { return static_cast<int>(m_shrink_mode); }
+  void ElevationChartItem::setShrinkMode(int x) {
     if(x == m_shrink_mode)
       return;
     m_shrink_mode = static_cast<ShrinkMode>(x);

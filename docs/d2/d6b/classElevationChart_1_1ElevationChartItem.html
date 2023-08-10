@@ -1,0 +1,1062 @@
+<!-- HTML header for doxygen 1.9.6-->
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ru">
+<head>
+  <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=11" />
+  <meta name="generator" content="Doxygen 1.9.7" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Elevation Chart: Класс ElevationChartItem</title>
+  <link href="../../tabs.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="../../jquery.js"></script>
+  <script type="text/javascript" src="../../dynsections.js"></script>
+  <script type="text/javascript" src="../../doxygen-awesome-darkmode-toggle.js"></script>
+  <script type="text/javascript" src="../../doxygen-awesome-fragment-copy-button.js"></script>
+  <script type="text/javascript" src="../../doxygen-awesome-paragraph-link.js"></script>
+  <script type="text/javascript" src="../../doxygen-awesome-interactive-toc.js"></script>
+  <script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+  </script>
+  <link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+  <link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+  <link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+  <link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+    <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+      <div id="titlearea">
+        <table cellspacing="0" cellpadding="0">
+          <tbody>
+            <tr id="projectrow">
+              <td id="projectlogo"><img alt="Logo" src="../../logo.png" /></td>
+              <td id="projectalign">
+                <div id="projectname">Elevation Chart<span
+                    id="projectnumber">&#160;3.0.0</span>
+                </div>
+                <div id="projectbrief">Виджет профиля высот</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- end header part --><!-- Создано системой Doxygen 1.9.7 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','Поиск');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('d2/d6b/classElevationChart_1_1ElevationChartItem.html','../../'); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Загрузка...</div>
+<div class="SRStatus" id="Searching">Поиск...</div>
+<div class="SRStatus" id="NoMatches">Не найдено</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-types">Открытые типы</a> &#124;
+<a href="#pub-methods">Открытые члены</a> &#124;
+<a href="#pro-methods">Защищенные члены</a> &#124;
+<a href="#pro-attribs">Защищенные данные</a> &#124;
+<a href="#properties">Свойства</a> &#124;
+<a href="#pri-static-attribs">Закрытые статические данные</a> &#124;
+<a href="../../d9/d88/classElevationChart_1_1ElevationChartItem-members.html">Полный список членов класса</a>  </div>
+  <div class="headertitle"><div class="title">Класс ElevationChartItem</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="dynheader">
+Граф наследования:ElevationChartItem:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="../../d6/dc3/classElevationChart_1_1ElevationChartItem__inherit__graph.svg" width="155" height="194"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<center><span class="legend">[<a target="top" href="../../graph_legend.html">см. легенду</a>]</span></center></div>
+<div class="dynheader">
+Граф связей класса ElevationChartItem:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="../../d5/d53/classElevationChart_1_1ElevationChartItem__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<center><span class="legend">[<a target="top" href="../../graph_legend.html">см. легенду</a>]</span></center></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
+Открытые типы</h2></td></tr>
+<tr class="memitem:ac06788932cd1a15c825f8a90f2285034"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d6b/classElevationChart_1_1ElevationChartItem.html#ac06788932cd1a15c825f8a90f2285034">ShrinkMode</a> { <a class="el" href="../../d2/d6b/classElevationChart_1_1ElevationChartItem.html#ac06788932cd1a15c825f8a90f2285034a1c9a9a1291e047ad9210db2d4f7a8922">ShrinkToProfileHeight</a>
+, <a class="el" href="../../d2/d6b/classElevationChart_1_1ElevationChartItem.html#ac06788932cd1a15c825f8a90f2285034a4c97e6e9de17a0bdef2ca4c0013dc109">ShrinkToRouteHeight</a>
+ }</td></tr>
+<tr class="separator:ac06788932cd1a15c825f8a90f2285034"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Открытые члены</h2></td></tr>
+<tr class="memitem:a54d7407b60453be29d8fcc1855858d57"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d6b/classElevationChart_1_1ElevationChartItem.html#a54d7407b60453be29d8fcc1855858d57">ElevationChartItem</a> (<a class="el" href="../../d7/d4d/classQQuickItem.html">QQuickItem</a> *parent=nullptr)</td></tr>
+<tr class="separator:a54d7407b60453be29d8fcc1855858d57"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Защищенные члены</h2></td></tr>
+<tr class="memitem:ad27f47c45691553f7d049c6a623450fc"><td class="memItemLeft" align="right" valign="top">QSGNode *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d6b/classElevationChart_1_1ElevationChartItem.html#ad27f47c45691553f7d049c6a623450fc">updatePaintNode</a> (QSGNode *old_node, UpdatePaintNodeData *) override</td></tr>
+<tr class="separator:ad27f47c45691553f7d049c6a623450fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af38c265b61302a02cf3dbfb905874012"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d6b/classElevationChart_1_1ElevationChartItem.html#af38c265b61302a02cf3dbfb905874012">requireRecolor</a> ()</td></tr>
+<tr class="separator:af38c265b61302a02cf3dbfb905874012"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38dd7d7108d19a77388b22b496d07045"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d6b/classElevationChart_1_1ElevationChartItem.html#a38dd7d7108d19a77388b22b496d07045">fulfillRecolor</a> ()</td></tr>
+<tr class="separator:a38dd7d7108d19a77388b22b496d07045"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd86182b313d6980a54ed76080d28329"><td class="memItemLeft" align="right" valign="top">Q_SLOT void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d6b/classElevationChart_1_1ElevationChartItem.html#abd86182b313d6980a54ed76080d28329">updateProfile</a> () noexcept</td></tr>
+<tr class="separator:abd86182b313d6980a54ed76080d28329"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8639127b06a20503395d8f5c0675eec7"><td class="memItemLeft" align="right" valign="top">Q_SLOT void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d6b/classElevationChart_1_1ElevationChartItem.html#a8639127b06a20503395d8f5c0675eec7">updateBounds</a> () noexcept</td></tr>
+<tr class="separator:a8639127b06a20503395d8f5c0675eec7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a679ea9ebdef3eeb716e73db2d0c7891f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d6b/classElevationChart_1_1ElevationChartItem.html#a679ea9ebdef3eeb716e73db2d0c7891f">handleBackgroundNode</a> () noexcept</td></tr>
+<tr class="separator:a679ea9ebdef3eeb716e73db2d0c7891f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab7b6908ef2ce9962626d8c7c04452ef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d6b/classElevationChart_1_1ElevationChartItem.html#aab7b6908ef2ce9962626d8c7c04452ef">handleProfileNode</a> () noexcept</td></tr>
+<tr class="separator:aab7b6908ef2ce9962626d8c7c04452ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58ea5b5bc92be193bd9e5f9a5f29fd07"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d6b/classElevationChart_1_1ElevationChartItem.html#a58ea5b5bc92be193bd9e5f9a5f29fd07">handleRouteNode</a> () noexcept</td></tr>
+<tr class="separator:a58ea5b5bc92be193bd9e5f9a5f29fd07"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4a0d12260899262a741d4adc8427c2b"><td class="memItemLeft" align="right" valign="top">QSGGeometry::Point2D&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d6b/classElevationChart_1_1ElevationChartItem.html#aa4a0d12260899262a741d4adc8427c2b">toPixel</a> (float x, float y, float x_max, float y_max) const</td></tr>
+<tr class="separator:aa4a0d12260899262a741d4adc8427c2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa400a689d5b9360a50501cc61ea22a5a"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d6b/classElevationChart_1_1ElevationChartItem.html#aa400a689d5b9360a50501cc61ea22a5a">toPixelX</a> (float x, float x_max) const</td></tr>
+<tr class="separator:aa400a689d5b9360a50501cc61ea22a5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ebe3fef54d03209d9826aaee1f720dd"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d6b/classElevationChart_1_1ElevationChartItem.html#a3ebe3fef54d03209d9826aaee1f720dd">toPixelY</a> (float y, float y_max) const</td></tr>
+<tr class="separator:a3ebe3fef54d03209d9826aaee1f720dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
+Защищенные данные</h2></td></tr>
+<tr class="memitem:a75026ccd4258da114ded6b08338c2f25"><td class="memItemLeft" align="right" valign="top">QSGGeometryNode *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d6b/classElevationChart_1_1ElevationChartItem.html#a75026ccd4258da114ded6b08338c2f25">m_background_node</a></td></tr>
+<tr class="separator:a75026ccd4258da114ded6b08338c2f25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3577e8a401e3ab87267114afcc4f3c2"><td class="memItemLeft" align="right" valign="top">QSGGeometryNode *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d6b/classElevationChart_1_1ElevationChartItem.html#ab3577e8a401e3ab87267114afcc4f3c2">m_profile_node</a></td></tr>
+<tr class="separator:ab3577e8a401e3ab87267114afcc4f3c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83832c10a7a512ac06008b9dfe7a47a8"><td class="memItemLeft" align="right" valign="top">QSGGeometryNode *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d6b/classElevationChart_1_1ElevationChartItem.html#a83832c10a7a512ac06008b9dfe7a47a8">m_route_node</a></td></tr>
+<tr class="separator:a83832c10a7a512ac06008b9dfe7a47a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
+Свойства</h2></td></tr>
+<tr class="memitem:ad9cb5ae5424d8908b86dc6a0fe49f7cc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d8/d37/classSG_1_1BasicPalette.html">SG::BasicPalette</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d6b/classElevationChart_1_1ElevationChartItem.html#ad9cb5ae5424d8908b86dc6a0fe49f7cc">palette</a></td></tr>
+<tr class="separator:ad9cb5ae5424d8908b86dc6a0fe49f7cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa88cd70ec11880aa8a698595d0bc7aaa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d6/d1e/classElevationChart_1_1Bounds.html">ElevationChart::Bounds</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d6b/classElevationChart_1_1ElevationChartItem.html#aa88cd70ec11880aa8a698595d0bc7aaa">bounds</a></td></tr>
+<tr class="separator:aa88cd70ec11880aa8a698595d0bc7aaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa25a556dd18df7259ed6796713f8f051"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d39/classElevationChart_1_1Route.html">ElevationChart::Route</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d6b/classElevationChart_1_1ElevationChartItem.html#aa25a556dd18df7259ed6796713f8f051">route</a></td></tr>
+<tr class="separator:aa25a556dd18df7259ed6796713f8f051"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a508cc3106d2c29fe07dc87cbe3ea6927"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d6/de1/classElevationChart_1_1RouteModel.html">ElevationChart::RouteModel</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d6b/classElevationChart_1_1ElevationChartItem.html#a508cc3106d2c29fe07dc87cbe3ea6927">model</a></td></tr>
+<tr class="separator:a508cc3106d2c29fe07dc87cbe3ea6927"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7fa9c9f81b7d915a36ae366414d3e58c"><td class="memItemLeft" align="right" valign="top">QGeoCoordinate&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d6b/classElevationChart_1_1ElevationChartItem.html#a7fa9c9f81b7d915a36ae366414d3e58c">uavPosition</a></td></tr>
+<tr class="separator:a7fa9c9f81b7d915a36ae366414d3e58c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0a3f6caeb0c2983bc4505f3a5348e2d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d6b/classElevationChart_1_1ElevationChartItem.html#ac0a3f6caeb0c2983bc4505f3a5348e2d">intersecting</a></td></tr>
+<tr class="separator:ac0a3f6caeb0c2983bc4505f3a5348e2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a51646327ac0a3287c4b08e4d28b66f35"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d6b/classElevationChart_1_1ElevationChartItem.html#a51646327ac0a3287c4b08e4d28b66f35">valid</a></td></tr>
+<tr class="separator:a51646327ac0a3287c4b08e4d28b66f35"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af902fb5e3f1cd17bd02fa35c790aaeb0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d6b/classElevationChart_1_1ElevationChartItem.html#af902fb5e3f1cd17bd02fa35c790aaeb0">shrinkMode</a></td></tr>
+<tr class="separator:af902fb5e3f1cd17bd02fa35c790aaeb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-static-attribs" name="pri-static-attribs"></a>
+Закрытые статические данные</h2></td></tr>
+<tr class="memitem:ada7a4faa292b808c45029af1bec1f6c5"><td class="memItemLeft" align="right" valign="top">static constexpr const float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d6b/classElevationChart_1_1ElevationChartItem.html#ada7a4faa292b808c45029af1bec1f6c5">ROUTE_LINE_WIDTH</a> = 5.0f</td></tr>
+<tr class="separator:ada7a4faa292b808c45029af1bec1f6c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Подробное описание</h2>
+<div class="textblock">
+<p class="definition">См. определение в файле <a class="el" href="../../d6/d4d/elevationchart_8h_source.html">elevationchart.h</a> строка <a class="el" href="../../d6/d4d/elevationchart_8h_source.html#l00116">116</a></p>
+</div><h2 class="groupheader">Перечисления</h2>
+<a id="ac06788932cd1a15c825f8a90f2285034" name="ac06788932cd1a15c825f8a90f2285034"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac06788932cd1a15c825f8a90f2285034">&#9670;&#160;</a></span>ShrinkMode</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="../../d2/d6b/classElevationChart_1_1ElevationChartItem.html#ac06788932cd1a15c825f8a90f2285034">ShrinkMode</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Перечисление поведения оси Y. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Элементы перечислений</th></tr><tr><td class="fieldname"><a id="ac06788932cd1a15c825f8a90f2285034a1c9a9a1291e047ad9210db2d4f7a8922" name="ac06788932cd1a15c825f8a90f2285034a1c9a9a1291e047ad9210db2d4f7a8922"></a>ShrinkToProfileHeight&#160;</td><td class="fielddoc"><p>Ось Y будет ограничена сверху высотой профиля высот, либо высотой пути, если таковая больше. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ac06788932cd1a15c825f8a90f2285034a4c97e6e9de17a0bdef2ca4c0013dc109" name="ac06788932cd1a15c825f8a90f2285034a4c97e6e9de17a0bdef2ca4c0013dc109"></a>ShrinkToRouteHeight&#160;</td><td class="fielddoc"><p>Ось Y будет ограничена сверху высотой пути. Если профиль рельефа выше, он будет обрезан. </p>
+</td></tr>
+</table>
+
+<p class="definition">См. определение в файле <a class="el" href="../../d6/d4d/elevationchart_8h_source.html">elevationchart.h</a> строка <a class="el" href="../../d6/d4d/elevationchart_8h_source.html#l00140">140</a></p>
+
+</div>
+</div>
+<h2 class="groupheader">Конструктор(ы)</h2>
+<a id="a54d7407b60453be29d8fcc1855858d57" name="a54d7407b60453be29d8fcc1855858d57"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a54d7407b60453be29d8fcc1855858d57">&#9670;&#160;</a></span>ElevationChartItem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d2/d6b/classElevationChart_1_1ElevationChartItem.html">ElevationChartItem</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d7/d4d/classQQuickItem.html">QQuickItem</a> *&#160;</td>
+          <td class="paramname"><em>parent</em> = <code>nullptr</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Создает новый объект с указанным родителем. Этот конструктор должен быть вызван движком QML. </p>
+
+<p class="definition">См. определение в файле <a class="el" href="../../df/dcc/elevationchart_8c_09_09_source.html">elevationchart.c++</a> строка <a class="el" href="../../df/dcc/elevationchart_8c_09_09_source.html#l00012">12</a></p>
+
+</div>
+</div>
+<h2 class="groupheader">Методы</h2>
+<a id="ad27f47c45691553f7d049c6a623450fc" name="ad27f47c45691553f7d049c6a623450fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad27f47c45691553f7d049c6a623450fc">&#9670;&#160;</a></span>updatePaintNode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QSGNode * updatePaintNode </td>
+          <td>(</td>
+          <td class="paramtype">QSGNode *&#160;</td>
+          <td class="paramname"><em>old_node</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UpdatePaintNodeData *&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Цикл отрисовки. </p>
+
+<p class="definition">См. определение в файле <a class="el" href="../../df/dcc/elevationchart_8c_09_09_source.html">elevationchart.c++</a> строка <a class="el" href="../../df/dcc/elevationchart_8c_09_09_source.html#l00037">37</a></p>
+
+</div>
+</div>
+<a id="af38c265b61302a02cf3dbfb905874012" name="af38c265b61302a02cf3dbfb905874012"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af38c265b61302a02cf3dbfb905874012">&#9670;&#160;</a></span>requireRecolor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void requireRecolor </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>При вызове этой функции следующий цикл отрисовки обновит палитру цветов. </p>
+
+<p class="definition">См. определение в файле <a class="el" href="../../df/dcc/elevationchart_8c_09_09_source.html">elevationchart.c++</a> строка <a class="el" href="../../df/dcc/elevationchart_8c_09_09_source.html#l00107">107</a></p>
+
+</div>
+</div>
+<a id="a38dd7d7108d19a77388b22b496d07045" name="a38dd7d7108d19a77388b22b496d07045"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a38dd7d7108d19a77388b22b496d07045">&#9670;&#160;</a></span>fulfillRecolor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void fulfillRecolor </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>При вызове этой функции запрос на обновление цветов снимается. </p>
+
+<p class="definition">См. определение в файле <a class="el" href="../../df/dcc/elevationchart_8c_09_09_source.html">elevationchart.c++</a> строка <a class="el" href="../../df/dcc/elevationchart_8c_09_09_source.html#l00113">113</a></p>
+
+</div>
+</div>
+<a id="abd86182b313d6980a54ed76080d28329" name="abd86182b313d6980a54ed76080d28329"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd86182b313d6980a54ed76080d28329">&#9670;&#160;</a></span>updateProfile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void updateProfile </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Перестраивает профиль рельефа по текущим параметрам. </p>
+
+<p class="definition">См. определение в файле <a class="el" href="../../df/dcc/elevationchart_8c_09_09_source.html">elevationchart.c++</a> строка <a class="el" href="../../df/dcc/elevationchart_8c_09_09_source.html#l00115">115</a></p>
+
+</div>
+</div>
+<a id="a8639127b06a20503395d8f5c0675eec7" name="a8639127b06a20503395d8f5c0675eec7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8639127b06a20503395d8f5c0675eec7">&#9670;&#160;</a></span>updateBounds()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void updateBounds </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Пересчитывает предельные значения осей. Не перестраивает профиль. </p>
+
+<p class="definition">См. определение в файле <a class="el" href="../../df/dcc/elevationchart_8c_09_09_source.html">elevationchart.c++</a> строка <a class="el" href="../../df/dcc/elevationchart_8c_09_09_source.html#l00127">127</a></p>
+
+</div>
+</div>
+<a id="a679ea9ebdef3eeb716e73db2d0c7891f" name="a679ea9ebdef3eeb716e73db2d0c7891f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a679ea9ebdef3eeb716e73db2d0c7891f">&#9670;&#160;</a></span>handleBackgroundNode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void handleBackgroundNode </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Подцикл отрисовки фоновой ноды. </p>
+
+<p class="definition">См. определение в файле <a class="el" href="../../df/dcc/elevationchart_8c_09_09_source.html">elevationchart.c++</a> строка <a class="el" href="../../df/dcc/elevationchart_8c_09_09_source.html#l00146">146</a></p>
+
+</div>
+</div>
+<a id="aab7b6908ef2ce9962626d8c7c04452ef" name="aab7b6908ef2ce9962626d8c7c04452ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab7b6908ef2ce9962626d8c7c04452ef">&#9670;&#160;</a></span>handleProfileNode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void handleProfileNode </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Подцикл отрисовки ноды профиля рельефа. </p>
+
+<p class="definition">См. определение в файле <a class="el" href="../../df/dcc/elevationchart_8c_09_09_source.html">elevationchart.c++</a> строка <a class="el" href="../../df/dcc/elevationchart_8c_09_09_source.html#l00157">157</a></p>
+
+</div>
+</div>
+<a id="a58ea5b5bc92be193bd9e5f9a5f29fd07" name="a58ea5b5bc92be193bd9e5f9a5f29fd07"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a58ea5b5bc92be193bd9e5f9a5f29fd07">&#9670;&#160;</a></span>handleRouteNode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void handleRouteNode </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Подцикл отрисовки ноды пути. </p>
+
+<p class="definition">См. определение в файле <a class="el" href="../../df/dcc/elevationchart_8c_09_09_source.html">elevationchart.c++</a> строка <a class="el" href="../../df/dcc/elevationchart_8c_09_09_source.html#l00172">172</a></p>
+
+</div>
+</div>
+<a id="aa4a0d12260899262a741d4adc8427c2b" name="aa4a0d12260899262a741d4adc8427c2b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4a0d12260899262a741d4adc8427c2b">&#9670;&#160;</a></span>toPixel()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QSGGeometry::Point2D toPixel </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>x_max</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>y_max</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Преобразует координаты <a class="el" href="../../dd/d95/classElevationChart_1_1ElevationPoint.html" title="Точка профиля высот.">ElevationPoint</a> в пиксельные координаты этого объекта. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>- значение <a class="el" href="../../dd/d95/classElevationChart_1_1ElevationPoint.html#a858cf934b3668c4918ca0367e04686b6" title="Возвращает текущее расстояние от нуля в метрах.">ElevationPoint::distance</a>. </td></tr>
+    <tr><td class="paramname">y</td><td>- значение <a class="el" href="../../dd/d95/classElevationChart_1_1ElevationPoint.html#a24e4117d6bc84113c4f7a8782c5be1cd" title="Возвращает текущую абсолютную высоту точки в метрах.">ElevationPoint::elevation</a>. </td></tr>
+    <tr><td class="paramname">x_max</td><td>- максимальное значение по оси X. </td></tr>
+    <tr><td class="paramname">y_max</td><td>- максимальное значение по оси Y. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>Точка для использования в цикле отрисовки. </dd></dl>
+
+<p class="definition">См. определение в файле <a class="el" href="../../df/dcc/elevationchart_8c_09_09_source.html">elevationchart.c++</a> строка <a class="el" href="../../df/dcc/elevationchart_8c_09_09_source.html#l00185">185</a></p>
+
+</div>
+</div>
+<a id="aa400a689d5b9360a50501cc61ea22a5a" name="aa400a689d5b9360a50501cc61ea22a5a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa400a689d5b9360a50501cc61ea22a5a">&#9670;&#160;</a></span>toPixelX()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float toPixelX </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>x_max</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Вспомогательная функция, преобразующая координаты <a class="el" href="../../dd/d95/classElevationChart_1_1ElevationPoint.html" title="Точка профиля высот.">ElevationPoint</a> в пиксельные только по оси X. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>- значение <a class="el" href="../../dd/d95/classElevationChart_1_1ElevationPoint.html#a858cf934b3668c4918ca0367e04686b6" title="Возвращает текущее расстояние от нуля в метрах.">ElevationPoint::distance</a>. </td></tr>
+    <tr><td class="paramname">x_max</td><td>- максимальное значение по оси X. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>Значение по оси Х в пикселях. </dd></dl>
+
+<p class="definition">См. определение в файле <a class="el" href="../../df/dcc/elevationchart_8c_09_09_source.html">elevationchart.c++</a> строка <a class="el" href="../../df/dcc/elevationchart_8c_09_09_source.html#l00186">186</a></p>
+
+</div>
+</div>
+<a id="a3ebe3fef54d03209d9826aaee1f720dd" name="a3ebe3fef54d03209d9826aaee1f720dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ebe3fef54d03209d9826aaee1f720dd">&#9670;&#160;</a></span>toPixelY()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float toPixelY </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>y_max</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Вспомогательная функция, преобразующая координаты <a class="el" href="../../dd/d95/classElevationChart_1_1ElevationPoint.html" title="Точка профиля высот.">ElevationPoint</a> в пиксельные только по оси Y. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">y</td><td>- значение <a class="el" href="../../dd/d95/classElevationChart_1_1ElevationPoint.html#a24e4117d6bc84113c4f7a8782c5be1cd" title="Возвращает текущую абсолютную высоту точки в метрах.">ElevationPoint::elevation</a>. </td></tr>
+    <tr><td class="paramname">y_max</td><td>- максимальное значение по оси Y. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>Значение по оси Y в пикселях. </dd></dl>
+
+<p class="definition">См. определение в файле <a class="el" href="../../df/dcc/elevationchart_8c_09_09_source.html">elevationchart.c++</a> строка <a class="el" href="../../df/dcc/elevationchart_8c_09_09_source.html#l00187">187</a></p>
+
+</div>
+</div>
+<h2 class="groupheader">Данные класса</h2>
+<a id="ada7a4faa292b808c45029af1bec1f6c5" name="ada7a4faa292b808c45029af1bec1f6c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada7a4faa292b808c45029af1bec1f6c5">&#9670;&#160;</a></span>ROUTE_LINE_WIDTH</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr const float ROUTE_LINE_WIDTH = 5.0f</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Ширина линии пути для отрисовки (px). </p>
+
+<p class="definition">См. определение в файле <a class="el" href="../../d6/d4d/elevationchart_8h_source.html">elevationchart.h</a> строка <a class="el" href="../../d6/d4d/elevationchart_8h_source.html#l00136">136</a></p>
+
+</div>
+</div>
+<a id="a75026ccd4258da114ded6b08338c2f25" name="a75026ccd4258da114ded6b08338c2f25"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a75026ccd4258da114ded6b08338c2f25">&#9670;&#160;</a></span>m_background_node</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QSGGeometryNode* m_background_node</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Нода фона. </p>
+
+<p class="definition">См. определение в файле <a class="el" href="../../d6/d4d/elevationchart_8h_source.html">elevationchart.h</a> строка <a class="el" href="../../d6/d4d/elevationchart_8h_source.html#l00213">213</a></p>
+
+</div>
+</div>
+<a id="ab3577e8a401e3ab87267114afcc4f3c2" name="ab3577e8a401e3ab87267114afcc4f3c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab3577e8a401e3ab87267114afcc4f3c2">&#9670;&#160;</a></span>m_profile_node</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QSGGeometryNode* m_profile_node</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Нода профиля рельефа. </p>
+
+<p class="definition">См. определение в файле <a class="el" href="../../d6/d4d/elevationchart_8h_source.html">elevationchart.h</a> строка <a class="el" href="../../d6/d4d/elevationchart_8h_source.html#l00214">214</a></p>
+
+</div>
+</div>
+<a id="a83832c10a7a512ac06008b9dfe7a47a8" name="a83832c10a7a512ac06008b9dfe7a47a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a83832c10a7a512ac06008b9dfe7a47a8">&#9670;&#160;</a></span>m_route_node</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QSGGeometryNode* m_route_node</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Нода пути. </p>
+
+<p class="definition">См. определение в файле <a class="el" href="../../d6/d4d/elevationchart_8h_source.html">elevationchart.h</a> строка <a class="el" href="../../d6/d4d/elevationchart_8h_source.html#l00215">215</a></p>
+
+</div>
+</div>
+<h2 class="groupheader">Полный список свойств</h2>
+<a id="ad9cb5ae5424d8908b86dc6a0fe49f7cc" name="ad9cb5ae5424d8908b86dc6a0fe49f7cc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad9cb5ae5424d8908b86dc6a0fe49f7cc">&#9670;&#160;</a></span>palette</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">palette</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">read</span><span class="mlabel">write</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Основной класс библиотеки. </p>
+<p>Представляет собой C++ - реализацию для профиля высот. Класс отвечает за вычисления, отрисовку с аппаратным ускорением и хранение данных о профиле высот. </p><dl class="section note"><dt>Заметки</dt><dd>Класс зарегистрирован как мета-тип и может использоваться в качестве Q_PROPERTY по указателю как в C++, так и в QML.</dd></dl>
+<p>Палитра цветов, используемая в виджете.</p>
+<a class="anchor" id="multi_row"></a>
+<table class="doxtable">
+<caption>Связанные функции</caption>
+<tr>
+<th>Чтение </th><th>Запись </th><th>Оповещение </th></tr>
+<tr>
+<td><em>palette</em> </td><td><em>setPalette</em> </td><td><em>paletteChanged</em> </td></tr>
+</table>
+<dl class="section see"><dt>См. также</dt><dd><a class="el" href="../../d8/d37/classSG_1_1BasicPalette.html" title="Простейшая палитра цветов.">SG::BasicPalette</a> </dd></dl>
+
+<p class="definition">См. определение в файле <a class="el" href="../../d6/d4d/elevationchart_8h_source.html">elevationchart.h</a> строка <a class="el" href="../../d6/d4d/elevationchart_8h_source.html#l00235">235</a></p>
+
+</div>
+</div>
+<a id="aa88cd70ec11880aa8a698595d0bc7aaa" name="aa88cd70ec11880aa8a698595d0bc7aaa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa88cd70ec11880aa8a698595d0bc7aaa">&#9670;&#160;</a></span>bounds</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bounds</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">read</span><span class="mlabel">write</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Максимальные значения по осям для виджета. </p>
+<a class="anchor" id="multi_row"></a>
+<table class="doxtable">
+<caption>Связанные функции</caption>
+<tr>
+<th>Чтение </th><th>Запись </th><th>Оповещение </th></tr>
+<tr>
+<td><em>bounds</em> </td><td><em>setBounds</em> </td><td><em>boundsChanged</em> </td></tr>
+</table>
+<dl class="section see"><dt>См. также</dt><dd><a class="el" href="../../d6/d1e/classElevationChart_1_1Bounds.html" title="Класс-гаджет, хранящий предельные значения осей X и Y.">ElevationChart::Bounds</a> </dd></dl>
+<dl class="section warning"><dt>Предупреждения</dt><dd>Запись в свойство из QML приведет к неопределенному поведению. </dd></dl>
+
+<p class="definition">См. определение в файле <a class="el" href="../../d6/d4d/elevationchart_8h_source.html">elevationchart.h</a> строка <a class="el" href="../../d6/d4d/elevationchart_8h_source.html#l00235">235</a></p>
+
+</div>
+</div>
+<a id="aa25a556dd18df7259ed6796713f8f051" name="aa25a556dd18df7259ed6796713f8f051"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa25a556dd18df7259ed6796713f8f051">&#9670;&#160;</a></span>route</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">route</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">read</span><span class="mlabel">write</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Путь, по которому происходит построения профиля высот. </p>
+<p>Это основное свойство, используемое извне. При обновлении пути виджет перестраивает текущий профиль, а при изменении пути из виджета срабатывает сигнал, и путь можно прочитать обратно. </p><a class="anchor" id="multi_row"></a>
+<table class="doxtable">
+<caption>Связанные функции</caption>
+<tr>
+<th>Чтение </th><th>Запись </th><th>Оповещение </th></tr>
+<tr>
+<td><em>route</em> </td><td><em>setRoute</em> </td><td><em>routeChanged</em> </td></tr>
+</table>
+<dl class="section see"><dt>См. также</dt><dd><a class="el" href="../../de/d39/classElevationChart_1_1Route.html" title="Набор последовательных точек на карте.">ElevationChart::Route</a> </dd></dl>
+
+<p class="definition">См. определение в файле <a class="el" href="../../d6/d4d/elevationchart_8h_source.html">elevationchart.h</a> строка <a class="el" href="../../d6/d4d/elevationchart_8h_source.html#l00235">235</a></p>
+
+</div>
+</div>
+<a id="a508cc3106d2c29fe07dc87cbe3ea6927" name="a508cc3106d2c29fe07dc87cbe3ea6927"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a508cc3106d2c29fe07dc87cbe3ea6927">&#9670;&#160;</a></span>model</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">model</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">read</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Модель точек пути. </p>
+<a class="anchor" id="multi_row"></a>
+<table class="doxtable">
+<caption>Связанные функции</caption>
+<tr>
+<th>Чтение </th><th>Запись </th><th>Оповещение </th></tr>
+<tr>
+<td><em>model</em> </td><td><em>&ndash;</em> </td><td><em>&ndash;</em> </td></tr>
+</table>
+<dl class="section see"><dt>См. также</dt><dd><a class="el" href="../../d6/de1/classElevationChart_1_1RouteModel.html" title="Модель точек пути для профиля высот.">ElevationChart::RouteModel</a> </dd></dl>
+
+<p class="definition">См. определение в файле <a class="el" href="../../d6/d4d/elevationchart_8h_source.html">elevationchart.h</a> строка <a class="el" href="../../d6/d4d/elevationchart_8h_source.html#l00235">235</a></p>
+
+</div>
+</div>
+<a id="a7fa9c9f81b7d915a36ae366414d3e58c" name="a7fa9c9f81b7d915a36ae366414d3e58c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7fa9c9f81b7d915a36ae366414d3e58c">&#9670;&#160;</a></span>uavPosition</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uavPosition</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">read</span><span class="mlabel">write</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Позиция БПЛА в данный момент. </p>
+<p>Используется для вычисления относительной высоты и отображении позиции БПЛА на виджете. </p><a class="anchor" id="multi_row"></a>
+<table class="doxtable">
+<caption>Связанные функции</caption>
+<tr>
+<th>Чтение </th><th>Запись </th><th>Оповещение </th></tr>
+<tr>
+<td><em>uavPosition</em> </td><td><em>setUavPosition</em></td><td><em>uavPositionChanged</em> </td></tr>
+</table>
+
+<p class="definition">См. определение в файле <a class="el" href="../../d6/d4d/elevationchart_8h_source.html">elevationchart.h</a> строка <a class="el" href="../../d6/d4d/elevationchart_8h_source.html#l00235">235</a></p>
+
+</div>
+</div>
+<a id="ac0a3f6caeb0c2983bc4505f3a5348e2d" name="ac0a3f6caeb0c2983bc4505f3a5348e2d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0a3f6caeb0c2983bc4505f3a5348e2d">&#9670;&#160;</a></span>intersecting</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">intersecting</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">read</span><span class="mlabel">write</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Состояние пересечения пути с рельефом. </p>
+<p>Свойство вернет <code>true</code>, если путь пересекается с рельефом хотя бы в одной точке. </p><a class="anchor" id="multi_row"></a>
+<table class="doxtable">
+<caption>Связанные функции</caption>
+<tr>
+<th>Чтение </th><th>Запись </th><th>Оповещение </th></tr>
+<tr>
+<td><em>intersecting</em></td><td><em>setIntersecting</em></td><td><em>intersectingChanged</em> </td></tr>
+</table>
+
+<p class="definition">См. определение в файле <a class="el" href="../../d6/d4d/elevationchart_8h_source.html">elevationchart.h</a> строка <a class="el" href="../../d6/d4d/elevationchart_8h_source.html#l00235">235</a></p>
+
+</div>
+</div>
+<a id="a51646327ac0a3287c4b08e4d28b66f35" name="a51646327ac0a3287c4b08e4d28b66f35"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a51646327ac0a3287c4b08e4d28b66f35">&#9670;&#160;</a></span>valid</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">valid</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">read</span><span class="mlabel">write</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Состояние наличия профилей высот. </p>
+<p>Свойство вернет <code>false</code>, если отсутствуют профили высот для выбранного пути. </p><a class="anchor" id="multi_row"></a>
+<table class="doxtable">
+<caption>Связанные функции</caption>
+<tr>
+<th>Чтение </th><th>Запись </th><th>Оповещение </th></tr>
+<tr>
+<td><em>valid</em> </td><td><em>setValid</em> </td><td><em>validChanged</em> </td></tr>
+</table>
+
+<p class="definition">См. определение в файле <a class="el" href="../../d6/d4d/elevationchart_8h_source.html">elevationchart.h</a> строка <a class="el" href="../../d6/d4d/elevationchart_8h_source.html#l00235">235</a></p>
+
+</div>
+</div>
+<a id="af902fb5e3f1cd17bd02fa35c790aaeb0" name="af902fb5e3f1cd17bd02fa35c790aaeb0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af902fb5e3f1cd17bd02fa35c790aaeb0">&#9670;&#160;</a></span>shrinkMode</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">shrinkMode</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">read</span><span class="mlabel">write</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Тип поведения оси Y виджета. </p>
+<p><em>По умолчанию равняется <a class="el" href="../../d2/d6b/classElevationChart_1_1ElevationChartItem.html#ac06788932cd1a15c825f8a90f2285034a4c97e6e9de17a0bdef2ca4c0013dc109" title="Ось Y будет ограничена сверху высотой пути. Если профиль рельефа выше, он будет обрезан.">ShrinkMode::ShrinkToRouteHeight</a></em>. </p><a class="anchor" id="multi_row"></a>
+<table class="doxtable">
+<caption>Связанные функции</caption>
+<tr>
+<th>Чтение </th><th>Запись </th><th>Оповещение </th></tr>
+<tr>
+<td><em>shrinkMode</em> </td><td><em>setShrinkMode</em></td><td><em>shrinkModeChanged</em> </td></tr>
+</table>
+<dl class="section see"><dt>См. также</dt><dd><a class="el" href="../../d2/d6b/classElevationChart_1_1ElevationChartItem.html#ac06788932cd1a15c825f8a90f2285034" title="Перечисление поведения оси Y.">ShrinkMode</a> </dd></dl>
+
+<p class="definition">См. определение в файле <a class="el" href="../../d6/d4d/elevationchart_8h_source.html">elevationchart.h</a> строка <a class="el" href="../../d6/d4d/elevationchart_8h_source.html#l00235">235</a></p>
+
+</div>
+</div>
+<hr/>Объявления и описания членов классов находятся в файлах:<ul>
+<li><a class="el" href="../../d6/d4d/elevationchart_8h_source.html">elevationchart.h</a></li>
+<li><a class="el" href="../../df/dcc/elevationchart_8c_09_09_source.html">elevationchart.c++</a></li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../d6/d7f/namespaceElevationChart.html">ElevationChart</a></li><li class="navelem"><a class="el" href="../../d2/d6b/classElevationChart_1_1ElevationChartItem.html">ElevationChartItem</a></li>
+    <li class="footer">Создано системой <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+  </ul>
+</div>
+</body>
+</html>

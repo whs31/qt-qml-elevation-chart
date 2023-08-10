@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['overlay_0',['overlay',['../d8/d37/classSG_1_1BasicPalette.html#ad18735e21b9100cb298ea247556c1868',1,'SG::BasicPalette']]],
-  ['overlay2_1',['overlay2',['../d8/d37/classSG_1_1BasicPalette.html#a255c7ca270dbe87b88fc834907240585',1,'SG::BasicPalette']]]
+  ['latitude_0',['latitude',['../d1/d3b/classElevationChart_1_1RoutePoint.html#a336b37ee42086dd8848e89c39af0fea4',1,'ElevationChart::RoutePoint']]],
+  ['longitude_1',['longitude',['../d1/d3b/classElevationChart_1_1RoutePoint.html#a6b2179bced5805aee7ac729e08473a00',1,'ElevationChart::RoutePoint']]]
 ];

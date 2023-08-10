@@ -7,15 +7,57 @@
 
 namespace ElevationChart
 {
+  /**
+   * \brief Класс-гаджет, хранящий предельные значения осей X и Y.
+   * \note Класс зарегистрирован как гаджет и может использоваться в качестве Q_PROPERTY
+   * как в C++, так и в QML.
+   */
   class Bounds
   {
+    /**
+     * \property Bounds::x
+     * \brief Предельное значение по оси X.
+     * \details
+     * <table>
+     * <caption id="multi_row">Связанные функции</caption>
+     * <tr><th>Чтение             <th>Запись              <th>Оповещение
+     * <tr><td><i>x</i>           <td><i>setX</i>         <td><i>--</i>
+     * </table>
+     *
+     * \property Bounds::y
+     * \brief Предельное значение по оси Y.
+     * \details
+     * <table>
+     * <caption id="multi_row">Связанные функции</caption>
+     * <tr><th>Чтение             <th>Запись              <th>Оповещение
+     * <tr><td><i>y</i>           <td><i>setY</i>         <td><i>--</i>
+     * </table>
+     *
+     * \property Bounds::stretch
+     * \brief Коэффициент сжатия для верхней границы оси Y.
+     * \details
+     * <table>
+     * <caption id="multi_row">Связанные функции</caption>
+     * <tr><th>Чтение             <th>Запись              <th>Оповещение
+     * <tr><td><i>stretch</i>     <td><i>setStretch</i>   <td><i>--</i>
+     * </table>
+     */
+
     Q_GADGET
     Q_PROPERTY(float x READ x WRITE setX FINAL)
     Q_PROPERTY(float y READ y WRITE setY FINAL)
     Q_PROPERTY(float stretch READ stretch WRITE setStretch FINAL)
 
     public:
+      /// \brief Создает новый объект Bounds со значениями по умолчанию.
       Bounds();
+
+      /**
+       * \brief Создает новый объект Bounds с указанными значениями.
+       * \param x - предельное значение оси X.
+       * \param y - предельное значение оси Y.
+       * \param stretch - коэффициент сжатия для верхней границы оси Y.
+       */
       Bounds(float x, float y, float stretch = 1.15f);
 
       [[nodiscard]] float x() const;        void setX(float);

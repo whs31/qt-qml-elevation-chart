@@ -1,7 +1,7 @@
 <map id="QQuickItem" name="QQuickItem">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,82,102,111"/>
-<area shape="rect" id="Node000003" href="$d1/d7c/classElevationChart_1_1ChartItem.html" title=" " alt="" coords="11,159,96,187"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="56,126,56,158,51,158,51,126"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="17,5,90,34"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="56,49,56,82,51,82,51,49"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="29,82,126,111"/>
+<area shape="rect" id="Node000003" href="$d2/d6b/classElevationChart_1_1ElevationChartItem.html" title=" " alt="" coords="5,159,150,187"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="80,126,80,158,75,158,75,126"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="41,5,114,34"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="80,49,80,82,75,82,75,49"/>
 </map>

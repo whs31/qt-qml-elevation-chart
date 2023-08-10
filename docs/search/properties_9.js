@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['warn_0',['warn',['../d8/d37/classSG_1_1BasicPalette.html#a1454e1f770b337ecbb62cd2028662081',1,'SG::BasicPalette']]]
+  ['palette_0',['palette',['../d2/d6b/classElevationChart_1_1ElevationChartItem.html#ad9cb5ae5424d8908b86dc6a0fe49f7cc',1,'ElevationChart::ElevationChartItem']]]
 ];
