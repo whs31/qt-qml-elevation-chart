@@ -104,6 +104,7 @@ namespace ElevationChart
   }
 
   void ChartItem::fulfillRecolor() { m_require_recolor = false; }
+  ChartItem::Bound& ChartItem::bounds() { return m_bound; }
 
   void ChartItem::updateProfile() noexcept
   {
@@ -116,14 +117,14 @@ namespace ElevationChart
     if(not route().valid())
       return;
 
-    m_bound = { m_profile.back().distance(), 0 };
+    bounds() = { m_profile.back().distance(), 0 };
     auto path = route().toGeoPath().path();
     for(const auto& coordinate : path)
-      if(coordinate.altitude() > m_bound.y_max)
-        m_bound.y_max = static_cast<float>(coordinate.altitude());
+      if(coordinate.altitude() > bounds().y_max)
+        bounds().y_max = static_cast<float>(coordinate.altitude());
 
     if(shrinkMode() == ShrinkToProfileHeight)
-      m_bound.y_max = std::max(m_bound.y_max, std::max_element(m_profile.cbegin(), m_profile.cend(),
+      bounds().y_max = std::max(bounds().y_max, std::max_element(m_profile.cbegin(), m_profile.cend(),
                                [](const ElevationPoint& a, const ElevationPoint& b){  return a.elevation() < b.elevation();
                                })->elevation());
 
@@ -146,8 +147,8 @@ namespace ElevationChart
     vector<QSGGeometry::Point2D> gl;
     for(const auto& point : m_profile)
     {
-      gl.push_back({toPixelX(point.distance(), m_bound.x_max), static_cast<float>(height())});
-      gl.push_back(toPixel(point.distance(), point.elevation(), m_bound.x_max, m_bound.y_max));
+      gl.push_back({toPixelX(point.distance(), bounds().x_max), static_cast<float>(height())});
+      gl.push_back(toPixel(point.distance(), point.elevation(), bounds().x_max, bounds().y_max));
     }
 
     m_profile_node->geometry()->allocate(static_cast<int>(gl.size()));
@@ -162,7 +163,7 @@ namespace ElevationChart
     vector<QSGGeometry::Point2D> gl;
 
     for(const auto& point : t_route)
-      gl.push_back(toPixel(point.distance(), point.elevation(), m_bound.x_max, m_bound.y_max));
+      gl.push_back(toPixel(point.distance(), point.elevation(), bounds().x_max, bounds().y_max));
 
     m_route_node->geometry()->allocate(static_cast<int>(gl.size()));
     for(size_t i = 0; i < gl.size(); i++)

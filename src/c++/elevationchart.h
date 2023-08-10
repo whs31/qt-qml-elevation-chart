@@ -38,12 +38,19 @@ namespace ElevationChart
     constexpr static const float ROUTE_LINE_WIDTH = 5.0f;
     constexpr static const float STRETCH = 1.15f;
 
+    struct Bound
+    {
+      float x_max;
+      float y_max;
+    };
+
     public:
       enum ShrinkMode
       {
         ShrinkToProfileHeight,
         ShrinkToRouteHeight
       };
+      Q_ENUM(ShrinkMode)
 
       explicit ChartItem(QQuickItem* parent = nullptr);
 
@@ -72,6 +79,7 @@ namespace ElevationChart
       QSGNode* updatePaintNode(QSGNode* old_node, UpdatePaintNodeData*) override;
       void requireRecolor();
       void fulfillRecolor();
+      [[nodiscard]] Bound& bounds();
 
       void updateProfile() noexcept;
       void updateBounds() noexcept;
@@ -80,9 +88,9 @@ namespace ElevationChart
       void handleProfileNode() noexcept;
       void handleRouteNode() noexcept;
 
-      QSGGeometry::Point2D toPixel(float x, float y, float x_max, float y_max) const;
-      float toPixelX(float x, float x_max) const;
-      float toPixelY(float y, float y_max) const;
+      [[nodiscard]] QSGGeometry::Point2D toPixel(float x, float y, float x_max, float y_max) const;
+      [[nodiscard]] float toPixelX(float x, float x_max) const;
+      [[nodiscard]] float toPixelY(float y, float y_max) const;
 
     protected:
       bool m_require_recolor;
@@ -91,12 +99,6 @@ namespace ElevationChart
       QSGGeometryNode* m_route_node;
 
     private:
-      struct Bound
-      {
-        float x_max;
-        float y_max;
-      };
-
       SG::BasicPalette m_palette;
       bool m_intersecting;
       bool m_valid;
