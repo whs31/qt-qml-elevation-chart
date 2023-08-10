@@ -21,7 +21,7 @@ namespace ElevationChart
     , m_model(new RouteModel(this))
     , m_uav_position(QGeoCoordinate(60, 30))
     , m_random_provider(std::make_unique<RandomDataProvider>())
-    , m_bound({0, 0})
+    , m_bounds(Bounds())
     , m_shrink_mode(ShrinkMode::ShrinkToRouteHeight)
   {
     this->setFlag(ItemHasContents);
@@ -105,7 +105,6 @@ namespace ElevationChart
   }
 
   void ChartItem::fulfillRecolor() { m_require_recolor = false; }
-  ChartItem::Bound& ChartItem::bounds() { return m_bound; }
 
   void ChartItem::updateProfile() noexcept
   {
@@ -116,7 +115,7 @@ namespace ElevationChart
     auto t_route = route().toElevationGraph();
     model()->clear();
     for(const auto& point : t_route)
-      model()->add(ElevationPoint(toPixelX(point.distance(), bounds().x_max), toPixelY(point.elevation(), bounds().y_max)));
+      model()->add(point);
   }
 
   void ChartItem::updateBounds() noexcept
@@ -124,16 +123,16 @@ namespace ElevationChart
     if(not route().valid())
       return;
 
-    bounds() = { m_profile.back().distance(), 0 };
+    setBounds({ m_profile.back().distance(), 0 });
     auto path = route().toGeoPath().path();
     for(const auto& coordinate : path)
-      if(coordinate.altitude() > bounds().y_max)
-        bounds().y_max = static_cast<float>(coordinate.altitude());
+      if(coordinate.altitude() > bounds().y())
+        setBounds({bounds().x(), static_cast<float>(coordinate.altitude())});
 
     if(shrinkMode() == ShrinkToProfileHeight)
-      bounds().y_max = std::max(bounds().y_max, std::max_element(m_profile.cbegin(), m_profile.cend(),
-                               [](const ElevationPoint& a, const ElevationPoint& b){  return a.elevation() < b.elevation();
-                               })->elevation());
+      setBounds({bounds().x(), std::max(bounds().y(), std::max_element(m_profile.cbegin(), m_profile.cend(),
+                 [](const ElevationPoint& a, const ElevationPoint& b){  return a.elevation() < b.elevation();
+                 })->elevation())});
 
     this->update();
   }
@@ -154,8 +153,8 @@ namespace ElevationChart
     vector<QSGGeometry::Point2D> gl;
     for(const auto& point : m_profile)
     {
-      gl.push_back({toPixelX(point.distance(), bounds().x_max), static_cast<float>(height())});
-      gl.push_back(toPixel(point.distance(), point.elevation(), bounds().x_max, bounds().y_max));
+      gl.push_back({toPixelX(point.distance(), bounds().x()), static_cast<float>(height())});
+      gl.push_back(toPixel(point.distance(), point.elevation(), bounds().x(), bounds().y()));
     }
 
     m_profile_node->geometry()->allocate(static_cast<int>(gl.size()));
@@ -170,7 +169,7 @@ namespace ElevationChart
     vector<QSGGeometry::Point2D> gl;
 
     for(const auto& point : t_route)
-      gl.push_back(toPixel(point.distance(), point.elevation(), bounds().x_max, bounds().y_max));
+      gl.push_back(toPixel(point.distance(), point.elevation(), bounds().x(), bounds().y()));
 
     m_route_node->geometry()->allocate(static_cast<int>(gl.size()));
     for(size_t i = 0; i < gl.size(); i++)
@@ -189,6 +188,12 @@ namespace ElevationChart
     emit paletteChanged();
 
     this->requireRecolor();
+  }
+
+  Bounds ChartItem::bounds() const { return m_bounds; }
+  void ChartItem::setBounds(ElevationChart::Bounds x) {
+    m_bounds = x;
+    emit boundsChanged();
   }
 
   bool ChartItem::intersecting() const { return m_intersecting; }

@@ -10,6 +10,7 @@
 #include <QtQuick/QSGGeometry>
 #include <SG/BasicPalette>
 #include "types/route.h"
+#include "types/bounds.h"
 #include "provider/randomdataprovider.h"
 #include "internal/routemodel.h"
 
@@ -23,6 +24,7 @@ namespace ElevationChart
   {
     Q_OBJECT
     Q_PROPERTY(SG::BasicPalette palette READ palette WRITE setPalette NOTIFY paletteChanged FINAL)
+    Q_PROPERTY(ElevationChart::Bounds bounds READ bounds WRITE setBounds NOTIFY boundsChanged)
     Q_PROPERTY(ElevationChart::Route route READ route WRITE setRoute NOTIFY routeChanged FINAL)
     Q_PROPERTY(ElevationChart::RouteModel* model READ model CONSTANT)
     Q_PROPERTY(QGeoCoordinate uavPosition READ uavPosition WRITE setUavPosition NOTIFY uavPositionChanged FINAL)
@@ -41,12 +43,6 @@ namespace ElevationChart
     constexpr static const float ROUTE_LINE_WIDTH = 5.0f;
     constexpr static const float STRETCH = 1.15f;
 
-    struct Bound
-    {
-      float x_max;
-      float y_max;
-    };
-
     public:
       enum ShrinkMode
       {
@@ -58,6 +54,7 @@ namespace ElevationChart
       explicit ChartItem(QQuickItem* parent = nullptr);
 
       [[nodiscard]] SG::BasicPalette palette() const;   void setPalette(SG::BasicPalette);
+      [[nodiscard]] Bounds bounds() const;              void setBounds(Bounds);
       [[nodiscard]] Route route() const;                void setRoute(const Route&);
       [[nodiscard]] RouteModel* model() const;
       [[nodiscard]] QGeoCoordinate uavPosition() const; void setUavPosition(const QGeoCoordinate&);
@@ -73,6 +70,7 @@ namespace ElevationChart
 
     signals:
       void paletteChanged();
+      void boundsChanged();
       void intersectingChanged();
       void validChanged();
       void routeChanged();
@@ -83,7 +81,6 @@ namespace ElevationChart
       QSGNode* updatePaintNode(QSGNode* old_node, UpdatePaintNodeData*) override;
       void requireRecolor();
       void fulfillRecolor();
-      [[nodiscard]] Bound& bounds();
 
       void updateProfile() noexcept;
       void updateBounds() noexcept;
@@ -104,6 +101,7 @@ namespace ElevationChart
 
     private:
       SG::BasicPalette m_palette;
+      Bounds m_bounds;
       bool m_intersecting;
       bool m_valid;
       Route m_route;
@@ -113,7 +111,6 @@ namespace ElevationChart
       unique_ptr<RandomDataProvider> m_random_provider;
 
       vector<ElevationPoint> m_profile;
-      Bound m_bound;
 
       ShrinkMode m_shrink_mode;
   };
