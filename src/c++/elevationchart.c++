@@ -58,6 +58,8 @@ namespace ElevationChart
       route_material->setColor(palette().accent());
       m_route_node->setMaterial(route_material);
       auto* route_geometry = new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), 0, 0, QSGGeometry::UnsignedIntType);
+      route_geometry->setDrawingMode(QSGGeometry::DrawLineStrip);
+      route_geometry->setLineWidth(ROUTE_LINE_WIDTH);
       m_route_node->setGeometry(route_geometry);
       m_route_node->setFlags(QSGNode::OwnsGeometry | QSGNode::OwnsMaterial);
 
@@ -141,22 +143,30 @@ namespace ElevationChart
 
   void ChartItem::handleProfileNode() noexcept
   {
-    vector<QSGGeometry::Point2D> profile_gl;
+    vector<QSGGeometry::Point2D> gl;
     for(const auto& point : m_profile)
     {
-      profile_gl.push_back({toPixelX(point.distance(), m_bound.x_max), static_cast<float>(height())});
-      profile_gl.push_back(toPixel(point.distance(), point.elevation(), m_bound.x_max, m_bound.y_max));
+      gl.push_back({toPixelX(point.distance(), m_bound.x_max), static_cast<float>(height())});
+      gl.push_back(toPixel(point.distance(), point.elevation(), m_bound.x_max, m_bound.y_max));
     }
 
-    m_profile_node->geometry()->allocate(static_cast<int>(profile_gl.size()));
+    m_profile_node->geometry()->allocate(static_cast<int>(gl.size()));
 
-    for(size_t i = 0; i < profile_gl.size(); i++)
-      m_profile_node->geometry()->vertexDataAsPoint2D()[i] = profile_gl.at(i);
+    for(size_t i = 0; i < gl.size(); i++)
+      m_profile_node->geometry()->vertexDataAsPoint2D()[i] = gl.at(i);
   }
 
   void ChartItem::handleRouteNode() noexcept
   {
+    vector<ElevationPoint> t_route = route().toElevationGraph();
+    vector<QSGGeometry::Point2D> gl;
 
+    for(const auto& point : t_route)
+      gl.push_back(toPixel(point.distance(), point.elevation(), m_bound.x_max, m_bound.y_max));
+
+    m_route_node->geometry()->allocate(static_cast<int>(gl.size()));
+    for(size_t i = 0; i < gl.size(); i++)
+      m_route_node->geometry()->vertexDataAsPoint2D()[i] = gl.at(i);
   }
 
   QSGGeometry::Point2D ChartItem::toPixel(float x, float y, float x_max, float y_max) const { return { toPixelX(x, x_max), toPixelY(y, y_max) }; }

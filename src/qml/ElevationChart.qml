@@ -16,6 +16,12 @@ Item {
     FontLoader { id: font_Main; source: "qrc:/elevation-chart/fonts/Overpass.ttf"; }
     FontLoader { id: font_Mono; source: "qrc:/elevation-chart/fonts/UbuntuMono.ttf"; }
 
+    layer {
+        enabled: true
+        samples: 8
+        smooth: true
+    }
+
     property string mainfont: font_Main.name
     property string monofont: font_Mono.name
 
@@ -86,7 +92,7 @@ Item {
             foreground: light_theme ? Catpuccin.latte.subtext1.hex : Catpuccin.mocha.subtext1.hex
             overlay: light_theme ? Catpuccin.latte.surface1.hex : Catpuccin.mocha.surface0.hex
             overlay2: light_theme ? Catpuccin.latte.surface2.hex : Catpuccin.mocha.surface1.hex
-            accent: light_theme ? Catpuccin.latte.teal.hex : Catpuccin.mocha.teal.hex
+            accent: light_theme ? Catpuccin.latte.green.hex : Catpuccin.mocha.green.hex
             warn: light_theme ? Catpuccin.latte.peach.hex : Catpuccin.mocha.peach.hex
             error: light_theme ? Catpuccin.latte.red.hex : Catpuccin.mocha.red.hex
             info: light_theme ? Catpuccin.latte.lavender.hex : Catpuccin.mocha.lavender.hex

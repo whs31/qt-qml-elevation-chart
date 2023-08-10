@@ -3,6 +3,7 @@
 #include <vector>
 #include <QtPositioning/QGeoPath>
 #include "routepoint.h"
+#include "elevationpoint.h"
 
 using std::vector;
 
@@ -147,6 +148,11 @@ namespace ElevationChart
        * \note Эта функция может быть вызвана из QML через мета-объектную систему Qt.
        */
       Q_INVOKABLE [[nodiscard]] bool valid() const;
+
+      /**
+       * \brief Преобразует путь в вектор точек ElevationPoint.
+       */
+      [[nodiscard]] auto toElevationGraph() const -> vector<ElevationPoint>;
 
     public:
       /**

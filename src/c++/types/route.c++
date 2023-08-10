@@ -79,4 +79,19 @@ namespace ElevationChart
   bool Route::valid() const { return not m_vec.empty(); }
   Route Route::fromGeoPath(const QGeoPath& path, float velocity) { return Route(path, velocity); }
   Route Route::fromPointsVector(const vector<ElevationChart::RoutePoint>& vec) { return Route(vec); }
+
+  auto Route::toElevationGraph() const -> vector<ElevationPoint>
+  {
+    vector<ElevationPoint> ret;
+    auto prev_coord = m_vec.front().coordinate();
+    float distance = 0;
+    for(const auto& point : m_vec)
+    {
+      distance += static_cast<float>(point.coordinate().distanceTo(prev_coord));
+      ret.emplace_back(distance, point.altitude());
+      prev_coord = point.coordinate();
+    }
+
+    return ret;
+  }
 } // ElevationChart
