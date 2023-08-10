@@ -19,6 +19,28 @@ RoundButton {
 
     onPressYChanged: impl.model.move(index, -pressY)
 
+    component TT : ToolTip { id: control;
+        property string txt: "Tooltip";
+
+        visible: parent.hovered || parent.down
+        font {
+            pixelSize: 13
+            family: mainfont
+        }
+        contentItem: Text {
+            text: txt
+            font: control.font
+            color: impl.palette.background
+        }
+        background: Rectangle {
+            color: impl.palette.foreground
+            radius: 3
+        }
+        delay: 300
+    }
+
+    TT { txt: "<b>Высота точки: </b>" + Number(altitude).toFixed(1) + " м<br><b>Удаленность точки: </b>" + Number(distance).toFixed(0) + " м" }
+
     Rectangle {
         property bool shown: ec.showIndexes
 

@@ -11,7 +11,7 @@ ApplicationWindow {
     title: "Elevation Chart Demo"
     minimumWidth: 720
     minimumHeight: 360
-    width: 1920
+    width: 1900
     height: 400
     visible: true
     color: Catpuccin.latte.red.hex
