@@ -220,6 +220,7 @@ Rectangle {
             DecimalInput { description: "Горизонтальная скорость"; defaultText: "10.0"; foregroundColor: impl.palette.foreground; action: Action { onTriggered: impl.metrics.fallbackVelocity = parseFloat(source.text) } }
             RoundButton {
                 Layout.fillWidth: true
+                enabled: !impl.matchingMetrics
                 text: "Применить коррекцию по ЛТХ"
                 radius: 4
                 font {

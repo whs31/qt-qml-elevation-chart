@@ -34,7 +34,7 @@ namespace ElevationChart
 
     Q_PROPERTY(bool intersecting READ intersecting WRITE setIntersecting NOTIFY intersectingChanged FINAL)
     Q_PROPERTY(bool valid READ valid WRITE setValid NOTIFY validChanged FINAL)
-    // matching metrics
+    Q_PROPERTY(bool matchingMetrics READ matchingMetrics WRITE setMatchingMetrics NOTIFY matchingMetricsChanged FINAL)
     // is busy
 
     Q_PROPERTY(int shrinkMode READ shrinkMode WRITE setShrinkMode NOTIFY shrinkModeChanged FINAL)
@@ -61,10 +61,11 @@ namespace ElevationChart
 
       [[nodiscard]] bool intersecting() const;          void setIntersecting(bool);
       [[nodiscard]] bool valid() const;                 void setValid(bool);
+      [[nodiscard]] bool matchingMetrics() const;       void setMatchingMetrics(bool);
 
       [[nodiscard]] int shrinkMode() const;             void setShrinkMode(int);
 
-      //Q_INVOKABLE void applyMetricsCorrection() noexcept;
+      Q_INVOKABLE void applyMetricsCorrection() noexcept;
       //Q_INVOKABLE void estimateEnvelope() noexcept;
       //Q_INVOKABLE void applyEnvelopeCorrection() noexcept;
 
@@ -73,6 +74,7 @@ namespace ElevationChart
       void boundsChanged();
       void intersectingChanged();
       void validChanged();
+      void matchingMetricsChanged();
       void routeChanged();
       void uavPositionChanged();
       void metricsChanged();
@@ -85,10 +87,12 @@ namespace ElevationChart
 
       Q_SLOT void updateProfile() noexcept;
       Q_SLOT void updateBounds() noexcept;
+      Q_SLOT void updateMetrics() noexcept;
 
       void handleBackgroundNode() noexcept;
       void handleProfileNode() noexcept;
       void handleRouteNode() noexcept;
+      void handleMetricsNode() noexcept;
 
       [[nodiscard]] QSGGeometry::Point2D toPixel(float x, float y, float x_max, float y_max) const;
       [[nodiscard]] float toPixelX(float x, float x_max) const;
@@ -105,6 +109,7 @@ namespace ElevationChart
       Bounds m_bounds;
       bool m_intersecting;
       bool m_valid;
+      bool m_matching_metrics;
       Route m_route;
       RouteModel* m_model;
       QGeoCoordinate m_uav_position;
@@ -112,6 +117,8 @@ namespace ElevationChart
       unique_ptr<RandomDataProvider> m_random_provider;
       vector<ElevationPoint> m_profile;
       ShrinkMode m_shrink_mode;
+      QGeoPath m_metrics_path;
+      QGeoPath m_envelope_path;
   };
 } // ElevationChart
 

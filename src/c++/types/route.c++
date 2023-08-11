@@ -221,4 +221,16 @@ namespace ElevationChart
 
     return ret;
   }
+
+  /**
+   * \brief Возвращает массив скоростей всех точек пути.
+   * \return Массив индивидуальных скоростей точек.
+   */
+  auto Route::velocities() const -> vector<float>
+  {
+    vector<float> ret;
+    for(const auto& point : m_vec)
+      ret.push_back(point.velocity());
+    return ret;
+  }
 } // ElevationChart

@@ -30,6 +30,7 @@ namespace ElevationChart
     , m_route_node(nullptr)
     , m_intersecting(false)
     , m_valid(false)
+    , m_matching_metrics(true)
     , m_route(Route())
     , m_model(new RouteModel(this))
     , m_uav_position(QGeoCoordinate(60, 30))
@@ -46,6 +47,14 @@ namespace ElevationChart
       emit routeChanged();
       this->updateBounds();
     });
+  }
+
+  /**
+   * \brief Корректирует текущий путь в соответствии с ЛТХ борта.
+   */
+  void ElevationChartItem::applyMetricsCorrection() noexcept
+  {
+    // ?
   }
 
   QSGNode* ElevationChartItem::updatePaintNode(QSGNode* old_node, QQuickItem::UpdatePaintNodeData* unused)
@@ -154,7 +163,64 @@ namespace ElevationChart
                  [](const ElevationPoint& a, const ElevationPoint& b){  return a.elevation() < b.elevation();
                  })->elevation())});
 
+    this->updateMetrics();
     this->update();
+  }
+
+  void ElevationChartItem::updateMetrics() noexcept
+  {
+    bool matching_metrics = true;
+
+    QGeoPath correct_path;
+    QGeoPath route_path = route().toGeoPath();
+    if(route_path.isEmpty())
+      return;
+
+    //bool allow_individual_speeds = not qFuzzyCompare(route().at(0).velocity(), 0);
+    auto velocities = route().velocities();
+
+    correct_path.addCoordinate(route_path.path().first());
+    for(int i = 1; i < route_path.path().size(); i++)
+    {
+      const bool fallback = velocities.at(i) == 0;
+      const auto dx = static_cast<float>(route_path.path().at(i).distanceTo(route_path.path().at(i - 1)));
+      const auto dy = static_cast<float>(route_path.path().at(i).altitude() - correct_path.path().at(i - 1).altitude());
+      const float dy_min = fallback ? metrics().rateOfDescend() * dx / metrics().fallbackVelocity() : metrics().rateOfDescend() * dx / velocities.at(i);
+      const float dy_max = fallback ? metrics().rateOfClimb() * dx / metrics().fallbackVelocity() : metrics().rateOfClimb() * dx / velocities.at(i);
+
+      auto result = route_path.path().at(i);
+
+      // correct case
+      if((dy >= 0 and dy < dy_max) or (dy <= 0 and abs(dy) < dy_min))
+      {
+        correct_path.addCoordinate(result);
+        continue;
+      }
+
+      // climbs too fast
+      else if(dy > 0 and dy > dy_max)
+      {
+        result.setAltitude(correct_path.path().at(i - 1).altitude() + dy_max);
+        matching_metrics = false;
+      }
+
+      // descends too fast
+      else if(dy < 0 and abs(dy) > dy_min)
+      {
+        result.setAltitude(correct_path.path().at(i - 1).altitude() - dy_min);
+        matching_metrics = false;
+      }
+
+      correct_path.addCoordinate(result);
+    }
+
+    if(not matching_metrics)
+    {
+      setMatchingMetrics(false);
+      m_metrics_path = correct_path;
+    }
+    else
+      setMatchingMetrics(true);
   }
 
   void ElevationChartItem::handleBackgroundNode() noexcept
@@ -194,6 +260,11 @@ namespace ElevationChart
     m_route_node->geometry()->allocate(static_cast<int>(gl.size()));
     for(size_t i = 0; i < gl.size(); i++)
       m_route_node->geometry()->vertexDataAsPoint2D()[i] = gl.at(i);
+  }
+
+  void ElevationChartItem::handleMetricsNode() noexcept
+  {
+
   }
 
   /**
@@ -300,6 +371,26 @@ namespace ElevationChart
   }
 
   /**
+   * \property ElevationChartItem::matchingMetrics
+   * \brief Состояние соответствия пути ЛТХ борта.
+   * \details
+   * Свойство вернет <tt>false</tt>, если текущий заданный путь не соответствует
+   * летно-техническим характеристикам БПЛА.
+   * <table>
+   * <caption id="multi_row">Связанные функции</caption>
+   * <tr><th>Чтение                 <th>Запись                    <th>Оповещение
+   * <tr><td><i>matchingMetrics</i> <td><i>setMatchingMetrics</i> <td><i>matchingMetricsChanged</i>
+   * </table>
+   */
+  bool ElevationChartItem::matchingMetrics() const { return m_matching_metrics; }
+  void ElevationChartItem::setMatchingMetrics(bool x) {
+    if(x == m_matching_metrics)
+      return;
+    m_matching_metrics = x;
+    emit matchingMetricsChanged();
+  }
+
+  /**
    * \property ElevationChartItem::route
    * \brief Путь, по которому происходит построения профиля высот.
    * \details
@@ -368,6 +459,8 @@ namespace ElevationChart
   void ElevationChartItem::setMetrics(const Metrics& x) {
     m_metrics = x;
     emit metricsChanged();
+
+    this->updateMetrics();
   }
 
   /**

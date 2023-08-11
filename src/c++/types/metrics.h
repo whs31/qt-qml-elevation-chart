@@ -42,12 +42,12 @@ namespace ElevationChart
 
   /**
    * \brief Создает объект Metrics со значениями по умолчанию.
-   * \details Значения по умолчанию: <tt>[10, 10, 10]</tt>.
+   * \details Значения по умолчанию: <tt>[1 м/с, 1 м/с, 75 м/с]</tt>.
    */
   inline Metrics::Metrics()
-    : m_rateOfClimb(10.0f)
-    , m_rateOfDescend(10.0f)
-    , m_fallbackVelocity(10.0f)
+    : m_rateOfClimb(1.0f)
+    , m_rateOfDescend(1.0f)
+    , m_fallbackVelocity(75.0f)
   {}
 
   /**
