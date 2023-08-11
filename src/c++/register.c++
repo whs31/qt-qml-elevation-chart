@@ -42,4 +42,10 @@ namespace ElevationChart
 
   RoutePoint TypeFactory::routePoint(double la, double lo, float e, float v) { return {la, lo, e, v}; }
   Route TypeFactory::route(const QGeoPath& path, float velocity) { return Route(path, velocity); }
+  Route TypeFactory::route(const QGeoPath& path, const QVector<float>& velocities)
+  {
+    auto ret = Route(path);
+    ret.setVelocity(vector(velocities.begin(), velocities.end()), 0);
+    return ret;
+  }
 } // ElevationChart

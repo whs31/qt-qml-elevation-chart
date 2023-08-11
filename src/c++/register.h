@@ -5,6 +5,7 @@
 #pragma once
 
 #include <QtCore/QObject>
+#include <QtCore/QVector>
 #include "types/route.h"
 
 namespace ElevationChart
@@ -20,5 +21,6 @@ namespace ElevationChart
 
       Q_INVOKABLE static ElevationChart::RoutePoint routePoint(double latitude, double longitude, float elevation = 0, float velocity = 0);
       Q_INVOKABLE static ElevationChart::Route route(const QGeoPath& path, float velocity = 0);
+      Q_INVOKABLE static ElevationChart::Route route(const QGeoPath& path, const QVector<float>& velocities);
   };
 } // ElevationChart
