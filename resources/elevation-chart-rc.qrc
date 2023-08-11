@@ -11,5 +11,6 @@
         <file>icons/settings.svg</file>
         <file>icons/light.svg</file>
         <file>icons/dark.svg</file>
+        <file>icons/warning.svg</file>
     </qresource>
 </RCC>

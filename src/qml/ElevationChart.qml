@@ -83,6 +83,15 @@ Rectangle {
         }
     }
 
+    UI.Notifications {
+        id: notifications
+        anchors {
+            top: parent.top
+            right: parent.right
+            margins: 10
+        }
+    }
+
     Pane {
         id: panelTools
         opacity: 0.75

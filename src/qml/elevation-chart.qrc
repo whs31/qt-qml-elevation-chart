@@ -4,5 +4,6 @@
         <file>private/ElevationChartPoint.qml</file>
         <file>ui/DecimalInput.qml</file>
         <file>ui/CollapsiblePanel.qml</file>
+        <file>ui/Notifications.qml</file>
     </qresource>
 </RCC>
