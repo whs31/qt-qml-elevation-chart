@@ -11,6 +11,7 @@
 #include <SG/BasicPalette>
 #include "types/route.h"
 #include "types/bounds.h"
+#include "types/metrics.h"
 #include "provider/randomdataprovider.h"
 #include "internal/routemodel.h"
 
@@ -28,9 +29,7 @@ namespace ElevationChart
     Q_PROPERTY(ElevationChart::Route route READ route WRITE setRoute NOTIFY routeChanged FINAL)
     Q_PROPERTY(ElevationChart::RouteModel* model READ model CONSTANT)
     Q_PROPERTY(QGeoCoordinate uavPosition READ uavPosition WRITE setUavPosition NOTIFY uavPositionChanged FINAL)
-
-    // metrics gadget
-
+    Q_PROPERTY(ElevationChart::Metrics metrics READ metrics WRITE setMetrics NOTIFY metricsChanged FINAL)
     // envelope gadget
 
     Q_PROPERTY(bool intersecting READ intersecting WRITE setIntersecting NOTIFY intersectingChanged FINAL)
@@ -58,6 +57,7 @@ namespace ElevationChart
       [[nodiscard]] Route route() const;                void setRoute(const Route&);
       [[nodiscard]] RouteModel* model() const;
       [[nodiscard]] QGeoCoordinate uavPosition() const; void setUavPosition(const QGeoCoordinate&);
+      [[nodiscard]] Metrics metrics() const;            void setMetrics(const Metrics&);
 
       [[nodiscard]] bool intersecting() const;          void setIntersecting(bool);
       [[nodiscard]] bool valid() const;                 void setValid(bool);
@@ -75,6 +75,7 @@ namespace ElevationChart
       void validChanged();
       void routeChanged();
       void uavPositionChanged();
+      void metricsChanged();
       void shrinkModeChanged();
 
     protected:
@@ -107,6 +108,7 @@ namespace ElevationChart
       Route m_route;
       RouteModel* m_model;
       QGeoCoordinate m_uav_position;
+      Metrics m_metrics;
       unique_ptr<RandomDataProvider> m_random_provider;
       vector<ElevationPoint> m_profile;
       ShrinkMode m_shrink_mode;

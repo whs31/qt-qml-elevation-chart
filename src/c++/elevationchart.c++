@@ -33,6 +33,7 @@ namespace ElevationChart
     , m_route(Route())
     , m_model(new RouteModel(this))
     , m_uav_position(QGeoCoordinate(60, 30))
+    , m_metrics(Metrics())
     , m_random_provider(std::make_unique<RandomDataProvider>())
     , m_bounds(Bounds())
     , m_shrink_mode(ShrinkMode::ShrinkToRouteHeight)
@@ -351,6 +352,22 @@ namespace ElevationChart
       return;
     m_uav_position = x;
     emit uavPositionChanged();
+  }
+
+  /**
+   * \property ElevationChartItem::metrics
+   * \brief Группа параметров, связанных с коррекцией по ЛТХ.
+   * \details
+   * <table>
+   * <caption id="multi_row">Связанные функции</caption>
+   * <tr><th>Чтение             <th>Запись               <th>Оповещение
+   * <tr><td><i>metrics</i>     <td><i>setMetrics</i>    <td><i>metricsChanged</i>
+   * </table>
+   */
+  Metrics ElevationChartItem::metrics() const { return m_metrics; }
+  void ElevationChartItem::setMetrics(const Metrics& x) {
+    m_metrics = x;
+    emit metricsChanged();
   }
 
   /**

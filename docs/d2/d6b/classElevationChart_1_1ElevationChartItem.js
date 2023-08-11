@@ -14,6 +14,7 @@ var classElevationChart_1_1ElevationChartItem =
     [ "route", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#aa25a556dd18df7259ed6796713f8f051", null ],
     [ "model", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#a508cc3106d2c29fe07dc87cbe3ea6927", null ],
     [ "uavPosition", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#a7fa9c9f81b7d915a36ae366414d3e58c", null ],
+    [ "metrics", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#abcce662da2a75360795281c4d193ac56", null ],
     [ "intersecting", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#ac0a3f6caeb0c2983bc4505f3a5348e2d", null ],
     [ "valid", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#a51646327ac0a3287c4b08e4d28b66f35", null ],
     [ "shrinkMode", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#af902fb5e3f1cd17bd02fa35c790aaeb0", null ]
