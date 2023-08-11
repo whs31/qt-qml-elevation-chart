@@ -32,6 +32,7 @@ namespace ElevationChart
     , m_profile_node(nullptr)
     , m_route_node(nullptr)
     , m_metrics_node(nullptr)
+    , m_metrics_point_node(nullptr)
     , m_envelope_node(nullptr)
     , m_corridor_node(nullptr)
     , m_intersecting(false)
@@ -75,10 +76,12 @@ namespace ElevationChart
       m_profile_node = SG::utils::createSimpleGeometryNode(palette().overlay(), DrawQuadStrip);
       m_route_node = SG::utils::createSimpleGeometryNode(palette().accent(), QSGGeometry::DrawLineStrip, ROUTE_LINE_WIDTH);
       m_metrics_node = SG::utils::createSimpleGeometryNode(palette().warn(), QSGGeometry::DrawLineStrip, METRICS_LINE_WIDTH);
+      m_metrics_point_node = SG::utils::createSimpleGeometryNode(palette().warn(), QSGGeometry::DrawPoints, METRICS_ROUNDING_WIDTH);
 
       old_node->appendChildNode(m_background_node);
       old_node->appendChildNode(m_profile_node);
       old_node->appendChildNode(m_metrics_node);
+      old_node->appendChildNode(m_metrics_point_node);
       old_node->appendChildNode(m_route_node);
     }
 
@@ -88,6 +91,7 @@ namespace ElevationChart
       dynamic_cast<QSGFlatColorMaterial*>(m_profile_node->material())->setColor(palette().overlay());
       dynamic_cast<QSGFlatColorMaterial*>(m_route_node->material())->setColor(palette().accent());
       dynamic_cast<QSGFlatColorMaterial*>(m_metrics_node->material())->setColor(palette().warn());
+      dynamic_cast<QSGFlatColorMaterial*>(m_metrics_point_node->material())->setColor(palette().warn());
     }
 
     this->handleBackgroundNode();
@@ -101,6 +105,7 @@ namespace ElevationChart
       m_profile_node->markDirty(QSGNode::DirtyGeometry | QSGNode::DirtyMaterial);
       m_route_node->markDirty(QSGNode::DirtyGeometry | QSGNode::DirtyMaterial);
       m_metrics_node->markDirty(QSGNode::DirtyGeometry | QSGNode::DirtyMaterial);
+      m_metrics_point_node->markDirty(QSGNode::DirtyGeometry | QSGNode::DirtyMaterial);
       this->fulfillRecolor();
     }
     else
@@ -109,6 +114,7 @@ namespace ElevationChart
       m_profile_node->markDirty(QSGNode::DirtyGeometry);
       m_route_node->markDirty(QSGNode::DirtyGeometry);
       m_metrics_node->markDirty(QSGNode::DirtyGeometry);
+      m_metrics_point_node->markDirty(QSGNode::DirtyGeometry);
     }
 
     old_node->markDirty(QSGNode::DirtyGeometry | QSGNode::DirtyMaterial);
@@ -252,6 +258,20 @@ namespace ElevationChart
 
   void ElevationChartItem::handleMetricsNode() noexcept
   {
+    if(matchingMetrics())
+    {
+      /*
+       * окей, это не совсем очевидная херня, поэтому я прокомментирую будущим поколениям.
+       * если мы не будем очищать буфер ноды, то при отсутствии вызова обновления метрик в
+       * соответствии с маршрутом мы получим невалидные данные. если эта нода была бы отдельным
+       * компонентом в qml, все решилось бы visible: !matchingMetrics, но внутри одного итема
+       * единственный варик это вручную чистить буфер вот таким вызовом.
+       */
+      m_metrics_point_node->geometry()->allocate(0);
+      m_metrics_node->geometry()->allocate(0);
+      return;
+    }
+
     vector<ElevationPoint> t_route;
     auto prev_coord = m_metrics_path.path().front();
     float distance = 0;
@@ -268,8 +288,12 @@ namespace ElevationChart
       gl.push_back(toPixel(point.distance(), point.elevation(), bounds().x(), bounds().y()));
 
     m_metrics_node->geometry()->allocate(static_cast<int>(gl.size()));
+    m_metrics_point_node->geometry()->allocate(static_cast<int>(gl.size()));
     for(size_t i = 0; i < gl.size(); i++)
+    {
       m_metrics_node->geometry()->vertexDataAsPoint2D()[i] = gl.at(i);
+      m_metrics_point_node->geometry()->vertexDataAsPoint2D()[i] = gl.at(i);
+    }
   }
 
   /**
@@ -466,6 +490,7 @@ namespace ElevationChart
     emit metricsChanged();
 
     this->updateMetrics();
+    this->update();
   }
 
   /**
