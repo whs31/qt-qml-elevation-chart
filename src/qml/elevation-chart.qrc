@@ -2,5 +2,7 @@
     <qresource prefix="/elevation-chart">
         <file>ElevationChart.qml</file>
         <file>private/ElevationChartPoint.qml</file>
+        <file>ui/DecimalInput.qml</file>
+        <file>ui/CollapsiblePanel.qml</file>
     </qresource>
 </RCC>

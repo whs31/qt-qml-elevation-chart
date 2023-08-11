@@ -6,6 +6,7 @@ import QtPositioning 5.15
 import ElevationChartWidget 3.0
 
 import "private" as Private
+import "ui" as UI
 import "qrc:/elevation-chart/catpuccin.js" as Catpuccin
 
 Rectangle {
@@ -30,64 +31,6 @@ Rectangle {
     property string monofont: font_Mono.name
 
     property bool showIndexes: true
-
-    component DecimalInput: RowLayout {
-        property string description: "None"
-        property string defaultText: "0.00"
-        property color foregroundColor: "red"
-        property Action action: null
-        opacity: enabled ? 1 : 0.4
-
-        Text {
-            Layout.fillWidth: true
-            text: description + ":"
-            color: foregroundColor
-            font {
-                family: mainfont
-                weight: Font.DemiBold
-                pixelSize: 14
-            }
-        }
-
-        TextField {
-            validator: RegExpValidator { regExp: /^[0-9]*(\.[0-9]{0,2})?$/ }
-            selectByMouse: true
-            inputMethodHints: Qt.ImhFormattedNumbersOnly
-            text: defaultText
-            font {
-                family: mainfont
-                weight: Font.Bold
-                pixelSize: 14
-            }
-            horizontalAlignment: Text.AlignRight
-            onEditingFinished: if(action) action.trigger(this)
-        }
-    }
-
-    component CollapsiblePanel : Pane {
-        property int index: 0
-        property int offset: 0
-
-        property bool __shown: impl.currentBar === index
-        visible: width > 0
-        enabled: visible
-
-        width: __shown ? implicitWidth : 0
-        height: __shown ? implicitHeight : 0
-
-        Behavior on width { NumberAnimation { duration: 150; easing.type: Easing.InOutQuad; } }
-        Behavior on height { NumberAnimation { duration: 150; easing.type: Easing.InOutQuad; } }
-        clip: true
-
-        anchors {
-            top: panelTools.bottom
-            left: panelTools.left
-            leftMargin: offset
-        }
-
-        Material.background: impl.palette.overlay2
-        Material.elevation: 200
-    }
 
     ElevationChartImpl
     {
@@ -209,15 +152,15 @@ Rectangle {
         }
     }
 
-    CollapsiblePanel {
+    UI.CollapsiblePanel {
         id: panelMetrics
         index: 0
         offset: 0
 
         ColumnLayout {
-            DecimalInput { description: "Скороподъемность"; defaultText: "10.0"; foregroundColor: impl.palette.foreground; action: Action { onTriggered: impl.metrics.rateOfClimb = parseFloat(source.text) } }
-            DecimalInput { description: "Скорость спуска"; defaultText: "10.0"; foregroundColor: impl.palette.foreground; action: Action { onTriggered: impl.metrics.rateOfDescend = parseFloat(source.text) } }
-            DecimalInput { description: "Горизонтальная скорость"; defaultText: "10.0"; foregroundColor: impl.palette.foreground; action: Action { onTriggered: impl.metrics.fallbackVelocity = parseFloat(source.text) } }
+            UI.DecimalInput { description: "Скороподъемность"; defaultText: "1.0"; foregroundColor: impl.palette.foreground; action: Action { onTriggered: impl.metrics.rateOfClimb = parseFloat(source.text) } }
+            UI.DecimalInput { description: "Скорость спуска"; defaultText: "1.0"; foregroundColor: impl.palette.foreground; action: Action { onTriggered: impl.metrics.rateOfDescend = parseFloat(source.text) } }
+            UI.DecimalInput { description: "Горизонтальная скорость"; defaultText: "75.0"; foregroundColor: impl.palette.foreground; action: Action { onTriggered: impl.metrics.fallbackVelocity = parseFloat(source.text) } }
             RoundButton {
                 Layout.fillWidth: true
                 enabled: !impl.matchingMetrics
@@ -237,14 +180,14 @@ Rectangle {
         }
     }
 
-    CollapsiblePanel {
+    UI.CollapsiblePanel {
         id: panelEnvelope
         index: 1
         offset: 70
 
         ColumnLayout {
-            DecimalInput { description: "Высота огибания"; defaultText: "100.0"; foregroundColor: impl.palette.foreground; }
-            DecimalInput { description: "Ширина коридора"; defaultText: "10.0"; foregroundColor: impl.palette.foreground; }
+            UI.DecimalInput { description: "Высота огибания"; defaultText: "100.0"; foregroundColor: impl.palette.foreground; }
+            UI.DecimalInput { description: "Ширина коридора"; defaultText: "10.0"; foregroundColor: impl.palette.foreground; }
             RoundButton {
                 Layout.fillWidth: true
                 text: "Вычислить огибающую"
@@ -279,7 +222,7 @@ Rectangle {
         }
     }
 
-    CollapsiblePanel {
+    UI.CollapsiblePanel {
         id: panelSettings
         index: 2
         offset: 125
