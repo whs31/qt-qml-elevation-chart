@@ -34,10 +34,13 @@ include_directories(src/c++ include)
 set(SG_CORE
   src/c++/basicpalette.h
   src/c++/basicpalette.c++
+  src/c++/utils.h
+  src/c++/utils.c++
 )
 
 set(SG_CORE_INCLUDE
   include/SG/BasicPalette
+  include/SG/Utils
 )
 
 set(SRC ${SG_CORE} ${SG_CORE_INCLUDE})

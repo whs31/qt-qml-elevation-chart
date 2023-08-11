@@ -16,6 +16,7 @@ var classElevationChart_1_1Route =
     [ "toGeoPath", "de/d39/classElevationChart_1_1Route.html#a2ac0c1be855674fe64bc8dcdad9d1dbc", null ],
     [ "toVariantList", "de/d39/classElevationChart_1_1Route.html#ab14f16812544053a3388d9bbccc2f124", null ],
     [ "toElevationGraph", "de/d39/classElevationChart_1_1Route.html#a00ee27e4c825100d447083e5ea410895", null ],
+    [ "velocities", "de/d39/classElevationChart_1_1Route.html#a7d7c937c3db3de31637b89220351a1ed", null ],
     [ "size", "de/d39/classElevationChart_1_1Route.html#af9593d4a5ff4274efaf429cb4f9e57cc", null ],
     [ "at", "de/d39/classElevationChart_1_1Route.html#a78c68b8609f5e4a7aed9e2901e679332", null ],
     [ "contains", "de/d39/classElevationChart_1_1Route.html#aa415781c7b03016cbc196c4ef5d73971", null ],

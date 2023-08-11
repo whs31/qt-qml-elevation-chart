@@ -40,6 +40,7 @@ namespace ElevationChart
     Q_PROPERTY(int shrinkMode READ shrinkMode WRITE setShrinkMode NOTIFY shrinkModeChanged FINAL)
 
     constexpr static const float ROUTE_LINE_WIDTH = 5.0f; ///< Ширина линии пути для отрисовки (px).
+    constexpr static const float METRICS_LINE_WIDTH = 3.0f; ///< Ширина линии пути, скорректированного по ЛТХ для отрисовки (px).
 
     public:
       /// \brief Перечисление поведения оси Y.
@@ -99,9 +100,12 @@ namespace ElevationChart
       [[nodiscard]] float toPixelY(float y, float y_max) const;
 
     protected:
-      QSGGeometryNode* m_background_node;
-      QSGGeometryNode* m_profile_node;
-      QSGGeometryNode* m_route_node;
+      QSGGeometryNode* m_background_node;     ///< Нода фона.
+      QSGGeometryNode* m_profile_node;        ///< Нода профиля рельефа.
+      QSGGeometryNode* m_route_node;          ///< Нода маршрута.
+      QSGGeometryNode* m_metrics_node;        ///< Нода маршрута, скорректированного по ЛТХ.
+      QSGGeometryNode* m_envelope_node;       ///< Нода огибающей.
+      QSGGeometryNode* m_corridor_node;       ///< Нода коридора для огибающей.
 
     private:
       bool m_require_recolor;

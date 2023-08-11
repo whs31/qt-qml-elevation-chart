@@ -3,12 +3,15 @@
 //
 
 #include "elevationchart.h"
+#include <utility>
 #include <QtQuick/QSGGeometryNode>
 #include <QtQuick/QSGFlatColorMaterial>
-#include <utility>
+#include <SG/Utils>
 
 namespace ElevationChart
 {
+  constexpr static const unsigned int DrawQuadStrip = GL_QUAD_STRIP;
+
   /**
    * \class ElevationChartItem
    * \brief Основной класс библиотеки.
@@ -28,6 +31,9 @@ namespace ElevationChart
     , m_background_node(nullptr)
     , m_profile_node(nullptr)
     , m_route_node(nullptr)
+    , m_metrics_node(nullptr)
+    , m_envelope_node(nullptr)
+    , m_corridor_node(nullptr)
     , m_intersecting(false)
     , m_valid(false)
     , m_matching_metrics(true)
@@ -65,37 +71,15 @@ namespace ElevationChart
     {
       old_node = new QSGNode;
 
-      m_background_node = new QSGGeometryNode;
-      auto* background_material = new QSGFlatColorMaterial;
-      background_material->setColor(palette().background());
-      m_background_node->setMaterial(background_material);
-      auto* background_geometry = new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), 0, 0, QSGGeometry::UnsignedIntType);
-      background_geometry->setDrawingMode(QSGGeometry::DrawTriangles);
-      m_background_node->setGeometry(background_geometry);
-      m_background_node->setFlags(QSGNode::OwnsGeometry | QSGNode::OwnsMaterial);
-
-      m_profile_node = new QSGGeometryNode;
-      auto* profile_material = new QSGFlatColorMaterial;
-      profile_material->setColor(palette().overlay());
-      m_profile_node->setMaterial(profile_material);
-      auto* profile_geometry = new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), 0, 0, QSGGeometry::UnsignedIntType);
-      profile_geometry->setDrawingMode(GL_QUAD_STRIP);
-      m_profile_node->setGeometry(profile_geometry);
-      m_profile_node->setFlags(QSGNode::OwnsGeometry | QSGNode::OwnsMaterial);
-
-      m_route_node = new QSGGeometryNode;
-      auto* route_material = new QSGFlatColorMaterial;
-      route_material->setColor(palette().accent());
-      m_route_node->setMaterial(route_material);
-      auto* route_geometry = new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), 0, 0, QSGGeometry::UnsignedIntType);
-      route_geometry->setDrawingMode(QSGGeometry::DrawLineStrip);
-      route_geometry->setLineWidth(ROUTE_LINE_WIDTH);
-      m_route_node->setGeometry(route_geometry);
-      m_route_node->setFlags(QSGNode::OwnsGeometry | QSGNode::OwnsMaterial);
+      m_background_node = SG::utils::createSimpleGeometryNode(palette().background(), QSGGeometry::DrawTriangles);
+      m_profile_node = SG::utils::createSimpleGeometryNode(palette().overlay(), DrawQuadStrip);
+      m_route_node = SG::utils::createSimpleGeometryNode(palette().accent(), QSGGeometry::DrawLineStrip, ROUTE_LINE_WIDTH);
+      m_metrics_node = SG::utils::createSimpleGeometryNode(palette().warn(), QSGGeometry::DrawLineStrip, METRICS_LINE_WIDTH);
 
       old_node->appendChildNode(m_background_node);
       old_node->appendChildNode(m_profile_node);
       old_node->appendChildNode(m_route_node);
+      old_node->appendChildNode(m_metrics_node);
     }
 
     if(m_require_recolor)
@@ -103,6 +87,7 @@ namespace ElevationChart
       dynamic_cast<QSGFlatColorMaterial*>(m_background_node->material())->setColor(palette().background());
       dynamic_cast<QSGFlatColorMaterial*>(m_profile_node->material())->setColor(palette().overlay());
       dynamic_cast<QSGFlatColorMaterial*>(m_route_node->material())->setColor(palette().accent());
+      dynamic_cast<QSGFlatColorMaterial*>(m_metrics_node->material())->setColor(palette().warn());
     }
 
     this->handleBackgroundNode();
@@ -114,6 +99,7 @@ namespace ElevationChart
       m_background_node->markDirty(QSGNode::DirtyGeometry | QSGNode::DirtyMaterial);
       m_profile_node->markDirty(QSGNode::DirtyGeometry | QSGNode::DirtyMaterial);
       m_route_node->markDirty(QSGNode::DirtyGeometry | QSGNode::DirtyMaterial);
+      m_metrics_node->markDirty(QSGNode::DirtyGeometry | QSGNode::DirtyMaterial);
       this->fulfillRecolor();
     }
     else
@@ -121,6 +107,7 @@ namespace ElevationChart
       m_background_node->markDirty(QSGNode::DirtyGeometry);
       m_profile_node->markDirty(QSGNode::DirtyGeometry);
       m_route_node->markDirty(QSGNode::DirtyGeometry);
+      m_metrics_node->markDirty(QSGNode::DirtyGeometry);
     }
 
     old_node->markDirty(QSGNode::DirtyGeometry | QSGNode::DirtyMaterial);
