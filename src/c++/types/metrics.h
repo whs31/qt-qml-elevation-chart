@@ -64,7 +64,7 @@ namespace ElevationChart
   {}
 
   /**
-   * \property Bounds::rateOfClimb
+   * \property Metrics::rateOfClimb
    * \brief Скороподъемность БПЛА в м/с.
    * \details
    * <table>
@@ -77,7 +77,7 @@ namespace ElevationChart
   inline void Metrics::setRateOfClimb(float x) { m_rateOfClimb = x; }
 
   /**
-   * \property Bounds::rateOfDescend
+   * \property Metrics::rateOfDescend
    * \brief Скорость спуска БПЛА в м/с.
    * \details
    * <table>
@@ -90,7 +90,7 @@ namespace ElevationChart
   inline void Metrics::setRateOfDescend(float x) { m_rateOfDescend = x; }
 
   /**
-   * \property Bounds::fallbackVelocity
+   * \property Metrics::fallbackVelocity
    * \brief Горизонтальная скорость в м/с.
    * \details
    * Это значение будет использоваться только в том

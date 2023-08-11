@@ -20,8 +20,8 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="../../d2/d6b/classElevationChart_1_1ElevationChartItem.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#bfbfbf" points="108.25,-21.5 0,-21.5 0,0 108.25,0 108.25,-21.5"/>
+<g id="a_Node000003"><a xlink:href="../../d2/d6b/classElevationChart_1_1ElevationChartItem.html" target="_top" xlink:title="Основной класс библиотеки.">
+<polygon fill="white" stroke="#666666" points="108.25,-21.5 0,-21.5 0,0 108.25,0 108.25,-21.5"/>
 <text text-anchor="middle" x="54.12" y="-7.05" font-family="Arial" font-size="11.00">ElevationChartItem</text>
 </a>
 </g>

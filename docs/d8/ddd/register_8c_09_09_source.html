@@ -153,7 +153,13 @@ $(document).ready(function(){initNavTree('d8/ddd/register_8c_09_09_source.html',
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  RoutePoint TypeFactory::routePoint(<span class="keywordtype">double</span> la, <span class="keywordtype">double</span> lo, <span class="keywordtype">float</span> e, <span class="keywordtype">float</span> v) { <span class="keywordflow">return</span> {la, lo, e, v}; }</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  Route TypeFactory::route(<span class="keyword">const</span> QGeoPath&amp; path, <span class="keywordtype">float</span> velocity) { <span class="keywordflow">return</span> Route(path, velocity); }</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>} <span class="comment">// ElevationChart</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  Route TypeFactory::route(<span class="keyword">const</span> QGeoPath&amp; path, <span class="keyword">const</span> QVector&lt;float&gt;&amp; velocities)</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  {</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="keyword">auto</span> ret = Route(path);</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    ret.setVelocity(vector(velocities.begin(), velocities.end()), 0);</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="keywordflow">return</span> ret;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  }</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>} <span class="comment">// ElevationChart</span></div>
 <div class="ttc" id="aclassElevationChart_1_1API_html_ab8cef7a4d2287aa88eba2a0fe72d8115"><div class="ttname"><a href="../../dc/d79/classElevationChart_1_1API.html#ab8cef7a4d2287aa88eba2a0fe72d8115">ElevationChart::API::get</a></div><div class="ttdeci">static API * get()</div><div class="ttdoc">Возвращает единственный и уникальный указатель на объект API.</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d9a/elevationchartapi_8c_09_09_source.html#l00011">elevationchartapi.c++:11</a></div></div>
 <div class="ttc" id="anamespaceElevationChart_html"><div class="ttname"><a href="../../d6/d7f/namespaceElevationChart.html">ElevationChart</a></div><div class="ttdoc">Пространство имен для виджета профиля высот.</div><div class="ttdef"><b>Definition</b> <a href="../../df/dcc/elevationchart_8c_09_09_source.html#l00010">elevationchart.c++:11</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

@@ -9,6 +9,19 @@
 
 namespace ElevationChart
 {
+  /**
+   * \class ElevationChartItem
+   * \brief Основной класс библиотеки.
+   * \details Представляет собой C++ - реализацию для профиля высот.
+   * Класс отвечает за вычисления, отрисовку с аппаратным ускорением и хранение данных о профиле высот.
+   * \note Класс зарегистрирован как мета-тип и может использоваться в качестве Q_PROPERTY
+   * по указателю как в C++, так и в QML.
+   */
+
+  /**
+   * \brief Создает новый объект с указанным родителем. Этот конструктор должен быть вызван движком QML.
+   * \param parent - родительский объект в иерархии Qt.
+   */
   ElevationChartItem::ElevationChartItem(QQuickItem* parent)
     : QQuickItem(parent)
     , m_require_recolor(false)
@@ -182,12 +195,45 @@ namespace ElevationChart
       m_route_node->geometry()->vertexDataAsPoint2D()[i] = gl.at(i);
   }
 
+  /**
+   * \brief Преобразует координаты ElevationPoint в пиксельные координаты этого объекта.
+   * \param x - значение ElevationPoint::distance.
+   * \param y - значение ElevationPoint::elevation.
+   * \param x_max - максимальное значение по оси X.
+   * \param y_max - максимальное значение по оси Y.
+   * \return Точка для использования в цикле отрисовки.
+   */
   QSGGeometry::Point2D ElevationChartItem::toPixel(float x, float y, float x_max, float y_max) const { return {toPixelX(x, x_max), toPixelY(y, y_max) }; }
+
+  /**
+   * \brief Вспомогательная функция, преобразующая координаты ElevationPoint в пиксельные только по оси X.
+   * \param x - значение ElevationPoint::distance.
+   * \param x_max - максимальное значение по оси X.
+   * \return Значение по оси Х в пикселях.
+   */
   float ElevationChartItem::toPixelX(float x, float x_max) const { return static_cast<float>(x / x_max * width()); }
+
+  /**
+   * \brief Вспомогательная функция, преобразующая координаты ElevationPoint в пиксельные только по оси Y.
+   * \param y - значение ElevationPoint::elevation.
+   * \param y_max - максимальное значение по оси Y.
+   * \return Значение по оси Y в пикселях.
+   */
   float ElevationChartItem::toPixelY(float y, float y_max) const { return static_cast<float>(height() - (y / (y_max * bounds().stretch()) * height())); }
 
   // properties
 
+  /**
+   * \property ElevationChartItem::palette
+   * \brief Палитра цветов, используемая в виджете.
+   * \details
+   * <table>
+   * <caption id="multi_row">Связанные функции</caption>
+   * <tr><th>Чтение             <th>Запись              <th>Оповещение
+   * <tr><td><i>palette</i>     <td><i>setPalette</i>   <td><i>paletteChanged</i>
+   * </table>
+   * \see SG::BasicPalette
+   */
   SG::BasicPalette ElevationChartItem::palette() const { return m_palette; }
   void ElevationChartItem::setPalette(SG::BasicPalette x) {
     m_palette = std::move(x);
@@ -196,12 +242,35 @@ namespace ElevationChart
     this->requireRecolor();
   }
 
+  /**
+   * \property ElevationChartItem::bounds
+   * \brief Максимальные значения по осям для виджета.
+   * \details
+   * <table>
+   * <caption id="multi_row">Связанные функции</caption>
+   * <tr><th>Чтение             <th>Запись              <th>Оповещение
+   * <tr><td><i>bounds</i>      <td><i>setBounds</i>    <td><i>boundsChanged</i>
+   * </table>
+   * \see ElevationChart::Bounds
+   * \warning Запись в свойство из QML приведет к неопределенному поведению.
+   */
   Bounds ElevationChartItem::bounds() const { return m_bounds; }
   void ElevationChartItem::setBounds(ElevationChart::Bounds x) {
     m_bounds = x;
     emit boundsChanged();
   }
 
+  /**
+   * \property ElevationChartItem::intersecting
+   * \brief Состояние пересечения пути с рельефом.
+   * \details
+   * Свойство вернет <tt>true</tt>, если путь пересекается с рельефом хотя бы в одной точке.
+   * <table>
+   * <caption id="multi_row">Связанные функции</caption>
+   * <tr><th>Чтение             <th>Запись                <th>Оповещение
+   * <tr><td><i>intersecting</i><td><i>setIntersecting</i><td><i>intersectingChanged</i>
+   * </table>
+   */
   bool ElevationChartItem::intersecting() const { return m_intersecting; }
   void ElevationChartItem::setIntersecting(bool x) {
     if(x == m_intersecting)
@@ -210,6 +279,17 @@ namespace ElevationChart
     emit intersectingChanged();
   }
 
+  /**
+   * \property ElevationChartItem::valid
+   * \brief Состояние наличия профилей высот.
+   * \details
+   * Свойство вернет <tt>false</tt>, если отсутствуют профили высот для выбранного пути.
+   * <table>
+   * <caption id="multi_row">Связанные функции</caption>
+   * <tr><th>Чтение             <th>Запись                <th>Оповещение
+   * <tr><td><i>valid</i>       <td><i>setValid</i>       <td><i>validChanged</i>
+   * </table>
+   */
   bool ElevationChartItem::valid() const { return m_valid; }
   void ElevationChartItem::setValid(bool x) {
     if(x == m_valid)
@@ -218,6 +298,20 @@ namespace ElevationChart
     emit validChanged();
   }
 
+  /**
+   * \property ElevationChartItem::route
+   * \brief Путь, по которому происходит построения профиля высот.
+   * \details
+   * Это основное свойство, используемое извне. При обновлении пути виджет перестраивает
+   * текущий профиль, а при изменении пути из виджета срабатывает сигнал, и путь можно прочитать
+   * обратно.
+   * <table>
+   * <caption id="multi_row">Связанные функции</caption>
+   * <tr><th>Чтение             <th>Запись              <th>Оповещение
+   * <tr><td><i>route</i>       <td><i>setRoute</i>     <td><i>routeChanged</i>
+   * </table>
+   * \see ElevationChart::Route
+   */
   Route ElevationChartItem::route() const { return m_route; }
   void ElevationChartItem::setRoute(const Route& x) {
     m_route = x;
@@ -226,8 +320,31 @@ namespace ElevationChart
     this->updateProfile();
   }
 
+  /**
+   * \property ElevationChartItem::model
+   * \brief Модель точек пути.
+   * \details
+   * <table>
+   * <caption id="multi_row">Связанные функции</caption>
+   * <tr><th>Чтение             <th>Запись              <th>Оповещение
+   * <tr><td><i>model</i>       <td><i>--</i>           <td><i>--</i>
+   * </table>
+   * \see ElevationChart::RouteModel
+   */
   RouteModel* ElevationChartItem::model() const { return m_model; }
 
+  /**
+   * \property ElevationChartItem::uavPosition
+   * \brief Позиция БПЛА в данный момент.
+   * \details
+   * Используется для вычисления относительной высоты и отображении позиции БПЛА
+   * на виджете.
+   * <table>
+   * <caption id="multi_row">Связанные функции</caption>
+   * <tr><th>Чтение             <th>Запись               <th>Оповещение
+   * <tr><td><i>uavPosition</i> <td><i>setUavPosition</i><td><i>uavPositionChanged</i>
+   * </table>
+   */
   QGeoCoordinate ElevationChartItem::uavPosition() const { return m_uav_position; }
   void ElevationChartItem::setUavPosition(const QGeoCoordinate& x) {
     if(x == m_uav_position)
@@ -236,6 +353,18 @@ namespace ElevationChart
     emit uavPositionChanged();
   }
 
+  /**
+   * \property ElevationChartItem::shrinkMode
+   * \brief Тип поведения оси Y виджета.
+   * \details
+   * <i>По умолчанию равняется ShrinkMode::ShrinkToRouteHeight</i>.
+   * <table>
+   * <caption id="multi_row">Связанные функции</caption>
+   * <tr><th>Чтение             <th>Запись              <th>Оповещение
+   * <tr><td><i>shrinkMode</i>  <td><i>setShrinkMode</i><td><i>shrinkModeChanged</i>
+   * </table>
+   * \see ShrinkMode
+   */
   int ElevationChartItem::shrinkMode() const { return static_cast<int>(m_shrink_mode); }
   void ElevationChartItem::setShrinkMode(int x) {
     if(x == m_shrink_mode)

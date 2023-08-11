@@ -6,6 +6,7 @@ var hierarchy =
     [ "IElevationDataProvider", "db/d9d/classElevationChart_1_1IElevationDataProvider.html", [
       [ "RandomDataProvider", "d3/d2f/classElevationChart_1_1RandomDataProvider.html", null ]
     ] ],
+    [ "Metrics", "dc/da9/classElevationChart_1_1Metrics.html", null ],
     [ "QObject", null, [
       [ "API", "dc/d79/classElevationChart_1_1API.html", null ],
       [ "TypeFactory", "d6/dda/classElevationChart_1_1TypeFactory.html", null ],

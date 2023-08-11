@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['intersects_0',['intersects',['../dd/d95/classElevationChart_1_1ElevationPoint.html#aeceafdf4c1cfff393c5cc04491bfa59c',1,'ElevationChart::ElevationPoint']]]
+  ['metrics_0',['Metrics',['../dc/da9/classElevationChart_1_1Metrics.html#aac8853916fe40092772145c5093041e9',1,'ElevationChart::Metrics::Metrics()'],['../dc/da9/classElevationChart_1_1Metrics.html#a760d10393e5d3dc6b95033e9e0a9eaa2',1,'ElevationChart::Metrics::Metrics(float roc, float rod, float vh)']]],
+  ['move_1',['move',['../d6/de1/classElevationChart_1_1RouteModel.html#a4eb67f6bb6af3c6fdbe4f43f2caf9b14',1,'ElevationChart::RouteModel']]]
 ];
