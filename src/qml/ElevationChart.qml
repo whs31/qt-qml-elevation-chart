@@ -176,6 +176,8 @@ Rectangle {
                 }
 
                 Material.background: impl.palette.overlay2
+
+                onPressed: impl.applyMetricsCorrection()
             }
         }
     }

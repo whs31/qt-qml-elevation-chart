@@ -61,7 +61,14 @@ namespace ElevationChart
    */
   void ElevationChartItem::applyMetricsCorrection() noexcept
   {
-    // ?
+    if(matchingMetrics())
+    {
+      qWarning() << "<elevation-chart> Route already matching metrics, no correction will be applied";
+      return;
+    }
+
+    this->setRoute(Route(m_metrics_path, metrics().fallbackVelocity()));
+    qDebug() << "<elevation-chart> Route is corrected according to flight metrics.";
   }
 
   QSGNode* ElevationChartItem::updatePaintNode(QSGNode* old_node, QQuickItem::UpdatePaintNodeData* unused)
