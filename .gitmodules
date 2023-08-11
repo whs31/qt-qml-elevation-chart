@@ -1,0 +1,3 @@
+[submodule "libs/DEM"]
+	path = libs/DEM
+	url = ../../developers/map/dem
