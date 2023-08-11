@@ -35,6 +35,7 @@ file(GLOB_RECURSE EC_CORE_INCLUDE include/*)
 file(GLOB_RECURSE EC_EXAMPLES examples/*)
 
 add_subdirectory(libs/libscenegraph)
+add_subdirectory(libs/DEM)
 
 if(MAKE_LIBRARY)
     message("Making library...")
@@ -57,6 +58,7 @@ target_link_libraries(${PROJECT_NAME}
     Qt${QT_VERSION_MAJOR}::Positioning
     Qt${QT_VERSION_MAJOR}::QuickControls2
     libscenegraph
+    DEM
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC include src)
