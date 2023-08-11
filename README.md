@@ -7,3 +7,4 @@
 #### Используемые библиотеки
 
 - ![Repo logo](https://avatars.githubusercontent.com/u/93489351?s=16&v=1) [**Catpuccin**](https://github.com/catppuccin/palette) - цветовая схема для QML/JavaScript/CSS
+- ![](./docs/images/dem_icon.png) [**DEM**](http://uav.radar-mms.com/gitlab/developers/map/dem) - библиотека для работы с высотными данными ландшафта.
