@@ -78,8 +78,8 @@ namespace ElevationChart
 
       old_node->appendChildNode(m_background_node);
       old_node->appendChildNode(m_profile_node);
-      old_node->appendChildNode(m_route_node);
       old_node->appendChildNode(m_metrics_node);
+      old_node->appendChildNode(m_route_node);
     }
 
     if(m_require_recolor)
@@ -93,6 +93,7 @@ namespace ElevationChart
     this->handleBackgroundNode();
     this->handleProfileNode();
     this->handleRouteNode();
+    this->handleMetricsNode();
 
     if(m_require_recolor)
     {
@@ -251,7 +252,24 @@ namespace ElevationChart
 
   void ElevationChartItem::handleMetricsNode() noexcept
   {
+    vector<ElevationPoint> t_route;
+    auto prev_coord = m_metrics_path.path().front();
+    float distance = 0;
+    for(const auto& point : m_metrics_path.path())
+    {
+      distance += static_cast<float>(point.distanceTo(prev_coord));
+      t_route.emplace_back(distance, point.altitude());
+      prev_coord = point;
+    }
 
+    vector<QSGGeometry::Point2D> gl;
+
+    for(const auto& point : t_route)
+      gl.push_back(toPixel(point.distance(), point.elevation(), bounds().x(), bounds().y()));
+
+    m_metrics_node->geometry()->allocate(static_cast<int>(gl.size()));
+    for(size_t i = 0; i < gl.size(); i++)
+      m_metrics_node->geometry()->vertexDataAsPoint2D()[i] = gl.at(i);
   }
 
   /**
