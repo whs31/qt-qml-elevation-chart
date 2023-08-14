@@ -27,13 +27,6 @@ namespace ElevationChart
    */
   ElevationChartItem::ElevationChartItem(QQuickItem* parent)
     : SG::ScenegraphObject(parent)
-    , m_background_node(nullptr)
-    , m_profile_node(nullptr)
-    , m_route_node(nullptr)
-    , m_metrics_node(nullptr)
-    , m_metrics_point_node(nullptr)
-    , m_envelope_node(nullptr)
-    , m_corridor_node(nullptr)
     , m_intersecting(false)
     , m_valid(false)
     , m_matching_metrics(true)
@@ -72,26 +65,23 @@ namespace ElevationChart
 
   void ElevationChartItem::setupChildNodes(QSGNode* node)
   {
-    m_background_node = SG::utils::createSimpleGeometryNode(palette().background(), QSGGeometry::DrawTriangles);
-    m_profile_node = SG::utils::createSimpleGeometryNode(palette().overlay(), DrawQuadStrip);
-    m_route_node = SG::utils::createSimpleGeometryNode(palette().accent(), QSGGeometry::DrawLineStrip, ROUTE_LINE_WIDTH);
-    m_metrics_node = SG::utils::createSimpleGeometryNode(palette().warn(), QSGGeometry::DrawLineStrip, METRICS_LINE_WIDTH);
-    m_metrics_point_node = SG::utils::createSimpleGeometryNode(palette().warn(), QSGGeometry::DrawPoints, METRICS_ROUNDING_WIDTH);
+    tree()[BackgroundNode] = SG::utils::createSimpleGeometryNode(palette().background(), QSGGeometry::DrawTriangles);
+    tree()[ProfileNode] = SG::utils::createSimpleGeometryNode(palette().overlay(), DrawQuadStrip);
+    tree()[RouteNode] = SG::utils::createSimpleGeometryNode(palette().accent(), QSGGeometry::DrawLineStrip, ROUTE_LINE_WIDTH);
+    tree()[MetricsNode] = SG::utils::createSimpleGeometryNode(palette().warn(), QSGGeometry::DrawLineStrip, METRICS_LINE_WIDTH);
+    tree()[MetricsPointNode] = SG::utils::createSimpleGeometryNode(palette().warn(), QSGGeometry::DrawPoints, METRICS_ROUNDING_WIDTH);
 
-    node->appendChildNode(m_background_node);
-    node->appendChildNode(m_profile_node);
-    node->appendChildNode(m_metrics_node);
-    node->appendChildNode(m_metrics_point_node);
-    node->appendChildNode(m_route_node);
+    for(const auto&[key, value] : tree())
+      node->appendChildNode(value);
   }
 
   void ElevationChartItem::setupNodeColors(QSGNode* node)
   {
-    dynamic_cast<QSGFlatColorMaterial*>(m_background_node->material())->setColor(palette().background());
-    dynamic_cast<QSGFlatColorMaterial*>(m_profile_node->material())->setColor(palette().overlay());
-    dynamic_cast<QSGFlatColorMaterial*>(m_route_node->material())->setColor(palette().accent());
-    dynamic_cast<QSGFlatColorMaterial*>(m_metrics_node->material())->setColor(palette().warn());
-    dynamic_cast<QSGFlatColorMaterial*>(m_metrics_point_node->material())->setColor(palette().warn());
+    dynamic_cast<QSGFlatColorMaterial*>(tree()[BackgroundNode]->material())->setColor(palette().background());
+    dynamic_cast<QSGFlatColorMaterial*>(tree()[ProfileNode]->material())->setColor(palette().overlay());
+    dynamic_cast<QSGFlatColorMaterial*>(tree()[RouteNode]->material())->setColor(palette().accent());
+    dynamic_cast<QSGFlatColorMaterial*>(tree()[MetricsNode]->material())->setColor(palette().warn());
+    dynamic_cast<QSGFlatColorMaterial*>(tree()[MetricsPointNode]->material())->setColor(palette().warn());
   }
 
   void ElevationChartItem::drawCall(QSGNode* node)
@@ -192,17 +182,21 @@ namespace ElevationChart
 
   void ElevationChartItem::handleBackgroundNode() noexcept
   {
-    m_background_node->geometry()->allocate(6);
-    m_background_node->geometry()->vertexDataAsPoint2D()[0].set(0, 0);
-    m_background_node->geometry()->vertexDataAsPoint2D()[1].set(static_cast<float>(width()), 0);
-    m_background_node->geometry()->vertexDataAsPoint2D()[2].set(static_cast<float>(width()), static_cast<float>(height()));
-    m_background_node->geometry()->vertexDataAsPoint2D()[3].set(static_cast<float>(width()), static_cast<float>(height()));
-    m_background_node->geometry()->vertexDataAsPoint2D()[4].set(0, static_cast<float>(height()));
-    m_background_node->geometry()->vertexDataAsPoint2D()[5].set(0, 0);
+    auto geometry = tree()[BackgroundNode]->geometry();
+
+    geometry->allocate(6);
+    geometry->vertexDataAsPoint2D()[0].set(0, 0);
+    geometry->vertexDataAsPoint2D()[1].set(static_cast<float>(width()), 0);
+    geometry->vertexDataAsPoint2D()[2].set(static_cast<float>(width()), static_cast<float>(height()));
+    geometry->vertexDataAsPoint2D()[3].set(static_cast<float>(width()), static_cast<float>(height()));
+    geometry->vertexDataAsPoint2D()[4].set(0, static_cast<float>(height()));
+    geometry->vertexDataAsPoint2D()[5].set(0, 0);
   }
 
   void ElevationChartItem::handleProfileNode() noexcept
   {
+    auto geometry = tree()[ProfileNode]->geometry();
+
     vector<QSGGeometry::Point2D> gl;
     for(const auto& point : m_profile)
     {
@@ -210,27 +204,32 @@ namespace ElevationChart
       gl.push_back(toPixel(point.distance(), point.elevation(), bounds().x(), bounds().y()));
     }
 
-    m_profile_node->geometry()->allocate(static_cast<int>(gl.size()));
+    geometry->allocate(static_cast<int>(gl.size()));
 
     for(size_t i = 0; i < gl.size(); i++)
-      m_profile_node->geometry()->vertexDataAsPoint2D()[i] = gl.at(i);
+      geometry->vertexDataAsPoint2D()[i] = gl.at(i);
   }
 
   void ElevationChartItem::handleRouteNode() noexcept
   {
+    auto geometry = tree()[RouteNode]->geometry();
+
     vector<ElevationPoint> t_route = route().toElevationGraph();
     vector<QSGGeometry::Point2D> gl;
 
     for(const auto& point : t_route)
       gl.push_back(toPixel(point.distance(), point.elevation(), bounds().x(), bounds().y()));
 
-    m_route_node->geometry()->allocate(static_cast<int>(gl.size()));
+    geometry->allocate(static_cast<int>(gl.size()));
     for(size_t i = 0; i < gl.size(); i++)
-      m_route_node->geometry()->vertexDataAsPoint2D()[i] = gl.at(i);
+      geometry->vertexDataAsPoint2D()[i] = gl.at(i);
   }
 
   void ElevationChartItem::handleMetricsNode() noexcept
   {
+    auto geometry1 = tree()[MetricsNode]->geometry();
+    auto geometry2 = tree()[MetricsPointNode]->geometry();
+
     if(matchingMetrics())
     {
       /*
@@ -240,8 +239,8 @@ namespace ElevationChart
        * компонентом в qml, все решилось бы visible: !matchingMetrics, но внутри одного итема
        * единственный варик это вручную чистить буфер вот таким вызовом.
        */
-      m_metrics_point_node->geometry()->allocate(0);
-      m_metrics_node->geometry()->allocate(0);
+      geometry1->allocate(0);
+      geometry2->allocate(0);
       return;
     }
 
@@ -260,12 +259,12 @@ namespace ElevationChart
     for(const auto& point : t_route)
       gl.push_back(toPixel(point.distance(), point.elevation(), bounds().x(), bounds().y()));
 
-    m_metrics_node->geometry()->allocate(static_cast<int>(gl.size()));
-    m_metrics_point_node->geometry()->allocate(static_cast<int>(gl.size()));
+    geometry1->allocate(static_cast<int>(gl.size()));
+    geometry2->allocate(static_cast<int>(gl.size()));
     for(size_t i = 0; i < gl.size(); i++)
     {
-      m_metrics_node->geometry()->vertexDataAsPoint2D()[i] = gl.at(i);
-      m_metrics_point_node->geometry()->vertexDataAsPoint2D()[i] = gl.at(i);
+      geometry1->vertexDataAsPoint2D()[i] = gl.at(i);
+      geometry2->vertexDataAsPoint2D()[i] = gl.at(i);
     }
   }
 
@@ -487,4 +486,6 @@ namespace ElevationChart
 
     this->updateBounds();
   }
+
+  map<ElevationChartItem::NodeTypes, QSGGeometryNode*>& ElevationChartItem::tree() { return m_tree; }
 } // ElevationChart

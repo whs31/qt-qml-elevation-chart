@@ -5,6 +5,7 @@
 #pragma once
 
 #include <memory>
+#include <map>
 #include <QtCore/QPointF>
 #include <QtQuick/QSGGeometry>
 #include <SG/BasicPalette>
@@ -16,6 +17,7 @@
 #include "internal/routemodel.h"
 
 using std::unique_ptr;
+using std::map;
 
 class QSGGeometryNode;
 
@@ -42,6 +44,17 @@ namespace ElevationChart
     constexpr static const float ROUTE_LINE_WIDTH = 5.0f;         ///< Ширина линии пути для отрисовки (px).
     constexpr static const float METRICS_LINE_WIDTH = 3.0f;       ///< Ширина линии пути, скорректированного по ЛТХ для отрисовки (px).
     constexpr static const float METRICS_ROUNDING_WIDTH = 8.0f;   ///< Размер точек для сглаживания ломаной на пути ЛТХ (px).
+
+    enum NodeTypes
+    {
+      BackgroundNode,   ///< Нода фона.
+      ProfileNode,      ///< Нода профиля рельефа.
+      MetricsNode,      ///< Нода маршрута, скорректированного по ЛТХ.
+      MetricsPointNode, ///< Нода для точек маршрута, скорректированного по ЛТХ.
+      EnvelopeNode,     ///< Нода огибающей.
+      CorridorNode,     ///< Нода коридора для огибающей.
+      RouteNode         ///< Нода маршрута.
+    };
 
     public:
       /// \brief Перечисление поведения оси Y.
@@ -100,14 +113,10 @@ namespace ElevationChart
       [[nodiscard]] float toPixelX(float x, float x_max) const;
       [[nodiscard]] float toPixelY(float y, float y_max) const;
 
+      [[nodiscard]] map<NodeTypes, QSGGeometryNode*>& tree();
+
     protected:
-      QSGGeometryNode* m_background_node;     ///< Нода фона.
-      QSGGeometryNode* m_profile_node;        ///< Нода профиля рельефа.
-      QSGGeometryNode* m_route_node;          ///< Нода маршрута.
-      QSGGeometryNode* m_metrics_node;        ///< Нода маршрута, скорректированного по ЛТХ.
-      QSGGeometryNode* m_metrics_point_node;  ///< Нода для точек маршрута, скорректированного по ЛТХ.
-      QSGGeometryNode* m_envelope_node;       ///< Нода огибающей.
-      QSGGeometryNode* m_corridor_node;       ///< Нода коридора для огибающей.
+      map<NodeTypes, QSGGeometryNode*> m_tree;
 
     private:
       SG::BasicPalette m_palette;
