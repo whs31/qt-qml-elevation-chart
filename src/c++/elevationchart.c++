@@ -26,8 +26,7 @@ namespace ElevationChart
    * \param parent - родительский объект в иерархии Qt.
    */
   ElevationChartItem::ElevationChartItem(QQuickItem* parent)
-    : QQuickItem(parent)
-    , m_require_recolor(false)
+    : SG::ScenegraphObject(parent)
     , m_background_node(nullptr)
     , m_profile_node(nullptr)
     , m_route_node(nullptr)
@@ -71,70 +70,37 @@ namespace ElevationChart
     qDebug() << "<elevation-chart> Route is corrected according to flight metrics.";
   }
 
-  QSGNode* ElevationChartItem::updatePaintNode(QSGNode* old_node, QQuickItem::UpdatePaintNodeData* unused)
+  void ElevationChartItem::setupChildNodes(QSGNode* node)
   {
-    (void)unused;
+    m_background_node = SG::utils::createSimpleGeometryNode(palette().background(), QSGGeometry::DrawTriangles);
+    m_profile_node = SG::utils::createSimpleGeometryNode(palette().overlay(), DrawQuadStrip);
+    m_route_node = SG::utils::createSimpleGeometryNode(palette().accent(), QSGGeometry::DrawLineStrip, ROUTE_LINE_WIDTH);
+    m_metrics_node = SG::utils::createSimpleGeometryNode(palette().warn(), QSGGeometry::DrawLineStrip, METRICS_LINE_WIDTH);
+    m_metrics_point_node = SG::utils::createSimpleGeometryNode(palette().warn(), QSGGeometry::DrawPoints, METRICS_ROUNDING_WIDTH);
 
-    if(old_node == nullptr)
-    {
-      old_node = new QSGNode;
+    node->appendChildNode(m_background_node);
+    node->appendChildNode(m_profile_node);
+    node->appendChildNode(m_metrics_node);
+    node->appendChildNode(m_metrics_point_node);
+    node->appendChildNode(m_route_node);
+  }
 
-      m_background_node = SG::utils::createSimpleGeometryNode(palette().background(), QSGGeometry::DrawTriangles);
-      m_profile_node = SG::utils::createSimpleGeometryNode(palette().overlay(), DrawQuadStrip);
-      m_route_node = SG::utils::createSimpleGeometryNode(palette().accent(), QSGGeometry::DrawLineStrip, ROUTE_LINE_WIDTH);
-      m_metrics_node = SG::utils::createSimpleGeometryNode(palette().warn(), QSGGeometry::DrawLineStrip, METRICS_LINE_WIDTH);
-      m_metrics_point_node = SG::utils::createSimpleGeometryNode(palette().warn(), QSGGeometry::DrawPoints, METRICS_ROUNDING_WIDTH);
+  void ElevationChartItem::setupNodeColors(QSGNode* node)
+  {
+    dynamic_cast<QSGFlatColorMaterial*>(m_background_node->material())->setColor(palette().background());
+    dynamic_cast<QSGFlatColorMaterial*>(m_profile_node->material())->setColor(palette().overlay());
+    dynamic_cast<QSGFlatColorMaterial*>(m_route_node->material())->setColor(palette().accent());
+    dynamic_cast<QSGFlatColorMaterial*>(m_metrics_node->material())->setColor(palette().warn());
+    dynamic_cast<QSGFlatColorMaterial*>(m_metrics_point_node->material())->setColor(palette().warn());
+  }
 
-      old_node->appendChildNode(m_background_node);
-      old_node->appendChildNode(m_profile_node);
-      old_node->appendChildNode(m_metrics_node);
-      old_node->appendChildNode(m_metrics_point_node);
-      old_node->appendChildNode(m_route_node);
-    }
-
-    if(m_require_recolor)
-    {
-      dynamic_cast<QSGFlatColorMaterial*>(m_background_node->material())->setColor(palette().background());
-      dynamic_cast<QSGFlatColorMaterial*>(m_profile_node->material())->setColor(palette().overlay());
-      dynamic_cast<QSGFlatColorMaterial*>(m_route_node->material())->setColor(palette().accent());
-      dynamic_cast<QSGFlatColorMaterial*>(m_metrics_node->material())->setColor(palette().warn());
-      dynamic_cast<QSGFlatColorMaterial*>(m_metrics_point_node->material())->setColor(palette().warn());
-    }
-
+  void ElevationChartItem::drawCall(QSGNode* node)
+  {
     this->handleBackgroundNode();
     this->handleProfileNode();
     this->handleRouteNode();
     this->handleMetricsNode();
-
-    if(m_require_recolor)
-    {
-      m_background_node->markDirty(QSGNode::DirtyGeometry | QSGNode::DirtyMaterial);
-      m_profile_node->markDirty(QSGNode::DirtyGeometry | QSGNode::DirtyMaterial);
-      m_route_node->markDirty(QSGNode::DirtyGeometry | QSGNode::DirtyMaterial);
-      m_metrics_node->markDirty(QSGNode::DirtyGeometry | QSGNode::DirtyMaterial);
-      m_metrics_point_node->markDirty(QSGNode::DirtyGeometry | QSGNode::DirtyMaterial);
-      this->fulfillRecolor();
-    }
-    else
-    {
-      m_background_node->markDirty(QSGNode::DirtyGeometry);
-      m_profile_node->markDirty(QSGNode::DirtyGeometry);
-      m_route_node->markDirty(QSGNode::DirtyGeometry);
-      m_metrics_node->markDirty(QSGNode::DirtyGeometry);
-      m_metrics_point_node->markDirty(QSGNode::DirtyGeometry);
-    }
-
-    old_node->markDirty(QSGNode::DirtyGeometry | QSGNode::DirtyMaterial);
-    return old_node;
   }
-
-  void ElevationChartItem::requireRecolor()
-  {
-    m_require_recolor = true;
-    this->update();
-  }
-
-  void ElevationChartItem::fulfillRecolor() { m_require_recolor = false; }
 
   void ElevationChartItem::updateProfile() noexcept
   {
@@ -161,7 +127,7 @@ namespace ElevationChart
 
     if(shrinkMode() == ShrinkToProfileHeight)
       setBounds({bounds().x(), std::max(bounds().y(), std::max_element(m_profile.cbegin(), m_profile.cend(),
-                 [](const ElevationPoint& a, const ElevationPoint& b){  return a.elevation() < b.elevation();
+                 [](const ElevationPoint& a, const ElevationPoint& b){ return a.elevation() < b.elevation();
                  })->elevation())});
 
     this->updateMetrics();

@@ -6,9 +6,9 @@
 
 #include <memory>
 #include <QtCore/QPointF>
-#include <QtQuick/QQuickItem>
 #include <QtQuick/QSGGeometry>
 #include <SG/BasicPalette>
+#include <SG/ScenegraphObject>
 #include "types/route.h"
 #include "types/bounds.h"
 #include "types/metrics.h"
@@ -21,7 +21,7 @@ class QSGGeometryNode;
 
 namespace ElevationChart
 {
-  class ElevationChartItem : public QQuickItem
+  class ElevationChartItem : public SG::ScenegraphObject
   {
     Q_OBJECT
     Q_PROPERTY(SG::BasicPalette palette READ palette WRITE setPalette NOTIFY paletteChanged FINAL)
@@ -83,9 +83,9 @@ namespace ElevationChart
       void shrinkModeChanged();
 
     protected:
-      QSGNode* updatePaintNode(QSGNode* old_node, UpdatePaintNodeData*) override;
-      void requireRecolor();
-      void fulfillRecolor();
+      void setupChildNodes(QSGNode* node) final;
+      void setupNodeColors(QSGNode* node) final;
+      void drawCall(QSGNode* node) final;
 
       Q_SLOT void updateProfile() noexcept;
       Q_SLOT void updateBounds() noexcept;
@@ -110,7 +110,6 @@ namespace ElevationChart
       QSGGeometryNode* m_corridor_node;       ///< Нода коридора для огибающей.
 
     private:
-      bool m_require_recolor;
       SG::BasicPalette m_palette;
       Bounds m_bounds;
       bool m_intersecting;
