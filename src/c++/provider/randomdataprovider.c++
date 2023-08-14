@@ -5,6 +5,17 @@
 
 namespace ElevationChart
 {
+  /**
+   * \class RandomDataProvider
+   * \brief Провайдер <b>случайных</b> тестовых данных о профиле высот.
+   * \extends IElevationDataProvider
+   */
+
+  /**
+   * \brief Возвращает массив с точками <b>случайных</b> высотных данных по заданной ломаной прямой.
+   * \param path - ломаная прямая, по которой будут рассчитаны высотные данные ландшафта.
+   * \return Произвольный массив точек ElevationPoint.
+   */
   vector<ElevationPoint> RandomDataProvider::plotElevationProfile(const QGeoPath& path) const
   {
     vector<ElevationPoint> ret;

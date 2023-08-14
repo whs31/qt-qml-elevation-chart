@@ -2,6 +2,7 @@ var namespaceElevationChart =
 [
     [ "API", "dc/d79/classElevationChart_1_1API.html", "dc/d79/classElevationChart_1_1API" ],
     [ "Bounds", "d6/d1e/classElevationChart_1_1Bounds.html", "d6/d1e/classElevationChart_1_1Bounds" ],
+    [ "DEMDataProvider", "dd/d98/classElevationChart_1_1DEMDataProvider.html", "dd/d98/classElevationChart_1_1DEMDataProvider" ],
     [ "ElevationChartItem", "d2/d6b/classElevationChart_1_1ElevationChartItem.html", "d2/d6b/classElevationChart_1_1ElevationChartItem" ],
     [ "ElevationPoint", "dd/d95/classElevationChart_1_1ElevationPoint.html", "dd/d95/classElevationChart_1_1ElevationPoint" ],
     [ "IElevationDataProvider", "db/d9d/classElevationChart_1_1IElevationDataProvider.html", "db/d9d/classElevationChart_1_1IElevationDataProvider" ],

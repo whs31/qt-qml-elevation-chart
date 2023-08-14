@@ -1,0 +1,5 @@
+<map id="DEMDataProvider" name="DEMDataProvider">
+<area shape="rect" id="Node000001" title="Провайдер данных о профиле высот с использованием библиотеки DEM." alt="" coords="20,82,160,111"/>
+<area shape="rect" id="Node000002" href="$db/d9d/classElevationChart_1_1IElevationDataProvider.html" title="Интерфейс для провайдера данных о профиле высот ландшафта." alt="" coords="5,5,175,34"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="93,49,93,82,87,82,87,49"/>
+</map>

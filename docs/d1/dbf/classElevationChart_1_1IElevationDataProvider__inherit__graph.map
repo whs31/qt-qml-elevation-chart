@@ -1,5 +1,7 @@
 <map id="IElevationDataProvider" name="IElevationDataProvider">
-<area shape="rect" id="Node000001" title="Интерфейс для провайдера данных о профиле высот ландшафта." alt="" coords="5,5,175,34"/>
-<area shape="rect" id="Node000002" href="$d3/d2f/classElevationChart_1_1RandomDataProvider.html" title="Провайдер случайных тестовых данных о профиле высот." alt="" coords="9,82,171,111"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="93,49,93,82,87,82,87,49"/>
+<area shape="rect" id="Node000001" title="Интерфейс для провайдера данных о профиле высот ландшафта." alt="" coords="77,5,246,34"/>
+<area shape="rect" id="Node000002" href="$dd/d98/classElevationChart_1_1DEMDataProvider.html" title="Провайдер данных о профиле высот с использованием библиотеки DEM." alt="" coords="5,82,145,111"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="137,46,93,84,89,79,133,42"/>
+<area shape="rect" id="Node000003" href="$d3/d2f/classElevationChart_1_1RandomDataProvider.html" title="Провайдер случайных тестовых данных о профиле высот." alt="" coords="169,82,330,111"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="191,42,235,79,232,84,187,46"/>
 </map>

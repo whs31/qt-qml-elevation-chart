@@ -4,6 +4,7 @@ var hierarchy =
     [ "Bounds", "d6/d1e/classElevationChart_1_1Bounds.html", null ],
     [ "ElevationPoint", "dd/d95/classElevationChart_1_1ElevationPoint.html", null ],
     [ "IElevationDataProvider", "db/d9d/classElevationChart_1_1IElevationDataProvider.html", [
+      [ "DEMDataProvider", "dd/d98/classElevationChart_1_1DEMDataProvider.html", null ],
       [ "RandomDataProvider", "d3/d2f/classElevationChart_1_1RandomDataProvider.html", null ]
     ] ],
     [ "Metrics", "dc/da9/classElevationChart_1_1Metrics.html", null ],
