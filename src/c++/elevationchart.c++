@@ -34,10 +34,17 @@ namespace ElevationChart
     , m_model(new RouteModel(this))
     , m_uav_position(QGeoCoordinate(60, 30))
     , m_metrics(Metrics())
-    , m_random_provider(std::make_unique<RandomDataProvider>())
+    , m_provider_type(ProviderType::DEMProvider)
     , m_bounds(Bounds())
     , m_shrink_mode(ShrinkMode::ShrinkToRouteHeight)
   {
+    switch(providerType())
+    {
+      case ProviderType::RandomProvider: m_provider = std::make_unique<RandomDataProvider>(); break;
+      case ProviderType::DEMProvider: m_provider = std::make_unique<DEMDataProvider>(); break;
+      default: throw std::runtime_error("Weird shit happened, requiring investigation!");
+    }
+
     this->setFlag(ItemHasContents);
     qRegisterMetaType<ElevationChartItem*>("ChartItem*");
 
@@ -94,7 +101,7 @@ namespace ElevationChart
 
   void ElevationChartItem::updateProfile() noexcept
   {
-    m_profile = m_random_provider->plotElevationProfile(route().toGeoPath());
+    m_profile = provider()->plotElevationProfile(route().toGeoPath());
 
     this->updateBounds();
 
@@ -107,6 +114,9 @@ namespace ElevationChart
   void ElevationChartItem::updateBounds() noexcept
   {
     if(not route().valid())
+      return;
+
+    if(m_profile.empty())
       return;
 
     setBounds({ m_profile.back().distance(), 0 });
@@ -487,5 +497,20 @@ namespace ElevationChart
     this->updateBounds();
   }
 
+  /**
+   * \property ElevationChartItem::providerType
+   * \brief Тип провайдера высотных данных.
+   * \details
+   * <i>По умолчанию равняется ProviderType::DEMProvider</i>.
+   * <table>
+   * <caption id="multi_row">Связанные функции</caption>
+   * <tr><th>Чтение             <th>Запись              <th>Оповещение
+   * <tr><td><i>shrinkMode</i>  <td><i>--</i><td><i>--</i>
+   * </table>
+   * \see ProviderType
+   */
+  int ElevationChartItem::providerType() const { return static_cast<int>(m_provider_type); }
+
   map<ElevationChartItem::NodeTypes, QSGGeometryNode*>& ElevationChartItem::tree() { return m_tree; }
+  IElevationDataProvider* ElevationChartItem::provider() { return m_provider.get(); }
 } // ElevationChart

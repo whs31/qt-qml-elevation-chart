@@ -14,6 +14,7 @@
 #include "types/bounds.h"
 #include "types/metrics.h"
 #include "provider/randomdataprovider.h"
+#include "provider/demdataprovider.h"
 #include "internal/routemodel.h"
 
 using std::unique_ptr;
@@ -40,6 +41,7 @@ namespace ElevationChart
     // is busy
 
     Q_PROPERTY(int shrinkMode READ shrinkMode WRITE setShrinkMode NOTIFY shrinkModeChanged FINAL)
+    Q_PROPERTY(int providerType READ providerType CONSTANT FINAL)
 
     constexpr static const float ROUTE_LINE_WIDTH = 5.0f;         ///< Ширина линии пути для отрисовки (px).
     constexpr static const float METRICS_LINE_WIDTH = 3.0f;       ///< Ширина линии пути, скорректированного по ЛТХ для отрисовки (px).
@@ -65,6 +67,13 @@ namespace ElevationChart
       };
       Q_ENUM(ShrinkMode)
 
+      /// \brief Перечисление типов провайдера высотных данных.
+      enum ProviderType
+      {
+        RandomProvider,           ///< Тестовый провайдер (см. RandomDataProvider).
+        DEMProvider               ///< Провайдер библиотеки DEM (см. DEMDataProvider).
+      };
+
       explicit ElevationChartItem(QQuickItem* parent = nullptr);
 
       [[nodiscard]] SG::BasicPalette palette() const;   void setPalette(SG::BasicPalette);
@@ -79,6 +88,7 @@ namespace ElevationChart
       [[nodiscard]] bool matchingMetrics() const;       void setMatchingMetrics(bool);
 
       [[nodiscard]] int shrinkMode() const;             void setShrinkMode(int);
+      [[nodiscard]] int providerType() const;
 
       Q_INVOKABLE void applyMetricsCorrection() noexcept;
       //Q_INVOKABLE void estimateEnvelope() noexcept;
@@ -114,6 +124,7 @@ namespace ElevationChart
       [[nodiscard]] float toPixelY(float y, float y_max) const;
 
       [[nodiscard]] map<NodeTypes, QSGGeometryNode*>& tree();
+      [[nodiscard]] IElevationDataProvider* provider();
 
     protected:
       map<NodeTypes, QSGGeometryNode*> m_tree;
@@ -128,9 +139,10 @@ namespace ElevationChart
       RouteModel* m_model;
       QGeoCoordinate m_uav_position;
       Metrics m_metrics;
-      unique_ptr<RandomDataProvider> m_random_provider;
+      unique_ptr<IElevationDataProvider> m_provider;
       vector<ElevationPoint> m_profile;
       ShrinkMode m_shrink_mode;
+      ProviderType m_provider_type;
       QGeoPath m_metrics_path;
       QGeoPath m_envelope_path;
   };
