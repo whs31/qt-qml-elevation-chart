@@ -1,24 +1,29 @@
 var classElevationChart_1_1ElevationChartItem =
 [
+    [ "NodeTypes", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#a29bda0404218eae47588229580e8b326", [
+      [ "BackgroundNode", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#a29bda0404218eae47588229580e8b326abf800842fe418011ba0fc9cbb7d8d5f5", null ],
+      [ "ProfileNode", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#a29bda0404218eae47588229580e8b326a88569a8a357982e374d7d2ea6e042083", null ],
+      [ "MetricsNode", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#a29bda0404218eae47588229580e8b326ab5afd7c4ac7d69da2647bae4fb50b29a", null ],
+      [ "MetricsPointNode", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#a29bda0404218eae47588229580e8b326abb3d71f4cc6e9ac6effd64e96de7a25f", null ],
+      [ "EnvelopeNode", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#a29bda0404218eae47588229580e8b326a020e934b4d8dc4621ffddd6c6fca59e6", null ],
+      [ "CorridorNode", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#a29bda0404218eae47588229580e8b326ad6bd7d3d279501c6da61f5bb1f7dcb95", null ],
+      [ "RouteNode", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#a29bda0404218eae47588229580e8b326a0004ae08849d07be6f9f3db4ee62e8c8", null ]
+    ] ],
     [ "ShrinkMode", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#ac06788932cd1a15c825f8a90f2285034", [
       [ "ShrinkToProfileHeight", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#ac06788932cd1a15c825f8a90f2285034a1c9a9a1291e047ad9210db2d4f7a8922", null ],
       [ "ShrinkToRouteHeight", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#ac06788932cd1a15c825f8a90f2285034a4c97e6e9de17a0bdef2ca4c0013dc109", null ]
     ] ],
     [ "ElevationChartItem", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#a54d7407b60453be29d8fcc1855858d57", null ],
     [ "applyMetricsCorrection", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#a8f3ff1c5156568622aa8bdc15389043f", null ],
+    [ "setupChildNodes", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#a3e9bb1600355371913f9faced6787a12", null ],
+    [ "setupNodeColors", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#a30ee242001b54ab214414c4125902313", null ],
+    [ "drawCall", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#acd77d8b7dc63e4edbc0b5f6525237900", null ],
     [ "toPixel", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#aa4a0d12260899262a741d4adc8427c2b", null ],
     [ "toPixelX", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#aa400a689d5b9360a50501cc61ea22a5a", null ],
     [ "toPixelY", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#a3ebe3fef54d03209d9826aaee1f720dd", null ],
     [ "ROUTE_LINE_WIDTH", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#ada7a4faa292b808c45029af1bec1f6c5", null ],
     [ "METRICS_LINE_WIDTH", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#a5b564fa2b51dfe70232848da39d97aaa", null ],
     [ "METRICS_ROUNDING_WIDTH", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#a9bae3280b84c8b4d71bd202b9bfc9f41", null ],
-    [ "m_background_node", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#a75026ccd4258da114ded6b08338c2f25", null ],
-    [ "m_profile_node", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#ab3577e8a401e3ab87267114afcc4f3c2", null ],
-    [ "m_route_node", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#a83832c10a7a512ac06008b9dfe7a47a8", null ],
-    [ "m_metrics_node", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#a14ab53756ce4b49197cffe9aef02fadb", null ],
-    [ "m_metrics_point_node", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#a5376897dd9ede0d76ccfda859528262c", null ],
-    [ "m_envelope_node", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#a24cc11fd3928c20c6ca0d2667becdd54", null ],
-    [ "m_corridor_node", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#a459b99b6718de30da27c5d9a165f2061", null ],
     [ "palette", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#ad9cb5ae5424d8908b86dc6a0fe49f7cc", null ],
     [ "bounds", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#aa88cd70ec11880aa8a698595d0bc7aaa", null ],
     [ "route", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#aa25a556dd18df7259ed6796713f8f051", null ],

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['valid_0',['Valid',['../d6/de1/classElevationChart_1_1RouteModel.html#aca373d517b80753da645a3f727b257f0ac9ceaeea41ae06d1a39c3322c762ec71',1,'ElevationChart::RouteModel']]]
+  ['envelopenode_0',['EnvelopeNode',['../d2/d6b/classElevationChart_1_1ElevationChartItem.html#a29bda0404218eae47588229580e8b326a020e934b4d8dc4621ffddd6c6fca59e6',1,'ElevationChart::ElevationChartItem']]]
 ];

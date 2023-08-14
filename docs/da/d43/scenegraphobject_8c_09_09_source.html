@@ -1,0 +1,177 @@
+<!-- HTML header for doxygen 1.9.6-->
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ru">
+<head>
+  <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=11" />
+  <meta name="generator" content="Doxygen 1.9.7" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Elevation Chart: Исходный файл scenegraphobject.c++</title>
+  <link href="../../tabs.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="../../jquery.js"></script>
+  <script type="text/javascript" src="../../dynsections.js"></script>
+  <script type="text/javascript" src="../../doxygen-awesome-darkmode-toggle.js"></script>
+  <script type="text/javascript" src="../../doxygen-awesome-fragment-copy-button.js"></script>
+  <script type="text/javascript" src="../../doxygen-awesome-paragraph-link.js"></script>
+  <script type="text/javascript" src="../../doxygen-awesome-interactive-toc.js"></script>
+  <script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+  </script>
+  <link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+  <link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+  <link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+  <link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+    <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+      <div id="titlearea">
+        <table cellspacing="0" cellpadding="0">
+          <tbody>
+            <tr id="projectrow">
+              <td id="projectlogo"><img alt="Logo" src="../../logo.png" /></td>
+              <td id="projectalign">
+                <div id="projectname">Elevation Chart<span
+                    id="projectnumber">&#160;3.0.0</span>
+                </div>
+                <div id="projectbrief">Виджет профиля высот</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- end header part --><!-- Создано системой Doxygen 1.9.7 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','Поиск');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('da/d43/scenegraphobject_8c_09_09_source.html','../../'); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Загрузка...</div>
+<div class="SRStatus" id="Searching">Поиск...</div>
+<div class="SRStatus" id="NoMatches">Не найдено</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">scenegraphobject.c++</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">// Created by whs31 on 14.08.23.</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;scenegraphobject.h&quot;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;QtQuick/QSGNode&gt;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../dd/d59/namespaceSG.html">SG</a></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>{</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="../../d6/d6b/classSG_1_1ScenegraphObject.html#a6d09a173a74592b16710df201d320281">   30</a></span>  <a class="code hl_function" href="../../d6/d6b/classSG_1_1ScenegraphObject.html#a6d09a173a74592b16710df201d320281">ScenegraphObject::ScenegraphObject</a>(<a class="code hl_class" href="../../d7/d4d/classQQuickItem.html">QQuickItem</a>* parent)</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    : <a class="code hl_class" href="../../d7/d4d/classQQuickItem.html">QQuickItem</a>(parent)</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    , m_require_recolor(false)</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  {</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    this-&gt;setFlag(ItemHasContents);</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  }</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  QSGNode* ScenegraphObject::updatePaintNode(QSGNode* old_node, QQuickItem::UpdatePaintNodeData* x)</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  {</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    (void)x;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="keywordflow">if</span>(old_node == <span class="keyword">nullptr</span>)</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    {</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>      old_node = <a class="code hl_function" href="../../d6/d6b/classSG_1_1ScenegraphObject.html#a7dbfb6539beba38d54f78e180ba68a38">createNode</a>();</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>      <a class="code hl_function" href="../../d6/d6b/classSG_1_1ScenegraphObject.html#a1ad6a611add39ec90c77eed034a64e89">setupChildNodes</a>(old_node);</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    }</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="keywordflow">if</span>(<a class="code hl_function" href="../../d6/d6b/classSG_1_1ScenegraphObject.html#a4d5814882bfd30285653ee00bdc9123a">recolor</a>())</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>      <a class="code hl_function" href="../../d6/d6b/classSG_1_1ScenegraphObject.html#a49e574fde99895492ef3d5e6d4882244">setupNodeColors</a>(old_node);</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <a class="code hl_function" href="../../d6/d6b/classSG_1_1ScenegraphObject.html#a507e737bf8500e63a560df660bcdc369">drawCall</a>(old_node);</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; old_node-&gt;childCount(); i++)</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>      old_node-&gt;childAtIndex(i)-&gt;markDirty(<a class="code hl_function" href="../../d6/d6b/classSG_1_1ScenegraphObject.html#a4d5814882bfd30285653ee00bdc9123a">recolor</a>() ? (QSGNode::DirtyGeometry |  QSGNode::DirtyMaterial) : QSGNode::DirtyGeometry);</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    old_node-&gt;markDirty(QSGNode::DirtyGeometry | QSGNode::DirtyMaterial);</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="keywordflow">return</span> old_node;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  }</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno"><a class="line" href="../../d6/d6b/classSG_1_1ScenegraphObject.html#a7dbfb6539beba38d54f78e180ba68a38">   78</a></span>  QSGNode* <a class="code hl_function" href="../../d6/d6b/classSG_1_1ScenegraphObject.html#a7dbfb6539beba38d54f78e180ba68a38">ScenegraphObject::createNode</a>() { <span class="keywordflow">return</span> <span class="keyword">new</span> QSGNode; }</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno"><a class="line" href="../../d6/d6b/classSG_1_1ScenegraphObject.html#a4d5814882bfd30285653ee00bdc9123a">  127</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="../../d6/d6b/classSG_1_1ScenegraphObject.html#a4d5814882bfd30285653ee00bdc9123a">ScenegraphObject::recolor</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_require_recolor; }</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span> </div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno"><a class="line" href="../../d6/d6b/classSG_1_1ScenegraphObject.html#af38c265b61302a02cf3dbfb905874012">  133</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d6/d6b/classSG_1_1ScenegraphObject.html#af38c265b61302a02cf3dbfb905874012">ScenegraphObject::requireRecolor</a>() { m_require_recolor = <span class="keyword">true</span>; this-&gt;update(); }</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno"><a class="line" href="../../d6/d6b/classSG_1_1ScenegraphObject.html#a38dd7d7108d19a77388b22b496d07045">  138</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d6/d6b/classSG_1_1ScenegraphObject.html#a38dd7d7108d19a77388b22b496d07045">ScenegraphObject::fulfillRecolor</a>() { m_require_recolor = <span class="keyword">false</span>; }</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>} <span class="comment">// SG</span></div>
+<div class="ttc" id="aclassQQuickItem_html"><div class="ttname"><a href="../../d7/d4d/classQQuickItem.html">QQuickItem</a></div></div>
+<div class="ttc" id="aclassSG_1_1ScenegraphObject_html_a1ad6a611add39ec90c77eed034a64e89"><div class="ttname"><a href="../../d6/d6b/classSG_1_1ScenegraphObject.html#a1ad6a611add39ec90c77eed034a64e89">SG::ScenegraphObject::setupChildNodes</a></div><div class="ttdeci">virtual void setupChildNodes(QSGNode *node)=0</div><div class="ttdoc">Создает дочерние ноды.</div></div>
+<div class="ttc" id="aclassSG_1_1ScenegraphObject_html_a38dd7d7108d19a77388b22b496d07045"><div class="ttname"><a href="../../d6/d6b/classSG_1_1ScenegraphObject.html#a38dd7d7108d19a77388b22b496d07045">SG::ScenegraphObject::fulfillRecolor</a></div><div class="ttdeci">void fulfillRecolor()</div><div class="ttdoc">Сбрасывает флаг на обновление материалов.</div><div class="ttdef"><b>Definition</b> <a href="../../da/d43/scenegraphobject_8c_09_09_source.html#l00138">scenegraphobject.c++:138</a></div></div>
+<div class="ttc" id="aclassSG_1_1ScenegraphObject_html_a49e574fde99895492ef3d5e6d4882244"><div class="ttname"><a href="../../d6/d6b/classSG_1_1ScenegraphObject.html#a49e574fde99895492ef3d5e6d4882244">SG::ScenegraphObject::setupNodeColors</a></div><div class="ttdeci">virtual void setupNodeColors(QSGNode *node)=0</div><div class="ttdoc">Задает цвета для материалов дочерних нод.</div></div>
+<div class="ttc" id="aclassSG_1_1ScenegraphObject_html_a4d5814882bfd30285653ee00bdc9123a"><div class="ttname"><a href="../../d6/d6b/classSG_1_1ScenegraphObject.html#a4d5814882bfd30285653ee00bdc9123a">SG::ScenegraphObject::recolor</a></div><div class="ttdeci">bool recolor() const</div><div class="ttdoc">Возвращает состояние флага на обновление материалов нод.</div><div class="ttdef"><b>Definition</b> <a href="../../da/d43/scenegraphobject_8c_09_09_source.html#l00127">scenegraphobject.c++:127</a></div></div>
+<div class="ttc" id="aclassSG_1_1ScenegraphObject_html_a507e737bf8500e63a560df660bcdc369"><div class="ttname"><a href="../../d6/d6b/classSG_1_1ScenegraphObject.html#a507e737bf8500e63a560df660bcdc369">SG::ScenegraphObject::drawCall</a></div><div class="ttdeci">virtual void drawCall(QSGNode *node)=0</div><div class="ttdoc">Основная функция цикла отрисовки.</div></div>
+<div class="ttc" id="aclassSG_1_1ScenegraphObject_html_a6d09a173a74592b16710df201d320281"><div class="ttname"><a href="../../d6/d6b/classSG_1_1ScenegraphObject.html#a6d09a173a74592b16710df201d320281">SG::ScenegraphObject::ScenegraphObject</a></div><div class="ttdeci">ScenegraphObject(QQuickItem *parent=nullptr)</div><div class="ttdoc">Конструктор по умолчанию.</div><div class="ttdef"><b>Definition</b> <a href="../../da/d43/scenegraphobject_8c_09_09_source.html#l00030">scenegraphobject.c++:30</a></div></div>
+<div class="ttc" id="aclassSG_1_1ScenegraphObject_html_a7dbfb6539beba38d54f78e180ba68a38"><div class="ttname"><a href="../../d6/d6b/classSG_1_1ScenegraphObject.html#a7dbfb6539beba38d54f78e180ba68a38">SG::ScenegraphObject::createNode</a></div><div class="ttdeci">virtual QSGNode * createNode()</div><div class="ttdoc">Создает корневую ноду.</div><div class="ttdef"><b>Definition</b> <a href="../../da/d43/scenegraphobject_8c_09_09_source.html#l00078">scenegraphobject.c++:78</a></div></div>
+<div class="ttc" id="aclassSG_1_1ScenegraphObject_html_af38c265b61302a02cf3dbfb905874012"><div class="ttname"><a href="../../d6/d6b/classSG_1_1ScenegraphObject.html#af38c265b61302a02cf3dbfb905874012">SG::ScenegraphObject::requireRecolor</a></div><div class="ttdeci">void requireRecolor()</div><div class="ttdoc">Запрашивает обновление материалов в следующем цикле.</div><div class="ttdef"><b>Definition</b> <a href="../../da/d43/scenegraphobject_8c_09_09_source.html#l00133">scenegraphobject.c++:133</a></div></div>
+<div class="ttc" id="anamespaceSG_html"><div class="ttname"><a href="../../dd/d59/namespaceSG.html">SG</a></div><div class="ttdoc">Пространство имен библиотеки Scenegraph.</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d48/basicpalette_8c_09_09_source.html#l00007">basicpalette.c++:8</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_6719ab1f1f7655efc2fa43f7eb574fd1.html">libs</a></li><li class="navelem"><a class="el" href="../../dir_1a9852a19a2db34b2990ef662217d17c.html">libscenegraph</a></li><li class="navelem"><a class="el" href="../../dir_5fc2e61a583663daefa39001dfe74395.html">src</a></li><li class="navelem"><a class="el" href="../../dir_8141db9fed8446dc6402be1e954b8f52.html">c++</a></li><li class="navelem"><b>scenegraphobject.c++</b></li>
+    <li class="footer">Создано системой <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+  </ul>
+</div>
+</body>
+</html>

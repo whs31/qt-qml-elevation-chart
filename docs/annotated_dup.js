@@ -14,7 +14,8 @@ var annotated_dup =
       [ "TypeFactory", "d6/dda/classElevationChart_1_1TypeFactory.html", null ]
     ] ],
     [ "SG", "dd/d59/namespaceSG.html", [
-      [ "BasicPalette", "d8/d37/classSG_1_1BasicPalette.html", "d8/d37/classSG_1_1BasicPalette" ]
+      [ "BasicPalette", "d8/d37/classSG_1_1BasicPalette.html", "d8/d37/classSG_1_1BasicPalette" ],
+      [ "ScenegraphObject", "d6/d6b/classSG_1_1ScenegraphObject.html", "d6/d6b/classSG_1_1ScenegraphObject" ]
     ] ],
     [ "QAbstractItemModel", "d0/d5a/classQAbstractItemModel.html", null ],
     [ "QAbstractListModel", "d5/d2d/classQAbstractListModel.html", null ],

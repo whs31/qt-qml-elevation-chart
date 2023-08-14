@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['distance_0',['Distance',['../d6/de1/classElevationChart_1_1RouteModel.html#aca373d517b80753da645a3f727b257f0acb2a0f646b1a337a26a744bbd06989b4',1,'ElevationChart::RouteModel']]]
+  ['backgroundnode_0',['BackgroundNode',['../d2/d6b/classElevationChart_1_1ElevationChartItem.html#a29bda0404218eae47588229580e8b326abf800842fe418011ba0fc9cbb7d8d5f5',1,'ElevationChart::ElevationChartItem']]]
 ];

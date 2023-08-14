@@ -16,7 +16,9 @@ var hierarchy =
         ] ]
       ] ],
       [ "QQuickItem", "d7/d4d/classQQuickItem.html", [
-        [ "ElevationChartItem", "d2/d6b/classElevationChart_1_1ElevationChartItem.html", null ]
+        [ "ScenegraphObject", "d6/d6b/classSG_1_1ScenegraphObject.html", [
+          [ "ElevationChartItem", "d2/d6b/classElevationChart_1_1ElevationChartItem.html", null ]
+        ] ]
       ] ]
     ] ],
     [ "Route", "de/d39/classElevationChart_1_1Route.html", null ],
