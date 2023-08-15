@@ -108,12 +108,15 @@ namespace ElevationChart
       void metricsChanged();
       void shrinkModeChanged();
 
+      void updateProfileFinished(const vector<ElevationPoint>& profile);
+
     protected:
       void setupChildNodes(QSGNode* node) final;
       void setupNodeColors(QSGNode* node) final;
       void drawCall(QSGNode* node) final;
 
       Q_SLOT void updateProfile() noexcept;
+      Q_SLOT void receiveProfile(const vector<ElevationPoint>& profile) noexcept;
       Q_SLOT void updateBounds() noexcept;
       Q_SLOT void updateMetrics() noexcept;
 

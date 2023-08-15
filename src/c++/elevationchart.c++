@@ -48,12 +48,15 @@ namespace ElevationChart
 
     this->setFlag(ItemHasContents);
     qRegisterMetaType<ElevationChartItem*>("ChartItem*");
+    qRegisterMetaType<vector<ElevationPoint>>("vector<ElevationPoint>");
 
     connect(model(), &RouteModel::requireRebuild, this, [this](int index, float new_altitude){
       m_route.at(index).setAltitude(new_altitude);
       emit routeChanged();
       this->updateBounds();
     });
+
+    connect(this, &ElevationChartItem::updateProfileFinished, this, &ElevationChartItem::receiveProfile);
   }
 
   /**
@@ -102,7 +105,14 @@ namespace ElevationChart
 
   void ElevationChartItem::updateProfile() noexcept
   {
-    m_profile = provider()->plotElevationProfile(route().toGeoPath());
+    auto result = provider()->plotElevationProfile(route().toGeoPath());
+
+    emit updateProfileFinished(result);
+  }
+
+  void ElevationChartItem::receiveProfile(const vector<ElevationPoint>& profile) noexcept
+  {
+    m_profile = profile;
 
     if(m_profile.empty())
       setMissingTiles(true);
