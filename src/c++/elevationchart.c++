@@ -6,6 +6,7 @@
 #include <utility>
 #include <QtQuick/QSGGeometryNode>
 #include <QtQuick/QSGFlatColorMaterial>
+#include <QtConcurrent/QtConcurrent>
 #include <SG/Utils>
 
 namespace ElevationChart
@@ -105,9 +106,12 @@ namespace ElevationChart
 
   void ElevationChartItem::updateProfile() noexcept
   {
-    auto result = provider()->plotElevationProfile(route().toGeoPath());
-
-    emit updateProfileFinished(result);
+    QFuture<void> outer = QtConcurrent::run([this](){
+      QFuture<void> inner = QtConcurrent::run([this](){
+        auto result = provider()->plotElevationProfile(route().toGeoPath());
+        emit updateProfileFinished(result);
+      });
+    });
   }
 
   void ElevationChartItem::receiveProfile(const vector<ElevationPoint>& profile) noexcept
