@@ -26,6 +26,7 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS
     Positioning
     Widgets
     QuickControls2
+    Concurrent
 )
 
 include_directories(src/c++ include examples)
@@ -57,6 +58,7 @@ target_link_libraries(${PROJECT_NAME}
     Qt${QT_VERSION_MAJOR}::Widgets
     Qt${QT_VERSION_MAJOR}::Positioning
     Qt${QT_VERSION_MAJOR}::QuickControls2
+    Qt${QT_VERSION_MAJOR}::Concurrent
     libscenegraph
     DEM
 )

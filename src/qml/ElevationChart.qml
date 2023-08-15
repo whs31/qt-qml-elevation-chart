@@ -60,11 +60,11 @@ Rectangle {
             Behavior on error { ColorAnimation { easing.type: Easing.InOutQuad } }
             Behavior on info { ColorAnimation { easing.type: Easing.InOutQuad } }
         }
-        route: Types.route(QtPositioning.path([QtPositioning.coordinate(60, 30, 100),
-                                               QtPositioning.coordinate(60.02, 30, 50),
-                                               QtPositioning.coordinate(60.04, 30, 120),
-                                               QtPositioning.coordinate(60.06, 30, 70),
-                                               QtPositioning.coordinate(60.08, 30, 69),
+        route: Types.route(QtPositioning.path([QtPositioning.coordinate(60.01, 30.01, 100),
+                                               QtPositioning.coordinate(60.02, 30.01, 50),
+                                               QtPositioning.coordinate(60.04, 30.01, 120),
+                                               QtPositioning.coordinate(60.06, 30.01, 70),
+                                               QtPositioning.coordinate(60.08, 30.01, 69),
                                                QtPositioning.coordinate(60.1, 30.02, 56),
                                                QtPositioning.coordinate(60.1, 30.04, 110),
                                                QtPositioning.coordinate(60.1, 30.06, 45),
