@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['nodetypes_0',['NodeTypes',['../d2/d6b/classElevationChart_1_1ElevationChartItem.html#a29bda0404218eae47588229580e8b326',1,'ElevationChart::ElevationChartItem']]]
+  ['intersection_0',['Intersection',['../d6/dc5/structDEM_1_1IntersectionPoint.html#a03b7725142aecb37a210680305db877d',1,'DEM::IntersectionPoint']]]
 ];

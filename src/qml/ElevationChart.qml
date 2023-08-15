@@ -11,6 +11,8 @@ import "qrc:/elevation-chart/catpuccin.js" as Catpuccin
 
 Rectangle {
     id: ec
+    property alias route: impl.route
+
     Material.theme: impl.light_theme ? Material.Light : Material.Dark
     Material.accent: impl.palette.accent
     Material.primary: impl.palette.accent

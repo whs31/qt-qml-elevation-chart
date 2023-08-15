@@ -13,6 +13,10 @@ var classElevationChart_1_1ElevationChartItem =
       [ "ShrinkToProfileHeight", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#ac06788932cd1a15c825f8a90f2285034a1c9a9a1291e047ad9210db2d4f7a8922", null ],
       [ "ShrinkToRouteHeight", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#ac06788932cd1a15c825f8a90f2285034a4c97e6e9de17a0bdef2ca4c0013dc109", null ]
     ] ],
+    [ "ProviderType", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#a29152a883d923f20d380a3671b36a4c5", [
+      [ "RandomProvider", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#a29152a883d923f20d380a3671b36a4c5a4f4a211334f7ca4f80d2fbec61ab50fd", null ],
+      [ "DEMProvider", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#a29152a883d923f20d380a3671b36a4c5a127c108334ae8ac0d0fd1cb3edbe4bcd", null ]
+    ] ],
     [ "ElevationChartItem", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#a54d7407b60453be29d8fcc1855858d57", null ],
     [ "applyMetricsCorrection", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#a8f3ff1c5156568622aa8bdc15389043f", null ],
     [ "setupChildNodes", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#a3e9bb1600355371913f9faced6787a12", null ],
@@ -33,5 +37,6 @@ var classElevationChart_1_1ElevationChartItem =
     [ "intersecting", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#ac0a3f6caeb0c2983bc4505f3a5348e2d", null ],
     [ "valid", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#a51646327ac0a3287c4b08e4d28b66f35", null ],
     [ "matchingMetrics", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#ac3758c6a6934b9fab96bb2c03fb21d40", null ],
-    [ "shrinkMode", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#af902fb5e3f1cd17bd02fa35c790aaeb0", null ]
+    [ "shrinkMode", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#af902fb5e3f1cd17bd02fa35c790aaeb0", null ],
+    [ "providerType", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#a79274e7fa3be862d1cdbd8651d47f4ee", null ]
 ];

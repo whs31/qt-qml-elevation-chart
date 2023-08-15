@@ -26,8 +26,14 @@ var NAVTREE =
 [
   [ "Elevation Chart", "index.html", [
     [ "Список задач", "dd/da0/todo.html", null ],
+    [ "Список устаревших определений и описаний", "da/d58/deprecated.html", null ],
+    [ "Ошибки", "de/da5/bug.html", null ],
     [ "Пространства имен", "namespaces.html", [
-      [ "Пространства имен", "namespaces.html", "namespaces_dup" ]
+      [ "Пространства имен", "namespaces.html", "namespaces_dup" ],
+      [ "Члены пространств имен", "namespacemembers.html", [
+        [ "Указатель", "namespacemembers.html", null ],
+        [ "Функции", "namespacemembers_func.html", null ]
+      ] ]
     ] ],
     [ "Классы", "annotated.html", [
       [ "Классы", "annotated.html", "annotated_dup" ],
@@ -51,7 +57,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"dd/da0/todo.html"
+"d8/d37/classSG_1_1BasicPalette.html#a809fe72b46248bfe89c32642ce770d4b"
 ];
 
 var SYNCONMSG = 'нажмите на выключить для синхронизации панелей';

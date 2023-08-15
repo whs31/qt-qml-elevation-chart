@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['routenode_0',['RouteNode',['../d2/d6b/classElevationChart_1_1ElevationChartItem.html#a29bda0404218eae47588229580e8b326a0004ae08849d07be6f9f3db4ee62e8c8',1,'ElevationChart::ElevationChartItem']]]
+  ['profilenode_0',['ProfileNode',['../d2/d6b/classElevationChart_1_1ElevationChartItem.html#a29bda0404218eae47588229580e8b326a88569a8a357982e374d7d2ea6e042083',1,'ElevationChart::ElevationChartItem']]]
 ];

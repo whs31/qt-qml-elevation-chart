@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['ielevationdataprovider_0',['IElevationDataProvider',['../db/d9d/classElevationChart_1_1IElevationDataProvider.html',1,'ElevationChart']]]
+  ['graphpoint_0',['GraphPoint',['../d0/dab/structDEM_1_1GraphPoint.html',1,'DEM']]]
 ];

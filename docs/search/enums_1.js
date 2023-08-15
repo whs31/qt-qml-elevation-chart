@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['roles_0',['Roles',['../d6/de1/classElevationChart_1_1RouteModel.html#aca373d517b80753da645a3f727b257f0',1,'ElevationChart::RouteModel']]]
+  ['nodetypes_0',['NodeTypes',['../d2/d6b/classElevationChart_1_1ElevationChartItem.html#a29bda0404218eae47588229580e8b326',1,'ElevationChart::ElevationChartItem']]]
 ];

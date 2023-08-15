@@ -1,36 +1,36 @@
 <map id="API" name="API">
-<area shape="rect" id="Node000001" title="Публичный интерфейс (C++) для виджета профиля высот." alt="" coords="1365,110,1410,138"/>
+<area shape="rect" id="Node000001" title="Публичный интерфейс (C++) для виджета профиля высот." alt="" coords="1308,110,1353,138"/>
 <area shape="rect" id="Node000002" title=" " alt="" coords="5,112,79,141"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="59,99,84,69,117,37,157,13,179,5,203,3,1179,3,1211,6,1241,15,1297,43,1343,78,1375,108,1371,111,1339,82,1294,48,1239,20,1210,11,1179,8,203,8,181,11,159,18,120,42,88,72,63,102"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="59,99,84,69,117,37,157,13,179,5,203,3,1122,3,1154,6,1184,15,1240,43,1286,78,1318,108,1314,111,1282,82,1237,48,1182,20,1153,11,1122,8,203,8,181,11,159,18,120,42,88,72,63,102"/>
 <area shape="rect" id="Node000005" href="$d7/d4d/classQQuickItem.html" title=" " alt="" coords="156,112,252,141"/>
 <area shape="poly" id="edge5_Node000005_Node000002" title=" " alt="" coords="94,124,156,124,156,129,94,129"/>
 <area shape="rect" id="Node000013" href="$d0/d5a/classQAbstractItemModel.html" title=" " alt="" coords="128,166,280,194"/>
 <area shape="poly" id="edge14_Node000013_Node000002" title=" " alt="" coords="94,141,159,162,157,168,92,146"/>
-<area shape="rect" id="Node000003" href="$d2/d6b/classElevationChart_1_1ElevationChartItem.html" title="Основной класс библиотеки." alt="" coords="1106,258,1250,286"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="1210,247,1364,137,1367,141,1213,251"/>
+<area shape="rect" id="Node000003" href="$d2/d6b/classElevationChart_1_1ElevationChartItem.html" title="Основной класс библиотеки." alt="" coords="1049,258,1193,286"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="1153,247,1307,137,1310,141,1156,251"/>
 <area shape="rect" id="Node000004" href="$d6/d6b/classSG_1_1ScenegraphObject.html" title="Базовый класс для объектов Qt Quick Scenegraph." alt="" coords="522,114,662,142"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="677,116,765,113,869,118,924,126,979,137,1032,153,1083,175,1110,193,1134,215,1169,256,1164,259,1130,218,1107,197,1080,180,1030,158,977,142,923,131,869,124,765,118,677,122"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="677,119,755,119,845,127,939,148,984,164,1026,186,1073,221,1109,256,1105,260,1070,225,1023,190,982,169,937,153,844,133,755,124,677,124"/>
 <area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="267,124,521,125,521,130,267,130"/>
 <area shape="rect" id="Node000006" title=" " alt="" coords="686,218,925,265"/>
-<area shape="poly" id="edge6_Node000003_Node000006" title=" " alt="" coords="940,250,1106,263,1105,269,940,255"/>
+<area shape="poly" id="edge6_Node000003_Node000006" title=" " alt="" coords="940,252,1049,262,1048,268,939,257"/>
 <area shape="rect" id="Node000007" href="$d8/d37/classSG_1_1BasicPalette.html" title="Простейшая палитра цветов." alt="" coords="755,288,856,317"/>
-<area shape="poly" id="edge7_Node000003_Node000007" title=" " alt="" coords="871,298,970,294,1081,285,1105,282,1105,287,1082,290,971,299,871,304"/>
+<area shape="poly" id="edge7_Node000003_Node000007" title=" " alt="" coords="871,296,1024,283,1048,280,1048,286,1025,289,871,302"/>
 <area shape="rect" id="Node000008" href="$d6/d1e/classElevationChart_1_1Bounds.html" title="Класс&#45;гаджет, хранящий предельные значения осей X и Y." alt="" coords="770,342,841,370"/>
-<area shape="poly" id="edge8_Node000003_Node000008" title=" " alt="" coords="855,352,960,343,1021,333,1081,318,1119,303,1152,284,1155,289,1121,307,1082,323,1022,338,961,348,856,357"/>
+<area shape="poly" id="edge8_Node000003_Node000008" title=" " alt="" coords="855,348,935,336,1024,314,1092,284,1094,289,1026,319,936,341,856,354"/>
 <area shape="rect" id="Node000009" href="$de/d39/classElevationChart_1_1Route.html" title="Набор последовательных точек на карте." alt="" coords="775,460,836,489"/>
-<area shape="poly" id="edge9_Node000003_Node000009" title=" " alt="" coords="851,480,901,484,961,483,1023,472,1053,461,1080,446,1100,430,1118,410,1144,365,1162,320,1171,286,1176,287,1167,322,1149,367,1122,413,1104,434,1083,451,1055,466,1025,477,962,489,901,490,850,485"/>
+<area shape="poly" id="edge9_Node000003_Node000009" title=" " alt="" coords="851,478,890,480,935,477,981,467,1023,446,1043,430,1060,410,1087,365,1104,321,1114,286,1119,288,1109,322,1092,367,1065,413,1047,434,1026,451,983,472,936,482,890,485,850,483"/>
 <area shape="rect" id="Node000010" title=" " alt="" coords="330,451,498,498"/>
 <area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="513,472,775,472,775,477,513,477"/>
 <area shape="rect" id="Node000011" href="$d6/de1/classElevationChart_1_1RouteModel.html" title="Модель точек пути для профиля высот." alt="" coords="756,166,855,194"/>
-<area shape="poly" id="edge11_Node000003_Node000011" title=" " alt="" coords="871,185,971,201,1082,228,1148,255,1146,260,1081,233,970,206,870,190"/>
+<area shape="poly" id="edge11_Node000003_Node000011" title=" " alt="" coords="870,189,945,206,1026,229,1088,255,1086,260,1024,235,944,211,869,194"/>
 <area shape="rect" id="Node000012" href="$d5/d2d/classQAbstractListModel.html" title=" " alt="" coords="341,166,487,194"/>
 <area shape="poly" id="edge12_Node000011_Node000012" title=" " alt="" coords="502,177,756,177,756,183,502,183"/>
 <area shape="poly" id="edge13_Node000012_Node000013" title=" " alt="" coords="295,177,340,177,340,183,295,183"/>
 <area shape="rect" id="Node000014" title=" " alt="" coords="330,299,498,346"/>
-<area shape="poly" id="edge18_Node000003_Node000014" title=" " alt="" coords="494,349,585,377,687,398,753,406,806,409,858,407,924,398,1006,383,1039,370,1080,350,1126,317,1161,284,1165,288,1130,321,1083,354,1041,375,1007,388,925,403,858,412,806,415,753,412,686,403,584,382,492,354"/>
+<area shape="poly" id="edge18_Node000003_Node000014" title=" " alt="" coords="486,349,575,378,685,403,744,411,805,413,865,410,924,398,979,376,1030,345,1073,312,1103,285,1106,289,1076,316,1033,349,982,381,925,403,866,415,805,419,744,416,684,408,573,383,484,354"/>
 <area shape="poly" id="edge15_Node000011_Node000014" title=" " alt="" coords="475,290,572,246,686,203,755,186,756,191,687,208,574,250,477,295"/>
 <area shape="rect" id="Node000015" href="$dc/da9/classElevationChart_1_1Metrics.html" title="Класс&#45;гаджет, хранящий входные данные для расчета коррекции по ЛТХ." alt="" coords="772,514,839,542"/>
-<area shape="poly" id="edge16_Node000003_Node000015" title=" " alt="" coords="854,536,905,543,965,543,1025,533,1054,522,1080,507,1105,483,1125,456,1141,425,1153,393,1168,331,1173,287,1178,287,1173,332,1158,394,1146,427,1130,458,1109,487,1083,511,1056,527,1027,538,965,549,905,548,853,541"/>
+<area shape="poly" id="edge16_Node000003_Node000015" title=" " alt="" coords="854,532,894,533,939,530,983,519,1023,497,1047,475,1066,448,1082,418,1094,387,1109,329,1116,286,1121,287,1114,330,1099,389,1087,420,1071,450,1051,478,1026,501,985,524,940,535,894,539,854,537"/>
 <area shape="rect" id="Node000016" title=" " alt="" coords="707,43,904,90"/>
-<area shape="poly" id="edge17_Node000003_Node000016" title=" " alt="" coords="919,60,961,64,1003,72,1045,86,1083,107,1103,123,1119,142,1146,184,1165,225,1175,256,1170,258,1160,227,1142,186,1115,145,1099,127,1080,112,1043,91,1002,78,960,69,919,65"/>
+<area shape="poly" id="edge17_Node000003_Node000016" title=" " alt="" coords="919,68,975,81,1002,92,1026,107,1062,142,1089,184,1107,224,1118,256,1113,258,1102,226,1084,186,1058,145,1023,111,999,97,973,86,918,73"/>
 </map>

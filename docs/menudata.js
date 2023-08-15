@@ -26,7 +26,10 @@ var menudata={children:[
 {text:"Титульная страница",url:"index.html"},
 {text:"Описания",url:"pages.html"},
 {text:"Пространства имен",url:"namespaces.html",children:[
-{text:"Пространства имен",url:"namespaces.html"}]},
+{text:"Пространства имен",url:"namespaces.html"},
+{text:"Члены пространств имен",url:"namespacemembers.html",children:[
+{text:"Указатель",url:"namespacemembers.html"},
+{text:"Функции",url:"namespacemembers_func.html"}]}]},
 {text:"Классы",url:"annotated.html",children:[
 {text:"Классы",url:"annotated.html"},
 {text:"Алфавитный указатель классов",url:"classes.html"},
@@ -63,6 +66,7 @@ var menudata={children:[
 {text:"f",url:"functions_func.html#index_f"},
 {text:"g",url:"functions_func.html#index_g"},
 {text:"i",url:"functions_func.html#index_i"},
+{text:"l",url:"functions_func.html#index_l"},
 {text:"m",url:"functions_func.html#index_m"},
 {text:"p",url:"functions_func.html#index_p"},
 {text:"r",url:"functions_func.html#index_r"},
