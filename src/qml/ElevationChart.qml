@@ -62,7 +62,7 @@ Rectangle {
             Behavior on error { ColorAnimation { easing.type: Easing.InOutQuad } }
             Behavior on info { ColorAnimation { easing.type: Easing.InOutQuad } }
         }
-        route: Types.route(QtPositioning.path([QtPositioning.coordinate(60.01, 30.01, 100),
+        route: Types.route(QtPositioning.path([QtPositioning.coordinate(60, 30.01, 100),
                                                QtPositioning.coordinate(60.02, 30.01, 50),
                                                QtPositioning.coordinate(60.04, 30.01, 120),
                                                QtPositioning.coordinate(60.06, 30.01, 70),
@@ -84,6 +84,9 @@ Rectangle {
             delegate: Private.ElevationChartPoint { }
         }
     }
+
+    UI.LargeWarning { shown: impl.missingTiles; txt: "Отсутствуют профили высот"; col: impl.palette.overlay; anchors.centerIn: parent }
+    UI.LargeWarning { shown: !impl.route.valid(); txt: "Не задан путь"; col: impl.palette.overlay; anchors.centerIn: parent }
 
     UI.Notifications {
         id: notifications

@@ -209,6 +209,9 @@ namespace ElevationChart
    */
   auto Route::toElevationGraph() const -> vector<ElevationPoint>
   {
+    if(not size())
+      return {};
+
     vector<ElevationPoint> ret;
     auto prev_coord = m_vec.front().coordinate();
     float distance = 0;

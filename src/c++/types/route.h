@@ -33,7 +33,7 @@ namespace ElevationChart
       Q_INVOKABLE [[nodiscard]] QGeoPath toGeoPath() const;
       Q_INVOKABLE [[nodiscard]] QVariantList toVariantList() const;
       [[nodiscard]] auto toElevationGraph() const -> vector<ElevationPoint>;
-      [[nodiscard]] auto velocities() const ->vector<float>;
+      [[nodiscard]] auto velocities() const -> vector<float>;
 
       Q_INVOKABLE [[nodiscard]] int size() const;
       Q_INVOKABLE [[nodiscard]] RoutePoint& at(int index);

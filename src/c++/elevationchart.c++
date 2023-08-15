@@ -27,6 +27,7 @@ namespace ElevationChart
    */
   ElevationChartItem::ElevationChartItem(QQuickItem* parent)
     : SG::ScenegraphObject(parent)
+    , m_missing_tiles(false)
     , m_intersecting(false)
     , m_valid(false)
     , m_matching_metrics(true)
@@ -102,6 +103,11 @@ namespace ElevationChart
   void ElevationChartItem::updateProfile() noexcept
   {
     m_profile = provider()->plotElevationProfile(route().toGeoPath());
+
+    if(m_profile.empty())
+      setMissingTiles(true);
+    else
+      setMissingTiles(false);
 
     this->updateBounds();
 
@@ -341,6 +347,25 @@ namespace ElevationChart
   void ElevationChartItem::setBounds(ElevationChart::Bounds x) {
     m_bounds = x;
     emit boundsChanged();
+  }
+
+  /**
+   * \property ElevationChartItem::missingTiles
+   * \brief Состояние наличия необходимых профилей в папке с тайлами.
+   * \details
+   * Свойство вернет <tt>true</tt>, если для заданного пути отсутствуют нужные тайлы.
+   * <table>
+   * <caption id="multi_row">Связанные функции</caption>
+   * <tr><th>Чтение             <th>Запись                <th>Оповещение
+   * <tr><td><i>missingTiles</i><td><i>setMissingTiles</i><td><i>missingTilesChanged</i>
+   * </table>
+   */
+  bool ElevationChartItem::missingTiles() const { return m_missing_tiles; }
+  void ElevationChartItem::setMissingTiles(bool x) {
+    if(x == m_missing_tiles)
+      return;
+    m_missing_tiles = x;
+    emit missingTilesChanged();
   }
 
   /**

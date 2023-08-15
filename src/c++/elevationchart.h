@@ -35,6 +35,7 @@ namespace ElevationChart
     Q_PROPERTY(ElevationChart::Metrics metrics READ metrics WRITE setMetrics NOTIFY metricsChanged FINAL)
     // envelope gadget
 
+    Q_PROPERTY(bool missingTiles READ missingTiles WRITE setMissingTiles NOTIFY missingTilesChanged FINAL)
     Q_PROPERTY(bool intersecting READ intersecting WRITE setIntersecting NOTIFY intersectingChanged FINAL)
     Q_PROPERTY(bool valid READ valid WRITE setValid NOTIFY validChanged FINAL)
     Q_PROPERTY(bool matchingMetrics READ matchingMetrics WRITE setMatchingMetrics NOTIFY matchingMetricsChanged FINAL)
@@ -83,6 +84,7 @@ namespace ElevationChart
       [[nodiscard]] QGeoCoordinate uavPosition() const; void setUavPosition(const QGeoCoordinate&);
       [[nodiscard]] Metrics metrics() const;            void setMetrics(const Metrics&);
 
+      [[nodiscard]] bool missingTiles() const;          void setMissingTiles(bool);
       [[nodiscard]] bool intersecting() const;          void setIntersecting(bool);
       [[nodiscard]] bool valid() const;                 void setValid(bool);
       [[nodiscard]] bool matchingMetrics() const;       void setMatchingMetrics(bool);
@@ -97,6 +99,7 @@ namespace ElevationChart
     signals:
       void paletteChanged();
       void boundsChanged();
+      void missingTilesChanged();
       void intersectingChanged();
       void validChanged();
       void matchingMetricsChanged();
@@ -132,6 +135,7 @@ namespace ElevationChart
     private:
       SG::BasicPalette m_palette;
       Bounds m_bounds;
+      bool m_missing_tiles;
       bool m_intersecting;
       bool m_valid;
       bool m_matching_metrics;
