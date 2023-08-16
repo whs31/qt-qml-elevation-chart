@@ -1,0 +1,5 @@
+<map id="IntersectionPoint" name="IntersectionPoint">
+<area shape="rect" id="Node000001" title="Точка на графике профиля высот, хранящая состояние пересечения с рельефом." alt="" coords="5,82,134,111"/>
+<area shape="rect" id="Node000002" href="$dd/d95/classElevationChart_1_1ElevationPoint.html" title="Точка профиля высот." alt="" coords="13,5,126,34"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="72,49,72,82,67,82,67,49"/>
+</map>

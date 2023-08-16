@@ -115,26 +115,25 @@ $(document).ready(function(){initNavTree('d9/d7a/demdataprovider_8c_09_09_source
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;demdataprovider.h&quot;</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;algorithm&gt;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;DEM/GroundProfile&gt;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;DEM/Algorithms&gt;</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d6/d7f/namespaceElevationChart.html">ElevationChart</a></div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>{</div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="../../dd/d98/classElevationChart_1_1DEMDataProvider.html#a081327e724cabe3e61e1c1959f83a9b7">   22</a></span>  vector&lt;ElevationPoint&gt; <a class="code hl_function" href="../../dd/d98/classElevationChart_1_1DEMDataProvider.html#a081327e724cabe3e61e1c1959f83a9b7">DEMDataProvider::plotElevationProfile</a>(<span class="keyword">const</span> QGeoPath&amp; path)<span class="keyword"> const</span></div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="keyword">  </span>{</div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    vector&lt;ElevationPoint&gt; ret;</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    vector&lt;DEM::GraphPoint&gt; src = <a class="code hl_function" href="../../d7/de2/namespaceDEM.html#add1bf24fde09f69c0aa12d28c4b9496a">DEM::plotTerrainProfile</a>(path);</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    vector&lt;pair&lt;uint32_t, int16_t&gt;&gt; src = DEM::buildProfile(path);</div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    ret.reserve(src.size());</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    std::transform(src.begin(), src.end(), std::back_inserter(ret), [](<span class="keyword">const</span> <a class="code hl_struct" href="../../d0/dab/structDEM_1_1GraphPoint.html">DEM::GraphPoint</a>&amp; point){</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>      return ElevationPoint(point.distance, point.elevation);</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    std::transform(src.begin(), src.end(), std::back_inserter(ret), [](<span class="keyword">const</span> pair&lt;uint32_t, int16_t&gt;&amp; point){</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>      return ElevationPoint(static_cast&lt;float&gt;(point.first), point.second);</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    });</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="keywordflow">return</span> ret;</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  }</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>} <span class="comment">// ElevationChart</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="keywordflow">return</span> ret;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  }</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>} <span class="comment">// ElevationChart</span></div>
 <div class="ttc" id="aclassElevationChart_1_1DEMDataProvider_html_a081327e724cabe3e61e1c1959f83a9b7"><div class="ttname"><a href="../../dd/d98/classElevationChart_1_1DEMDataProvider.html#a081327e724cabe3e61e1c1959f83a9b7">ElevationChart::DEMDataProvider::plotElevationProfile</a></div><div class="ttdeci">vector&lt; ElevationPoint &gt; plotElevationProfile(const QGeoPath &amp;path) const override</div><div class="ttdoc">Возвращает массив с точками высотных данных по заданной ломаной прямой.</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d7a/demdataprovider_8c_09_09_source.html#l00022">demdataprovider.c++:22</a></div></div>
-<div class="ttc" id="anamespaceDEM_html_add1bf24fde09f69c0aa12d28c4b9496a"><div class="ttname"><a href="../../d7/de2/namespaceDEM.html#add1bf24fde09f69c0aa12d28c4b9496a">DEM::plotTerrainProfile</a></div><div class="ttdeci">vector&lt; GraphPoint &gt; plotTerrainProfile(const QGeoPath &amp;path, const uint8_t discrete)</div><div class="ttdoc">Строит профиль рельефа для заданной ломаной прямой на карте.</div><div class="ttdef"><b>Definition</b> <a href="../../d0/df1/demgroundprofile_8cpp_source.html#l00028">demgroundprofile.cpp:28</a></div></div>
-<div class="ttc" id="anamespaceElevationChart_html"><div class="ttname"><a href="../../d6/d7f/namespaceElevationChart.html">ElevationChart</a></div><div class="ttdoc">Пространство имен для виджета профиля высот.</div><div class="ttdef"><b>Definition</b> <a href="../../df/dcc/elevationchart_8c_09_09_source.html#l00011">elevationchart.c++:12</a></div></div>
-<div class="ttc" id="astructDEM_1_1GraphPoint_html"><div class="ttname"><a href="../../d0/dab/structDEM_1_1GraphPoint.html">DEM::GraphPoint</a></div><div class="ttdoc">Точка на графике профиля высот.</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d56/demtypes_8h_source.html#l00012">demtypes.h:13</a></div></div>
+<div class="ttc" id="anamespaceElevationChart_html"><div class="ttname"><a href="../../d6/d7f/namespaceElevationChart.html">ElevationChart</a></div><div class="ttdoc">Пространство имен для виджета профиля высот.</div><div class="ttdef"><b>Definition</b> <a href="../../df/dcc/elevationchart_8c_09_09_source.html#l00012">elevationchart.c++:13</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

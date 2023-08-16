@@ -7,7 +7,6 @@ RoundButton {
     required property real altitude
     required property real distance
     required property bool valid
-    required property bool intersects
 
     Material.background: impl.palette.accent
 

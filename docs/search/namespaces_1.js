@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['elevationchart_0',['ElevationChart',['../d6/d7f/namespaceElevationChart.html',1,'']]]
+  ['sg_0',['SG',['../dd/d59/namespaceSG.html',1,'']]]
 ];

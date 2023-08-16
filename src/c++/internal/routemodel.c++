@@ -21,7 +21,6 @@ namespace ElevationChart
       case Altitude: return QVariant::fromValue(m_storage.at(index.row()).elevation());
       case Distance: return QVariant::fromValue(m_storage.at(index.row()).distance());
       case Valid: return QVariant::fromValue(m_storage.at(index.row()).valid());
-      case Intersects: return QVariant::fromValue(m_storage.at(index.row()).intersects());
 
       default: return "Error reading from model";
     }
@@ -38,7 +37,6 @@ namespace ElevationChart
       case Altitude: m_storage.at(index.row()).setElevation(value.toFloat()); break;
       case Distance: m_storage.at(index.row()).setDistance(value.toFloat()); break;
       case Valid: m_storage.at(index.row()).setValid(value.toBool()); break;
-      case Intersects: m_storage.at(index.row()).setIntersects(value.toBool()); break;
 
       default: return false;
 
@@ -70,7 +68,6 @@ namespace ElevationChart
     roles[Altitude] = "altitude";
     roles[Distance] = "distance";
     roles[Valid] = "valid";
-    roles[Intersects] = "intersects";
     return roles;
   }
 

@@ -2,7 +2,9 @@ var hierarchy =
 [
     [ "BasicPalette", "d8/d37/classSG_1_1BasicPalette.html", null ],
     [ "Bounds", "d6/d1e/classElevationChart_1_1Bounds.html", null ],
-    [ "ElevationPoint", "dd/d95/classElevationChart_1_1ElevationPoint.html", null ],
+    [ "ElevationPoint", "dd/d95/classElevationChart_1_1ElevationPoint.html", [
+      [ "IntersectionPoint", "d1/d0b/classElevationChart_1_1IntersectionPoint.html", null ]
+    ] ],
     [ "GraphPoint", "d0/dab/structDEM_1_1GraphPoint.html", null ],
     [ "IElevationDataProvider", "db/d9d/classElevationChart_1_1IElevationDataProvider.html", [
       [ "DEMDataProvider", "dd/d98/classElevationChart_1_1DEMDataProvider.html", null ],

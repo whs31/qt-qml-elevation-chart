@@ -1,6 +1,6 @@
 var annotated_dup =
 [
-    [ "DEM", "d7/de2/namespaceDEM.html", [
+    [ "DEM", null, [
       [ "GraphPoint", "d0/dab/structDEM_1_1GraphPoint.html", "d0/dab/structDEM_1_1GraphPoint" ],
       [ "IntersectionPoint", "d6/dc5/structDEM_1_1IntersectionPoint.html", "d6/dc5/structDEM_1_1IntersectionPoint" ],
       [ "Tile", "d1/d3f/classDEM_1_1Tile.html", "d1/d3f/classDEM_1_1Tile" ],
@@ -14,6 +14,7 @@ var annotated_dup =
       [ "ElevationChartItem", "d2/d6b/classElevationChart_1_1ElevationChartItem.html", "d2/d6b/classElevationChart_1_1ElevationChartItem" ],
       [ "ElevationPoint", "dd/d95/classElevationChart_1_1ElevationPoint.html", "dd/d95/classElevationChart_1_1ElevationPoint" ],
       [ "IElevationDataProvider", "db/d9d/classElevationChart_1_1IElevationDataProvider.html", "db/d9d/classElevationChart_1_1IElevationDataProvider" ],
+      [ "IntersectionPoint", "d1/d0b/classElevationChart_1_1IntersectionPoint.html", "d1/d0b/classElevationChart_1_1IntersectionPoint" ],
       [ "Metrics", "dc/da9/classElevationChart_1_1Metrics.html", "dc/da9/classElevationChart_1_1Metrics" ],
       [ "RandomDataProvider", "d3/d2f/classElevationChart_1_1RandomDataProvider.html", "d3/d2f/classElevationChart_1_1RandomDataProvider" ],
       [ "Route", "de/d39/classElevationChart_1_1Route.html", "de/d39/classElevationChart_1_1Route" ],
