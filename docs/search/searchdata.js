@@ -16,7 +16,7 @@ var indexSectionNames =
   0: "all",
   1: "classes",
   2: "namespaces",
-  3: "functions",
+  3: "research",
   4: "variables",
   5: "enums",
   6: "enumvalues",

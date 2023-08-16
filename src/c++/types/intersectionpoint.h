@@ -1,6 +1,7 @@
 #pragma once
 
 #include "elevationpoint.h"
+#include <QtPositioning/QGeoCoordinate>
 
 namespace ElevationChart
 {
@@ -19,12 +20,14 @@ namespace ElevationChart
       IntersectionPoint();
       IntersectionPoint(float distance, float elevation, bool is_valid, bool is_base, Intersection state);
 
-      [[nodiscard]] bool base() const;            void setBase(bool);
-      [[nodiscard]] Intersection state() const;   void setState(Intersection);
+      [[nodiscard]] bool base() const;                  void setBase(bool);
+      [[nodiscard]] Intersection state() const;         void setState(Intersection);
+      [[nodiscard]] QGeoCoordinate coordinate() const;  void setCoordinate(const QGeoCoordinate&);
 
     private:
       bool m_base;
       Intersection m_state;
+      QGeoCoordinate m_coordinate;
   };
 } // ElevationChart
 
@@ -70,4 +73,7 @@ namespace ElevationChart
 
   /// \brief Задает состояние пересечения точки с рельефом.
   inline void IntersectionPoint::setState(ElevationChart::IntersectionPoint::Intersection x) { m_state = x; }
+
+  inline QGeoCoordinate IntersectionPoint::coordinate() const { return m_coordinate; }
+  inline void IntersectionPoint::setCoordinate(const QGeoCoordinate& x) { m_coordinate = x; }
 } // ElevationChart
