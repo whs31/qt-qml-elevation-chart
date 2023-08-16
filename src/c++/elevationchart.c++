@@ -28,6 +28,7 @@ namespace ElevationChart
    */
   ElevationChartItem::ElevationChartItem(QQuickItem* parent)
     : SG::ScenegraphObject(parent)
+    , m_researcher(new Researcher(this))
     , m_missing_tiles(false)
     , m_intersecting(false)
     , m_valid(false)
@@ -58,7 +59,18 @@ namespace ElevationChart
     });
 
     connect(this, &ElevationChartItem::updateProfileFinished, this, &ElevationChartItem::receiveProfile);
+    connect(researcher(), &Researcher::researchIntersectionsFinished, this, [this](const vector<IntersectionPoint>& vec) {
+      m_intersections = vec;
+      qDebug() << m_intersections.size();
+      this->update();
+    });
   }
+
+  /**
+   * \brief Возвращает указатель на дочерний объект Researcher.
+   * \return Указатель на Researcher.
+   */
+  Researcher* ElevationChartItem::researcher() const { return m_researcher; }
 
   /**
    * \brief Корректирует текущий путь в соответствии с ЛТХ борта.
@@ -138,6 +150,8 @@ namespace ElevationChart
 
     if(m_profile.empty())
       return;
+
+    researcher()->researchIntersections(route().toGeoPath());
 
     setBounds({ m_profile.back().distance(), 0 });
     auto path = route().toGeoPath().path();

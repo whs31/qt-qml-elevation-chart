@@ -15,7 +15,9 @@ namespace ElevationChart
 {
   Researcher::Researcher(QObject* parent)
     : QObject(parent)
-  {}
+  {
+    qRegisterMetaType<vector<IntersectionPoint>>("vector<IntersectionPoint>");
+  }
 
   void Researcher::researchIntersections(const QGeoPath& path)
   {

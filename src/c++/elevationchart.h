@@ -16,6 +16,7 @@
 #include "provider/randomdataprovider.h"
 #include "provider/demdataprovider.h"
 #include "internal/routemodel.h"
+#include "research/researcher.h"
 
 using std::unique_ptr;
 using std::map;
@@ -77,6 +78,8 @@ namespace ElevationChart
 
       explicit ElevationChartItem(QQuickItem* parent = nullptr);
 
+      Researcher* researcher() const;
+
       [[nodiscard]] SG::BasicPalette palette() const;   void setPalette(SG::BasicPalette);
       [[nodiscard]] Bounds bounds() const;              void setBounds(Bounds);
       [[nodiscard]] Route route() const;                void setRoute(const Route&);
@@ -137,6 +140,7 @@ namespace ElevationChart
 
     private:
       SG::BasicPalette m_palette;
+      Researcher* m_researcher;
       Bounds m_bounds;
       bool m_missing_tiles;
       bool m_intersecting;
@@ -148,6 +152,7 @@ namespace ElevationChart
       Metrics m_metrics;
       unique_ptr<IElevationDataProvider> m_provider;
       vector<ElevationPoint> m_profile;
+      vector<IntersectionPoint> m_intersections;
       ShrinkMode m_shrink_mode;
       ProviderType m_provider_type;
       QGeoPath m_metrics_path;
