@@ -4,7 +4,7 @@
 
 #include "demdataprovider.h"
 #include <algorithm>
-#include <DEM/GroundProfile>
+#include <DEM/Algorithms>
 
 namespace ElevationChart
 {
@@ -22,11 +22,11 @@ namespace ElevationChart
   vector<ElevationPoint> DEMDataProvider::plotElevationProfile(const QGeoPath& path) const
   {
     vector<ElevationPoint> ret;
-    vector<DEM::GraphPoint> src = DEM::plotTerrainProfile(path);
+    vector<pair<uint32_t, int16_t>> src = DEM::buildProfile(path);
 
     ret.reserve(src.size());
-    std::transform(src.begin(), src.end(), std::back_inserter(ret), [](const DEM::GraphPoint& point){
-      return ElevationPoint(point.distance, point.elevation);
+    std::transform(src.begin(), src.end(), std::back_inserter(ret), [](const pair<uint32_t, int16_t>& point){
+      return ElevationPoint(static_cast<float>(point.first), point.second);
     });
 
     return ret;
