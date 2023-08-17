@@ -360,13 +360,13 @@ namespace ElevationChart
       {
         gl.push_back(toPixel(point.distance(), point.elevation(), bounds().x(), bounds().y()));
         gl.push_back({ toPixelX(point.distance(), bounds().x()), static_cast<float>(height()) });
-        flip = !flip;
+        flip ^= 1;
       }
       else
       {
         gl.push_back({ toPixelX(point.distance(), bounds().x()), static_cast<float>(height()) });
         gl.push_back(toPixel(point.distance(), point.elevation(), bounds().x(), bounds().y()));
-        flip = !flip;
+        flip ^= 1;
       }
     }
 
