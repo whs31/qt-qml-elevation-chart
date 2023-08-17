@@ -106,12 +106,15 @@ namespace ElevationChart
 
   void ElevationChartItem::setupNodeColors(QSGNode* node)
   {
+    QColor transparent_error = palette().error();
+    transparent_error.setAlpha(128);
+
     dynamic_cast<QSGFlatColorMaterial*>(tree()[BackgroundNode]->material())->setColor(palette().background());
     dynamic_cast<QSGFlatColorMaterial*>(tree()[ProfileNode]->material())->setColor(palette().overlay());
     dynamic_cast<QSGFlatColorMaterial*>(tree()[RouteNode]->material())->setColor(palette().accent());
     dynamic_cast<QSGFlatColorMaterial*>(tree()[MetricsNode]->material())->setColor(palette().warn());
     dynamic_cast<QSGFlatColorMaterial*>(tree()[MetricsPointNode]->material())->setColor(palette().warn());
-    dynamic_cast<QSGFlatColorMaterial*>(tree()[IntersectionsNode]->material())->setColor(palette().error());
+    dynamic_cast<QSGFlatColorMaterial*>(tree()[IntersectionsNode]->material())->setColor(transparent_error);
   }
 
   void ElevationChartItem::drawCall(QSGNode* node)
@@ -321,7 +324,41 @@ namespace ElevationChart
 
   void ElevationChartItem::handleIntersectionsNode() noexcept
   {
+    if(m_intersections.empty())
+      return;
+
     auto geometry = tree()[IntersectionsNode]->geometry();
+
+    vector<QSGGeometry::Point2D> gl;
+//    QSGGeometry::Point2D max = {0, 0};
+//    max.x = m_intersections.back().distance();
+//    max.y = std::max_element(m_intersections.cbegin(), m_intersections.cend(), [](const IntersectionPoint& a, const IntersectionPoint& b){
+//      return a.elevation() < b.elevation();
+//    })->elevation();
+    //max.y *= 1.05;
+    bool flip = false;
+    for(const auto& point : m_intersections)
+    {
+      if(flip)
+      {
+        gl.push_back(toPixel(point.distance(), point.elevation(), bounds().x(), bounds().y()));
+        gl.push_back({ toPixelX(point.distance(), bounds().x()), static_cast<float>(height()) });
+        flip = !flip;
+      }
+      else
+      {
+        gl.push_back({ toPixelX(point.distance(), bounds().x()), static_cast<float>(height()) });
+        gl.push_back(toPixel(point.distance(), point.elevation(), bounds().x(), bounds().y()));
+        flip = !flip;
+      }
+    }
+
+    if(gl.size() % 2 != 0)
+      gl.push_back({ toPixelX(m_intersections.back().distance(), bounds().x()), static_cast<float>(height()) });
+
+    geometry->allocate(static_cast<int>(gl.size()));
+    for(size_t i = 0; i < gl.size(); i++)
+      geometry->vertexDataAsPoint2D()[i] = gl.at(i);
   }
 
   /**
