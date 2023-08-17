@@ -52,6 +52,6 @@ RowLayout {
     }
 
     Notification { col: impl.palette.error; details: "Для маршрута отсутствуют необходимые карты профиля высот!"; shown: impl.missingTiles}
-    Notification { col: impl.palette.error; details: "Маршрут пересекает рельеф в одной из точек!"; shown: true}
+    Notification { col: impl.palette.error; details: "Маршрут пересекает рельеф в одной из точек!"; shown: impl.intersecting}
     Notification { col: impl.palette.warn; details: "Маршрут не соответствует ЛТХ борта!"; shown: !impl.matchingMetrics }
 }
