@@ -53,6 +53,7 @@ namespace ElevationChart
     {
       BackgroundNode,   ///< Нода фона.
       ProfileNode,      ///< Нода профиля рельефа.
+      IntersectionsNode,///< Нода пересечений с рельефом.
       MetricsNode,      ///< Нода маршрута, скорректированного по ЛТХ.
       MetricsPointNode, ///< Нода для точек маршрута, скорректированного по ЛТХ.
       EnvelopeNode,     ///< Нода огибающей.
@@ -127,6 +128,7 @@ namespace ElevationChart
       void handleProfileNode() noexcept;
       void handleRouteNode() noexcept;
       void handleMetricsNode() noexcept;
+      void handleIntersectionsNode() noexcept;
 
       [[nodiscard]] QSGGeometry::Point2D toPixel(float x, float y, float x_max, float y_max) const;
       [[nodiscard]] float toPixelX(float x, float x_max) const;

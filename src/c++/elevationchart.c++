@@ -11,7 +11,11 @@
 
 namespace ElevationChart
 {
-  constexpr static const unsigned int DrawQuadStrip = GL_QUAD_STRIP;
+  enum OpenGLDrawMode
+  {
+    DrawQuadStrip = GL_QUAD_STRIP,
+    DrawQuads = GL_QUADS
+  };
 
   /**
    * \class ElevationChartItem
@@ -90,10 +94,11 @@ namespace ElevationChart
   void ElevationChartItem::setupChildNodes(QSGNode* node)
   {
     tree()[BackgroundNode] = SG::utils::createSimpleGeometryNode(palette().background(), QSGGeometry::DrawTriangles);
-    tree()[ProfileNode] = SG::utils::createSimpleGeometryNode(palette().overlay(), DrawQuadStrip);
+    tree()[ProfileNode] = SG::utils::createSimpleGeometryNode(palette().overlay(), OpenGLDrawMode::DrawQuadStrip);
     tree()[RouteNode] = SG::utils::createSimpleGeometryNode(palette().accent(), QSGGeometry::DrawLineStrip, ROUTE_LINE_WIDTH);
     tree()[MetricsNode] = SG::utils::createSimpleGeometryNode(palette().warn(), QSGGeometry::DrawLineStrip, METRICS_LINE_WIDTH);
     tree()[MetricsPointNode] = SG::utils::createSimpleGeometryNode(palette().warn(), QSGGeometry::DrawPoints, METRICS_ROUNDING_WIDTH);
+    tree()[IntersectionsNode] = SG::utils::createSimpleGeometryNode(palette().error(), OpenGLDrawMode::DrawQuads, METRICS_LINE_WIDTH);
 
     for(const auto&[key, value] : tree())
       node->appendChildNode(value);
@@ -106,6 +111,7 @@ namespace ElevationChart
     dynamic_cast<QSGFlatColorMaterial*>(tree()[RouteNode]->material())->setColor(palette().accent());
     dynamic_cast<QSGFlatColorMaterial*>(tree()[MetricsNode]->material())->setColor(palette().warn());
     dynamic_cast<QSGFlatColorMaterial*>(tree()[MetricsPointNode]->material())->setColor(palette().warn());
+    dynamic_cast<QSGFlatColorMaterial*>(tree()[IntersectionsNode]->material())->setColor(palette().error());
   }
 
   void ElevationChartItem::drawCall(QSGNode* node)
@@ -114,6 +120,7 @@ namespace ElevationChart
     this->handleProfileNode();
     this->handleRouteNode();
     this->handleMetricsNode();
+    this->handleIntersectionsNode();
   }
 
   void ElevationChartItem::updateProfile() noexcept
@@ -310,6 +317,11 @@ namespace ElevationChart
       geometry1->vertexDataAsPoint2D()[i] = gl.at(i);
       geometry2->vertexDataAsPoint2D()[i] = gl.at(i);
     }
+  }
+
+  void ElevationChartItem::handleIntersectionsNode() noexcept
+  {
+    auto geometry = tree()[IntersectionsNode]->geometry();
   }
 
   /**
