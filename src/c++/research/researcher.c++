@@ -9,7 +9,7 @@
 #include <QtConcurrent/QtConcurrent>
 #include <DEM/Algorithms>
 
-constexpr static float SCAN_STEP = 1;             // Шаг сканирования земной поверхности.
+constexpr static float SCAN_STEP = 0.5;             // Шаг сканирования земной поверхности.
 
 namespace ElevationChart
 {
@@ -126,9 +126,9 @@ namespace ElevationChart
           QGeoCoordinate delta_point = previous.atDistanceAndAzimuth(distance, azimuth);
           delta_point.setAltitude(DEM::elevation(delta_point.latitude(), delta_point.longitude()));
 
-          if (previous_delta.altitude() != delta_point.altitude())
+          if(previous_delta.altitude() != delta_point.altitude())
           {
-            if (previous_delta.altitude() > delta_point.altitude())
+            if(previous_delta.altitude() > delta_point.altitude())
               ret.addCoordinate(previous_delta);
             else
               ret.addCoordinate(delta_point);
