@@ -84,7 +84,7 @@ namespace ElevationChart
                   IntersectionPoint intersection_point(static_cast<float>(intersectsPoint.x()), static_cast<float>(intersectsPoint.y()),
                                                        true, false, IntersectionPoint::NonIntersecting);
                   intersection_point.setCoordinate({intersectGeoPoint.latitude(), intersectGeoPoint.longitude()});
-                  if(prevResultPoint.state() == IntersectionPoint::InsideGround)
+                  if(prevResultPoint.state() == IntersectionPoint::InsideGround or prevResultPoint.state() == IntersectionPoint::IntersectingIn)
                     intersection_point.setState(IntersectionPoint::IntersectingOut);
                   else
                     intersection_point.setState(IntersectionPoint::IntersectingIn);
