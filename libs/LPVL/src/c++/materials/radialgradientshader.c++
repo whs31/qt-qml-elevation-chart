@@ -10,7 +10,7 @@
  * github.com/whs31/lpvl
  * ---------------------------------------------------------------------- */
 
-#include "materials.h"
+#include "radialgradientshader.h"
 
 /**
  * \class QSGSimpleMaterialShader
@@ -55,12 +55,3 @@ namespace LPVL
   void RadialGradientShader::updateState(const State* state, const State*) { program()->setUniformValue(id_color, state->color); }
   void RadialGradientShader::resolveUniforms() { id_color = program()->uniformLocation("color"); }
 } // LPVL
-
-int State::compare(const State* other) const
-{
-  if(color.rgba() == other->color.rgba())
-    return 0;
-  if(color.rgba() < other->color.rgba())
-    return -1;
-  return 1;
-}

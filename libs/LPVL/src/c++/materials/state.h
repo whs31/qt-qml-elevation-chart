@@ -13,7 +13,6 @@
 #pragma once
 
 #include <QtGui/QColor>
-#include <QtQuick/QSGSimpleMaterial>
 
 struct State
 {
@@ -21,21 +20,11 @@ struct State
   QColor color;
 };
 
-namespace LPVL
+inline int State::compare(const State* other) const
 {
-  class RadialGradientShader : public QSGSimpleMaterialShader<State>
-  {
-    public:
-      static QSGMaterialShader* createShader();
-      static QSGSimpleMaterialComparableMaterial<State>* createMaterial();
-
-      const char* vertexShader() const override;
-      const char* fragmentShader() const override;
-      QList<QByteArray> attributes() const override;
-      void updateState(const State* state, const State*) override;
-      void resolveUniforms() override;
-
-    private:
-      int id_color;
-  };
-} // LPVL
+  if(color.rgba() == other->color.rgba())
+    return 0;
+  if(color.rgba() < other->color.rgba())
+    return -1;
+  return 1;
+}
