@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 3.15)
 
-project(libscenegraph LANGUAGES CXX)
+project(LPVL LANGUAGES CXX)
 
 option(USE_QT_POSITIONING_LIBRARY
   "Link against Qt5::Positioning and expose Geo-related features"
@@ -29,21 +29,12 @@ else()
   )
 endif()
 
-include_directories(src/c++ include)
+include_directories( include src/c++ )
 
-set(SG_CORE
-  src/c++/basicpalette.h      src/c++/basicpalette.c++
-  src/c++/utils.h             src/c++/utils.c++
-  src/c++/scenegraphobject.h  src/c++/scenegraphobject.c++
-)
+file(GLOB_RECURSE LPVL_CORE src/c++/*)
+file(GLOB_RECURSE LPVL_CORE_INCLUDE include/*)
 
-set(SG_CORE_INCLUDE
-  include/SG/BasicPalette
-  include/SG/Utils
-  include/SG/ScenegraphObject
-)
-
-set(SRC ${SG_CORE} ${SG_CORE_INCLUDE})
+set(SRC ${LPVL_CORE} ${LPVL_CORE_INCLUDE})
 
 add_library(${PROJECT_NAME} ${SRC})
 

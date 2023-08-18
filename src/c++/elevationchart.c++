@@ -7,7 +7,7 @@
 #include <QtQuick/QSGGeometryNode>
 #include <QtQuick/QSGFlatColorMaterial>
 #include <QtConcurrent/QtConcurrent>
-#include <SG/Utils>
+#include <LPVL/Utils>
 
 #define in :
 
@@ -33,20 +33,20 @@ namespace ElevationChart
    * \param parent - родительский объект в иерархии Qt.
    */
   ElevationChartItem::ElevationChartItem(QQuickItem* parent)
-    : SG::ScenegraphObject(parent)
-    , m_researcher(new Researcher(this))
-    , m_missing_tiles(false)
-    , m_intersecting(false)
-    , m_valid(false)
-    , m_matching_metrics(true)
-    , m_route(Route())
-    , m_model(new RouteModel(this))
-    , m_notifications(new NotificationModel(this))
-    , m_uav_position(QGeoCoordinate(60, 30))
-    , m_metrics(Metrics())
-    , m_provider_type(ProviderType::DEMProvider)
-    , m_bounds(Bounds())
-    , m_shrink_mode(ShrinkMode::ShrinkToRouteHeight)
+    : LPVL::ScenegraphObject(parent)
+      , m_researcher(new Researcher(this))
+      , m_missing_tiles(false)
+      , m_intersecting(false)
+      , m_valid(false)
+      , m_matching_metrics(true)
+      , m_route(Route())
+      , m_model(new RouteModel(this))
+      , m_notifications(new NotificationModel(this))
+      , m_uav_position(QGeoCoordinate(60, 30))
+      , m_metrics(Metrics())
+      , m_provider_type(ProviderType::DEMProvider)
+      , m_bounds(Bounds())
+      , m_shrink_mode(ShrinkMode::ShrinkToRouteHeight)
   {
     switch(providerType())
     {
@@ -111,12 +111,12 @@ namespace ElevationChart
 
   void ElevationChartItem::setupChildNodes(QSGNode* node)
   {
-    tree()[BackgroundNode] = SG::utils::createSimpleGeometryNode(palette().background(), QSGGeometry::DrawTriangles);
-    tree()[ProfileNode] = SG::utils::createSimpleGeometryNode(palette().overlay(), OpenGLDrawMode::DrawQuadStrip);
-    tree()[RouteNode] = SG::utils::createSimpleGeometryNode(palette().accent(), QSGGeometry::DrawLineStrip, ROUTE_LINE_WIDTH);
-    tree()[MetricsNode] = SG::utils::createSimpleGeometryNode(palette().warn(), QSGGeometry::DrawLineStrip, METRICS_LINE_WIDTH);
-    tree()[MetricsPointNode] = SG::utils::createSimpleGeometryNode(palette().warn(), QSGGeometry::DrawPoints, METRICS_ROUNDING_WIDTH);
-    tree()[IntersectionsNode] = SG::utils::createSimpleGeometryNode(palette().error(), OpenGLDrawMode::DrawQuads, METRICS_LINE_WIDTH);
+    tree()[BackgroundNode] = LPVL::utils::createSimpleGeometryNode(palette().background(), QSGGeometry::DrawTriangles);
+    tree()[ProfileNode] = LPVL::utils::createSimpleGeometryNode(palette().overlay(), OpenGLDrawMode::DrawQuadStrip);
+    tree()[RouteNode] = LPVL::utils::createSimpleGeometryNode(palette().accent(), QSGGeometry::DrawLineStrip, ROUTE_LINE_WIDTH);
+    tree()[MetricsNode] = LPVL::utils::createSimpleGeometryNode(palette().warn(), QSGGeometry::DrawLineStrip, METRICS_LINE_WIDTH);
+    tree()[MetricsPointNode] = LPVL::utils::createSimpleGeometryNode(palette().warn(), QSGGeometry::DrawPoints, METRICS_ROUNDING_WIDTH);
+    tree()[IntersectionsNode] = LPVL::utils::createSimpleGeometryNode(palette().error(), OpenGLDrawMode::DrawQuads, METRICS_LINE_WIDTH);
 
     for(const auto&[key, value] : tree())
       node->appendChildNode(value);
@@ -416,10 +416,10 @@ namespace ElevationChart
    * <tr><th>Чтение             <th>Запись              <th>Оповещение
    * <tr><td><i>palette</i>     <td><i>setPalette</i>   <td><i>paletteChanged</i>
    * </table>
-   * \see SG::BasicPalette
+   * \see LPVL::BasicPalette
    */
-  SG::BasicPalette ElevationChartItem::palette() const { return m_palette; }
-  void ElevationChartItem::setPalette(SG::BasicPalette x) {
+  LPVL::BasicPalette ElevationChartItem::palette() const { return m_palette; }
+  void ElevationChartItem::setPalette(LPVL::BasicPalette x) {
     m_palette = std::move(x);
     emit paletteChanged();
 

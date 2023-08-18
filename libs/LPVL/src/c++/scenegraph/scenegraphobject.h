@@ -6,7 +6,7 @@
 
 #include <QtQuick/QQuickItem>
 
-namespace SG
+namespace LPVL
 {
   class ScenegraphObject : public QQuickItem
   {
@@ -31,4 +31,4 @@ namespace SG
     private:
       bool m_require_recolor;
   };
-} // SG
+} // LPVL

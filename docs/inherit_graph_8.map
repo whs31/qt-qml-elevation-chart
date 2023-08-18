@@ -1,23 +1,3 @@
 <map id="Иерархия классов. Графический вид." name="Иерархия классов. Графический вид.">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,112,79,141"/>
-<area shape="rect" id="Node000001" href="$dc/d79/classElevationChart_1_1API.html" title="Публичный интерфейс (C++) для виджета профиля высот." alt="" coords="180,5,226,34"/>
-<area shape="poly" id="edge4_Node000000_Node000001" title=" " alt="" coords="63,99,91,71,125,44,153,31,179,22,181,27,155,36,128,49,94,75,67,103"/>
-<area shape="rect" id="Node000002" href="$df/d15/classElevationChart_1_1Researcher.html" title=" " alt="" coords="155,59,251,87"/>
-<area shape="poly" id="edge5_Node000000_Node000002" title=" " alt="" coords="92,107,156,85,158,90,94,112"/>
-<area shape="rect" id="Node000003" href="$d6/dda/classElevationChart_1_1TypeFactory.html" title=" " alt="" coords="153,112,253,141"/>
-<area shape="poly" id="edge6_Node000000_Node000003" title=" " alt="" coords="94,124,153,124,153,129,94,129"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="127,165,279,194"/>
-<area shape="poly" id="edge7_Node000000_Node000004" title=" " alt="" coords="94,141,158,162,156,167,92,146"/>
-<area shape="rect" id="Node000008" href="$d7/d4d/classQQuickItem.html" title=" " alt="" coords="155,219,251,247"/>
-<area shape="poly" id="edge11_Node000000_Node000008" title=" " alt="" coords="67,150,94,178,128,204,155,217,153,222,125,209,91,182,63,154"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="327,165,473,194"/>
-<area shape="poly" id="edge8_Node000004_Node000005" title=" " alt="" coords="294,177,327,177,327,182,294,182"/>
-<area shape="rect" id="Node000006" href="$d4/d99/classElevationChart_1_1NotificationModel.html" title="Модель оповещений об ошибках в маршруте." alt="" coords="528,112,659,141"/>
-<area shape="poly" id="edge9_Node000005_Node000006" title=" " alt="" coords="468,158,538,139,540,144,470,163"/>
-<area shape="rect" id="Node000007" href="$d6/de1/classElevationChart_1_1RouteModel.html" title="Модель точек пути для профиля высот." alt="" coords="544,165,643,194"/>
-<area shape="poly" id="edge10_Node000005_Node000007" title=" " alt="" coords="488,177,544,177,544,182,488,182"/>
-<area shape="rect" id="Node000009" href="$d6/d6b/classSG_1_1ScenegraphObject.html" title="Базовый класс для объектов Qt Quick Scenegraph." alt="" coords="330,219,470,247"/>
-<area shape="poly" id="edge12_Node000008_Node000009" title=" " alt="" coords="266,230,330,230,330,236,266,236"/>
-<area shape="rect" id="Node000010" href="$d2/d6b/classElevationChart_1_1ElevationChartItem.html" title="Основной класс библиотеки." alt="" coords="521,219,666,247"/>
-<area shape="poly" id="edge13_Node000009_Node000010" title=" " alt="" coords="485,230,521,230,521,236,485,236"/>
+<area shape="rect" id="Node000000" href="$de/d39/classElevationChart_1_1Route.html" title="Набор последовательных точек на карте." alt="" coords="5,5,66,34"/>
 </map>

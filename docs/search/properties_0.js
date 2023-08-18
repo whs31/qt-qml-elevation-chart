@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['accent_0',['accent',['../d8/d37/classSG_1_1BasicPalette.html#a823551d69959b41d351d24c4be9c8e08',1,'SG::BasicPalette']]],
-  ['altitude_1',['altitude',['../d1/d3b/classElevationChart_1_1RoutePoint.html#a5394f13c90d234792210e9569cc7aea8',1,'ElevationChart::RoutePoint']]]
+  ['altitude_0',['altitude',['../d1/d3b/classElevationChart_1_1RoutePoint.html#a5394f13c90d234792210e9569cc7aea8',1,'ElevationChart::RoutePoint']]]
 ];

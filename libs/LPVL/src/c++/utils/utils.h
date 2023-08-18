@@ -5,7 +5,7 @@
 #pragma once
 #include <QtQuick/QSGGeometryNode>
 
-namespace SG::utils
+namespace LPVL::utils
 {
   QSGGeometryNode* createSimpleGeometryNode(const QColor& color, unsigned int drawing_mode, float line_width = 1);
-} // SG::utils
+} // LPVL::utils

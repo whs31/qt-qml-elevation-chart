@@ -8,8 +8,8 @@
 #include <map>
 #include <QtCore/QPointF>
 #include <QtQuick/QSGGeometry>
-#include <SG/BasicPalette>
-#include <SG/ScenegraphObject>
+#include <LPVL/BasicPalette>
+#include <LPVL/ScenegraphObject>
 #include "types/route.h"
 #include "types/bounds.h"
 #include "types/metrics.h"
@@ -26,10 +26,10 @@ class QSGGeometryNode;
 
 namespace ElevationChart
 {
-  class ElevationChartItem : public SG::ScenegraphObject
+  class ElevationChartItem : public LPVL::ScenegraphObject
   {
     Q_OBJECT
-    Q_PROPERTY(SG::BasicPalette palette READ palette WRITE setPalette NOTIFY paletteChanged FINAL)
+    Q_PROPERTY(LPVL::BasicPalette palette READ palette WRITE setPalette NOTIFY paletteChanged FINAL)
     Q_PROPERTY(ElevationChart::Bounds bounds READ bounds WRITE setBounds NOTIFY boundsChanged)
     Q_PROPERTY(ElevationChart::Route route READ route WRITE setRoute NOTIFY routeChanged FINAL)
     Q_PROPERTY(ElevationChart::RouteModel* model READ model CONSTANT)
@@ -83,7 +83,7 @@ namespace ElevationChart
 
       [[nodiscard]] Researcher* researcher() const;
 
-      [[nodiscard]] SG::BasicPalette palette() const;   void setPalette(SG::BasicPalette);
+      [[nodiscard]] LPVL::BasicPalette palette() const;   void setPalette(LPVL::BasicPalette);
       [[nodiscard]] Bounds bounds() const;              void setBounds(Bounds);
       [[nodiscard]] Route route() const;                void setRoute(const Route&);
       [[nodiscard]] RouteModel* model() const;
@@ -144,7 +144,7 @@ namespace ElevationChart
       map<NodeTypes, QSGGeometryNode*> m_tree;
 
     private:
-      SG::BasicPalette m_palette;
+      LPVL::BasicPalette m_palette;
       Researcher* m_researcher;
       Bounds m_bounds;
       bool m_missing_tiles;

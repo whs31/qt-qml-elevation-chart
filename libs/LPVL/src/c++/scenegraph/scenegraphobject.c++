@@ -5,7 +5,7 @@
 #include "scenegraphobject.h"
 #include <QtQuick/QSGNode>
 
-namespace SG
+namespace LPVL
 {
   /**
    * \class ScenegraphObject
@@ -61,7 +61,7 @@ namespace SG
    * Если наследуемый класс не будет содержать дочерних нод, то имеет смысл
    * переопределить этот метод таким образом:
    * \code {.cpp}
-     class Derived : public SG::ScenegraphObject
+     class Derived : public LPVL::ScenegraphObject
      {
         // ...
 
@@ -85,11 +85,11 @@ namespace SG
    * \code {.cpp}
      void setupChildNodes(QSGNode* node) override
      {
-       tree()[BackgroundNode] = SG::utils::createSimpleGeometryNode(palette().background(), QSGGeometry::DrawTriangles);
-       tree()[ProfileNode] = SG::utils::createSimpleGeometryNode(palette().overlay(), DrawQuadStrip);
-       tree()[RouteNode] = SG::utils::createSimpleGeometryNode(palette().accent(), QSGGeometry::DrawLineStrip, ROUTE_LINE_WIDTH);
-       tree()[MetricsNode] = SG::utils::createSimpleGeometryNode(palette().warn(), QSGGeometry::DrawLineStrip, METRICS_LINE_WIDTH);
-       tree()[MetricsPointNode] = SG::utils::createSimpleGeometryNode(palette().warn(), QSGGeometry::DrawPoints, METRICS_ROUNDING_WIDTH);
+       tree()[BackgroundNode] = LPVL::utils::createSimpleGeometryNode(palette().background(), QSGGeometry::DrawTriangles);
+       tree()[ProfileNode] = LPVL::utils::createSimpleGeometryNode(palette().overlay(), DrawQuadStrip);
+       tree()[RouteNode] = LPVL::utils::createSimpleGeometryNode(palette().accent(), QSGGeometry::DrawLineStrip, ROUTE_LINE_WIDTH);
+       tree()[MetricsNode] = LPVL::utils::createSimpleGeometryNode(palette().warn(), QSGGeometry::DrawLineStrip, METRICS_LINE_WIDTH);
+       tree()[MetricsPointNode] = LPVL::utils::createSimpleGeometryNode(palette().warn(), QSGGeometry::DrawPoints, METRICS_ROUNDING_WIDTH);
 
        for(const auto&[key, value] : tree())
          node->appendChildNode(value);
@@ -136,4 +136,4 @@ namespace SG
    * \brief Сбрасывает флаг на обновление материалов.
    */
   void ScenegraphObject::fulfillRecolor() { m_require_recolor = false; }
-} // SG
+} // LPVL

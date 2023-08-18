@@ -5,7 +5,7 @@
 #include "utils.h"
 #include <QtQuick/QSGFlatColorMaterial>
 
-namespace SG::utils
+namespace LPVL::utils
 {
   /**
    * \brief Создает новую ноду геометрии с простым материалом с указанными параметрами.
@@ -28,4 +28,4 @@ namespace SG::utils
 
     return ret;
   }
-} // SG::utils
+} // LPVL::utils

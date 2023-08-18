@@ -4,8 +4,33 @@
 
 #include "basicpalette.h"
 
-namespace SG
+/**
+ * \class QQuickItem
+ * \extends QObject
+ */
+
+/**
+ * \brief Пространство имен библиотеки LPVL.
+ */
+namespace LPVL
 {
+  /**
+   * \class BasicPalette
+   * \brief Простейшая палитра цветов.
+   * \details Класс предоставляет набор цветов с сеттерами, геттерами и сигналами.
+   * Доступны следующие цвета:
+   * - <span style="background:#000000">цвет заднего плана</span>
+   * - <span style="background:#FFFFFF">цвет переднего плана</span>
+   * - <span style="background:#666666">промежуточный цвет</span>
+   * - <span style="background:#777777">второй промежуточный цвет</span>
+   * - <span style="background:#00FF00">акцентный цвет</span>
+   * - <span style="background:#FFFF00">цвет предупреждений</span>
+   * - <span style="background:#FF0000">цвет ошибок</span>
+   * - <span style="background:#0000FF">цвет оповещений</span>
+   *
+   * Класс зарегистрирован в мета-системе и доступен для встраивания в типы QML.
+   */
+
   BasicPalette::BasicPalette()
     : m_background("black")
     , m_foreground("white")

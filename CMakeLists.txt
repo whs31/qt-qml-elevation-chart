@@ -35,7 +35,7 @@ file(GLOB_RECURSE EC_CORE src/c++/*)
 file(GLOB_RECURSE EC_CORE_INCLUDE include/*)
 file(GLOB_RECURSE EC_EXAMPLES examples/*)
 
-add_subdirectory(libs/libscenegraph)
+add_subdirectory(libs/LPVL)
 add_subdirectory(libs/DEM)
 
 if(MAKE_LIBRARY)
@@ -59,7 +59,7 @@ target_link_libraries(${PROJECT_NAME}
     Qt${QT_VERSION_MAJOR}::Positioning
     Qt${QT_VERSION_MAJOR}::QuickControls2
     Qt${QT_VERSION_MAJOR}::Concurrent
-    libscenegraph
+    LPVL
     DEM
 )
 

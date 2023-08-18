@@ -219,7 +219,7 @@ $(document).ready(function(){initNavTree('d6/d6b/classSG_1_1ScenegraphObject.htm
 </div><div class="memdoc">
 
 <p>Создает корневую ноду. </p>
-<p>Эту функцию не нужно переопределять в большинстве случаев. Если наследуемый класс не будет содержать дочерних нод, то имеет смысл переопределить этот метод таким образом: </p><div class="fragment"><div class="line"><span class="keyword">class </span>Derived : <span class="keyword">public</span> <a class="code hl_class" href="../../d6/d6b/classSG_1_1ScenegraphObject.html">SG::ScenegraphObject</a></div>
+<p>Эту функцию не нужно переопределять в большинстве случаев. Если наследуемый класс не будет содержать дочерних нод, то имеет смысл переопределить этот метод таким образом: </p><div class="fragment"><div class="line"><span class="keyword">class </span>Derived : <span class="keyword">public</span> <a class="code hl_class" href="../../d6/d6b/classSG_1_1ScenegraphObject.html">LPVL::ScenegraphObject</a></div>
 <div class="line">{</div>
 <div class="line">   <span class="comment">// ...</span></div>
 <div class="line"> </div>
@@ -230,7 +230,7 @@ $(document).ready(function(){initNavTree('d6/d6b/classSG_1_1ScenegraphObject.htm
 <div class="line"> </div>
 <div class="line">   <span class="comment">// ...</span></div>
 <div class="line">}</div>
-<div class="ttc" id="aclassSG_1_1ScenegraphObject_html"><div class="ttname"><a href="../../d6/d6b/classSG_1_1ScenegraphObject.html">SG::ScenegraphObject</a></div><div class="ttdoc">Базовый класс для объектов Qt Quick Scenegraph.</div><div class="ttdef"><b>Definition</b> <a href="../../d3/d2f/scenegraphobject_8h_source.html#l00011">scenegraphobject.h:12</a></div></div>
+<div class="ttc" id="aclassSG_1_1ScenegraphObject_html"><div class="ttname"><a href="../../d6/d6b/classSG_1_1ScenegraphObject.html">LPVL::ScenegraphObject</a></div><div class="ttdoc">Базовый класс для объектов Qt Quick Scenegraph.</div><div class="ttdef"><b>Definition</b> <a href="../../d3/d2f/scenegraphobject_8h_source.html#l00011">scenegraphobject.h:12</a></div></div>
 </div><!-- fragment --> <dl class="section return"><dt>Возвращает</dt><dd>По умолчанию возвращает указатель на новый объект QSGNode. </dd></dl>
 
 <p class="definition">См. определение в файле <a class="el" href="../../da/d43/scenegraphobject_8c_09_09_source.html">scenegraphobject.c++</a> строка <a class="el" href="../../da/d43/scenegraphobject_8c_09_09_source.html#l00078">78</a></p>
@@ -264,16 +264,16 @@ $(document).ready(function(){initNavTree('d6/d6b/classSG_1_1ScenegraphObject.htm
 <p>Создает дочерние ноды. </p>
 <p>Вызывается один раз после создания корневой ноды. Пример имплементации функции: </p><div class="fragment"><div class="line"><span class="keywordtype">void</span> <a class="code hl_function" href="../../d6/d6b/classSG_1_1ScenegraphObject.html#a1ad6a611add39ec90c77eed034a64e89">setupChildNodes</a>(QSGNode* node)<span class="keyword"> override</span></div>
 <div class="line"><span class="keyword"></span>{</div>
-<div class="line">  tree()[BackgroundNode] = SG::utils::createSimpleGeometryNode(palette().background(), QSGGeometry::DrawTriangles);</div>
-<div class="line">  tree()[ProfileNode] = SG::utils::createSimpleGeometryNode(palette().overlay(), DrawQuadStrip);</div>
-<div class="line">  tree()[RouteNode] = SG::utils::createSimpleGeometryNode(palette().accent(), QSGGeometry::DrawLineStrip, ROUTE_LINE_WIDTH);</div>
-<div class="line">  tree()[MetricsNode] = SG::utils::createSimpleGeometryNode(palette().warn(), QSGGeometry::DrawLineStrip, METRICS_LINE_WIDTH);</div>
-<div class="line">  tree()[MetricsPointNode] = SG::utils::createSimpleGeometryNode(palette().warn(), QSGGeometry::DrawPoints, METRICS_ROUNDING_WIDTH);</div>
+<div class="line">  tree()[BackgroundNode] = LPVL::utils::createSimpleGeometryNode(palette().background(), QSGGeometry::DrawTriangles);</div>
+<div class="line">  tree()[ProfileNode] = LPVL::utils::createSimpleGeometryNode(palette().overlay(), DrawQuadStrip);</div>
+<div class="line">  tree()[RouteNode] = LPVL::utils::createSimpleGeometryNode(palette().accent(), QSGGeometry::DrawLineStrip, ROUTE_LINE_WIDTH);</div>
+<div class="line">  tree()[MetricsNode] = LPVL::utils::createSimpleGeometryNode(palette().warn(), QSGGeometry::DrawLineStrip, METRICS_LINE_WIDTH);</div>
+<div class="line">  tree()[MetricsPointNode] = LPVL::utils::createSimpleGeometryNode(palette().warn(), QSGGeometry::DrawPoints, METRICS_ROUNDING_WIDTH);</div>
 <div class="line"> </div>
 <div class="line">  <span class="keywordflow">for</span>(<span class="keyword">const</span> <span class="keyword">auto</span>&amp;[key, value] : tree())</div>
 <div class="line">    node-&gt;appendChildNode(value);</div>
 <div class="line">}</div>
-<div class="ttc" id="aclassSG_1_1ScenegraphObject_html_a1ad6a611add39ec90c77eed034a64e89"><div class="ttname"><a href="../../d6/d6b/classSG_1_1ScenegraphObject.html#a1ad6a611add39ec90c77eed034a64e89">SG::ScenegraphObject::setupChildNodes</a></div><div class="ttdeci">virtual void setupChildNodes(QSGNode *node)=0</div><div class="ttdoc">Создает дочерние ноды.</div></div>
+<div class="ttc" id="aclassSG_1_1ScenegraphObject_html_a1ad6a611add39ec90c77eed034a64e89"><div class="ttname"><a href="../../d6/d6b/classSG_1_1ScenegraphObject.html#a1ad6a611add39ec90c77eed034a64e89">LPVL::ScenegraphObject::setupChildNodes</a></div><div class="ttdeci">virtual void setupChildNodes(QSGNode *node)=0</div><div class="ttdoc">Создает дочерние ноды.</div></div>
 </div><!-- fragment --> 
 <p>Замещается в <a class="el" href="../../d2/d6b/classElevationChart_1_1ElevationChartItem.html#a3e9bb1600355371913f9faced6787a12">ElevationChartItem</a>.</p>
 
@@ -312,7 +312,7 @@ $(document).ready(function(){initNavTree('d6/d6b/classSG_1_1ScenegraphObject.htm
 <div class="line">  <span class="keyword">dynamic_cast&lt;</span>QSGFlatColorMaterial*<span class="keyword">&gt;</span>(tree()[MetricsNode]-&gt;material())-&gt;setColor(palette().warn());</div>
 <div class="line">  <span class="keyword">dynamic_cast&lt;</span>QSGFlatColorMaterial*<span class="keyword">&gt;</span>(tree()[MetricsPointNode]-&gt;material())-&gt;setColor(palette().warn());</div>
 <div class="line">}</div>
-<div class="ttc" id="aclassSG_1_1ScenegraphObject_html_a49e574fde99895492ef3d5e6d4882244"><div class="ttname"><a href="../../d6/d6b/classSG_1_1ScenegraphObject.html#a49e574fde99895492ef3d5e6d4882244">SG::ScenegraphObject::setupNodeColors</a></div><div class="ttdeci">virtual void setupNodeColors(QSGNode *node)=0</div><div class="ttdoc">Задает цвета для материалов дочерних нод.</div></div>
+<div class="ttc" id="aclassSG_1_1ScenegraphObject_html_a49e574fde99895492ef3d5e6d4882244"><div class="ttname"><a href="../../d6/d6b/classSG_1_1ScenegraphObject.html#a49e574fde99895492ef3d5e6d4882244">LPVL::ScenegraphObject::setupNodeColors</a></div><div class="ttdeci">virtual void setupNodeColors(QSGNode *node)=0</div><div class="ttdoc">Задает цвета для материалов дочерних нод.</div></div>
 </div><!-- fragment --> 
 <p>Замещается в <a class="el" href="../../d2/d6b/classElevationChart_1_1ElevationChartItem.html#a30ee242001b54ab214414c4125902313">ElevationChartItem</a>.</p>
 
@@ -447,7 +447,7 @@ $(document).ready(function(){initNavTree('d6/d6b/classSG_1_1ScenegraphObject.htm
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="../../dd/d59/namespaceSG.html">SG</a></li><li class="navelem"><a class="el" href="../../d6/d6b/classSG_1_1ScenegraphObject.html">ScenegraphObject</a></li>
+    <li class="navelem"><a class="el" href="../../dd/d59/namespaceSG.html">LPVL</a></li><li class="navelem"><a class="el" href="../../d6/d6b/classSG_1_1ScenegraphObject.html">ScenegraphObject</a></li>
     <li class="footer">Создано системой <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>

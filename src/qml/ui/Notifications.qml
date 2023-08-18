@@ -4,8 +4,8 @@ import QtQuick.Controls.Material 2.15
 import QtQuick.Layouts 1.15
 
 ListView {
-    add: Transition { NumberAnimation { property: "opacity"; from: 0; to: 1; duration: 1500; easing.type: Easing.OutCubic; } }
-    remove: Transition { NumberAnimation { property: "opacity"; from: 1; to: 0; duration: 500; easing.type: Easing.OutCubic; } }
+    add: Transition { NumberAnimation { property: "scale"; from: 0; to: 1; duration: 400; easing.type: Easing.OutCubic; } }
+    remove: Transition { NumberAnimation { property: "scale"; from: 1; to: 0; duration: 500; easing.type: Easing.OutCubic; } }
 
     width: 400
     height: parent.height

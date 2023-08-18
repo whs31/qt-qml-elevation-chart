@@ -23,10 +23,5 @@ var annotated_dup =
       [ "RouteModel", "d6/de1/classElevationChart_1_1RouteModel.html", "d6/de1/classElevationChart_1_1RouteModel" ],
       [ "RoutePoint", "d1/d3b/classElevationChart_1_1RoutePoint.html", "d1/d3b/classElevationChart_1_1RoutePoint" ],
       [ "TypeFactory", "d6/dda/classElevationChart_1_1TypeFactory.html", null ]
-    ] ],
-    [ "SG", "dd/d59/namespaceSG.html", [
-      [ "BasicPalette", "d8/d37/classSG_1_1BasicPalette.html", "d8/d37/classSG_1_1BasicPalette" ],
-      [ "ScenegraphObject", "d6/d6b/classSG_1_1ScenegraphObject.html", "d6/d6b/classSG_1_1ScenegraphObject" ]
-    ] ],
-    [ "QQuickItem", "d7/d4d/classQQuickItem.html", null ]
+    ] ]
 ];

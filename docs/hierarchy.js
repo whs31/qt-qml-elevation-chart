@@ -1,6 +1,5 @@
 var hierarchy =
 [
-    [ "BasicPalette", "d8/d37/classSG_1_1BasicPalette.html", null ],
     [ "Bounds", "d6/d1e/classElevationChart_1_1Bounds.html", null ],
     [ "ElevationPoint", "dd/d95/classElevationChart_1_1ElevationPoint.html", [
       [ "IntersectionPoint", "d1/d0b/classElevationChart_1_1IntersectionPoint.html", null ]
@@ -22,15 +21,13 @@ var hierarchy =
           [ "NotificationModel", "d4/d99/classElevationChart_1_1NotificationModel.html", null ],
           [ "RouteModel", "d6/de1/classElevationChart_1_1RouteModel.html", null ]
         ] ]
-      ] ],
-      [ "QQuickItem", "d7/d4d/classQQuickItem.html", [
-        [ "ScenegraphObject", "d6/d6b/classSG_1_1ScenegraphObject.html", [
-          [ "ElevationChartItem", "d2/d6b/classElevationChart_1_1ElevationChartItem.html", null ]
-        ] ]
       ] ]
     ] ],
     [ "Route", "de/d39/classElevationChart_1_1Route.html", null ],
     [ "RoutePoint", "d1/d3b/classElevationChart_1_1RoutePoint.html", null ],
+    [ "ScenegraphObject", null, [
+      [ "ElevationChartItem", "d2/d6b/classElevationChart_1_1ElevationChartItem.html", null ]
+    ] ],
     [ "Tile", "d1/d3f/classDEM_1_1Tile.html", null ],
     [ "TileKey", "d7/d24/structDEM_1_1TileKey.html", null ],
     [ "TileStorage", "d8/d8b/classDEM_1_1TileStorage.html", null ]
