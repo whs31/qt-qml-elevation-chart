@@ -371,11 +371,11 @@ namespace ElevationChart
     }
 
     if(gl.size() % 2 != 0)
-      gl.push_back({ toPixelX(m_intersections.back().distance(), bounds().x()), static_cast<float>(height()) });
+      gl.push_back(LPVL::utils::fromPoint2DBounded({toPixelX(m_intersections.back().distance(), bounds().x()), static_cast<float>(height())}, width(), height()));
 
     geometry->allocate(static_cast<int>(gl.size()));
     for(size_t i = 0; i < gl.size(); i++)
-      geometry->vertexDataAsPoint2D()[i] = gl.at(i);
+      geometry->vertexDataAsTexturedPoint2D()[i] = gl.at(i);
   }
 
   /**
