@@ -9,5 +9,6 @@ var searchData=
   ['topixelx_6',['toPixelX',['../d2/d6b/classElevationChart_1_1ElevationChartItem.html#aa400a689d5b9360a50501cc61ea22a5a',1,'ElevationChart::ElevationChartItem']]],
   ['topixely_7',['toPixelY',['../d2/d6b/classElevationChart_1_1ElevationChartItem.html#a3ebe3fef54d03209d9826aaee1f720dd',1,'ElevationChart::ElevationChartItem']]],
   ['tovariantlist_8',['toVariantList',['../de/d39/classElevationChart_1_1Route.html#ab14f16812544053a3388d9bbccc2f124',1,'ElevationChart::Route']]],
-  ['typefactory_9',['TypeFactory',['../d6/dda/classElevationChart_1_1TypeFactory.html',1,'ElevationChart']]]
+  ['type_9',['Type',['../d4/d99/classElevationChart_1_1NotificationModel.html#aca373d517b80753da645a3f727b257f0a56205085b8e5cc892bead298d181fae6',1,'ElevationChart::NotificationModel']]],
+  ['typefactory_10',['TypeFactory',['../d6/dda/classElevationChart_1_1TypeFactory.html',1,'ElevationChart']]]
 ];

@@ -12,6 +12,5 @@ var namespaceDEM =
     [ "loadTiles", "d7/de2/namespaceDEM.html#a9a400a6f5ecc2c4fd5a963d7faedc65e", null ],
     [ "loadTiles", "d7/de2/namespaceDEM.html#a69f61534d70bd41548458178dab1924b", null ],
     [ "elevation", "d7/de2/namespaceDEM.html#a8e1e7109e84087ca9cc0299754b16377", null ],
-    [ "buildProfile", "d7/de2/namespaceDEM.html#a9c32bccaecfede026550811398449f72", null ],
-    [ "plotTerrainProfile", "d7/de2/namespaceDEM.html#add1bf24fde09f69c0aa12d28c4b9496a", null ]
+    [ "buildProfile", "d7/de2/namespaceDEM.html#a9c32bccaecfede026550811398449f72", null ]
 ];

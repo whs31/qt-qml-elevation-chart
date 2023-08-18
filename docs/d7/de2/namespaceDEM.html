@@ -144,12 +144,9 @@ $(document).ready(function(){initNavTree('d7/de2/namespaceDEM.html','../../'); i
 <tr class="separator:a8e1e7109e84087ca9cc0299754b16377"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9c32bccaecfede026550811398449f72"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/de2/namespaceDEM.html#a9c32bccaecfede026550811398449f72">buildProfile</a> (const QGeoPath &amp;path, uint8_t discrete=10) -&gt; vector&lt; pair&lt; uint32_t, int16_t &gt; &gt;</td></tr>
 <tr class="separator:a9c32bccaecfede026550811398449f72"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:add1bf24fde09f69c0aa12d28c4b9496a"><td class="memItemLeft" align="right" valign="top">vector&lt; <a class="el" href="../../d0/dab/structDEM_1_1GraphPoint.html">GraphPoint</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/de2/namespaceDEM.html#add1bf24fde09f69c0aa12d28c4b9496a">plotTerrainProfile</a> (const QGeoPath &amp;path, const uint8_t discrete)</td></tr>
-<tr class="separator:add1bf24fde09f69c0aa12d28c4b9496a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Подробное описание</h2>
 <div class="textblock"><p>Пространство имен библиотеки <a class="el" href="../../d7/de2/namespaceDEM.html" title="Пространство имен библиотеки DEM.">DEM</a>. </p>
-<dl class="section author"><dt>Авторы</dt><dd>Мухин В.А., Рязанцев Д.Л. </dd></dl>
 </div><h2 class="groupheader">Функции</h2>
 <a id="a701056bcbb22e4a3ea40395a157915f6" name="a701056bcbb22e4a3ea40395a157915f6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a701056bcbb22e4a3ea40395a157915f6">&#9670;&#160;</a></span>findMinMaxAltitude()</h2>
@@ -460,48 +457,6 @@ $(document).ready(function(){initNavTree('d7/de2/namespaceDEM.html','../../'); i
 <dl class="section return"><dt>Возвращает</dt><dd>Массив пар чисел. </dd></dl>
 
 <p class="definition">См. определение в файле <a class="el" href="../../d7/dfd/demalgorithms_8cpp_source.html">demalgorithms.cpp</a> строка <a class="el" href="../../d7/dfd/demalgorithms_8cpp_source.html#l00106">106</a></p>
-
-</div>
-</div>
-<a id="add1bf24fde09f69c0aa12d28c4b9496a" name="add1bf24fde09f69c0aa12d28c4b9496a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#add1bf24fde09f69c0aa12d28c4b9496a">&#9670;&#160;</a></span>plotTerrainProfile()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">vector&lt; <a class="el" href="../../d0/dab/structDEM_1_1GraphPoint.html">GraphPoint</a> &gt; plotTerrainProfile </td>
-          <td>(</td>
-          <td class="paramtype">const QGeoPath &amp;&#160;</td>
-          <td class="paramname"><em>path</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const uint8_t&#160;</td>
-          <td class="paramname"><em>discrete</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Строит профиль рельефа для заданной ломаной прямой на карте. </p>
-<dl class="params"><dt>Аргументы</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">path</td><td>- путь (ломаная) для построения профиля. </td></tr>
-    <tr><td class="paramname">discrete</td><td>- расстояние в метрах между соседними точками профиля. По умолчанию равно 10. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Возвращает</dt><dd>Массив точек <a class="el" href="../../d0/dab/structDEM_1_1GraphPoint.html" title="Точка на графике профиля высот.">GraphPoint</a>. </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000005">Необходимо сделать:</a></b></dt><dd>Присутствует проблема с округлениями целых координат (напр. <code>[60, 30]</code>). </dd></dl>
-<dl class="bug"><dt><b><a class="el" href="../../de/da5/bug.html#_bug000001">Ошибка:</a></b></dt><dd>При задании целых координат (например, <code>[60, 30]</code>) и отсутствии в папке с тайлами высот тайлов для координат, равных заданным координатам за вычетом единицы (например, заданы координаты <code>[60, 30]</code>, отсутствует тайл <code>[59, 29]</code>), библиотека может необоснованно выбросить исключение <code>std::runtime_error</code>. </dd></dl>
-
-<p class="definition">См. определение в файле <a class="el" href="../../d0/df1/demgroundprofile_8cpp_source.html">demgroundprofile.cpp</a> строка <a class="el" href="../../d0/df1/demgroundprofile_8cpp_source.html#l00028">28</a></p>
 
 </div>
 </div>

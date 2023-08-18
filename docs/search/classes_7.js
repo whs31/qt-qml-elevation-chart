@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['qabstractitemmodel_0',['QAbstractItemModel',['../d0/d5a/classQAbstractItemModel.html',1,'']]],
-  ['qabstractlistmodel_1',['QAbstractListModel',['../d5/d2d/classQAbstractListModel.html',1,'']]],
-  ['qquickitem_2',['QQuickItem',['../d7/d4d/classQQuickItem.html',1,'']]]
+  ['notification_0',['Notification',['../d4/d99/classElevationChart_1_1NotificationModel.html#d7/d2a/structElevationChart_1_1NotificationModel_1_1Notification',1,'ElevationChart::NotificationModel']]],
+  ['notificationmodel_1',['NotificationModel',['../d4/d99/classElevationChart_1_1NotificationModel.html',1,'ElevationChart']]]
 ];

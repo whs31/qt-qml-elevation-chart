@@ -20,7 +20,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="../../d5/d2d/classQAbstractListModel.html" target="_top" xlink:title=" ">
+<g id="a_Node000002"><a xlink:title=" ">
 <polygon fill="white" stroke="#bfbfbf" points="112,-79 2.25,-79 2.25,-57.5 112,-57.5 112,-79"/>
 <text text-anchor="middle" x="57.12" y="-64.55" font-family="Arial" font-size="11.00">QAbstractListModel</text>
 </a>
@@ -38,7 +38,7 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="../../d0/d5a/classQAbstractItemModel.html" target="_top" xlink:title=" ">
+<g id="a_Node000003"><a xlink:title=" ">
 <polygon fill="white" stroke="#bfbfbf" points="114.25,-136.5 0,-136.5 0,-115 114.25,-115 114.25,-136.5"/>
 <text text-anchor="middle" x="57.12" y="-122.05" font-family="Arial" font-size="11.00">QAbstractItemModel</text>
 </a>

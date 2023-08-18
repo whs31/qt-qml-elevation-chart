@@ -1,0 +1,213 @@
+<!-- HTML header for doxygen 1.9.6-->
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ru">
+<head>
+  <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=11" />
+  <meta name="generator" content="Doxygen 1.9.7" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Elevation Chart: Исходный файл notificationmodel.c++</title>
+  <link href="../../tabs.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="../../jquery.js"></script>
+  <script type="text/javascript" src="../../dynsections.js"></script>
+  <script type="text/javascript" src="../../doxygen-awesome-darkmode-toggle.js"></script>
+  <script type="text/javascript" src="../../doxygen-awesome-fragment-copy-button.js"></script>
+  <script type="text/javascript" src="../../doxygen-awesome-paragraph-link.js"></script>
+  <script type="text/javascript" src="../../doxygen-awesome-interactive-toc.js"></script>
+  <script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+  </script>
+  <link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+  <link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+  <link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+  <link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+    <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+      <div id="titlearea">
+        <table cellspacing="0" cellpadding="0">
+          <tbody>
+            <tr id="projectrow">
+              <td id="projectlogo"><img alt="Logo" src="../../logo.png" /></td>
+              <td id="projectalign">
+                <div id="projectname">Elevation Chart<span
+                    id="projectnumber">&#160;3.0.0</span>
+                </div>
+                <div id="projectbrief">Виджет профиля высот</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- end header part --><!-- Создано системой Doxygen 1.9.7 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','Поиск');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('d2/d88/notificationmodel_8c_09_09_source.html','../../'); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Загрузка...</div>
+<div class="SRStatus" id="Searching">Поиск...</div>
+<div class="SRStatus" id="NoMatches">Не найдено</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">notificationmodel.c++</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">// Created by whs31 on 18.08.23.</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;notificationmodel.h&quot;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d6/d7f/namespaceElevationChart.html">ElevationChart</a></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>{</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="../../d4/d99/classElevationChart_1_1NotificationModel.html#accd5892db693f9bf22ede6a758077ca5">   20</a></span>  <a class="code hl_function" href="../../d4/d99/classElevationChart_1_1NotificationModel.html#accd5892db693f9bf22ede6a758077ca5">NotificationModel::NotificationModel</a>(QObject* parent)</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    : QAbstractListModel(parent)</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    , m_dictionary({</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>      {Default, <span class="stringliteral">&quot;Ошибка!&quot;</span>},</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>      {MissingTiles, <span class="stringliteral">&quot;Для маршрута отсутствуют необходимые карты профиля высот!&quot;</span>},</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>      {Intersecting, <span class="stringliteral">&quot;Маршрут пересекает рельеф в одной из точек!&quot;</span>},</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>      {MetricsMismatch, <span class="stringliteral">&quot;Маршрут не соответствует ЛТХ борта&quot;</span>}</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    })</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  {}</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="../../d4/d99/classElevationChart_1_1NotificationModel.html#a51dd94ef911c8f4c6495093a1561b45a">   31</a></span>  <span class="keywordtype">int</span> <a class="code hl_function" href="../../d4/d99/classElevationChart_1_1NotificationModel.html#a51dd94ef911c8f4c6495093a1561b45a">NotificationModel::rowCount</a>(<span class="keyword">const</span> QModelIndex&amp; parent)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(m_storage.size()); }</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="../../d4/d99/classElevationChart_1_1NotificationModel.html#ae93b915598cdbe5ae59dddf41d917a53">   39</a></span>  QVariant <a class="code hl_function" href="../../d4/d99/classElevationChart_1_1NotificationModel.html#ae93b915598cdbe5ae59dddf41d917a53">NotificationModel::data</a>(<span class="keyword">const</span> QModelIndex&amp; index, <span class="keywordtype">int</span> role)<span class="keyword"> const</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="keyword">  </span>{</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <span class="keywordflow">if</span>(not index.isValid())</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>      <span class="keywordflow">return</span> {};</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keywordflow">switch</span>(role)</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    {</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="../../d4/d99/classElevationChart_1_1NotificationModel.html#aca373d517b80753da645a3f727b257f0a3340c8ecc8e48277387c30bd3c435799">Index</a>: <span class="keywordflow">return</span> index.row();</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="../../d4/d99/classElevationChart_1_1NotificationModel.html#aca373d517b80753da645a3f727b257f0abf86141fa29ab96a0cf6fad57b11d842">Major</a>: <span class="keywordflow">return</span> QVariant::fromValue(m_storage.at(index.row()).major);</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="../../d4/d99/classElevationChart_1_1NotificationModel.html#aca373d517b80753da645a3f727b257f0aeb0091bd973e704a4c99539258d5ad0a">Details</a>: <span class="keywordflow">return</span> QVariant::fromValue(m_storage.at(index.row()).details);</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>      <span class="keywordflow">default</span>: <span class="keywordflow">return</span> <span class="stringliteral">&quot;Error reading from model&quot;</span>;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    }</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  }</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="keywordtype">void</span> NotificationModel::add(<span class="keywordtype">int</span> type, <span class="keywordtype">bool</span> is_major)</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  {</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="keywordflow">if</span>(std::any_of(m_storage.cbegin(), m_storage.cend(), [type](<span class="keyword">const</span> Notification&amp; x){ return type == x.type; }))</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    beginInsertRows(QModelIndex(), <a class="code hl_function" href="../../d4/d99/classElevationChart_1_1NotificationModel.html#a51dd94ef911c8f4c6495093a1561b45a">rowCount</a>(), <a class="code hl_function" href="../../d4/d99/classElevationChart_1_1NotificationModel.html#a51dd94ef911c8f4c6495093a1561b45a">rowCount</a>());</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    m_storage.push_back({type, is_major, m_dictionary[<span class="keyword">static_cast&lt;</span>NotificationType<span class="keyword">&gt;</span>(type)]});</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    endInsertRows();</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  }</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <span class="keywordtype">void</span> NotificationModel::remove(<span class="keywordtype">int</span> type)</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  {</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <span class="keywordtype">int</span> index = -1;</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <span class="keywordtype">int</span> i = 0;</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <span class="keywordflow">for</span>(<span class="keyword">const</span> <span class="keyword">auto</span>&amp; notification : m_storage)</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    {</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>      <span class="keywordflow">if</span>(notification.type == type)</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>      {</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>        index = i;</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>      }</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>      i++;</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    }</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    <span class="keywordflow">if</span>(index &lt; 0 or index &gt;= <a class="code hl_function" href="../../d4/d99/classElevationChart_1_1NotificationModel.html#a51dd94ef911c8f4c6495093a1561b45a">rowCount</a>())</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    beginRemoveRows(QModelIndex(), index, index);</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    m_storage.erase(m_storage.begin() + index);</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    endRemoveRows();</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  }</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno"><a class="line" href="../../d4/d99/classElevationChart_1_1NotificationModel.html#ac8bb3912a3ce86b15842e79d0b421204">   89</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="../../d4/d99/classElevationChart_1_1NotificationModel.html#ac8bb3912a3ce86b15842e79d0b421204">NotificationModel::clear</a>()</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  {</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    beginRemoveRows(QModelIndex(), 0, <a class="code hl_function" href="../../d4/d99/classElevationChart_1_1NotificationModel.html#a51dd94ef911c8f4c6495093a1561b45a">rowCount</a>() - 1);</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    m_storage.clear();</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    endRemoveRows();</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  }</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno"><a class="line" href="../../d4/d99/classElevationChart_1_1NotificationModel.html#a0ec0e31df18472075967b0410ee4b3be">   97</a></span>  QHash&lt;int, QByteArray&gt; <a class="code hl_function" href="../../d4/d99/classElevationChart_1_1NotificationModel.html#a0ec0e31df18472075967b0410ee4b3be">NotificationModel::roleNames</a>()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span><span class="keyword">  </span>{</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    QHash&lt;int, QByteArray&gt; roles = QAbstractListModel::roleNames();</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    roles[<a class="code hl_enumvalue" href="../../d4/d99/classElevationChart_1_1NotificationModel.html#aca373d517b80753da645a3f727b257f0a3340c8ecc8e48277387c30bd3c435799">Index</a>] = <span class="stringliteral">&quot;index&quot;</span>;</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    roles[<a class="code hl_enumvalue" href="../../d4/d99/classElevationChart_1_1NotificationModel.html#aca373d517b80753da645a3f727b257f0abf86141fa29ab96a0cf6fad57b11d842">Major</a>] = <span class="stringliteral">&quot;major&quot;</span>;</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    roles[<a class="code hl_enumvalue" href="../../d4/d99/classElevationChart_1_1NotificationModel.html#aca373d517b80753da645a3f727b257f0aeb0091bd973e704a4c99539258d5ad0a">Details</a>] = <span class="stringliteral">&quot;details&quot;</span>;</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    <span class="keywordflow">return</span> roles;</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>  }</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>} <span class="comment">// ElevationChart</span></div>
+<div class="ttc" id="aclassElevationChart_1_1NotificationModel_html_a0ec0e31df18472075967b0410ee4b3be"><div class="ttname"><a href="../../d4/d99/classElevationChart_1_1NotificationModel.html#a0ec0e31df18472075967b0410ee4b3be">ElevationChart::NotificationModel::roleNames</a></div><div class="ttdeci">QHash&lt; int, QByteArray &gt; roleNames() const override</div><div class="ttdoc">Функция для регистрации модели в QML.</div><div class="ttdef"><b>Definition</b> <a href="../../d2/d88/notificationmodel_8c_09_09_source.html#l00097">notificationmodel.c++:97</a></div></div>
+<div class="ttc" id="aclassElevationChart_1_1NotificationModel_html_a51dd94ef911c8f4c6495093a1561b45a"><div class="ttname"><a href="../../d4/d99/classElevationChart_1_1NotificationModel.html#a51dd94ef911c8f4c6495093a1561b45a">ElevationChart::NotificationModel::rowCount</a></div><div class="ttdeci">int rowCount(const QModelIndex &amp;parent=QModelIndex()) const override</div><div class="ttdoc">Возвращает количество точек в модели.</div><div class="ttdef"><b>Definition</b> <a href="../../d2/d88/notificationmodel_8c_09_09_source.html#l00031">notificationmodel.c++:31</a></div></div>
+<div class="ttc" id="aclassElevationChart_1_1NotificationModel_html_ac8bb3912a3ce86b15842e79d0b421204"><div class="ttname"><a href="../../d4/d99/classElevationChart_1_1NotificationModel.html#ac8bb3912a3ce86b15842e79d0b421204">ElevationChart::NotificationModel::clear</a></div><div class="ttdeci">Q_INVOKABLE void clear()</div><div class="ttdoc">Очищает модель.</div><div class="ttdef"><b>Definition</b> <a href="../../d2/d88/notificationmodel_8c_09_09_source.html#l00089">notificationmodel.c++:89</a></div></div>
+<div class="ttc" id="aclassElevationChart_1_1NotificationModel_html_aca373d517b80753da645a3f727b257f0a3340c8ecc8e48277387c30bd3c435799"><div class="ttname"><a href="../../d4/d99/classElevationChart_1_1NotificationModel.html#aca373d517b80753da645a3f727b257f0a3340c8ecc8e48277387c30bd3c435799">ElevationChart::NotificationModel::Index</a></div><div class="ttdeci">@ Index</div><div class="ttdoc">Индекс оповещения.</div><div class="ttdef"><b>Definition</b> <a href="../../d3/d0d/notificationmodel_8h_source.html#l00024">notificationmodel.h:24</a></div></div>
+<div class="ttc" id="aclassElevationChart_1_1NotificationModel_html_aca373d517b80753da645a3f727b257f0abf86141fa29ab96a0cf6fad57b11d842"><div class="ttname"><a href="../../d4/d99/classElevationChart_1_1NotificationModel.html#aca373d517b80753da645a3f727b257f0abf86141fa29ab96a0cf6fad57b11d842">ElevationChart::NotificationModel::Major</a></div><div class="ttdeci">@ Major</div><div class="ttdoc">Является ли оповещение критическим.</div><div class="ttdef"><b>Definition</b> <a href="../../d3/d0d/notificationmodel_8h_source.html#l00025">notificationmodel.h:25</a></div></div>
+<div class="ttc" id="aclassElevationChart_1_1NotificationModel_html_aca373d517b80753da645a3f727b257f0aeb0091bd973e704a4c99539258d5ad0a"><div class="ttname"><a href="../../d4/d99/classElevationChart_1_1NotificationModel.html#aca373d517b80753da645a3f727b257f0aeb0091bd973e704a4c99539258d5ad0a">ElevationChart::NotificationModel::Details</a></div><div class="ttdeci">@ Details</div><div class="ttdoc">Текст оповещения.</div><div class="ttdef"><b>Definition</b> <a href="../../d3/d0d/notificationmodel_8h_source.html#l00026">notificationmodel.h:26</a></div></div>
+<div class="ttc" id="aclassElevationChart_1_1NotificationModel_html_accd5892db693f9bf22ede6a758077ca5"><div class="ttname"><a href="../../d4/d99/classElevationChart_1_1NotificationModel.html#accd5892db693f9bf22ede6a758077ca5">ElevationChart::NotificationModel::NotificationModel</a></div><div class="ttdeci">NotificationModel(QObject *parent=nullptr)</div><div class="ttdoc">Создает новый объект модели с указанным родительским QObject.</div><div class="ttdef"><b>Definition</b> <a href="../../d2/d88/notificationmodel_8c_09_09_source.html#l00020">notificationmodel.c++:20</a></div></div>
+<div class="ttc" id="aclassElevationChart_1_1NotificationModel_html_ae93b915598cdbe5ae59dddf41d917a53"><div class="ttname"><a href="../../d4/d99/classElevationChart_1_1NotificationModel.html#ae93b915598cdbe5ae59dddf41d917a53">ElevationChart::NotificationModel::data</a></div><div class="ttdeci">QVariant data(const QModelIndex &amp;index, int role) const override</div><div class="ttdoc">Возвращает хранимые в модели данные по индексу и указанной роли.</div><div class="ttdef"><b>Definition</b> <a href="../../d2/d88/notificationmodel_8c_09_09_source.html#l00039">notificationmodel.c++:39</a></div></div>
+<div class="ttc" id="anamespaceElevationChart_html"><div class="ttname"><a href="../../d6/d7f/namespaceElevationChart.html">ElevationChart</a></div><div class="ttdoc">Пространство имен для виджета профиля высот.</div><div class="ttdef"><b>Definition</b> <a href="../../df/dcc/elevationchart_8c_09_09_source.html#l00014">elevationchart.c++:15</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="../../dir_fcb2a60e1810a51543a3cc3a113d0956.html">c++</a></li><li class="navelem"><a class="el" href="../../dir_b4e6f52af757283c67a58df59b935f2d.html">internal</a></li><li class="navelem"><b>notificationmodel.c++</b></li>
+    <li class="footer">Создано системой <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+  </ul>
+</div>
+</body>
+</html>

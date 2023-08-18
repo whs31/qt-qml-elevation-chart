@@ -5,5 +5,6 @@ var searchData=
   ['base_2',['base',['../d6/dc5/structDEM_1_1IntersectionPoint.html#a4e70be014a5cb1c71753acb92c55de45',1,'DEM::IntersectionPoint::base'],['../d1/d0b/classElevationChart_1_1IntersectionPoint.html#af57461d45a3134e46bbd79a544213f1c',1,'ElevationChart::IntersectionPoint::base()']]],
   ['basicpalette_3',['BasicPalette',['../d8/d37/classSG_1_1BasicPalette.html',1,'SG']]],
   ['bounds_4',['bounds',['../d2/d6b/classElevationChart_1_1ElevationChartItem.html#aa88cd70ec11880aa8a698595d0bc7aaa',1,'ElevationChart::ElevationChartItem']]],
-  ['bounds_5',['Bounds',['../d6/d1e/classElevationChart_1_1Bounds.html#a2915f9789571dd94afa2b30cce2b7ce1',1,'ElevationChart::Bounds::Bounds()'],['../d6/d1e/classElevationChart_1_1Bounds.html#a9ec2ee3dbd8a5983468038500368de64',1,'ElevationChart::Bounds::Bounds(float x, float y, float stretch=1.15f)'],['../d6/d1e/classElevationChart_1_1Bounds.html',1,'Bounds']]]
+  ['bounds_5',['Bounds',['../d6/d1e/classElevationChart_1_1Bounds.html#a2915f9789571dd94afa2b30cce2b7ce1',1,'ElevationChart::Bounds::Bounds()'],['../d6/d1e/classElevationChart_1_1Bounds.html#a9ec2ee3dbd8a5983468038500368de64',1,'ElevationChart::Bounds::Bounds(float x, float y, float stretch=1.15f)'],['../d6/d1e/classElevationChart_1_1Bounds.html',1,'Bounds']]],
+  ['buildprofile_6',['buildProfile',['../d7/de2/namespaceDEM.html#a9c32bccaecfede026550811398449f72',1,'DEM']]]
 ];

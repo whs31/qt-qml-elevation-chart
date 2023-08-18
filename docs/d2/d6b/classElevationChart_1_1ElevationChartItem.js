@@ -3,6 +3,7 @@ var classElevationChart_1_1ElevationChartItem =
     [ "NodeTypes", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#a29bda0404218eae47588229580e8b326", [
       [ "BackgroundNode", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#a29bda0404218eae47588229580e8b326abf800842fe418011ba0fc9cbb7d8d5f5", null ],
       [ "ProfileNode", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#a29bda0404218eae47588229580e8b326a88569a8a357982e374d7d2ea6e042083", null ],
+      [ "IntersectionsNode", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#a29bda0404218eae47588229580e8b326a5355c5e0b86e09189422d875dbf580fb", null ],
       [ "MetricsNode", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#a29bda0404218eae47588229580e8b326ab5afd7c4ac7d69da2647bae4fb50b29a", null ],
       [ "MetricsPointNode", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#a29bda0404218eae47588229580e8b326abb3d71f4cc6e9ac6effd64e96de7a25f", null ],
       [ "EnvelopeNode", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#a29bda0404218eae47588229580e8b326a020e934b4d8dc4621ffddd6c6fca59e6", null ],
@@ -18,6 +19,7 @@ var classElevationChart_1_1ElevationChartItem =
       [ "DEMProvider", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#a29152a883d923f20d380a3671b36a4c5a127c108334ae8ac0d0fd1cb3edbe4bcd", null ]
     ] ],
     [ "ElevationChartItem", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#a54d7407b60453be29d8fcc1855858d57", null ],
+    [ "researcher", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#ac95ccc2bd1f5a2e207a8ce25aa03c00b", null ],
     [ "applyMetricsCorrection", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#a8f3ff1c5156568622aa8bdc15389043f", null ],
     [ "setupChildNodes", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#a3e9bb1600355371913f9faced6787a12", null ],
     [ "setupNodeColors", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#a30ee242001b54ab214414c4125902313", null ],
@@ -32,6 +34,7 @@ var classElevationChart_1_1ElevationChartItem =
     [ "bounds", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#aa88cd70ec11880aa8a698595d0bc7aaa", null ],
     [ "route", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#aa25a556dd18df7259ed6796713f8f051", null ],
     [ "model", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#a508cc3106d2c29fe07dc87cbe3ea6927", null ],
+    [ "notifications", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#ad2a3e740ca3019cf9fd0f9514afb6419", null ],
     [ "uavPosition", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#a7fa9c9f81b7d915a36ae366414d3e58c", null ],
     [ "metrics", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#abcce662da2a75360795281c4d193ac56", null ],
     [ "missingTiles", "d2/d6b/classElevationChart_1_1ElevationChartItem.html#a17f7415e898c073831cafb9b0fea07ad", null ],

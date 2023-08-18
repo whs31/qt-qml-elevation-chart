@@ -12,11 +12,14 @@ var hierarchy =
     ] ],
     [ "IntersectionPoint", "d6/dc5/structDEM_1_1IntersectionPoint.html", null ],
     [ "Metrics", "dc/da9/classElevationChart_1_1Metrics.html", null ],
+    [ "Notification", "d4/d99/classElevationChart_1_1NotificationModel.html#d7/d2a/structElevationChart_1_1NotificationModel_1_1Notification", null ],
     [ "QObject", null, [
       [ "API", "dc/d79/classElevationChart_1_1API.html", null ],
+      [ "Researcher", "df/d15/classElevationChart_1_1Researcher.html", null ],
       [ "TypeFactory", "d6/dda/classElevationChart_1_1TypeFactory.html", null ],
-      [ "QAbstractItemModel", "d0/d5a/classQAbstractItemModel.html", [
-        [ "QAbstractListModel", "d5/d2d/classQAbstractListModel.html", [
+      [ "QAbstractItemModel", null, [
+        [ "QAbstractListModel", null, [
+          [ "NotificationModel", "d4/d99/classElevationChart_1_1NotificationModel.html", null ],
           [ "RouteModel", "d6/de1/classElevationChart_1_1RouteModel.html", null ]
         ] ]
       ] ],
