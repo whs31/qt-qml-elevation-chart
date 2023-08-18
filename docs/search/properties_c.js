@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['valid_0',['valid',['../d2/d6b/classElevationChart_1_1ElevationChartItem.html#a51646327ac0a3287c4b08e4d28b66f35',1,'ElevationChart::ElevationChartItem']]],
-  ['velocity_1',['velocity',['../d1/d3b/classElevationChart_1_1RoutePoint.html#aecfeca1289d00fbe5fc76a8dd5295913',1,'ElevationChart::RoutePoint']]]
+  ['shrinkmode_0',['shrinkMode',['../d2/d6b/classElevationChart_1_1ElevationChartItem.html#af902fb5e3f1cd17bd02fa35c790aaeb0',1,'ElevationChart::ElevationChartItem']]],
+  ['stretch_1',['stretch',['../d6/d1e/classElevationChart_1_1Bounds.html#aba93097f4c5e512c80b8e5b37228ea80',1,'ElevationChart::Bounds']]]
 ];

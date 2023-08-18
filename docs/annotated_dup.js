@@ -23,5 +23,9 @@ var annotated_dup =
       [ "RouteModel", "d6/de1/classElevationChart_1_1RouteModel.html", "d6/de1/classElevationChart_1_1RouteModel" ],
       [ "RoutePoint", "d1/d3b/classElevationChart_1_1RoutePoint.html", "d1/d3b/classElevationChart_1_1RoutePoint" ],
       [ "TypeFactory", "d6/dda/classElevationChart_1_1TypeFactory.html", null ]
+    ] ],
+    [ "LPVL", "d7/da2/namespaceLPVL.html", [
+      [ "BasicPalette", "d4/dae/classLPVL_1_1BasicPalette.html", "d4/dae/classLPVL_1_1BasicPalette" ],
+      [ "ScenegraphObject", "da/d9a/classLPVL_1_1ScenegraphObject.html", "da/d9a/classLPVL_1_1ScenegraphObject" ]
     ] ]
 ];

@@ -5,5 +5,6 @@ var searchData=
   ['elevationchart_2',['ElevationChart',['../d6/d7f/namespaceElevationChart.html',1,'']]],
   ['elevationchartitem_3',['ElevationChartItem',['../d2/d6b/classElevationChart_1_1ElevationChartItem.html',1,'ElevationChartItem'],['../d2/d6b/classElevationChart_1_1ElevationChartItem.html#a54d7407b60453be29d8fcc1855858d57',1,'ElevationChart::ElevationChartItem::ElevationChartItem()']]],
   ['elevationpoint_4',['ElevationPoint',['../dd/d95/classElevationChart_1_1ElevationPoint.html',1,'ElevationPoint'],['../dd/d95/classElevationChart_1_1ElevationPoint.html#ab45d62155734958302da9a49e46fd29d',1,'ElevationChart::ElevationPoint::ElevationPoint()'],['../dd/d95/classElevationChart_1_1ElevationPoint.html#a8e23c6bbca3cd83cf6046a8d266baa70',1,'ElevationChart::ElevationPoint::ElevationPoint(float distance_meters, float elevation_meters, bool is_valid=true)']]],
-  ['envelopenode_5',['EnvelopeNode',['../d2/d6b/classElevationChart_1_1ElevationChartItem.html#a29bda0404218eae47588229580e8b326a020e934b4d8dc4621ffddd6c6fca59e6',1,'ElevationChart::ElevationChartItem']]]
+  ['envelopenode_5',['EnvelopeNode',['../d2/d6b/classElevationChart_1_1ElevationChartItem.html#a29bda0404218eae47588229580e8b326a020e934b4d8dc4621ffddd6c6fca59e6',1,'ElevationChart::ElevationChartItem']]],
+  ['error_6',['error',['../d4/dae/classLPVL_1_1BasicPalette.html#af10dacfa214e2575bb2e0ee407c242e0',1,'LPVL::BasicPalette']]]
 ];

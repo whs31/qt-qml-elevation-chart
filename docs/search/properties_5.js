@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['latitude_0',['latitude',['../d1/d3b/classElevationChart_1_1RoutePoint.html#a336b37ee42086dd8848e89c39af0fea4',1,'ElevationChart::RoutePoint']]],
-  ['longitude_1',['longitude',['../d1/d3b/classElevationChart_1_1RoutePoint.html#a6b2179bced5805aee7ac729e08473a00',1,'ElevationChart::RoutePoint']]]
+  ['info_0',['info',['../d4/dae/classLPVL_1_1BasicPalette.html#a7b16a542aaeea764362f9dc2249ae63c',1,'LPVL::BasicPalette']]],
+  ['intersecting_1',['intersecting',['../d2/d6b/classElevationChart_1_1ElevationChartItem.html#ac0a3f6caeb0c2983bc4505f3a5348e2d',1,'ElevationChart::ElevationChartItem']]]
 ];

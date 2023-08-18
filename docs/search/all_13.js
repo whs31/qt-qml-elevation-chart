@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['список_20задач_0',['Список задач',['../dd/da0/todo.html',1,'']]],
-  ['список_20устаревших_20определений_20и_20описаний_1',['Список устаревших определений и описаний',['../da/d58/deprecated.html',1,'']]]
+  ['x_0',['x',['../d6/d1e/classElevationChart_1_1Bounds.html#a9336ebf25087d91c818ee6e9ec29f8c1',1,'ElevationChart::Bounds']]]
 ];

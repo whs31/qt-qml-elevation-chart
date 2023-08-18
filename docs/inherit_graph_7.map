@@ -1,17 +1,3 @@
 <map id="Иерархия классов. Графический вид." name="Иерархия классов. Графический вид.">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,85,79,114"/>
-<area shape="rect" id="Node000001" href="$dc/d79/classElevationChart_1_1API.html" title="Публичный интерфейс (C++) для виджета профиля высот." alt="" coords="180,5,226,34"/>
-<area shape="poly" id="edge4_Node000000_Node000001" title=" " alt="" coords="74,74,126,44,179,23,181,28,128,49,77,79"/>
-<area shape="rect" id="Node000002" href="$df/d15/classElevationChart_1_1Researcher.html" title=" " alt="" coords="155,59,251,87"/>
-<area shape="poly" id="edge5_Node000000_Node000002" title=" " alt="" coords="93,89,154,78,155,84,94,94"/>
-<area shape="rect" id="Node000003" href="$d6/dda/classElevationChart_1_1TypeFactory.html" title=" " alt="" coords="153,112,253,141"/>
-<area shape="poly" id="edge6_Node000000_Node000003" title=" " alt="" coords="94,105,153,115,152,121,93,111"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="127,165,279,194"/>
-<area shape="poly" id="edge7_Node000000_Node000004" title=" " alt="" coords="77,120,128,151,156,162,153,167,125,155,74,125"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="327,165,473,194"/>
-<area shape="poly" id="edge8_Node000004_Node000005" title=" " alt="" coords="294,177,327,177,327,182,294,182"/>
-<area shape="rect" id="Node000006" href="$d4/d99/classElevationChart_1_1NotificationModel.html" title="Модель оповещений об ошибках в маршруте." alt="" coords="521,139,653,167"/>
-<area shape="poly" id="edge9_Node000005_Node000006" title=" " alt="" coords="488,164,520,160,521,165,488,170"/>
-<area shape="rect" id="Node000007" href="$d6/de1/classElevationChart_1_1RouteModel.html" title="Модель точек пути для профиля высот." alt="" coords="537,192,637,221"/>
-<area shape="poly" id="edge10_Node000005_Node000007" title=" " alt="" coords="488,190,537,197,536,202,487,195"/>
+<area shape="rect" id="Node000000" href="$d4/d99/classElevationChart_1_1NotificationModel.html#d7/d2a/structElevationChart_1_1NotificationModel_1_1Notification" title=" " alt="" coords="5,5,145,52"/>
 </map>
