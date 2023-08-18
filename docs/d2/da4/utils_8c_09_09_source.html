@@ -116,23 +116,25 @@ $(document).ready(function(){initNavTree('d2/da4/utils_8c_09_09_source.html','..
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;utils.h&quot;</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;QtQuick/QSGFlatColorMaterial&gt;</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keyword">namespace </span>LPVL::utils</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>{</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>  QSGGeometryNode* createSimpleGeometryNode(<span class="keyword">const</span> QColor&amp; color, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> drawing_mode, <span class="keywordtype">float</span> line_width)</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>  {</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <span class="keyword">auto</span> ret = <span class="keyword">new</span> QSGGeometryNode;</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    <span class="keyword">auto</span>* material = <span class="keyword">new</span> QSGFlatColorMaterial;</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    material-&gt;setColor(color);</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    ret-&gt;setMaterial(material);</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    <span class="keyword">auto</span>* geometry = <span class="keyword">new</span> QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), 0, 0, QSGGeometry::UnsignedIntType);</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    geometry-&gt;setDrawingMode(drawing_mode);</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    geometry-&gt;setLineWidth(line_width);</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    ret-&gt;setGeometry(geometry);</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    ret-&gt;setFlags(QSGNode::OwnsGeometry | QSGNode::OwnsMaterial);</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <span class="keywordflow">return</span> ret;</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  }</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>} <span class="comment">// LPVL::utils</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="../../d7/da0/namespaceLPVL_1_1utils.html">   11</a></span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d7/da0/namespaceLPVL_1_1utils.html">LPVL::utils</a></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>{</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="../../d7/da0/namespaceLPVL_1_1utils.html#a91de11bb29160df37357d8fc3b1ac2f6">   20</a></span>  QSGGeometryNode* <a class="code hl_function" href="../../d7/da0/namespaceLPVL_1_1utils.html#a91de11bb29160df37357d8fc3b1ac2f6">createSimpleGeometryNode</a>(<span class="keyword">const</span> QColor&amp; color, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> drawing_mode, <span class="keywordtype">float</span> line_width)</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  {</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    <span class="keyword">auto</span> ret = <span class="keyword">new</span> QSGGeometryNode;</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    <span class="keyword">auto</span>* material = <span class="keyword">new</span> QSGFlatColorMaterial;</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    material-&gt;setColor(color);</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    ret-&gt;setMaterial(material);</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    <span class="keyword">auto</span>* geometry = <span class="keyword">new</span> QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), 0, 0, QSGGeometry::UnsignedIntType);</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    geometry-&gt;setDrawingMode(drawing_mode);</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    geometry-&gt;setLineWidth(line_width);</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    ret-&gt;setGeometry(geometry);</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    ret-&gt;setFlags(QSGNode::OwnsGeometry | QSGNode::OwnsMaterial);</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="keywordflow">return</span> ret;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  }</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>} <span class="comment">// LPVL::utils</span></div>
+<div class="ttc" id="anamespaceLPVL_1_1utils_html"><div class="ttname"><a href="../../d7/da0/namespaceLPVL_1_1utils.html">LPVL::utils</a></div><div class="ttdoc">Пространство имен для вспомогательных функций библиотеки LPVL.</div><div class="ttdef"><b>Definition</b> <a href="../../d2/da4/utils_8c_09_09_source.html#l00011">utils.c++:12</a></div></div>
+<div class="ttc" id="anamespaceLPVL_1_1utils_html_a91de11bb29160df37357d8fc3b1ac2f6"><div class="ttname"><a href="../../d7/da0/namespaceLPVL_1_1utils.html#a91de11bb29160df37357d8fc3b1ac2f6">LPVL::utils::createSimpleGeometryNode</a></div><div class="ttdeci">QSGGeometryNode * createSimpleGeometryNode(const QColor &amp;color, unsigned int drawing_mode, float line_width)</div><div class="ttdoc">Создает новую ноду геометрии с простым материалом с указанными параметрами.</div><div class="ttdef"><b>Definition</b> <a href="../../d2/da4/utils_8c_09_09_source.html#l00020">utils.c++:20</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -264,16 +264,17 @@ $(document).ready(function(){initNavTree('da/d9a/classLPVL_1_1ScenegraphObject.h
 <p>Создает дочерние ноды. </p>
 <p>Вызывается один раз после создания корневой ноды. Пример имплементации функции: </p><div class="fragment"><div class="line"><span class="keywordtype">void</span> <a class="code hl_function" href="../../da/d9a/classLPVL_1_1ScenegraphObject.html#a1ad6a611add39ec90c77eed034a64e89">setupChildNodes</a>(QSGNode* node)<span class="keyword"> override</span></div>
 <div class="line"><span class="keyword"></span>{</div>
-<div class="line">  tree()[BackgroundNode] = LPVL::utils::createSimpleGeometryNode(palette().background(), QSGGeometry::DrawTriangles);</div>
-<div class="line">  tree()[ProfileNode] = LPVL::utils::createSimpleGeometryNode(palette().overlay(), DrawQuadStrip);</div>
-<div class="line">  tree()[RouteNode] = LPVL::utils::createSimpleGeometryNode(palette().accent(), QSGGeometry::DrawLineStrip, ROUTE_LINE_WIDTH);</div>
-<div class="line">  tree()[MetricsNode] = LPVL::utils::createSimpleGeometryNode(palette().warn(), QSGGeometry::DrawLineStrip, METRICS_LINE_WIDTH);</div>
-<div class="line">  tree()[MetricsPointNode] = LPVL::utils::createSimpleGeometryNode(palette().warn(), QSGGeometry::DrawPoints, METRICS_ROUNDING_WIDTH);</div>
+<div class="line">  tree()[BackgroundNode] = <a class="code hl_function" href="../../d7/da0/namespaceLPVL_1_1utils.html#a91de11bb29160df37357d8fc3b1ac2f6">LPVL::utils::createSimpleGeometryNode</a>(palette().background(), QSGGeometry::DrawTriangles);</div>
+<div class="line">  tree()[ProfileNode] = <a class="code hl_function" href="../../d7/da0/namespaceLPVL_1_1utils.html#a91de11bb29160df37357d8fc3b1ac2f6">LPVL::utils::createSimpleGeometryNode</a>(palette().overlay(), DrawQuadStrip);</div>
+<div class="line">  tree()[RouteNode] = <a class="code hl_function" href="../../d7/da0/namespaceLPVL_1_1utils.html#a91de11bb29160df37357d8fc3b1ac2f6">LPVL::utils::createSimpleGeometryNode</a>(palette().accent(), QSGGeometry::DrawLineStrip, ROUTE_LINE_WIDTH);</div>
+<div class="line">  tree()[MetricsNode] = <a class="code hl_function" href="../../d7/da0/namespaceLPVL_1_1utils.html#a91de11bb29160df37357d8fc3b1ac2f6">LPVL::utils::createSimpleGeometryNode</a>(palette().warn(), QSGGeometry::DrawLineStrip, METRICS_LINE_WIDTH);</div>
+<div class="line">  tree()[MetricsPointNode] = <a class="code hl_function" href="../../d7/da0/namespaceLPVL_1_1utils.html#a91de11bb29160df37357d8fc3b1ac2f6">LPVL::utils::createSimpleGeometryNode</a>(palette().warn(), QSGGeometry::DrawPoints, METRICS_ROUNDING_WIDTH);</div>
 <div class="line"> </div>
 <div class="line">  <span class="keywordflow">for</span>(<span class="keyword">const</span> <span class="keyword">auto</span>&amp;[key, value] : tree())</div>
 <div class="line">    node-&gt;appendChildNode(value);</div>
 <div class="line">}</div>
 <div class="ttc" id="aclassLPVL_1_1ScenegraphObject_html_a1ad6a611add39ec90c77eed034a64e89"><div class="ttname"><a href="../../da/d9a/classLPVL_1_1ScenegraphObject.html#a1ad6a611add39ec90c77eed034a64e89">LPVL::ScenegraphObject::setupChildNodes</a></div><div class="ttdeci">virtual void setupChildNodes(QSGNode *node)=0</div><div class="ttdoc">Создает дочерние ноды.</div></div>
+<div class="ttc" id="anamespaceLPVL_1_1utils_html_a91de11bb29160df37357d8fc3b1ac2f6"><div class="ttname"><a href="../../d7/da0/namespaceLPVL_1_1utils.html#a91de11bb29160df37357d8fc3b1ac2f6">LPVL::utils::createSimpleGeometryNode</a></div><div class="ttdeci">QSGGeometryNode * createSimpleGeometryNode(const QColor &amp;color, unsigned int drawing_mode, float line_width)</div><div class="ttdoc">Создает новую ноду геометрии с простым материалом с указанными параметрами.</div><div class="ttdef"><b>Definition</b> <a href="../../d2/da4/utils_8c_09_09_source.html#l00020">utils.c++:20</a></div></div>
 </div><!-- fragment --> 
 <p>Замещается в <a class="el" href="../../d2/d6b/classElevationChart_1_1ElevationChartItem.html#a3e9bb1600355371913f9faced6787a12">ElevationChartItem</a>.</p>
 

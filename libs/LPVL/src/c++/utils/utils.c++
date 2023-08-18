@@ -5,6 +5,9 @@
 #include "utils.h"
 #include <QtQuick/QSGFlatColorMaterial>
 
+/**
+ * \brief Пространство имен для вспомогательных функций библиотеки LPVL.
+ */
 namespace LPVL::utils
 {
   /**
