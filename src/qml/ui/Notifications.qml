@@ -3,55 +3,35 @@ import QtQuick.Controls 2.15
 import QtQuick.Controls.Material 2.15
 import QtQuick.Layouts 1.15
 
-RowLayout {
-    spacing: -10
+ListView {
+    add: Transition { NumberAnimation { property: "opacity"; from: 0; to: 1; duration: 1500; easing.type: Easing.OutCubic; } }
+    remove: Transition { NumberAnimation { property: "opacity"; from: 1; to: 0; duration: 500; easing.type: Easing.OutCubic; } }
 
-    component TT : ToolTip { id: control;
-        required property string txt
-        required property color __col
+    width: 400
+    height: parent.height
+    interactive: false
+    layoutDirection: Qt.RightToLeft
+    model: impl.notifications
+    delegate: RoundButton {
+        required property bool major
+        required property string details
 
-        visible: parent.hovered || parent.pressed
+        anchors.right: parent.right
+
+        icon {
+            source: "qrc:/elevation-chart/icons/warning.svg"
+            color: impl.palette.background
+        }
+
+        radius: 5
+        Material.background: major ? impl.palette.error : impl.palette.warn
+        Material.foreground: impl.palette.background
+        Material.elevation: 200
         font {
             pixelSize: 14
             family: mainfont
             bold: true
         }
-        contentItem: Text {
-            text: txt
-            font: control.font
-            color: impl.palette.background
-        }
-        background: Rectangle {
-            color: col
-            radius: 3
-        }
-        delay: 100
+        text: details
     }
-
-    component Notification : ToolButton {
-        required property color col
-        required property string details
-        required property bool shown
-
-        Layout.preferredWidth: 50
-        Layout.preferredHeight: 50
-
-        flat: true
-        visible: opacity > 0
-        enabled: shown
-        opacity: shown ? 1 : 0
-        Behavior on opacity { NumberAnimation { } }
-        icon {
-            width: 35
-            height: 35
-            source: "qrc:/elevation-chart/icons/warning.svg"
-            color: col
-        }
-
-        TT { __col: col; txt: details }
-    }
-
-    Notification { col: impl.palette.error; details: "Для маршрута отсутствуют необходимые карты профиля высот!"; shown: impl.missingTiles}
-    Notification { col: impl.palette.error; details: "Маршрут пересекает рельеф в одной из точек!"; shown: impl.intersecting}
-    Notification { col: impl.palette.warn; details: "Маршрут не соответствует ЛТХ борта!"; shown: !impl.matchingMetrics }
 }

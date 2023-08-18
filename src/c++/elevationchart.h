@@ -16,6 +16,7 @@
 #include "provider/randomdataprovider.h"
 #include "provider/demdataprovider.h"
 #include "internal/routemodel.h"
+#include "internal/notificationmodel.h"
 #include "research/researcher.h"
 
 using std::unique_ptr;
@@ -32,6 +33,7 @@ namespace ElevationChart
     Q_PROPERTY(ElevationChart::Bounds bounds READ bounds WRITE setBounds NOTIFY boundsChanged)
     Q_PROPERTY(ElevationChart::Route route READ route WRITE setRoute NOTIFY routeChanged FINAL)
     Q_PROPERTY(ElevationChart::RouteModel* model READ model CONSTANT)
+    Q_PROPERTY(ElevationChart::NotificationModel* notifications READ notifications CONSTANT)
     Q_PROPERTY(QGeoCoordinate uavPosition READ uavPosition WRITE setUavPosition NOTIFY uavPositionChanged FINAL)
     Q_PROPERTY(ElevationChart::Metrics metrics READ metrics WRITE setMetrics NOTIFY metricsChanged FINAL)
     // envelope gadget
@@ -79,12 +81,13 @@ namespace ElevationChart
 
       explicit ElevationChartItem(QQuickItem* parent = nullptr);
 
-      Researcher* researcher() const;
+      [[nodiscard]] Researcher* researcher() const;
 
       [[nodiscard]] SG::BasicPalette palette() const;   void setPalette(SG::BasicPalette);
       [[nodiscard]] Bounds bounds() const;              void setBounds(Bounds);
       [[nodiscard]] Route route() const;                void setRoute(const Route&);
       [[nodiscard]] RouteModel* model() const;
+      [[nodiscard]] NotificationModel* notifications() const;
       [[nodiscard]] QGeoCoordinate uavPosition() const; void setUavPosition(const QGeoCoordinate&);
       [[nodiscard]] Metrics metrics() const;            void setMetrics(const Metrics&);
 
@@ -150,6 +153,7 @@ namespace ElevationChart
       bool m_matching_metrics;
       Route m_route;
       RouteModel* m_model;
+      NotificationModel* m_notifications;
       QGeoCoordinate m_uav_position;
       Metrics m_metrics;
       unique_ptr<IElevationDataProvider> m_provider;

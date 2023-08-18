@@ -41,6 +41,7 @@ namespace ElevationChart
     , m_matching_metrics(true)
     , m_route(Route())
     , m_model(new RouteModel(this))
+    , m_notifications(new NotificationModel(this))
     , m_uav_position(QGeoCoordinate(60, 30))
     , m_metrics(Metrics())
     , m_provider_type(ProviderType::DEMProvider)
@@ -460,6 +461,11 @@ namespace ElevationChart
       return;
     m_missing_tiles = x;
     emit missingTilesChanged();
+
+    if(not missingTiles())
+      notifications()->remove(NotificationModel::MissingTiles);
+    else
+      notifications()->add(NotificationModel::MissingTiles, true);
   }
 
   /**
@@ -479,6 +485,11 @@ namespace ElevationChart
       return;
     m_intersecting = x;
     emit intersectingChanged();
+
+    if(not intersecting())
+      notifications()->remove(NotificationModel::Intersecting);
+    else
+      notifications()->add(NotificationModel::Intersecting, true);
   }
 
   /**
@@ -518,6 +529,11 @@ namespace ElevationChart
       return;
     m_matching_metrics = x;
     emit matchingMetricsChanged();
+
+    if(matchingMetrics())
+      notifications()->remove(NotificationModel::MetricsMismatch);
+    else
+      notifications()->add(NotificationModel::MetricsMismatch, false);
   }
 
   /**
@@ -554,6 +570,19 @@ namespace ElevationChart
    * \see ElevationChart::RouteModel
    */
   RouteModel* ElevationChartItem::model() const { return m_model; }
+
+  /**
+   * \property ElevationChartItem::notifications
+   * \brief Модель оповещений для интерфейса.
+   * \details
+   * <table>
+   * <caption id="multi_row">Связанные функции</caption>
+   * <tr><th>Чтение             <th>Запись              <th>Оповещение
+   * <tr><td><i>notifications</i>       <td><i>--</i>           <td><i>--</i>
+   * </table>
+   * \see ElevationChart::NotificationModel
+   */
+  NotificationModel* ElevationChartItem::notifications() const { return m_notifications; }
 
   /**
    * \property ElevationChartItem::uavPosition
