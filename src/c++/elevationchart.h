@@ -158,7 +158,7 @@ namespace ElevationChart
       Metrics m_metrics;
       unique_ptr<IElevationDataProvider> m_provider;
       vector<ElevationPoint> m_profile;
-      vector<IntersectionPoint> m_intersections;
+      vector<ElevationPoint> m_intersections;
       ShrinkMode m_shrink_mode;
       ProviderType m_provider_type;
       QGeoPath m_metrics_path;

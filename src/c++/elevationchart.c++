@@ -67,24 +67,9 @@ namespace ElevationChart
     });
 
     connect(this, &ElevationChartItem::updateProfileFinished, this, &ElevationChartItem::receiveProfile);
-    connect(researcher(), &Researcher::researchIntersectionsFinished, this, [this](const vector<IntersectionPoint>& vec) {
-      m_intersections.clear();
-      bool intersects = false;
-      for(const auto& x in vec)
-      {
-        if(x.base() and x.state() == IntersectionPoint::InsideGround)
-        {
-          m_intersections.push_back(x);
-          m_intersections.push_back(x);
-        }
-        if(x.state() == IntersectionPoint::NonIntersecting or x.state() == IntersectionPoint::InsideGround)
-          continue;
-        m_intersections.push_back(x);
-        intersects = true;
-      }
-
-      setIntersecting(intersects);
-      qDebug() << m_intersections.size();
+    connect(researcher(), &Researcher::researchIntersectionsFinished, this, [this](const vector<ElevationPoint>& vec) {
+      m_intersections = vec;
+      setIntersecting(not vec.empty());
       this->update();
     });
   }

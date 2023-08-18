@@ -23,87 +23,50 @@ namespace ElevationChart
   {
     QFuture<void> outer = QtConcurrent::run([this, path](){
       QFuture<void> inner = QtConcurrent::run([this, path](){
-        QGeoPath profile = Researcher::plotGeopathProfile(path);
+        DEM::loadTiles(path);
+        const int distanceDelta = 10;
+        const qreal altitudeDelta = 0.0000001;
+        vector<ElevationPoint> result{};
+        qreal resultDistance = 0;
 
-        vector<IntersectionPoint> profile_path;
-        QList<QGeoCoordinate> points = path.path();
-        float distance = 0;
+//      auto profilePath = DEM::buildProfile(path);
+        for (int i = 0; i < path.size() - 1; ++i) {
+          auto firstPoint = path.coordinateAt(i);
+          auto secondPoint = path.coordinateAt(i + 1);
+          auto distance = firstPoint.distanceTo(secondPoint);
+          auto azimuth = firstPoint.azimuthTo(secondPoint);
+          for (int calcDistance = 0; calcDistance < distance; calcDistance += distanceDelta) {
+            if (calcDistance == 0) {
 
-        for(int i = 0; i < points.size(); i++)
-        {
-          if(i)
-            distance += static_cast<float>(path.length(i - 1, i));
-          QGeoCoordinate point = points[i];
-
-          IntersectionPoint intersection_point(distance, static_cast<float>(point.altitude()), true,
-                                               true, IntersectionPoint::NonIntersecting);
-          intersection_point.setCoordinate({point.latitude(), point.longitude()});
-          profile_path.push_back(intersection_point);
-        }
-
-        vector<IntersectionPoint> groundProfile;
-        points = profile.path();
-        distance = 0;
-        for(int i = 0; i < points.size(); i++)
-        {
-          if(i)
-            distance += static_cast<float>(path.length(i - 1, i));
-          QGeoCoordinate point = points[i];
-
-          IntersectionPoint intersection_point(distance, static_cast<float>(point.altitude()),
-                                                 true, true, IntersectionPoint::NonIntersecting);
-          intersection_point.setCoordinate({point.latitude(), point.longitude()});
-          groundProfile.push_back(intersection_point);
-        }
-
-        vector<IntersectionPoint> result;
-        for(auto& point : profile_path)
-        {
-          if(not result.empty())
-          {
-            IntersectionPoint prevPoint = result.back();
-
-            if(groundProfile.size() > 1)
-            {
-              for(int i = 1; i < groundProfile.size(); i++)
-              {
-                QPointF intersectsPoint;
-                IntersectionPoint prevGroundPoint = groundProfile[i - 1];
-                IntersectionPoint groundPoint = groundProfile[i];
-                QLineF line(prevPoint.distance(), prevPoint.elevation(), point.distance(), point.elevation());
-
-                if(line.intersects(QLineF(prevGroundPoint.distance(), prevGroundPoint.elevation(), groundPoint.distance(), groundPoint.elevation()),
-                                   &intersectsPoint) == QLineF::BoundedIntersection)
-                {
-                  QGeoCoordinate pathGeoPoint = QGeoCoordinate(prevPoint.coordinate().latitude(), prevPoint.coordinate().longitude());
-                  float az = static_cast<float>(pathGeoPoint.azimuthTo(QGeoCoordinate(point.coordinate().latitude(), point.coordinate().longitude())));
-                  QGeoCoordinate intersectGeoPoint = pathGeoPoint.atDistanceAndAzimuth(intersectsPoint.x() - prevPoint.distance(), az);
-
-                  IntersectionPoint prevResultPoint = result.back();
-
-                  IntersectionPoint intersection_point(static_cast<float>(intersectsPoint.x()), static_cast<float>(intersectsPoint.y()),
-                                                       true, false, IntersectionPoint::NonIntersecting);
-                  intersection_point.setCoordinate({intersectGeoPoint.latitude(), intersectGeoPoint.longitude()});
-                  if(prevResultPoint.state() == IntersectionPoint::InsideGround or prevResultPoint.state() == IntersectionPoint::IntersectingIn)
-                    intersection_point.setState(IntersectionPoint::IntersectingOut);
-                  else
-                    intersection_point.setState(IntersectionPoint::IntersectingIn);
-
-                  result.push_back(intersection_point);
-                }
+              if (firstPoint.altitude() + altitudeDelta <
+                  DEM::elevation(firstPoint.latitude(), firstPoint.longitude())) {
+                qDebug() << firstPoint.altitude() + altitudeDelta << DEM::elevation(firstPoint.latitude(), firstPoint.longitude());
+                result.emplace_back(resultDistance + 0, firstPoint.altitude());
+                continue;
               }
+
+
+            }
+            auto calcPoint = firstPoint.atDistanceAndAzimuth(calcDistance, azimuth);
+            calcPoint.setAltitude(altitudeAtDistance(firstPoint, secondPoint, calcDistance));
+            if (calcPoint.altitude() + altitudeDelta <
+                DEM::elevation(calcPoint.latitude(), calcPoint.longitude())) {
+              qDebug() << calcPoint.altitude() + altitudeDelta << DEM::elevation(calcPoint.latitude(), calcPoint.longitude());
+              result.emplace_back(resultDistance + calcDistance, calcPoint.altitude());
+            }
+
+            if (calcDistance + distanceDelta >= distance) {
+              if (secondPoint.altitude() + altitudeDelta <
+                  DEM::elevation(secondPoint.latitude(), secondPoint.longitude())) {
+                qDebug() << secondPoint.altitude() + altitudeDelta <<  DEM::elevation(calcPoint.latitude(), calcPoint.longitude());
+                result.emplace_back(resultDistance + distance, secondPoint.altitude());
+              }
+              resultDistance += distance;
             }
           }
-
-          if(point.elevation() > static_cast<float>(DEM::elevation(point.coordinate().latitude(), point.coordinate().longitude())))
-            point.setState(IntersectionPoint::NonIntersecting);
-          else
-            point.setState(IntersectionPoint::InsideGround);
-
-          result.push_back(point);
         }
 
-        emit researchIntersectionsFinished(result);
+        emit researchIntersectionsFinished(std::move(result));
       });
     });
   }
@@ -144,5 +107,24 @@ namespace ElevationChart
     }
 
     return ret;
+  }
+
+  float Researcher::altitudeAtDistance(const QGeoCoordinate& a, const QGeoCoordinate& b, int distance)
+  {
+    auto delta = a.distanceTo(b);
+    auto altitudeDelta = std::abs(a.altitude() - b.altitude());
+    if (a.altitude() > b.altitude())
+    {
+      auto tg = (a.altitude() - altitudeDelta) / delta;
+      return static_cast<float>(b.altitude() + tg * (delta - distance));
+    }
+
+    else if (a.altitude() < b.altitude())
+    {
+      auto tg = (b.altitude() - altitudeDelta)/ delta;
+      return static_cast<float>(a.altitude() + tg * distance);
+    }
+
+    return static_cast<float>(a.altitude());
   }
 } // ElevationChart
