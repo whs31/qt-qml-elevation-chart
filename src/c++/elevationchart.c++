@@ -8,6 +8,7 @@
 #include <QtQuick/QSGFlatColorMaterial>
 #include <QtConcurrent/QtConcurrent>
 #include <LPVL/Utils>
+#include <LPVL/Materials/FadingGradient>
 
 #define in :
 
@@ -111,12 +112,17 @@ namespace ElevationChart
 
   void ElevationChartItem::setupChildNodes(QSGNode* node)
   {
-    tree()[BackgroundNode] = LPVL::utils::createSimpleGeometryNode(palette().background(), QSGGeometry::DrawTriangles);
-    tree()[ProfileNode] = LPVL::utils::createSimpleGeometryNode(palette().overlay(), OpenGLDrawMode::DrawQuadStrip);
-    tree()[RouteNode] = LPVL::utils::createSimpleGeometryNode(palette().accent(), QSGGeometry::DrawLineStrip, ROUTE_LINE_WIDTH);
-    tree()[MetricsNode] = LPVL::utils::createSimpleGeometryNode(palette().warn(), QSGGeometry::DrawLineStrip, METRICS_LINE_WIDTH);
-    tree()[MetricsPointNode] = LPVL::utils::createSimpleGeometryNode(palette().warn(), QSGGeometry::DrawPoints, METRICS_ROUNDING_WIDTH);
-    tree()[IntersectionsNode] = LPVL::utils::createSimpleGeometryNode(palette().error(), OpenGLDrawMode::DrawQuads, METRICS_LINE_WIDTH);
+    tree()[BackgroundNode] = LPVL::utils::createSimpleGeometryNode(palette().background(), QSGGeometry::DrawTriangles, LPVL::utils::GeometryAndMaterial);
+    tree()[ProfileNode] = LPVL::utils::createSimpleGeometryNode(palette().overlay(), OpenGLDrawMode::DrawQuadStrip, LPVL::utils::GeometryAndMaterial);
+    tree()[RouteNode] = LPVL::utils::createSimpleGeometryNode(palette().accent(), QSGGeometry::DrawLineStrip, LPVL::utils::GeometryAndMaterial, ROUTE_LINE_WIDTH);
+    tree()[MetricsNode] = LPVL::utils::createSimpleGeometryNode(palette().warn(), QSGGeometry::DrawLineStrip, LPVL::utils::GeometryAndMaterial, METRICS_LINE_WIDTH);
+    tree()[MetricsPointNode] = LPVL::utils::createSimpleGeometryNode(palette().warn(), QSGGeometry::DrawPoints, LPVL::utils::GeometryAndMaterial, METRICS_ROUNDING_WIDTH);
+    tree()[IntersectionsNode] = LPVL::utils::createSimpleGeometryNode(palette().error(), OpenGLDrawMode::DrawQuads, LPVL::utils::OnlyGeometry, METRICS_LINE_WIDTH);
+
+    QSGSimpleMaterial<State>* material = LPVL::FadingGradientShader::createMaterial();
+    material->setFlag(QSGMaterial::Blending);
+    tree()[IntersectionsNode]->setMaterial(material);
+    tree()[IntersectionsNode]->setFlags(QSGNode::OwnsGeometry | QSGNode::OwnsMaterial);
 
     for(const auto&[key, value] : tree())
       node->appendChildNode(value);
@@ -132,7 +138,7 @@ namespace ElevationChart
     dynamic_cast<QSGFlatColorMaterial*>(tree()[RouteNode]->material())->setColor(palette().accent());
     dynamic_cast<QSGFlatColorMaterial*>(tree()[MetricsNode]->material())->setColor(palette().warn());
     dynamic_cast<QSGFlatColorMaterial*>(tree()[MetricsPointNode]->material())->setColor(palette().warn());
-    dynamic_cast<QSGFlatColorMaterial*>(tree()[IntersectionsNode]->material())->setColor(transparent_error);
+    dynamic_cast<QSGSimpleMaterial<State>*>(tree()[IntersectionsNode]->material())->state()->color = palette().error();
   }
 
   void ElevationChartItem::drawCall(QSGNode* node)
@@ -205,7 +211,6 @@ namespace ElevationChart
     if(route_path.isEmpty())
       return;
 
-    //bool allow_individual_speeds = not qFuzzyCompare(route().at(0).velocity(), 0);
     auto velocities = route().velocities();
 
     correct_path.addCoordinate(route_path.path().first());
@@ -347,26 +352,20 @@ namespace ElevationChart
 
     auto geometry = tree()[IntersectionsNode]->geometry();
 
-    vector<QSGGeometry::Point2D> gl;
-//    QSGGeometry::Point2D max = {0, 0};
-//    max.x = m_intersections.back().distance();
-//    max.y = std::max_element(m_intersections.cbegin(), m_intersections.cend(), [](const IntersectionPoint& a, const IntersectionPoint& b){
-//      return a.elevation() < b.elevation();
-//    })->elevation();
-    //max.y *= 1.05;
+    vector<QSGGeometry::TexturedPoint2D> gl;
     bool flip = false;
     for(const auto& point : m_intersections)
     {
       if(flip)
       {
-        gl.push_back(toPixel(point.distance(), point.elevation(), bounds().x(), bounds().y()));
-        gl.push_back({ toPixelX(point.distance(), bounds().x()), static_cast<float>(height()) });
+        gl.push_back(LPVL::utils::fromPoint2DBounded(toPixel(point.distance(), point.elevation(), bounds().x(), bounds().y()), width(), height()));
+        gl.push_back(LPVL::utils::fromPoint2DBounded({toPixelX(point.distance(), bounds().x()), static_cast<float>(height())}, width(), height()));
         flip ^= 1;
       }
       else
       {
-        gl.push_back({ toPixelX(point.distance(), bounds().x()), static_cast<float>(height()) });
-        gl.push_back(toPixel(point.distance(), point.elevation(), bounds().x(), bounds().y()));
+        gl.push_back(LPVL::utils::fromPoint2DBounded({toPixelX(point.distance(), bounds().x()), static_cast<float>(height())}, width(), height()));
+        gl.push_back(LPVL::utils::fromPoint2DBounded(toPixel(point.distance(), point.elevation(), bounds().x(), bounds().y()), width(), height()));
         flip ^= 1;
       }
     }

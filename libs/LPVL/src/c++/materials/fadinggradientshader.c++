@@ -37,8 +37,8 @@ namespace LPVL
            "uniform lowp vec4 color;                        \n"
            "varying highp vec2 texCoord;                    \n"
            "void main () {                                  \n"
-           "    gl_FragColor = min(1.5 - texCoord.y, 1.0)     "
-           "    * color;                                    \n"
+           "    gl_FragColor = qt_Opacity * min(1.5 -         "
+           "    texCoord.y, 1.0) * color;                   \n"
            "}";
   }
 
