@@ -117,12 +117,16 @@ namespace ElevationChart
     tree()[RouteNode] = LPVL::utils::createSimpleGeometryNode(palette().accent(), QSGGeometry::DrawLineStrip, LPVL::utils::GeometryAndMaterial, ROUTE_LINE_WIDTH);
     tree()[MetricsNode] = LPVL::utils::createSimpleGeometryNode(palette().warn(), QSGGeometry::DrawLineStrip, LPVL::utils::GeometryAndMaterial, METRICS_LINE_WIDTH);
     tree()[MetricsPointNode] = LPVL::utils::createSimpleGeometryNode(palette().warn(), QSGGeometry::DrawPoints, LPVL::utils::GeometryAndMaterial, METRICS_ROUNDING_WIDTH);
-    tree()[IntersectionsNode] = LPVL::utils::createSimpleGeometryNode(palette().error(), OpenGLDrawMode::DrawQuads, LPVL::utils::OnlyGeometry, METRICS_LINE_WIDTH);
+    tree()[IntersectionsNode] = LPVL::utils::createSimpleGeometryNode(palette().error(), OpenGLDrawMode::DrawQuads, LPVL::utils::EmptyNode, METRICS_LINE_WIDTH);
 
     QSGSimpleMaterial<State>* material = LPVL::FadingGradientShader::createMaterial();
     material->setFlag(QSGMaterial::Blending);
+    auto* geometry = new QSGGeometry(QSGGeometry::defaultAttributes_TexturedPoint2D(), 0, 0, QSGGeometry::UnsignedIntType);
+    geometry->setDrawingMode(OpenGLDrawMode::DrawQuads);
+    geometry->setLineWidth(METRICS_LINE_WIDTH);
     tree()[IntersectionsNode]->setMaterial(material);
     tree()[IntersectionsNode]->setFlags(QSGNode::OwnsGeometry | QSGNode::OwnsMaterial);
+    tree()[IntersectionsNode]->setGeometry(geometry);
 
     for(const auto&[key, value] : tree())
       node->appendChildNode(value);
@@ -130,9 +134,6 @@ namespace ElevationChart
 
   void ElevationChartItem::setupNodeColors(QSGNode* node)
   {
-    QColor transparent_error = palette().error();
-    transparent_error.setAlpha(128);
-
     dynamic_cast<QSGFlatColorMaterial*>(tree()[BackgroundNode]->material())->setColor(palette().background());
     dynamic_cast<QSGFlatColorMaterial*>(tree()[ProfileNode]->material())->setColor(palette().overlay());
     dynamic_cast<QSGFlatColorMaterial*>(tree()[RouteNode]->material())->setColor(palette().accent());
