@@ -29,8 +29,15 @@ var hierarchy =
         ] ]
       ] ]
     ] ],
+    [ "QSGMaterialShader", null, [
+      [ "QSGSimpleMaterialShader", null, [
+        [ "FadingGradientShader", "db/d09/classLPVL_1_1FadingGradientShader.html", null ],
+        [ "RadialGradientShader", "d7/d0c/classLPVL_1_1RadialGradientShader.html", null ]
+      ] ]
+    ] ],
     [ "Route", "de/d39/classElevationChart_1_1Route.html", null ],
     [ "RoutePoint", "d1/d3b/classElevationChart_1_1RoutePoint.html", null ],
+    [ "State", "de/def/structState.html", null ],
     [ "Tile", "d1/d3f/classDEM_1_1Tile.html", null ],
     [ "TileKey", "d7/d24/structDEM_1_1TileKey.html", null ],
     [ "TileStorage", "d8/d8b/classDEM_1_1TileStorage.html", null ]

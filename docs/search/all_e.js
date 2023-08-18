@@ -19,7 +19,8 @@ var searchData=
   ['shrinktoprofileheight_16',['ShrinkToProfileHeight',['../d2/d6b/classElevationChart_1_1ElevationChartItem.html#ac06788932cd1a15c825f8a90f2285034a1c9a9a1291e047ad9210db2d4f7a8922',1,'ElevationChart::ElevationChartItem']]],
   ['shrinktorouteheight_17',['ShrinkToRouteHeight',['../d2/d6b/classElevationChart_1_1ElevationChartItem.html#ac06788932cd1a15c825f8a90f2285034a4c97e6e9de17a0bdef2ca4c0013dc109',1,'ElevationChart::ElevationChartItem']]],
   ['size_18',['size',['../de/d39/classElevationChart_1_1Route.html#af9593d4a5ff4274efaf429cb4f9e57cc',1,'ElevationChart::Route']]],
-  ['state_19',['state',['../d6/dc5/structDEM_1_1IntersectionPoint.html#a868e86f477197b8e3fef6d2ec7bbbb82',1,'DEM::IntersectionPoint::state'],['../d1/d0b/classElevationChart_1_1IntersectionPoint.html#aa1c1ea397b70490bd84e06c3021753fa',1,'ElevationChart::IntersectionPoint::state()']]],
-  ['storagepath_20',['storagePath',['../d8/d8b/classDEM_1_1TileStorage.html#a3c6f98f442ce346b430326a3b26c6473',1,'DEM::TileStorage']]],
-  ['stretch_21',['stretch',['../d6/d1e/classElevationChart_1_1Bounds.html#aba93097f4c5e512c80b8e5b37228ea80',1,'ElevationChart::Bounds']]]
+  ['state_19',['State',['../de/def/structState.html',1,'']]],
+  ['state_20',['state',['../d1/d0b/classElevationChart_1_1IntersectionPoint.html#aa1c1ea397b70490bd84e06c3021753fa',1,'ElevationChart::IntersectionPoint::state()'],['../d6/dc5/structDEM_1_1IntersectionPoint.html#a868e86f477197b8e3fef6d2ec7bbbb82',1,'DEM::IntersectionPoint::state']]],
+  ['storagepath_21',['storagePath',['../d8/d8b/classDEM_1_1TileStorage.html#a3c6f98f442ce346b430326a3b26c6473',1,'DEM::TileStorage']]],
+  ['stretch_22',['stretch',['../d6/d1e/classElevationChart_1_1Bounds.html#aba93097f4c5e512c80b8e5b37228ea80',1,'ElevationChart::Bounds']]]
 ];

@@ -333,8 +333,11 @@ namespace ElevationChart
 
   void ElevationChartItem::handleIntersectionsNode() noexcept
   {
-    if(m_intersections.empty())
+    if(not intersecting())
+    {
+      tree()[IntersectionsNode]->geometry()->allocate(0);
       return;
+    }
 
     auto geometry = tree()[IntersectionsNode]->geometry();
 
