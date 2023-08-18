@@ -37,15 +37,12 @@ namespace ElevationChart
           auto azimuth = firstPoint.azimuthTo(secondPoint);
           for (int calcDistance = 0; calcDistance < distance; calcDistance += distanceDelta) {
             if (calcDistance == 0) {
-
               if (firstPoint.altitude() + altitudeDelta <
                   DEM::elevation(firstPoint.latitude(), firstPoint.longitude())) {
                 qDebug() << firstPoint.altitude() + altitudeDelta << DEM::elevation(firstPoint.latitude(), firstPoint.longitude());
                 result.emplace_back(resultDistance + 0, firstPoint.altitude());
-                continue;
               }
-
-
+                continue;
             }
             auto calcPoint = firstPoint.atDistanceAndAzimuth(calcDistance, azimuth);
             calcPoint.setAltitude(altitudeAtDistance(firstPoint, secondPoint, calcDistance));
@@ -65,7 +62,6 @@ namespace ElevationChart
             }
           }
         }
-
         emit researchIntersectionsFinished(std::move(result));
       });
     });
@@ -124,7 +120,6 @@ namespace ElevationChart
       auto tg = (b.altitude() - altitudeDelta)/ delta;
       return static_cast<float>(a.altitude() + tg * distance);
     }
-
     return static_cast<float>(a.altitude());
   }
 } // ElevationChart
