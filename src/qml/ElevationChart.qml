@@ -172,6 +172,31 @@ Rectangle {
 
     UI.LargeWarning { shown: impl.missingTiles && impl.route.valid(); txt: "Отсутствуют профили высот"; col: impl.palette.overlay; anchors.centerIn: parent }
     UI.LargeWarning { shown: !impl.route.valid(); txt: "Не задан путь"; col: impl.palette.overlay; anchors.centerIn: parent }
+    Text {
+        property bool shown: zoom > 1.1
+        property real value: zoom
+
+        anchors {
+            right: parent.right
+            bottom: parent.bottom
+        }
+
+        text: Number(value).toFixed(2) + "x"
+        font {
+            family: mainfont
+            pixelSize: 48
+            weight: Font.ExtraBold
+        }
+
+        color: impl.palette.overlay2
+        horizontalAlignment: Text.AlignRight
+        verticalAlignment: Text.AlignVCenter
+
+        visible: opacity > 0
+        enabled: shown
+        opacity: shown ? 1 : 0
+        Behavior on opacity { NumberAnimation { } }
+    }
 
     UI.Notifications {
         id: notifications
