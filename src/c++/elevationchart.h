@@ -53,14 +53,15 @@ namespace ElevationChart
 
     enum NodeTypes
     {
-      BackgroundNode,   ///< Нода фона.
-      ProfileNode,      ///< Нода профиля рельефа.
-      IntersectionsNode,///< Нода пересечений с рельефом.
-      MetricsNode,      ///< Нода маршрута, скорректированного по ЛТХ.
-      MetricsPointNode, ///< Нода для точек маршрута, скорректированного по ЛТХ.
-      EnvelopeNode,     ///< Нода огибающей.
-      CorridorNode,     ///< Нода коридора для огибающей.
-      RouteNode         ///< Нода маршрута.
+      BackgroundNode,         ///< Нода фона.
+      ProfileNode,            ///< Нода профиля рельефа.
+      IntersectionsNode,      ///< Нода пересечений с рельефом.
+      MetricsNode,            ///< Нода маршрута, скорректированного по ЛТХ.
+      MetricsPointNode,       ///< Нода для точек маршрута, скорректированного по ЛТХ.
+      EnvelopeNode,           ///< Нода огибающей.
+      CorridorNode,           ///< Нода коридора для огибающей.
+      RouteNode,              ///< Нода маршрута.
+      IntersectionsRouteNode  ///< Нода индикации пересечений с рельефом на маршруте.
     };
 
     public:

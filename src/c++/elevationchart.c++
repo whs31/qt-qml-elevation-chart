@@ -103,6 +103,7 @@ namespace ElevationChart
     tree()[MetricsNode] = LPVL::utils::createSimpleGeometryNode(palette().warn(), QSGGeometry::DrawLineStrip, LPVL::utils::GeometryAndMaterial, METRICS_LINE_WIDTH);
     tree()[MetricsPointNode] = LPVL::utils::createSimpleGeometryNode(palette().warn(), QSGGeometry::DrawPoints, LPVL::utils::GeometryAndMaterial, METRICS_ROUNDING_WIDTH);
     tree()[IntersectionsNode] = LPVL::utils::createSimpleGeometryNode(palette().error(), OpenGLDrawMode::DrawQuads, LPVL::utils::EmptyNode, METRICS_LINE_WIDTH);
+    tree()[IntersectionsRouteNode] = LPVL::utils::createSimpleGeometryNode(palette().error(), QSGGeometry::DrawLines, LPVL::utils::GeometryAndMaterial, ROUTE_LINE_WIDTH);
 
     QSGSimpleMaterial<State>* material = LPVL::FadingGradientShader::createMaterial();
     material->setFlag(QSGMaterial::Blending);
@@ -125,6 +126,7 @@ namespace ElevationChart
     dynamic_cast<QSGFlatColorMaterial*>(tree()[MetricsNode]->material())->setColor(palette().warn());
     dynamic_cast<QSGFlatColorMaterial*>(tree()[MetricsPointNode]->material())->setColor(palette().warn());
     dynamic_cast<QSGSimpleMaterial<State>*>(tree()[IntersectionsNode]->material())->state()->color = palette().error();
+    dynamic_cast<QSGFlatColorMaterial*>(tree()[IntersectionsRouteNode]->material())->setColor(palette().error());
   }
 
   void ElevationChartItem::drawCall(QSGNode* node)
@@ -336,15 +338,19 @@ namespace ElevationChart
     if(not intersecting())
     {
       tree()[IntersectionsNode]->geometry()->allocate(0);
+      tree()[IntersectionsRouteNode]->geometry()->allocate(0);
       return;
     }
 
     auto geometry = tree()[IntersectionsNode]->geometry();
+    auto geometry2 = tree()[IntersectionsRouteNode]->geometry();
 
     vector<QSGGeometry::TexturedPoint2D> gl;
+    vector<QSGGeometry::Point2D> gl_x;
     bool flip = false;
     for(const auto& point : m_intersections)
     {
+      gl_x.push_back(toPixel(point.distance(), point.elevation(), bounds().x(), bounds().y()));
       if(flip)
       {
         gl.push_back(LPVL::utils::fromPoint2DBounded(toPixel(point.distance(), point.elevation(), bounds().x(), bounds().y()), width(), height()));
@@ -363,8 +369,12 @@ namespace ElevationChart
       gl.push_back(LPVL::utils::fromPoint2DBounded({toPixelX(m_intersections.back().distance(), bounds().x()), static_cast<float>(height())}, width(), height()));
 
     geometry->allocate(static_cast<int>(gl.size()));
+    geometry2->allocate(static_cast<int>(gl_x.size()));
     for(size_t i = 0; i < gl.size(); i++)
       geometry->vertexDataAsTexturedPoint2D()[i] = gl.at(i);
+
+    for(size_t i = 0; i < gl_x.size(); i++)
+      geometry2->vertexDataAsPoint2D()[i] = gl_x.at(i);
   }
 
   /**

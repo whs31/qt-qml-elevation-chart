@@ -14,14 +14,19 @@ ApplicationWindow {
     minimumWidth: 720
     minimumHeight: 360
     width: 1900
-    height: 400
+    height: 800
     visible: true
     color: Catpuccin.latte.red.hex
 
     property real testing_route: testingSlider.value
     ElevationChart {
         id: elevationChart
-        anchors.fill: parent
+        anchors {
+            top: parent.top
+            left: parent.left
+            right: parent.right
+            bottom: parent.bottom
+        }
         route: testingButton.checked ? Types.route(QtPositioning.path([QtPositioning.coordinate(60, 30.01, 100),
             QtPositioning.coordinate(testing_route, 30.01, 50),
             QtPositioning.coordinate(60.04, 30.01, 120),
