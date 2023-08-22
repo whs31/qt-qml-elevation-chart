@@ -21,8 +21,8 @@ namespace ElevationChart
     : QAbstractListModel(parent)
     , m_dictionary({
       {Default, "Ошибка!"},
-      {MissingTiles, "Для маршрута отсутствуют необходимые карты профиля высот!"},
-      {Intersecting, "Маршрут пересекает рельеф в одной из точек!"},
+      {MissingTiles, "Отсутствуют карты профиля высот!"},
+      {Intersecting, "Маршрут пересекает рельеф!"},
       {MetricsMismatch, "Маршрут не соответствует ЛТХ борта"}
     })
   {}

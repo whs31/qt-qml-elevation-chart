@@ -17,6 +17,7 @@ ListView {
         required property string details
 
         anchors.right: parent.right
+        opacity: 0.8
 
         icon {
             source: "qrc:/elevation-chart/icons/warning.svg"

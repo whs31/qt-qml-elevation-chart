@@ -45,8 +45,6 @@ namespace ElevationChart
   {
     QFuture<void> outer = QtConcurrent::run([this, path](){
       QFuture<void> inner = QtConcurrent::run([this, path](){
-        vector<ElevationPoint> result;
-
         QGeoPath profile = Researcher::plotGeopathProfile(path);
         vector<IntersectionPoint> path_profile = fillProfile(path.path(), path);
         vector<IntersectionPoint> ground_profile = fillProfile(profile.path(), profile);
@@ -79,11 +77,14 @@ namespace ElevationChart
           result_path.push_back(point);
         }
 
+        // removing useless points from result and doubling some points for GL_QUADS mode
+        vector<ElevationPoint> result;
+        result.reserve(result_path.size());
         for(const auto& point : result_path)
         {
           if(not point.base())
             result.emplace_back(point.distance(), point.elevation());
-          if(point.base() and point.state() == IntersectionPoint::InsideGround)
+          else if(point.state() == IntersectionPoint::InsideGround)
           {
             result.emplace_back(point.distance(), point.elevation());
             result.emplace_back(point.distance(), point.elevation());
