@@ -12,6 +12,12 @@ RoundButton {
 
     width: 25
     height: 25
+    transform: Scale {
+        xScale: 1 / zoom
+        yScale: 1 / zoom
+        origin.x: width / 2
+        origin.y: height / 2
+    }
 
     x: (distance / impl.bounds.x * impl.width) - width / 2
     y: (impl.height - (altitude / (impl.bounds.y * impl.bounds.stretch) * impl.height)) - height / 2
