@@ -10,7 +10,7 @@
 #include <vector>
 #include <QtCore/QObject>
 #include <QtPositioning/QGeoPath>
-#include "types/intersectionpoint.h"
+#include "types/elevationpoint.h"
 
 using std::vector;
 
