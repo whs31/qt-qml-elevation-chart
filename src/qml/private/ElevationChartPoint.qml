@@ -14,7 +14,7 @@ RoundButton {
     height: 25
     transform: Scale {
         xScale: 1 / zoom
-        yScale: 1 / zoom
+        //yScale: 1 / zoom
         origin.x: width / 2
         origin.y: height / 2
     }

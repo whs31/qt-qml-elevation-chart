@@ -16,7 +16,7 @@ ListView {
         required property bool major
         required property string details
 
-        anchors.right: parent.right
+        anchors.right: parent ? parent.right : undefined
         opacity: 0.8
 
         icon {

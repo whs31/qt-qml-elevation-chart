@@ -40,12 +40,12 @@ Rectangle {
         id: flick
         anchors {
             fill: parent
-            leftMargin: 10
-            rightMargin: 10
-            bottomMargin: 10
+            leftMargin: 7
+            rightMargin: 7
+            bottomMargin: 7
         }
 
-        clip: true
+        //clip: true
         boundsBehavior: Flickable.StopAtBounds
         boundsMovement: Flickable.StopAtBounds
 
@@ -58,7 +58,7 @@ Rectangle {
                 origin.x: pinchArea.m_x2
                 origin.y: pinchArea.m_y2
                 xScale: pinchArea.m_zoom2
-                yScale: pinchArea.m_zoom2
+                //yScale: pinchArea.m_zoom2
             }
 
             ElevationChartImpl {
@@ -120,7 +120,7 @@ Rectangle {
                     m_x2 = pinch.startCenter.x
                     m_y2 = pinch.startCenter.y
                     rect.x = rect.x + (pinchArea.m_x1 - pinchArea.m_x2) * (1 - pinchArea.m_zoom1)
-                    rect.y = rect.y + (pinchArea.m_y1 - pinchArea.m_y2) * (1 - pinchArea.m_zoom1)
+                    //rect.y = rect.y + (pinchArea.m_y1 - pinchArea.m_y2) * (1 - pinchArea.m_zoom1)
                 }
 
                 onPinchUpdated: {
@@ -137,6 +137,8 @@ Rectangle {
                     anchors.fill: parent
                     drag.target: rect
                     drag.filterChildren: true
+                    drag.axis: Drag.XAxis
+                    drag.smoothed: true
 
                     onWheel: {
                         pinchArea.m_x1 = scaler.origin.x
@@ -163,7 +165,7 @@ Rectangle {
                                 pinchArea.m_zoom2 = pinchArea.m_min
                         }
                         rect.x = rect.x + (pinchArea.m_x1 - pinchArea.m_x2) * (1 - pinchArea.m_zoom1);
-                        rect.y = rect.y + (pinchArea.m_y1 - pinchArea.m_y2) * (1 - pinchArea.m_zoom1);
+                        //rect.y = rect.y + (pinchArea.m_y1 - pinchArea.m_y2) * (1 - pinchArea.m_zoom1);
                     }
                 }
             }
