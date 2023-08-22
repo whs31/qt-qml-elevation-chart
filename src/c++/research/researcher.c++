@@ -121,7 +121,7 @@ namespace ElevationChart
         QVector<Point> result_path;
         for(auto point : path_profile)
         {
-          if(not result_path.empty())
+          if(result_path.size())
           {
             Point prev_point = result_path.last();
 
@@ -162,6 +162,7 @@ namespace ElevationChart
             point.setOrientation(Point::Air);
           else
             point.setOrientation(Point::Ground);
+          result_path.append(point);
         }
 
         for(const auto& point : result_path)
