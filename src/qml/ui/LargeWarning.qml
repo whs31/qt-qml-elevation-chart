@@ -10,8 +10,8 @@ Text {
     text: txt
     font {
         family: mainfont
-        pixelSize: 72
-        weight: Font.Bold
+        pixelSize: 86
+        weight: Font.ExtraBold
         capitalization: Font.AllUppercase
     }
 

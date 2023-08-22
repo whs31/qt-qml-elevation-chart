@@ -22,7 +22,7 @@ ApplicationWindow {
     ElevationChart {
         id: elevationChart
         anchors.fill: parent
-        route: Types.route(QtPositioning.path([QtPositioning.coordinate(60, 30.01, 100),
+        route: testingButton.checked ? Types.route(QtPositioning.path([QtPositioning.coordinate(60, 30.01, 100),
             QtPositioning.coordinate(testing_route, 30.01, 50),
             QtPositioning.coordinate(60.04, 30.01, 120),
             QtPositioning.coordinate(60.06, 30.01, 70),
@@ -32,15 +32,26 @@ ApplicationWindow {
             QtPositioning.coordinate(60.1, 30.06, 45),
             QtPositioning.coordinate(60.1, 30.08, 55),
             QtPositioning.coordinate(60.1, 30.1, 70)]))
+            : Types.route(QtPositioning.path())
     }
 
-    Slider {
-        id: testingSlider
-        value: 60
-        from: 60
-        to: 61
+    Row {
         anchors.bottom: parent.bottom
         anchors.left: parent.left
-        anchors.right: parent.right
+        anchors.right: parent.left
+
+        RoundButton {
+            id: testingButton
+            text: checked ? "RESET PATH" : "SET PATH"
+            checkable: true
+            checked: true
+        }
+
+        Slider {
+            id: testingSlider
+            value: 60
+            from: 60
+            to: 62
+        }
     }
 }

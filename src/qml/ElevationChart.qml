@@ -38,6 +38,10 @@ Rectangle {
     ElevationChartImpl
     {
         id: impl
+        visible: opacity > 0
+        enabled: visible
+        opacity: impl.route.valid() && !impl.missingTiles ? 1 : 0
+        Behavior on opacity { NumberAnimation { } }
         anchors {
             fill: parent
             leftMargin: 10
@@ -76,7 +80,7 @@ Rectangle {
         }
     }
 
-    UI.LargeWarning { shown: impl.missingTiles; txt: "Отсутствуют профили высот"; col: impl.palette.overlay; anchors.centerIn: parent }
+    UI.LargeWarning { shown: impl.missingTiles && impl.route.valid(); txt: "Отсутствуют профили высот"; col: impl.palette.overlay; anchors.centerIn: parent }
     UI.LargeWarning { shown: !impl.route.valid(); txt: "Не задан путь"; col: impl.palette.overlay; anchors.centerIn: parent }
 
     UI.Notifications {

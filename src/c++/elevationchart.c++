@@ -150,7 +150,7 @@ namespace ElevationChart
   {
     m_profile = profile;
 
-    if(m_profile.empty())
+    if(m_profile.empty() and route().valid())
       setMissingTiles(true);
     else
       setMissingTiles(false);
