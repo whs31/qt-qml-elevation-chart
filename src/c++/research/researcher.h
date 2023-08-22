@@ -26,7 +26,6 @@ namespace ElevationChart
       Q_SLOT void researchIntersections(const QGeoPath& path);
 
       static QGeoPath plotGeopathProfile(const QGeoPath& path);
-      static float altitudeAtDistance(const QGeoCoordinate& a, const QGeoCoordinate& b, int distance);
 
     signals:
       void researchIntersectionsFinished(vector<ElevationPoint>);

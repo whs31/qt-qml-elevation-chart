@@ -18,7 +18,7 @@ namespace ElevationChart
       };
 
       IntersectionPoint();
-      IntersectionPoint(float distance, float elevation, bool is_valid, bool is_base, Intersection state);
+      IntersectionPoint(float distance, float elevation, bool is_valid, bool is_base, Intersection state, const QGeoCoordinate& coord = QGeoCoordinate());
 
       [[nodiscard]] bool base() const;                  void setBase(bool);
       [[nodiscard]] Intersection state() const;         void setState(Intersection);
@@ -45,6 +45,7 @@ namespace ElevationChart
     : ElevationPoint()
     , m_base(true)
     , m_state(NonIntersecting)
+    , m_coordinate(QGeoCoordinate())
   {}
 
   /**
@@ -55,11 +56,13 @@ namespace ElevationChart
    * \param is_valid - валидность точки.
    * \param is_base - является ли точка базовой (исходной) точкой пути, или она появилась в результате пересечения с рельефом.
    * \param state - состояние пересечения.
+   * \param coord - географическая широта и долгота точки.
    */
-  inline IntersectionPoint::IntersectionPoint(float distance, float elevation, bool is_valid, bool is_base, Intersection state)
+  inline IntersectionPoint::IntersectionPoint(float distance, float elevation, bool is_valid, bool is_base, Intersection state, const QGeoCoordinate& coord)
     : ElevationPoint(distance, elevation, is_valid)
     , m_base(is_base)
     , m_state(state)
+    , m_coordinate(coord)
   {}
 
   /// \brief Возвращает <tt>true</tt>, если точка является базовой точкой исходного пути.
@@ -74,6 +77,9 @@ namespace ElevationChart
   /// \brief Задает состояние пересечения точки с рельефом.
   inline void IntersectionPoint::setState(ElevationChart::IntersectionPoint::Intersection x) { m_state = x; }
 
+  /// \brief Возвращает географическую координату точки.
   inline QGeoCoordinate IntersectionPoint::coordinate() const { return m_coordinate; }
+
+  /// \brief Задает географическую координату точки.
   inline void IntersectionPoint::setCoordinate(const QGeoCoordinate& x) { m_coordinate = x; }
 } // ElevationChart

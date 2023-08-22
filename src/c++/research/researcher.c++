@@ -12,6 +12,27 @@
 
 constexpr static float SCAN_STEP = 0.5;             // Шаг сканирования земной поверхности.
 
+vector<ElevationChart::IntersectionPoint> fillProfile(const QList<QGeoCoordinate>& list, const QGeoPath& path)
+{
+  vector<ElevationChart::IntersectionPoint> ret;
+
+  float distance = 0;
+  for(int i = 0; i < list.size(); i++)
+  {
+    if(i)
+      distance += static_cast<float>(path.length(i - 1, i));
+    const QGeoCoordinate& point = list[i];
+    ret.emplace_back(distance,
+                     static_cast<float>(point.altitude()),
+                     true, true,
+                     ElevationChart::IntersectionPoint::NonIntersecting,
+                     QGeoCoordinate(point.latitude(), point.longitude())
+    );
+  }
+
+  return ret;
+}
+
 namespace ElevationChart
 {
   Researcher::Researcher(QObject* parent)
@@ -25,77 +46,37 @@ namespace ElevationChart
     QFuture<void> outer = QtConcurrent::run([this, path](){
       QFuture<void> inner = QtConcurrent::run([this, path](){
         vector<ElevationPoint> result;
-        DEM::loadTiles(path);
+
         QGeoPath profile = Researcher::plotGeopathProfile(path);
-        QVector<IntersectionPoint> path_profile;
-        QList<QGeoCoordinate> point_list = path.path();
-        float distance = 0;
-        for(int i = 0; i < point_list.size(); i++)
-        {
-          if(i)
-            distance += static_cast<float>(path.length(i - 1, i));
-          QGeoCoordinate point = point_list[i];
-
-          IntersectionPoint new_point(distance, static_cast<float>(point.altitude()), true, true, IntersectionPoint::NonIntersecting);
-          new_point.setCoordinate({point.latitude(), point.longitude()});
-          path_profile.append(new_point);
-        }
-
-        QVector<IntersectionPoint> ground_profile;
-        point_list = profile.path();
-        distance = 0;
-        for(int i = 0; i < point_list.size(); i++)
-        {
-          if(i)
-            distance += static_cast<float>(profile.length(i - 1, i));
-          QGeoCoordinate point = point_list[i];
-
-          IntersectionPoint new_point(distance, static_cast<float>(point.altitude()), true, true, IntersectionPoint::NonIntersecting);
-          new_point.setCoordinate({point.latitude(), point.longitude()});
-          ground_profile.append(new_point);
-        }
-
-        QVector<IntersectionPoint> result_path;
+        vector<IntersectionPoint> path_profile = fillProfile(path.path(), path);
+        vector<IntersectionPoint> ground_profile = fillProfile(profile.path(), profile);
+        vector<IntersectionPoint> result_path;
         for(auto point : path_profile)
         {
           if(not result_path.empty())
           {
-            IntersectionPoint prev_point = result_path.last();
-
             if(ground_profile.size() > 1)
             {
               for(int i = 1; i < ground_profile.size(); i++)
               {
-                QPointF intersection_point;
-                IntersectionPoint prev_ground_point = ground_profile[i - 1];
-                IntersectionPoint ground_point = ground_profile[i];
-                if(QLineF(prev_point.distance(), prev_point.elevation(), point.distance(), point.elevation()).intersects(
-                    QLineF(prev_ground_point.distance(), prev_ground_point.elevation(), ground_point.distance(), ground_point.elevation()), &intersection_point)
-                    == QLineF::BoundedIntersection)
-                {
-                  QGeoCoordinate path_geo_point = prev_point.coordinate();
-                  double azimuth = path_geo_point.azimuthTo(prev_point.coordinate());
-                  QGeoCoordinate intersection_geo_point = path_geo_point.atDistanceAndAzimuth(intersection_point.x() - prev_point.distance(), azimuth);
-
-                  IntersectionPoint prev_result_point = result_path.last();
-
-                  IntersectionPoint new_point(intersection_point.x(), intersection_point.y(), true, false, IntersectionPoint::NonIntersecting);
-                  new_point.setCoordinate(intersection_geo_point);
-                  if(prev_result_point.state() == IntersectionPoint::InsideGround or prev_result_point.state() == IntersectionPoint::IntersectingIn)
-                    new_point.setState(IntersectionPoint::IntersectingOut);
-                  else
-                    new_point.setState(IntersectionPoint::IntersectingIn);
-                  result_path.append(new_point);
-                }
+                QPointF f;
+                QLineF a(result_path.back().distance(), result_path.back().elevation(), point.distance(), point.elevation());
+                QLineF b(ground_profile[i - 1].distance(), ground_profile[i - 1].elevation(), ground_profile[i].distance(), ground_profile[i].elevation());
+                if(a.intersects(b, &f) == QLineF::BoundedIntersection)
+                  result_path.emplace_back(static_cast<float>(f.x()), static_cast<float>(f.y()), true, false,
+                                           (result_path.back().state() == IntersectionPoint::InsideGround
+                                           or result_path.back().state() == IntersectionPoint::IntersectingIn)
+                                           ? IntersectionPoint::IntersectingIn : IntersectionPoint::IntersectingOut,
+                                           result_path.back().coordinate().atDistanceAndAzimuth(f.x() - result_path.back().distance(),
+                                           result_path.back().coordinate().azimuthTo(result_path.back().coordinate()))
+                  );
               }
             }
           }
 
-          if(point.elevation() > static_cast<float>(DEM::elevation(point.coordinate().latitude(), point.coordinate().longitude())))
-            point.setState(IntersectionPoint::NonIntersecting);
-          else
-            point.setState(IntersectionPoint::InsideGround);
-          result_path.append(point);
+          point.setState((point.elevation() > static_cast<float>(DEM::elevation(point.coordinate().latitude(), point.coordinate().longitude()))) ?
+            IntersectionPoint::NonIntersecting : IntersectionPoint::InsideGround);
+          result_path.push_back(point);
         }
 
         for(const auto& point : result_path)
@@ -116,6 +97,7 @@ namespace ElevationChart
 
   QGeoPath Researcher::plotGeopathProfile(const QGeoPath& path)
   {
+    DEM::loadTiles(path);
     QGeoPath ret;
     for(QGeoCoordinate point : path.path())
     {
@@ -150,23 +132,5 @@ namespace ElevationChart
     }
 
     return ret;
-  }
-
-  float Researcher::altitudeAtDistance(const QGeoCoordinate& a, const QGeoCoordinate& b, int distance)
-  {
-    auto delta = a.distanceTo(b);
-    auto altitudeDelta = std::abs(a.altitude() - b.altitude());
-    if (a.altitude() > b.altitude())
-    {
-      auto tg = (a.altitude() - altitudeDelta) / delta;
-      return static_cast<float>(b.altitude() + tg * (delta - distance));
-    }
-
-    else if (a.altitude() < b.altitude())
-    {
-      auto tg = (b.altitude() - altitudeDelta)/ delta;
-      return static_cast<float>(a.altitude() + tg * distance);
-    }
-    return static_cast<float>(a.altitude());
   }
 } // ElevationChart
