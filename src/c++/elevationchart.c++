@@ -24,7 +24,7 @@ namespace ElevationChart
    * \class ElevationChartItem
    * \brief Основной класс библиотеки.
    * \details Представляет собой C++ - реализацию для профиля высот.
-   * Класс отвечает за вычисления, отрисовку с аппаратным ускорением и хранение данных о профиле высот.
+   * Класс отвечает за вычисления, визуализацию с аппаратным ускорением и хранение данных о профиле высот.
    * \note Класс зарегистрирован как мета-тип и может использоваться в качестве Q_PROPERTY
    * по указателю как в C++, так и в QML.
    */
@@ -83,7 +83,7 @@ namespace ElevationChart
   /**
    * \brief Корректирует текущий путь в соответствии с ЛТХ борта.
    */
-  void ElevationChartItem::applyMetricsCorrection() noexcept
+  [[maybe_unused]] void ElevationChartItem::applyMetricsCorrection() noexcept
   {
     if(matchingMetrics())
     {
@@ -177,7 +177,7 @@ namespace ElevationChart
 
     setBounds({ m_profile.back().distance(), 0 });
     auto path = route().toGeoPath().path();
-    for(const auto& coordinate : path)
+    for(const auto& coordinate in path)
       if(coordinate.altitude() > bounds().y())
         setBounds({bounds().x(), static_cast<float>(coordinate.altitude())});
 
@@ -263,10 +263,10 @@ namespace ElevationChart
     auto geometry = tree()[ProfileNode]->geometry();
 
     vector<QSGGeometry::Point2D> gl;
-    for(const auto& point : m_profile)
+    for(const auto& point in m_profile)
     {
       gl.push_back({toPixelX(point.distance(), bounds().x()), static_cast<float>(height())});
-      gl.push_back(toPixel(point.distance(), point.elevation(), bounds().x(), bounds().y()));
+      gl.push_back(toPixel(point.distance(), point.elevation()));
     }
 
     geometry->allocate(static_cast<int>(gl.size()));
@@ -282,8 +282,8 @@ namespace ElevationChart
     vector<ElevationPoint> t_route = route().toElevationGraph();
     vector<QSGGeometry::Point2D> gl;
 
-    for(const auto& point : t_route)
-      gl.push_back(toPixel(point.distance(), point.elevation(), bounds().x(), bounds().y()));
+    for(const auto& point in t_route)
+      gl.push_back(toPixel(point.distance(), point.elevation()));
 
     geometry->allocate(static_cast<int>(gl.size()));
     for(size_t i = 0; i < gl.size(); i++)
@@ -298,10 +298,10 @@ namespace ElevationChart
     if(matchingMetrics())
     {
       /*
-       * окей, это не совсем очевидная херня, поэтому я прокомментирую будущим поколениям.
-       * если мы не будем очищать буфер ноды, то при отсутствии вызова обновления метрик в
-       * соответствии с маршрутом мы получим невалидные данные. если эта нода была бы отдельным
-       * компонентом в qml, все решилось бы visible: !matchingMetrics, но внутри одного итема
+       * Окей, это не совсем очевидная херня, поэтому я прокомментирую будущим поколениям.
+       * Если мы не будем очищать буфер ноды, то при отсутствии вызова обновления метрик в
+       * соответствии с маршрутом мы получим невалидные данные. Если эта нода была бы отдельным
+       * компонентом в qml, все решилось бы visible: !matchingMetrics, но внутри одного item-а
        * единственный варик это вручную чистить буфер вот таким вызовом.
        */
       geometry1->allocate(0);
@@ -312,7 +312,7 @@ namespace ElevationChart
     vector<ElevationPoint> t_route;
     auto prev_coord = m_metrics_path.path().front();
     float distance = 0;
-    for(const auto& point : m_metrics_path.path())
+    for(const auto& point in m_metrics_path.path())
     {
       distance += static_cast<float>(point.distanceTo(prev_coord));
       t_route.emplace_back(distance, point.altitude());
@@ -321,8 +321,8 @@ namespace ElevationChart
 
     vector<QSGGeometry::Point2D> gl;
 
-    for(const auto& point : t_route)
-      gl.push_back(toPixel(point.distance(), point.elevation(), bounds().x(), bounds().y()));
+    for(const auto& point in t_route)
+      gl.push_back(toPixel(point.distance(), point.elevation()));
 
     geometry1->allocate(static_cast<int>(gl.size()));
     geometry2->allocate(static_cast<int>(gl.size()));
@@ -348,19 +348,19 @@ namespace ElevationChart
     vector<QSGGeometry::TexturedPoint2D> gl;
     vector<QSGGeometry::Point2D> gl_x;
     bool flip = false;
-    for(const auto& point : m_intersections)
+    for(const auto& point in m_intersections)
     {
-      gl_x.push_back(toPixel(point.distance(), point.elevation(), bounds().x(), bounds().y()));
+      gl_x.push_back(toPixel(point.distance(), point.elevation()));
       if(flip)
       {
-        gl.push_back(LPVL::utils::fromPoint2DBounded(toPixel(point.distance(), point.elevation(), bounds().x(), bounds().y()), width(), height()));
+        gl.push_back(LPVL::utils::fromPoint2DBounded(toPixel(point.distance(), point.elevation()), width(), height()));
         gl.push_back(LPVL::utils::fromPoint2DBounded({toPixelX(point.distance(), bounds().x()), static_cast<float>(height())}, width(), height()));
         flip ^= 1;
       }
       else
       {
         gl.push_back(LPVL::utils::fromPoint2DBounded({toPixelX(point.distance(), bounds().x()), static_cast<float>(height())}, width(), height()));
-        gl.push_back(LPVL::utils::fromPoint2DBounded(toPixel(point.distance(), point.elevation(), bounds().x(), bounds().y()), width(), height()));
+        gl.push_back(LPVL::utils::fromPoint2DBounded(toPixel(point.distance(), point.elevation()), width(), height()));
         flip ^= 1;
       }
     }
@@ -381,11 +381,10 @@ namespace ElevationChart
    * \brief Преобразует координаты ElevationPoint в пиксельные координаты этого объекта.
    * \param x - значение ElevationPoint::distance.
    * \param y - значение ElevationPoint::elevation.
-   * \param x_max - максимальное значение по оси X.
-   * \param y_max - максимальное значение по оси Y.
+   * \param b - набор максимальных значений. Если не задан (по умолчанию), то будет использован набор этого экземпляра класса.
    * \return Точка для использования в цикле отрисовки.
    */
-  QSGGeometry::Point2D ElevationChartItem::toPixel(float x, float y, float x_max, float y_max) const { return {toPixelX(x, x_max), toPixelY(y, y_max) }; }
+  QSGGeometry::Point2D ElevationChartItem::toPixel(float x, float y, Bounds b) const { return {toPixelX(x, b.x() > 0 ? b.x() : bounds().x()), toPixelY(y, b.y() > 0 ? b.y() : bounds().y()) }; }
 
   /**
    * \brief Вспомогательная функция, преобразующая координаты ElevationPoint в пиксельные только по оси X.
@@ -407,7 +406,7 @@ namespace ElevationChart
 
   /**
    * \property ElevationChartItem::palette
-   * \brief Палитра цветов, используемая в виджете.
+   * \brief Палитра цветов, которую использует виджет.
    * \details
    * <table>
    * <caption id="multi_row">Связанные функции</caption>
@@ -444,9 +443,9 @@ namespace ElevationChart
 
   /**
    * \property ElevationChartItem::missingTiles
-   * \brief Состояние наличия необходимых профилей в папке с тайлами.
+   * \brief Состояние наличия необходимых профилей в папке с профилями.
    * \details
-   * Свойство вернет <tt>true</tt>, если для заданного пути отсутствуют нужные тайлы.
+   * Свойство вернет <tt>true</tt>, если для заданного пути отсутствуют нужные профили.
    * <table>
    * <caption id="multi_row">Связанные функции</caption>
    * <tr><th>Чтение             <th>Запись                <th>Оповещение
@@ -586,8 +585,7 @@ namespace ElevationChart
    * \property ElevationChartItem::uavPosition
    * \brief Позиция БПЛА в данный момент.
    * \details
-   * Используется для вычисления относительной высоты и отображении позиции БПЛА
-   * на виджете.
+   * Используется для вычисления относительной высоты и отображении позиции БПЛА на графике.
    * <table>
    * <caption id="multi_row">Связанные функции</caption>
    * <tr><th>Чтение             <th>Запись               <th>Оповещение

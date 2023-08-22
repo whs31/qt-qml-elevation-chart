@@ -36,7 +36,7 @@ namespace ElevationChart
       [[nodiscard]] auto velocities() const -> vector<float>;
 
       Q_INVOKABLE [[nodiscard]] int size() const;
-      Q_INVOKABLE [[nodiscard]] RoutePoint& at(int index);
+      Q_INVOKABLE ElevationChart::RoutePoint& at(int index);
       Q_INVOKABLE [[nodiscard]] bool contains(const RoutePoint& point);
       Q_INVOKABLE [[nodiscard]] bool valid() const;
 

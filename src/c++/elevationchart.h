@@ -100,7 +100,7 @@ namespace ElevationChart
       [[nodiscard]] int shrinkMode() const;             void setShrinkMode(int);
       [[nodiscard]] int providerType() const;
 
-      Q_INVOKABLE void applyMetricsCorrection() noexcept;
+      Q_INVOKABLE [[maybe_unused]] void applyMetricsCorrection() noexcept;
       //Q_INVOKABLE void estimateEnvelope() noexcept;
       //Q_INVOKABLE void applyEnvelopeCorrection() noexcept;
 
@@ -134,7 +134,7 @@ namespace ElevationChart
       void handleMetricsNode() noexcept;
       void handleIntersectionsNode() noexcept;
 
-      [[nodiscard]] QSGGeometry::Point2D toPixel(float x, float y, float x_max, float y_max) const;
+      [[nodiscard]] QSGGeometry::Point2D toPixel(float x, float y, Bounds b = Bounds()) const;
       [[nodiscard]] float toPixelX(float x, float x_max) const;
       [[nodiscard]] float toPixelY(float y, float y_max) const;
 
