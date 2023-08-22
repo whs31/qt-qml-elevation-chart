@@ -45,6 +45,7 @@ namespace ElevationChart
       , m_notifications(new NotificationModel(this))
       , m_uav_position(QGeoCoordinate(60, 30))
       , m_metrics(Metrics())
+      , m_envelope(Envelope())
       , m_provider_type(ProviderType::DEMProvider)
       , m_bounds(Bounds())
       , m_shrink_mode(ShrinkMode::ShrinkToRouteHeight)
@@ -92,7 +93,17 @@ namespace ElevationChart
     }
 
     this->setRoute(Route(m_metrics_path, metrics().fallbackVelocity()));
-    qDebug() << "<elevation-chart> Route is corrected according to flight metrics.";
+    qDebug() << "<elevation-chart> Route is corrected according to flight metrics";
+  }
+
+  [[maybe_unused]] void ElevationChartItem::estimateEnvelope() noexcept
+  {
+    qDebug() << "<elevation-chart> Envelope estimation requested";
+  }
+
+  [[maybe_unused]] void ElevationChartItem::applyEnvelopeCorrection() noexcept
+  {
+    qDebug() << "<elevation-chart> Envelope correction requested";
   }
 
   void ElevationChartItem::setupChildNodes(QSGNode* node)
@@ -617,6 +628,12 @@ namespace ElevationChart
 
     this->updateMetrics();
     this->update();
+  }
+
+  Envelope ElevationChartItem::envelope() const { return m_envelope; }
+  void ElevationChartItem::setEnvelope(const Envelope& x) {
+    m_envelope = x;
+    emit envelopeChanged();
   }
 
   /**

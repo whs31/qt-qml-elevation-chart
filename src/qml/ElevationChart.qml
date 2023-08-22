@@ -314,8 +314,8 @@ Rectangle {
         offset: 70
 
         ColumnLayout {
-            UI.DecimalInput { description: "Высота огибания"; defaultText: "100.0"; foregroundColor: impl.palette.foreground; }
-            UI.DecimalInput { description: "Ширина коридора"; defaultText: "10.0"; foregroundColor: impl.palette.foreground; }
+            UI.DecimalInput { description: "Высота огибания"; defaultText: "100.0"; foregroundColor: impl.palette.foreground; action: Action { onTriggered: impl.envelope.altitude = parseFloat(source.text) } }
+            UI.DecimalInput { description: "Ширина коридора"; defaultText: "10.0"; foregroundColor: impl.palette.foreground; action: Action { onTriggered: impl.envelope.width = parseFloat(source.text) } }
             RoundButton {
                 Layout.fillWidth: true
                 text: "Вычислить огибающую"
@@ -330,6 +330,7 @@ Rectangle {
                 }
 
                 Material.background: impl.palette.overlay2
+                onPressed: impl.estimateEnvelope()
             }
 
             RoundButton {
@@ -346,6 +347,7 @@ Rectangle {
                 }
 
                 Material.background: impl.palette.overlay2
+                onPressed: impl.applyEnvelopeCorrection()
             }
         }
     }
@@ -387,5 +389,19 @@ Rectangle {
                 onPressed: impl.light_theme = !impl.light_theme
             }
         }
+    }
+
+    ProgressBar {
+        anchors {
+            horizontalCenter: parent.horizontalCenter
+            top: parent.top
+            topMargin: 30
+        }
+        width: 500
+        indeterminate: true
+        enabled: impl.researcher.busy
+        opacity: enabled ? 1 : 0
+        visible: opacity > 0
+        Behavior on opacity { NumberAnimation { } }
     }
 }

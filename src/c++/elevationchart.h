@@ -32,17 +32,17 @@ namespace ElevationChart
     Q_PROPERTY(LPVL::BasicPalette palette READ palette WRITE setPalette NOTIFY paletteChanged FINAL)
     Q_PROPERTY(ElevationChart::Bounds bounds READ bounds WRITE setBounds NOTIFY boundsChanged)
     Q_PROPERTY(ElevationChart::Route route READ route WRITE setRoute NOTIFY routeChanged FINAL)
-    Q_PROPERTY(ElevationChart::RouteModel* model READ model CONSTANT)
-    Q_PROPERTY(ElevationChart::NotificationModel* notifications READ notifications CONSTANT)
+    Q_PROPERTY(ElevationChart::RouteModel* model READ model CONSTANT FINAL)
+    Q_PROPERTY(ElevationChart::Researcher* researcher READ researcher CONSTANT FINAL)
+    Q_PROPERTY(ElevationChart::NotificationModel* notifications READ notifications CONSTANT FINAL)
     Q_PROPERTY(QGeoCoordinate uavPosition READ uavPosition WRITE setUavPosition NOTIFY uavPositionChanged FINAL)
     Q_PROPERTY(ElevationChart::Metrics metrics READ metrics WRITE setMetrics NOTIFY metricsChanged FINAL)
-    // envelope gadget
+    Q_PROPERTY(ElevationChart::Envelope envelope READ envelope WRITE setEnvelope NOTIFY envelopeChanged FINAL)
 
     Q_PROPERTY(bool missingTiles READ missingTiles WRITE setMissingTiles NOTIFY missingTilesChanged FINAL)
     Q_PROPERTY(bool intersecting READ intersecting WRITE setIntersecting NOTIFY intersectingChanged FINAL)
     Q_PROPERTY(bool valid READ valid WRITE setValid NOTIFY validChanged FINAL)
     Q_PROPERTY(bool matchingMetrics READ matchingMetrics WRITE setMatchingMetrics NOTIFY matchingMetricsChanged FINAL)
-    // is busy
 
     Q_PROPERTY(int shrinkMode READ shrinkMode WRITE setShrinkMode NOTIFY shrinkModeChanged FINAL)
     Q_PROPERTY(int providerType READ providerType CONSTANT FINAL)
@@ -84,13 +84,14 @@ namespace ElevationChart
 
       [[nodiscard]] Researcher* researcher() const;
 
-      [[nodiscard]] LPVL::BasicPalette palette() const;   void setPalette(LPVL::BasicPalette);
+      [[nodiscard]] LPVL::BasicPalette palette() const; void setPalette(LPVL::BasicPalette);
       [[nodiscard]] Bounds bounds() const;              void setBounds(Bounds);
       [[nodiscard]] Route route() const;                void setRoute(const Route&);
       [[nodiscard]] RouteModel* model() const;
       [[nodiscard]] NotificationModel* notifications() const;
       [[nodiscard]] QGeoCoordinate uavPosition() const; void setUavPosition(const QGeoCoordinate&);
       [[nodiscard]] Metrics metrics() const;            void setMetrics(const Metrics&);
+      [[nodiscard]] Envelope envelope() const;          void setEnvelope(const Envelope&);
 
       [[nodiscard]] bool missingTiles() const;          void setMissingTiles(bool);
       [[nodiscard]] bool intersecting() const;          void setIntersecting(bool);
@@ -101,8 +102,8 @@ namespace ElevationChart
       [[nodiscard]] int providerType() const;
 
       Q_INVOKABLE [[maybe_unused]] void applyMetricsCorrection() noexcept;
-      //Q_INVOKABLE void estimateEnvelope() noexcept;
-      //Q_INVOKABLE void applyEnvelopeCorrection() noexcept;
+      Q_INVOKABLE [[maybe_unused]] void estimateEnvelope() noexcept;
+      Q_INVOKABLE [[maybe_unused]] void applyEnvelopeCorrection() noexcept;
 
     signals:
       void paletteChanged();
@@ -114,6 +115,7 @@ namespace ElevationChart
       void routeChanged();
       void uavPositionChanged();
       void metricsChanged();
+      void envelopeChanged();
       void shrinkModeChanged();
 
       void updateProfileFinished(const vector<ElevationPoint>& profile);
@@ -157,6 +159,7 @@ namespace ElevationChart
       NotificationModel* m_notifications;
       QGeoCoordinate m_uav_position;
       Metrics m_metrics;
+      Envelope m_envelope;
       unique_ptr<IElevationDataProvider> m_provider;
       vector<ElevationPoint> m_profile;
       vector<ElevationPoint> m_intersections;

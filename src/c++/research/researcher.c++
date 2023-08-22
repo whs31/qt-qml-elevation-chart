@@ -10,7 +10,7 @@
 #include <DEM/Algorithms>
 #include "types/intersectionpoint.h"
 
-constexpr static float SCAN_STEP = 0.5;             // Шаг сканирования земной поверхности.
+constexpr static float SCAN_STEP = 0.5; // Шаг сканирования земной поверхности.
 
 vector<ElevationChart::IntersectionPoint> fillProfile(const QList<QGeoCoordinate>& list, const QGeoPath& path)
 {
@@ -37,12 +37,23 @@ namespace ElevationChart
 {
   Researcher::Researcher(QObject* parent)
     : QObject(parent)
+    , m_busy(false)
   {
     qRegisterMetaType<vector<IntersectionPoint>>("vector<IntersectionPoint>");
+    qRegisterMetaType<EnvelopeResult>("EnvelopeResult");
+
+    connect(&m_watcher, &QFutureWatcher<void>::finished, this, [this](){ setBusy(false); });
+    connect(&m_watcher, &QFutureWatcher<void>::started, this, [this](){ setBusy(true); });
   }
 
   void Researcher::researchIntersections(const QGeoPath& path)
   {
+//    if(busy())
+//    {
+//      suspendIntersections(path);
+//      return;
+//    }
+
     QFuture<void> outer = QtConcurrent::run([this, path](){
       QFuture<void> inner = QtConcurrent::run([this, path](){
         QGeoPath profile = Researcher::plotGeopathProfile(path);
@@ -94,6 +105,13 @@ namespace ElevationChart
         emit researchIntersectionsFinished(std::move(result));
       });
     });
+
+    m_watcher.setFuture(outer);
+  }
+
+  void Researcher::researchEnvelope(const QGeoPath& path, const Metrics& metrics, const Envelope& envelope)
+  {
+
   }
 
   QGeoPath Researcher::plotGeopathProfile(const QGeoPath& path)
@@ -133,5 +151,18 @@ namespace ElevationChart
     }
 
     return ret;
+  }
+
+  void Researcher::suspendIntersections(const QGeoPath& path) { m_suspended = path; }
+
+  bool Researcher::busy() const { return m_busy; }
+  void Researcher::setBusy(bool x) {
+    if(x == busy())
+      return;
+    m_busy = x;
+    emit busyChanged();
+
+//    if(not busy() and m_suspended.isValid())
+//      researchIntersections(m_suspended);
   }
 } // ElevationChart
