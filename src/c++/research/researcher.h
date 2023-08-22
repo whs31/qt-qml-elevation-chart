@@ -12,6 +12,7 @@
 #include <QtCore/QFutureWatcher>
 #include <QtPositioning/QGeoPath>
 #include "types/elevationpoint.h"
+#include "types/intersectionpoint.h"
 #include "types/route.h"
 #include "types/envelope.h"
 #include "types/metrics.h"
@@ -29,12 +30,12 @@ namespace ElevationChart
     };
 
     Q_OBJECT
-    Q_PROPERTY(bool busy READ busy WRITE setBusy NOTIFY busyChanged FINAL)
+    Q_PROPERTY(bool busy READ busy NOTIFY busyChanged FINAL)
 
     public:
       explicit Researcher(QObject* parent = nullptr);
 
-      [[nodiscard]] bool busy() const;      void setBusy(bool);
+      [[nodiscard]] bool busy() const;
 
       Q_SLOT void researchIntersections(const QGeoPath& path);
       Q_SLOT void researchEnvelope(const QGeoPath& path, const Metrics& metrics, const Envelope& envelope);
@@ -48,11 +49,13 @@ namespace ElevationChart
       void researchEnvelopeFinished(EnvelopeResult);
 
     private:
-      void suspendIntersections(const QGeoPath& path);
+      auto fillProfile(const QList<QGeoCoordinate>& list, const QGeoPath& path) -> vector<IntersectionPoint>;
+      auto createRawGroundPath(const QGeoPath& path) -> vector<IntersectionPoint>;
 
     private:
       QFutureWatcher<void> m_watcher;
+      QFutureWatcher<void> m_watcher2;
       bool m_busy;
-      QGeoPath m_suspended;
+      bool m_busy2;
   };
 } // ElevationChart
