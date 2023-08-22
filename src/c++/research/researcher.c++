@@ -14,6 +14,10 @@
                                     QFuture<void> future_priv = QtConcurrent::run([arg1, arg2](){
 #define CONCURRENT_RUN_START_3(arg1, arg2, arg3) QFuture<void> future = QtConcurrent::run([arg1, arg2, arg3](){ \
                                     QFuture<void> future_priv = QtConcurrent::run([arg1, arg2, arg3](){
+
+#define CONCURRENT_RUN_START_4(arg1, arg2, arg3, arg4) QFuture<void> future = QtConcurrent::run([arg1, arg2, arg3, arg4](){ \
+                                    QFuture<void> future_priv = QtConcurrent::run([arg1, arg2, arg3, arg4](){
+
 #define CONCURRENT_RUN_END });});
 #define CONCURRENT_RUN_END_WATCHER(watcher) CONCURRENT_RUN_END \
                                             watcher.setFuture(future);
@@ -40,60 +44,70 @@ namespace ElevationChart
   void Researcher::researchIntersections(const QGeoPath& path)
   {
     CONCURRENT_RUN_START_2(this, path)
-      QGeoPath profile = Researcher::plotGeopathProfile(path);
-      vector<IntersectionPoint> path_profile = fillProfile(path.path(), path);
-      vector<IntersectionPoint> ground_profile = fillProfile(profile.path(), profile);
-      vector<IntersectionPoint> result_path;
-      for(auto point : path_profile)
+
+    QGeoPath profile = Researcher::plotGeopathProfile(path);
+    vector<IntersectionPoint> path_profile = fillProfile(path.path(), path);
+    vector<IntersectionPoint> ground_profile = fillProfile(profile.path(), profile);
+    vector<IntersectionPoint> result_path;
+    for(auto point : path_profile)
+    {
+      if(not result_path.empty())
       {
-        if(not result_path.empty())
+        if(ground_profile.size() > 1)
         {
-          if(ground_profile.size() > 1)
+          for(int i = 1; i < ground_profile.size(); i++)
           {
-            for(int i = 1; i < ground_profile.size(); i++)
-            {
-              QPointF f;
-              QLineF a(result_path.back().distance(), result_path.back().elevation(), point.distance(), point.elevation());
-              QLineF b(ground_profile[i - 1].distance(), ground_profile[i - 1].elevation(), ground_profile[i].distance(), ground_profile[i].elevation());
-              if(a.intersects(b, &f) == QLineF::BoundedIntersection)
-                result_path.emplace_back(static_cast<float>(f.x()), static_cast<float>(f.y()), true, false,
-                                         (result_path.back().state() == IntersectionPoint::InsideGround
-                                          or result_path.back().state() == IntersectionPoint::IntersectingIn)
-                                         ? IntersectionPoint::IntersectingIn : IntersectionPoint::IntersectingOut,
-                                         result_path.back().coordinate().atDistanceAndAzimuth(f.x() - result_path.back().distance(),
-                                         result_path.back().coordinate().azimuthTo(result_path.back().coordinate()))
-                );
-            }
+            QPointF f;
+            QLineF a(result_path.back().distance(), result_path.back().elevation(), point.distance(), point.elevation());
+            QLineF b(ground_profile[i - 1].distance(), ground_profile[i - 1].elevation(), ground_profile[i].distance(), ground_profile[i].elevation());
+            if(a.intersects(b, &f) == QLineF::BoundedIntersection)
+              result_path.emplace_back(static_cast<float>(f.x()), static_cast<float>(f.y()), true, false,
+                                       (result_path.back().state() == IntersectionPoint::InsideGround
+                                        or result_path.back().state() == IntersectionPoint::IntersectingIn)
+                                       ? IntersectionPoint::IntersectingIn : IntersectionPoint::IntersectingOut,
+                                       result_path.back().coordinate().atDistanceAndAzimuth(f.x() - result_path.back().distance(),
+                                       result_path.back().coordinate().azimuthTo(result_path.back().coordinate()))
+              );
           }
         }
-
-        point.setState((point.elevation() > static_cast<float>(DEM::elevation(point.coordinate().latitude(), point.coordinate().longitude()))) ?
-                       IntersectionPoint::NonIntersecting : IntersectionPoint::InsideGround);
-        result_path.push_back(point);
       }
 
-      // removing useless points from result and doubling some points for GL_QUADS mode
-      vector<ElevationPoint> result;
-      result.reserve(result_path.size());
-      for(const auto& point : result_path)
+      point.setState((point.elevation() > static_cast<float>(DEM::elevation(point.coordinate().latitude(), point.coordinate().longitude()))) ?
+                     IntersectionPoint::NonIntersecting : IntersectionPoint::InsideGround);
+      result_path.push_back(point);
+    }
+
+    // removing useless points from result and doubling some points for GL_QUADS mode
+    vector<ElevationPoint> result;
+    result.reserve(result_path.size());
+    for(const auto& point : result_path)
+    {
+      if(not point.base())
+        result.emplace_back(point.distance(), point.elevation());
+      else if(point.state() == IntersectionPoint::InsideGround)
       {
-        if(not point.base())
-          result.emplace_back(point.distance(), point.elevation());
-        else if(point.state() == IntersectionPoint::InsideGround)
-        {
-          result.emplace_back(point.distance(), point.elevation());
-          result.emplace_back(point.distance(), point.elevation());
-        }
+        result.emplace_back(point.distance(), point.elevation());
+        result.emplace_back(point.distance(), point.elevation());
       }
+    }
 
-      emit researchIntersectionsFinished(std::move(result));
+    emit researchIntersectionsFinished(std::move(result));
+
     CONCURRENT_RUN_END_WATCHER(m_watcher)
   }
 
   void Researcher::researchEnvelope(const QGeoPath& path, const Metrics& metrics, const Envelope& envelope)
   {
-    CONCURRENT_RUN_START_3(path, metrics, envelope)
-    
+    CONCURRENT_RUN_START_4(this, path, metrics, envelope)
+
+    EnvelopeResult res;
+
+    vector<IntersectionPoint> ground_path = createRawGroundPath(path);
+    //for(auto point in ground_path)
+      // вова помоги...
+
+    emit researchEnvelopeFinished(std::move(res));
+
     CONCURRENT_RUN_END_WATCHER(m_watcher2)
   }
 
