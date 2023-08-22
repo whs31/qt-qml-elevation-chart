@@ -121,7 +121,7 @@ namespace ElevationChart
         QVector<Point> result_path;
         for(auto point : path_profile)
         {
-          if(result_path.size())
+          if(not result_path.empty())
           {
             Point prev_point = result_path.last();
 
@@ -158,7 +158,7 @@ namespace ElevationChart
             }
           }
 
-          if(point.altitude() > DEM::elevation(point.latitude(), point.longitude()))
+          if(point.altitude() > static_cast<float>(DEM::elevation(point.latitude(), point.longitude())))
             point.setOrientation(Point::Air);
           else
             point.setOrientation(Point::Ground);
@@ -166,7 +166,15 @@ namespace ElevationChart
         }
 
         for(const auto& point : result_path)
-          result.emplace_back(point.distance(), point.altitude());
+        {
+          if(not point.base())
+            result.emplace_back(point.distance(), point.altitude());
+          if(point.base() and point.orientation() == Point::Ground)
+          {
+            result.emplace_back(point.distance(), point.altitude());
+            result.emplace_back(point.distance(), point.altitude());
+          }
+        }
 
         qDebug() << result.size();
 
