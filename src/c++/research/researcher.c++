@@ -10,7 +10,10 @@
 #include <DEM/Algorithms>
 #include "types/intersectionpoint.h"
 
+#define in :
+
 constexpr static float SCAN_STEP = 0.5; // Шаг сканирования земной поверхности.
+constexpr static float BOUND_RATE_ANGLE = 5;
 
 vector<ElevationChart::IntersectionPoint> fillProfile(const QList<QGeoCoordinate>& list, const QGeoPath& path)
 {
@@ -33,11 +36,65 @@ vector<ElevationChart::IntersectionPoint> fillProfile(const QList<QGeoCoordinate
   return ret;
 }
 
+vector<ElevationChart::IntersectionPoint> createRawGroundPath(const QGeoPath& path)
+{
+  QGeoPath raw_ground_geopath;
+  vector<ElevationChart::IntersectionPoint> ret;
+
+  float distance_from_start = 0;
+  for(auto point in path.path())
+  {
+    if(not raw_ground_geopath.isEmpty())
+    {
+      QGeoCoordinate prev_base_geopoint = raw_ground_geopath.coordinateAt(raw_ground_geopath.size() - 1);
+      float distance = SCAN_STEP;
+      QGeoCoordinate prev_delta_geopoint = prev_base_geopoint;
+      while(distance < static_cast<float>(prev_base_geopoint.distanceTo(point)))
+      {
+        QGeoCoordinate delta_geopoint = prev_base_geopoint.atDistanceAndAzimuth(distance, static_cast<float>(prev_base_geopoint.azimuthTo(point)));
+        delta_geopoint.setAltitude(DEM::elevation(delta_geopoint.latitude(), delta_geopoint.longitude()));
+
+        if(prev_delta_geopoint.altitude() == delta_geopoint.altitude())
+        {
+          prev_delta_geopoint = delta_geopoint;
+          distance += SCAN_STEP;
+
+          continue;
+        }
+
+        if(prev_delta_geopoint.altitude() > delta_geopoint.altitude())
+        {
+          raw_ground_geopath.addCoordinate(prev_delta_geopoint);
+          if(raw_ground_geopath.size() > 1)
+            distance_from_start += static_cast<float>(raw_ground_geopath.length(raw_ground_geopath.size() - 2, raw_ground_geopath.size() - 1));
+          ret.emplace_back(distance_from_start, prev_delta_geopoint.altitude(), true, false, ElevationChart::IntersectionPoint::NonIntersecting, prev_delta_geopoint);
+        }
+        else
+        {
+          raw_ground_geopath.addCoordinate(delta_geopoint);
+          if(raw_ground_geopath.size() > 1)
+            distance_from_start += static_cast<float>(raw_ground_geopath.length(raw_ground_geopath.size() - 2, raw_ground_geopath.size() - 1));
+          ret.emplace_back(distance_from_start, delta_geopoint.altitude(), true, false, ElevationChart::IntersectionPoint::NonIntersecting, delta_geopoint);
+        }
+      }
+    }
+
+    point.setAltitude(DEM::elevation(point.latitude(), point.longitude()));
+    raw_ground_geopath.addCoordinate(point);
+    if(raw_ground_geopath.size() > 1)
+      distance_from_start += static_cast<float>(raw_ground_geopath.length(raw_ground_geopath.size() - 2, raw_ground_geopath.size() - 1));
+
+    ret.emplace_back(distance_from_start, point.altitude(), true, true, ElevationChart::IntersectionPoint::NonIntersecting, point);
+  }
+
+  return ret;
+}
+
 namespace ElevationChart
 {
   Researcher::Researcher(QObject* parent)
-    : QObject(parent)
-    , m_busy(false)
+      : QObject(parent)
+        , m_busy(false)
   {
     qRegisterMetaType<vector<IntersectionPoint>>("vector<IntersectionPoint>");
     qRegisterMetaType<EnvelopeResult>("EnvelopeResult");
@@ -74,17 +131,17 @@ namespace ElevationChart
                 if(a.intersects(b, &f) == QLineF::BoundedIntersection)
                   result_path.emplace_back(static_cast<float>(f.x()), static_cast<float>(f.y()), true, false,
                                            (result_path.back().state() == IntersectionPoint::InsideGround
-                                           or result_path.back().state() == IntersectionPoint::IntersectingIn)
+                                            or result_path.back().state() == IntersectionPoint::IntersectingIn)
                                            ? IntersectionPoint::IntersectingIn : IntersectionPoint::IntersectingOut,
                                            result_path.back().coordinate().atDistanceAndAzimuth(f.x() - result_path.back().distance(),
-                                           result_path.back().coordinate().azimuthTo(result_path.back().coordinate()))
+                                                                                                result_path.back().coordinate().azimuthTo(result_path.back().coordinate()))
                   );
               }
             }
           }
 
           point.setState((point.elevation() > static_cast<float>(DEM::elevation(point.coordinate().latitude(), point.coordinate().longitude()))) ?
-            IntersectionPoint::NonIntersecting : IntersectionPoint::InsideGround);
+                         IntersectionPoint::NonIntersecting : IntersectionPoint::InsideGround);
           result_path.push_back(point);
         }
 
