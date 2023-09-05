@@ -27,6 +27,18 @@ constexpr static float BOUND_RATE_ANGLE = 5;
 
 namespace ElevationChart
 {
+  QVector<QPointF> Researcher::EnvelopeLegacyResult::groundProfile() const { return m_groundProfile; }
+  QVector<QPointF> Researcher::EnvelopeLegacyResult::lowBound() const { return m_lowBound; }
+  QVector<QPointF> Researcher::EnvelopeLegacyResult::highBound() const { return m_highBound; }
+  QVector<QPointF> Researcher::EnvelopeLegacyResult::routeProfile() const { return m_routeProfile; }
+  QVector<IntersectionPoint> Researcher::EnvelopeLegacyResult::route() const { return m_route; }
+
+  void Researcher::EnvelopeLegacyResult::addGroundProfilePoint(const QPointF& x) { m_groundProfile.append(x); }
+  void Researcher::EnvelopeLegacyResult::addLowBoundPoint(const QPointF& x) { m_lowBound.append(x); }
+  void Researcher::EnvelopeLegacyResult::addHighBoundPoint(const QPointF& x) { m_highBound.append(x); }
+  void Researcher::EnvelopeLegacyResult::addRouteProfilePoint(const QPointF& x) { m_routeProfile.append(x); }
+  void Researcher::EnvelopeLegacyResult::addRoutePoint(const ElevationChart::IntersectionPoint& x) { m_route.append(x); }
+
   Researcher::Researcher(QObject* parent)
       : QObject(parent)
         , m_busy(false)
@@ -35,6 +47,8 @@ namespace ElevationChart
     qRegisterMetaType<vector<IntersectionPoint>>("vector<IntersectionPoint>");
     qRegisterMetaType<EnvelopeResult>("EnvelopeResult");
     qRegisterMetaType<EnvelopeResult>("Researcher::EnvelopeResult");
+    qRegisterMetaType<EnvelopeLegacyResult>("EnvelopeLegacyResult");
+    qRegisterMetaType<EnvelopeLegacyResult>("Researcher::EnvelopeLegacyResult");
 
     connect(&m_watcher, &QFutureWatcher<void>::finished, this, [this](){ m_busy = false; emit busyChanged(); });
     connect(&m_watcher, &QFutureWatcher<void>::started, this, [this](){ m_busy = true; emit busyChanged(); });
@@ -99,7 +113,7 @@ namespace ElevationChart
 
   void Researcher::researchEnvelope(const QGeoPath& path, const Metrics& metrics, const Envelope& envelope)
   {
-    CONCURRENT_RUN_START_4(this, path, metrics, envelope)
+    //CONCURRENT_RUN_START_4(this, path, metrics, envelope)
 
       EnvelopeResult res;
 
@@ -263,7 +277,161 @@ namespace ElevationChart
 
       emit researchEnvelopeFinished(std::move(res));
 
-    CONCURRENT_RUN_END_WATCHER(m_watcher2)
+    //CONCURRENT_RUN_END_WATCHER(m_watcher2)
+  }
+
+  void Researcher::researchEnvelopeLegacy(const QGeoPath& path, const ElevationChart::Metrics& metrics, const ElevationChart::Envelope& envelope)
+  {
+    EnvelopeLegacyResult resultProfiles;
+
+    vector<IntersectionPoint> groundPath = createRawGroundPathLegacy(path);
+
+    for(auto point : groundPath) {
+      resultProfiles.addGroundProfilePoint(QPointF(point.distance(), point.elevation()));
+    }
+
+    QVector<IntersectionPoint> lowBoundPath;
+    if (groundPath.size()) {
+      IntersectionPoint lowBoundPoint = groundPath[0];
+      lowBoundPoint.setElevation(lowBoundPoint.elevation() + envelope.altitude() - envelope.width() / 2.);
+      lowBoundPath.append(lowBoundPoint);
+      resultProfiles.addLowBoundPoint(QPointF(lowBoundPoint.distance(), lowBoundPoint.elevation()));
+
+      IntersectionPoint highBoundPoint = groundPath[0];
+      highBoundPoint.setElevation(highBoundPoint.elevation() + envelope.altitude() + envelope.width() / 2.);
+      resultProfiles.addHighBoundPoint(QPointF(highBoundPoint.distance(), highBoundPoint.elevation()));
+
+      if (groundPath.size() > 1) {
+        for(int i = 1; i < groundPath.size() - 1; i++) {
+          lowBoundPoint = groundPath[i];
+          lowBoundPoint.setElevation(lowBoundPoint.elevation() + envelope.altitude() - envelope.width() / 2.);
+
+          highBoundPoint = groundPath[i];
+          highBoundPoint.setElevation(highBoundPoint.elevation() + envelope.altitude() + envelope.width() / 2.);
+
+          if (lowBoundPoint.base()) {
+            lowBoundPath.append(lowBoundPoint);
+            resultProfiles.addLowBoundPoint(QPointF(lowBoundPoint.distance(), lowBoundPoint.elevation()));
+            resultProfiles.addHighBoundPoint(QPointF(highBoundPoint.distance(), highBoundPoint.elevation()));
+          } else {
+            IntersectionPoint lowBoundPointPrev = lowBoundPath[lowBoundPath.size() - 1];
+            IntersectionPoint lowBoundPointNext = groundPath[i + 1];
+            lowBoundPointNext.setElevation(lowBoundPointNext.elevation() + envelope.altitude() - envelope.width() / 2.);
+
+            qreal angle = angle3point(QPointF(lowBoundPointPrev.distance(), lowBoundPointPrev.elevation()),
+                                      QPointF(lowBoundPoint.distance(), lowBoundPoint.elevation()),
+                                      QPointF(lowBoundPointNext.distance(), lowBoundPointNext.elevation()));
+
+            if ( angle > BOUND_RATE_ANGLE) {
+              lowBoundPath.append(lowBoundPoint);
+              resultProfiles.addLowBoundPoint(QPointF(lowBoundPoint.distance(), lowBoundPoint.elevation()));
+              resultProfiles.addHighBoundPoint(QPointF(highBoundPoint.distance(), highBoundPoint.elevation()));
+            }
+          }
+        }
+
+        lowBoundPoint = groundPath[groundPath.size() - 1];
+        lowBoundPoint.setElevation(lowBoundPoint.elevation() + envelope.altitude() - envelope.width() / 2.);
+        lowBoundPath.append(lowBoundPoint);
+        resultProfiles.addLowBoundPoint(QPointF(lowBoundPoint.distance(), lowBoundPoint.elevation()));
+        highBoundPoint = groundPath[groundPath.size() - 1];
+        highBoundPoint.setElevation(highBoundPoint.elevation() + envelope.altitude() + envelope.width() / 2.);
+        resultProfiles.addHighBoundPoint(QPointF(highBoundPoint.distance(), highBoundPoint.elevation()));
+      }
+    }
+
+    QVector<IntersectionPoint> routePath;
+    QList<IntersectionPoint> deltaBound;
+    QList<IntersectionPoint> deltaRoute;
+    if (lowBoundPath.size()) {
+      IntersectionPoint routePoint = lowBoundPath[0];
+      routePoint.setElevation(routePoint.elevation() + envelope.width() / 2.);
+      resultProfiles.addRouteProfilePoint(QPointF(routePoint.distance(), routePoint.elevation()));
+      resultProfiles.addRoutePoint(routePoint);
+      routePath.append(routePoint);
+
+      deltaBound.append(lowBoundPath[0]);
+      deltaRoute.append(routePoint);
+
+      if (lowBoundPath.size() > 1) {
+        for (int i = 1; i < lowBoundPath.size(); i++) {
+          IntersectionPoint prevRoutePoint = routePath[routePath.size() - 1];
+          routePoint = lowBoundPath[i];
+          routePoint.setElevation(routePoint.elevation() + envelope.width() / 2.);
+
+          qreal timeDelta = (routePoint.distance() - prevRoutePoint.distance()) / metrics.fallbackVelocity();
+          if (prevRoutePoint.elevation() < routePoint.elevation()) {
+            if ((routePoint.elevation() - prevRoutePoint.elevation()) / timeDelta > metrics.rateOfClimb()) {
+              routePoint.setElevation(prevRoutePoint.elevation() + timeDelta * metrics.rateOfClimb());
+            }
+          } else if (prevRoutePoint.elevation() > routePoint.elevation()) {
+            if ((prevRoutePoint.elevation() - routePoint.elevation()) / timeDelta > metrics.rateOfDescend()) {
+              routePoint.setElevation(prevRoutePoint.elevation() - timeDelta * metrics.rateOfDescend());
+            }
+          }
+
+          deltaBound.append(lowBoundPath[i]);
+          deltaRoute.append(routePoint);
+
+          bool isIntersect = false;
+
+          IntersectionPoint startDeltaRoutePoint = deltaRoute[0];
+          QLineF deltaRouteLine(startDeltaRoutePoint.distance(), startDeltaRoutePoint.elevation(), routePoint.distance(), routePoint.elevation());
+          for(int i = 1; i < deltaBound.size() - 1; i++) {
+            IntersectionPoint startDeltaLowBoundPoint = deltaBound[i - 1];
+            IntersectionPoint endDeltaLowBoundPoint = deltaBound[i];
+
+            QPointF intersectPoint;
+            if (deltaRouteLine.intersects(QLineF(startDeltaLowBoundPoint.distance(), startDeltaLowBoundPoint.elevation(),
+                                                 endDeltaLowBoundPoint.distance(), endDeltaLowBoundPoint.elevation()), &intersectPoint)
+                                                 == QLineF::BoundedIntersection)
+              isIntersect = true;
+            if (deltaRouteLine.intersects(QLineF(startDeltaLowBoundPoint.distance(), startDeltaLowBoundPoint.elevation() + envelope.width(),
+                                                 endDeltaLowBoundPoint.distance(), endDeltaLowBoundPoint.elevation() + envelope.width()),
+                                          &intersectPoint) == QLineF::BoundedIntersection)
+              isIntersect = true;
+          }
+
+          if (isIntersect) {
+            if (deltaRoute.size() < 3) {
+              resultProfiles.addRouteProfilePoint(QPointF(routePoint.distance(), routePoint.elevation()));
+              resultProfiles.addRoutePoint(routePoint);
+              routePath.append(routePoint);
+
+              deltaBound.removeFirst();
+              deltaRoute.removeFirst();
+            } else {
+              prevRoutePoint = deltaRoute[deltaRoute.size() - 2];
+              resultProfiles.addRouteProfilePoint(QPointF(prevRoutePoint.distance(), prevRoutePoint.elevation()));
+              resultProfiles.addRoutePoint(prevRoutePoint);
+              routePath.append(prevRoutePoint);
+
+              while (deltaBound.size() > 2) {
+                deltaBound.removeFirst();
+                deltaRoute.removeFirst();
+              }
+
+              deltaBound.removeLast();
+              deltaRoute.removeLast();
+              i--;
+            }
+          }
+
+          if (routePoint.base() && deltaRoute.size() > 1) {
+            resultProfiles.addRouteProfilePoint(QPointF(routePoint.distance(), routePoint.elevation()));
+            resultProfiles.addRoutePoint(routePoint);
+            routePath.append(routePoint);
+
+            while (deltaBound.size() > 1) {
+              deltaBound.removeFirst();
+              deltaRoute.removeFirst();
+            }
+          }
+        }
+      }
+    }
+
+    emit researchEnvelopeLegacyFinished(resultProfiles);
   }
 
   QGeoPath Researcher::plotGeopathProfile(const QGeoPath& path)
@@ -326,7 +494,7 @@ namespace ElevationChart
     return ret;
   }
 
-  vector<ElevationChart::IntersectionPoint> Researcher::createRawGroundPath(const QGeoPath& path)
+  auto Researcher::createRawGroundPath(const QGeoPath& path) -> vector<ElevationChart::IntersectionPoint>
   {
     QGeoPath raw_ground_geopath;
     vector<ElevationChart::IntersectionPoint> ret;
@@ -378,6 +546,75 @@ namespace ElevationChart
     }
 
     return ret;
+  }
+
+  auto Researcher::createRawGroundPathLegacy(const QGeoPath& path) -> vector<IntersectionPoint>
+  {
+    QGeoPath rawGroundPathGeo;
+    vector<IntersectionPoint> rawGroundPath;
+
+    qreal distanceFromStart = 0;
+    for (auto point : path.path()) {
+
+      if (rawGroundPathGeo.size()) {
+        QGeoCoordinate prevBasePointGeo = rawGroundPathGeo.coordinateAt(rawGroundPathGeo.size() - 1);
+        qreal azimuth = prevBasePointGeo.azimuthTo(point);
+        qreal distanceFromPrevBasePoint = prevBasePointGeo.distanceTo(point);
+
+        qreal distance = SCAN_STEP;
+        QGeoCoordinate prevDeltaPointGeo = prevBasePointGeo;
+        while (distance < distanceFromPrevBasePoint) {
+          QGeoCoordinate deltaPointGeo = prevBasePointGeo.atDistanceAndAzimuth(distance, azimuth);
+          deltaPointGeo.setAltitude(DEM::elevation(deltaPointGeo.latitude(), deltaPointGeo.longitude()));
+
+          if (prevDeltaPointGeo.altitude() != deltaPointGeo.altitude()) {
+            if (prevDeltaPointGeo.altitude() > deltaPointGeo.altitude()) {
+              rawGroundPathGeo.addCoordinate(prevDeltaPointGeo);
+              int pointCount = rawGroundPathGeo.size();
+              if (pointCount > 1) distanceFromStart += rawGroundPathGeo.length(pointCount - 2, pointCount - 1);
+
+              IntersectionPoint deltaGroundPoint;
+              deltaGroundPoint.setElevation(prevDeltaPointGeo.altitude());
+              deltaGroundPoint.setBase(false);
+              deltaGroundPoint.setDistance(distanceFromStart);
+              deltaGroundPoint.setCoordinate({prevDeltaPointGeo.latitude(), prevDeltaPointGeo.longitude()});
+              rawGroundPath.push_back(deltaGroundPoint);
+            }
+            else
+            {
+              rawGroundPathGeo.addCoordinate(deltaPointGeo);
+              int pointCount = rawGroundPathGeo.size();
+              if (pointCount > 1) distanceFromStart += rawGroundPathGeo.length(pointCount - 2, pointCount - 1);
+
+              IntersectionPoint deltaGroundPoint;
+              deltaGroundPoint.setElevation(deltaPointGeo.altitude());
+              deltaGroundPoint.setBase(false);
+              deltaGroundPoint.setDistance(distanceFromStart);
+              deltaGroundPoint.setCoordinate({deltaPointGeo.latitude(), deltaPointGeo.longitude()});
+              rawGroundPath.push_back(deltaGroundPoint);
+            }
+          }
+
+          prevDeltaPointGeo = deltaPointGeo;
+          distance += SCAN_STEP;
+        }
+      }
+
+      point.setAltitude(DEM::elevation(point.latitude(), point.longitude()));
+      rawGroundPathGeo.addCoordinate(point);
+      int pointCount = rawGroundPathGeo.size();
+      if (pointCount > 1)
+        distanceFromStart += rawGroundPathGeo.length(pointCount - 2, pointCount - 1);
+
+      IntersectionPoint baseGroundPoint;
+      baseGroundPoint.setElevation(point.altitude());
+      baseGroundPoint.setBase(true);
+      baseGroundPoint.setDistance(distanceFromStart);
+      baseGroundPoint.setCoordinate({point.latitude(), point.longitude()});
+      rawGroundPath.push_back(baseGroundPoint);
+    }
+
+    return rawGroundPath;
   }
 
   bool Researcher::busy() const { return m_busy or m_busy2; }

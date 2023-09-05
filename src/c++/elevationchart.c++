@@ -74,9 +74,20 @@ namespace ElevationChart
       this->update();
     });
 
-    connect(researcher(), &Researcher::researchEnvelopeFinished, this, [this](const Researcher::EnvelopeResult& res){
-      m_envelopePathVec = res.route.toElevationGraph();
-      m_envelopeCorridorVec = res.boundPolygon;
+    connect(researcher(), &Researcher::researchEnvelopeLegacyFinished, this, [this](const Researcher::EnvelopeLegacyResult& res){
+      m_envelopePathVec.clear();
+      m_envelopeCorridorVec.clear();
+
+      for(const auto& p in res.routeProfile())
+        m_envelopePathVec.emplace_back(p.x(), p.y());
+
+      for(size_t i = 0; i < res.lowBound().size(); i++)
+      {
+        m_envelopeCorridorVec.emplace_back(res.lowBound()[i].x(), res.lowBound()[i].y());
+        m_envelopeCorridorVec.emplace_back(res.highBound()[i].x(), res.highBound()[i].y());
+      }
+
+      qCritical() << m_envelopeCorridorVec.size() << m_envelopePathVec.size();
       this->update();
     });
   }
@@ -99,7 +110,7 @@ namespace ElevationChart
   [[maybe_unused]] void ElevationChartItem::estimateEnvelope() noexcept
   {
     qDebug() << "<elevation-chart> Envelope estimation requested";
-    researcher()->researchEnvelope(route().toGeoPath(), metrics(), envelope());
+    researcher()->researchEnvelopeLegacy(route().toGeoPath(), metrics(), envelope());
   }
 
   [[maybe_unused]] void ElevationChartItem::applyEnvelopeCorrection() noexcept
