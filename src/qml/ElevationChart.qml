@@ -90,7 +90,7 @@ Rectangle {
                     Behavior on info { ColorAnimation { easing.type: Easing.InOutQuad } }
                 }
 
-                Component.onCompleted: ElevationChartCXXAPI.setSource(impl)
+                //Component.onCompleted: ElevationChartCXXAPI.setSource(impl)
 
                 property int currentBar: -1
                 property bool light_theme: false

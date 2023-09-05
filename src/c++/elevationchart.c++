@@ -35,20 +35,21 @@ namespace ElevationChart
    */
   ElevationChartItem::ElevationChartItem(QQuickItem* parent)
     : LPVL::ScenegraphObject(parent)
-      , m_researcher(new Researcher(this))
-      , m_missing_tiles(false)
-      , m_intersecting(false)
-      , m_valid(false)
-      , m_matching_metrics(true)
-      , m_route(Route())
-      , m_model(new RouteModel(this))
-      , m_notifications(new NotificationModel(this))
-      , m_uav_position(QGeoCoordinate(60, 30))
-      , m_metrics(Metrics())
-      , m_envelope(Envelope())
-      , m_provider_type(ProviderType::DEMProvider)
-      , m_bounds(Bounds())
-      , m_shrink_mode(ShrinkMode::ShrinkToRouteHeight)
+    , m_researcher(new Researcher(this))
+    , m_missing_tiles(false)
+    , m_intersecting(false)
+    , m_valid(false)
+    , m_matching_metrics(true)
+    , m_route(Route())
+    , m_model(new RouteModel(this))
+    , m_notifications(new NotificationModel(this))
+    , m_uav_position(QGeoCoordinate(60, 30))
+    , m_metrics(Metrics())
+    , m_envelope(Envelope())
+    , m_provider_type(ProviderType::DEMProvider)
+    , m_bounds(Bounds())
+    , m_shrink_mode(ShrinkMode::ShrinkToRouteHeight)
+    , m_envelope_route(Route())
   {
     switch(providerType())
     {
@@ -74,18 +75,21 @@ namespace ElevationChart
       this->update();
     });
 
-    connect(researcher(), &Researcher::researchEnvelopeLegacyFinished, this, [this](const Researcher::EnvelopeLegacyResult& res){
-      m_envelopePathVec.clear();
-      m_envelopeCorridorVec.clear();
-
-      for(const auto& p in res.routeProfile())
-        m_envelopePathVec.emplace_back(p.x(), p.y());
-
-      for(size_t i = 0; i < res.lowBound().size(); i++)
-      {
-        m_envelopeCorridorVec.emplace_back(res.lowBound()[i].x(), res.lowBound()[i].y());
-        m_envelopeCorridorVec.emplace_back(res.highBound()[i].x(), res.highBound()[i].y());
-      }
+    connect(researcher(), &Researcher::researchEnvelopeFinished, this, [this](const Researcher::EnvelopeResult& res){
+      m_envelope_route = res.route;
+      m_envelopePathVec = m_envelope_route.toElevationGraph();
+      m_envelopeCorridorVec = res.boundPolygon;
+//      m_envelopePathVec.clear();
+//      m_envelopeCorridorVec.clear();
+//
+//      for(const auto& p in res.routeProfile())
+//        m_envelopePathVec.emplace_back(p.x(), p.y());
+//
+//      for(size_t i = 0; i < res.lowBound().size(); i++)
+//      {
+//        m_envelopeCorridorVec.emplace_back(res.lowBound()[i].x(), res.lowBound()[i].y());
+//        m_envelopeCorridorVec.emplace_back(res.highBound()[i].x(), res.highBound()[i].y());
+//      }
 
       this->update();
     });
@@ -109,7 +113,7 @@ namespace ElevationChart
   [[maybe_unused]] void ElevationChartItem::estimateEnvelope() noexcept
   {
     qDebug() << "<elevation-chart> Envelope estimation requested";
-    researcher()->researchEnvelopeLegacy(route().toGeoPath(), metrics(), envelope());
+    researcher()->researchEnvelope(route().toGeoPath(), metrics(), envelope());
   }
 
   [[maybe_unused]] void ElevationChartItem::applyEnvelopeCorrection() noexcept
@@ -168,11 +172,11 @@ namespace ElevationChart
   {
     this->handleBackgroundNode();
     this->handleProfileNode();
-    this->handleRouteNode();
+    this->handle(tree()[RouteNode]->geometry(), route().toElevationGraph());
     this->handleMetricsNode();
     this->handleIntersectionsNode();
-    this->handleEnvelopeNode();
-    this->handleCorridorNode();
+    this->handle2nodes(tree()[EnvelopeNode]->geometry(), tree()[EnvelopePointNode]->geometry(), m_envelopePathVec, m_envelopePathVec.empty());
+    this->handle(tree()[CorridorNode]->geometry(), m_envelopeCorridorVec, m_envelopeCorridorVec.empty());
   }
 
   void ElevationChartItem::updateProfile() noexcept
@@ -312,21 +316,6 @@ namespace ElevationChart
       geometry->vertexDataAsPoint2D()[i] = gl.at(i);
   }
 
-  void ElevationChartItem::handleRouteNode() noexcept
-  {
-    auto geometry = tree()[RouteNode]->geometry();
-
-    vector<ElevationPoint> t_route = route().toElevationGraph();
-    vector<QSGGeometry::Point2D> gl;
-
-    for(const auto& point in t_route)
-      gl.push_back(toPixel(point.distance(), point.elevation()));
-
-    geometry->allocate(static_cast<int>(gl.size()));
-    for(size_t i = 0; i < gl.size(); i++)
-      geometry->vertexDataAsPoint2D()[i] = gl.at(i);
-  }
-
   void ElevationChartItem::handleMetricsNode() noexcept
   {
     auto geometry1 = tree()[MetricsNode]->geometry();
@@ -413,12 +402,25 @@ namespace ElevationChart
       geometry2->vertexDataAsPoint2D()[i] = gl_x.at(i);
   }
 
-  void ElevationChartItem::handleEnvelopeNode() noexcept
+  void ElevationChartItem::handle(QSGGeometry* geometry, const vector<ElevationPoint>& vec, bool abort_condition)
   {
-    auto geometry1 = tree()[EnvelopeNode]->geometry();
-    auto geometry2 = tree()[EnvelopePointNode]->geometry();
+    if(abort_condition)
+    {
+      geometry->allocate(0);
+      return;
+    }
 
-    if(m_envelopePathVec.empty())
+    vector<QSGGeometry::Point2D> gl;
+    for(const auto& point in vec)
+      gl.push_back(toPixel(point));
+    geometry->allocate(static_cast<int>(gl.size()));
+    for(size_t i = 0; i < gl.size(); i++)
+      geometry->vertexDataAsPoint2D()[i] = gl[i];
+  }
+
+  void ElevationChartItem::handle2nodes(QSGGeometry* geometry1, QSGGeometry* geometry2, const vector<ElevationPoint>& vec, bool abort_condition)
+  {
+    if(abort_condition)
     {
       geometry1->allocate(0);
       geometry2->allocate(0);
@@ -426,9 +428,8 @@ namespace ElevationChart
     }
 
     vector<QSGGeometry::Point2D> gl;
-    for(const auto& point in m_envelopePathVec)
+    for(const auto& point in vec)
       gl.push_back(toPixel(point));
-
     geometry1->allocate(static_cast<int>(gl.size()));
     geometry2->allocate(static_cast<int>(gl.size()));
     for(size_t i = 0; i < gl.size(); i++)
@@ -436,25 +437,6 @@ namespace ElevationChart
       geometry1->vertexDataAsPoint2D()[i] = gl[i];
       geometry2->vertexDataAsPoint2D()[i] = gl[i];
     }
-  }
-
-  void ElevationChartItem::handleCorridorNode() noexcept
-  {
-    auto geometry = tree()[CorridorNode]->geometry();
-
-    if(m_envelopeCorridorVec.empty())
-    {
-      geometry->allocate(0);
-      return;
-    }
-
-    vector<QSGGeometry::Point2D> gl;
-    for(const auto& point in m_envelopeCorridorVec)
-      gl.push_back(toPixel(point));
-
-    geometry->allocate(static_cast<int>(gl.size()));
-    for(size_t i = 0; i < gl.size(); i++)
-      geometry->vertexDataAsPoint2D()[i] = gl[i];
   }
 
   /**

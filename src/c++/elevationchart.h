@@ -133,11 +133,11 @@ namespace ElevationChart
 
       void handleBackgroundNode() noexcept;
       void handleProfileNode() noexcept;
-      void handleRouteNode() noexcept;
       void handleMetricsNode() noexcept;
       void handleIntersectionsNode() noexcept;
-      void handleEnvelopeNode() noexcept;
-      void handleCorridorNode() noexcept;
+
+      void handle(QSGGeometry* geometry, const vector<ElevationPoint>& vec, bool abort_condition = false);
+      void handle2nodes(QSGGeometry* geometry1, QSGGeometry* geometry2, const vector<ElevationPoint>& vec, bool abort_condition = false);
 
       [[nodiscard]] QSGGeometry::Point2D toPixel(float x, float y, Bounds b = Bounds()) const;
       [[nodiscard]] QSGGeometry::Point2D toPixel(ElevationPoint p, Bounds b = Bounds()) const;
@@ -169,6 +169,7 @@ namespace ElevationChart
       vector<ElevationPoint> m_intersections;
       vector<ElevationPoint> m_envelopePathVec;
       vector<ElevationPoint> m_envelopeCorridorVec;
+      Route m_envelope_route;
       ShrinkMode m_shrink_mode;
       ProviderType m_provider_type;
       QGeoPath m_metrics_path;

@@ -6,8 +6,11 @@
   */
 
 #include "researcher.h"
+#include <deque>
 #include <QtConcurrent/QtConcurrent>
 #include <DEM/Algorithms>
+
+using std::deque;
 
 #define in :
 #define CONCURRENT_RUN_START_2(arg1, arg2) QFuture<void> future = QtConcurrent::run([arg1, arg2](){ \
@@ -113,11 +116,11 @@ namespace ElevationChart
 
   void Researcher::researchEnvelope(const QGeoPath& path, const Metrics& metrics, const Envelope& envelope)
   {
-    //CONCURRENT_RUN_START_4(this, path, metrics, envelope)
+    CONCURRENT_RUN_START_4(this, path, metrics, envelope)
 
       EnvelopeResult res;
 
-      vector<IntersectionPoint> ground_path = createRawGroundPath(path);
+      vector<IntersectionPoint> ground_path = createRawGroundPathLegacy(path);
       vector<IntersectionPoint> low_bound_path;
       if(not ground_path.empty())
       {
@@ -176,15 +179,15 @@ namespace ElevationChart
         }
       }
 
-      vector<IntersectionPoint> route_path;
-      vector<IntersectionPoint> delta_bound;
-      vector<IntersectionPoint> delta_route;
+      deque<IntersectionPoint> route_path;
+      deque<IntersectionPoint> delta_bound;
+      deque<IntersectionPoint> delta_route;
 
       if(not low_bound_path.empty())
       {
         IntersectionPoint route_point = low_bound_path.front();
         route_point.setElevation(route_point.elevation() + envelope.width() / 2.0f);
-        res.route.add(RoutePoint(route_point.coordinate(), route_point.elevation()));
+        res.route.add(RoutePoint(QGeoCoordinate(route_point.coordinate().latitude(), route_point.coordinate().longitude(), route_point.elevation())));
         route_path.push_back(route_point);
 
         delta_bound.push_back(low_bound_path.front());
@@ -236,22 +239,22 @@ namespace ElevationChart
             {
               if(delta_route.size() < 3)
               {
-                res.route.add(RoutePoint(route_point.coordinate(), route_point.elevation()));
+                res.route.add(RoutePoint(QGeoCoordinate(route_point.coordinate().latitude(), route_point.coordinate().longitude(), route_point.elevation())));
                 route_path.push_back(route_point);
 
-                delta_bound.erase(delta_bound.begin());
-                delta_route.erase(delta_bound.begin());
+                delta_bound.pop_front();
+                delta_route.pop_front();
               }
               else
               {
                 prev_route_point = delta_route[delta_route.size() - 2];
-                res.route.add(RoutePoint(prev_route_point.coordinate(), prev_route_point.elevation()));
+                res.route.add(RoutePoint(QGeoCoordinate(prev_route_point.coordinate().latitude(), prev_route_point.coordinate().longitude(), prev_route_point.elevation())));
                 route_path.push_back(prev_route_point);
 
                 while(delta_bound.size() > 2)
                 {
-                  delta_bound.erase(delta_bound.begin());
-                  delta_route.erase(delta_route.begin());
+                  delta_bound.pop_front();
+                  delta_route.pop_front();
                 }
 
                 delta_bound.pop_back();
@@ -262,13 +265,13 @@ namespace ElevationChart
 
             if(route_point.base() and delta_route.size() > 1)
             {
-              res.route.add(RoutePoint(route_point.coordinate(), route_point.elevation()));
+              res.route.add(RoutePoint(QGeoCoordinate(route_point.coordinate().latitude(), route_point.coordinate().longitude(), route_point.elevation())));
               route_path.push_back(route_point);
 
               while(delta_bound.size() > 1)
               {
-                delta_bound.erase(delta_bound.begin());
-                delta_route.erase(delta_route.begin());
+                delta_bound.pop_front();
+                delta_route.pop_front();
               }
             }
           }
@@ -277,7 +280,7 @@ namespace ElevationChart
 
       emit researchEnvelopeFinished(std::move(res));
 
-    //CONCURRENT_RUN_END_WATCHER(m_watcher2)
+    CONCURRENT_RUN_END_WATCHER(m_watcher2)
   }
 
   void Researcher::researchEnvelopeLegacy(const QGeoPath& path, const ElevationChart::Metrics& metrics, const ElevationChart::Envelope& envelope)
