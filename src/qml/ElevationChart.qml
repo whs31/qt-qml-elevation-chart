@@ -139,6 +139,8 @@ Rectangle {
                     drag.filterChildren: true
                     drag.axis: Drag.XAxis
                     drag.smoothed: true
+                    drag.minimumX: -(width - scaler.origin.x) * (scaler.xScale - 1)
+                    drag.maximumX: scaler.origin.x * (scaler.xScale - 1)
 
                     onWheel: {
                         pinchArea.m_x1 = scaler.origin.x
