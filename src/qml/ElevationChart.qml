@@ -172,6 +172,20 @@ Rectangle {
                 }
             }
         }
+
+        ScrollBar {
+            anchors {
+                bottom: parent.bottom
+                left: parent.left
+                right: parent.right
+            }
+            hoverEnabled: true
+            active: hovered || pressed
+            position: Math.abs(rect.x) / Math.abs(dragArea.drag.maximumX - dragArea.drag.minimumX)
+            orientation: Qt.Horizontal
+            size: 1 / pinchArea.m_zoom2
+            policy: ScrollBar.AlwaysOn
+        }
     }
 
     UI.LargeWarning { shown: impl.missingTiles && impl.route.valid(); txt: "Отсутствуют профили высот"; col: impl.palette.overlay; anchors.centerIn: parent }
