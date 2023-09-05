@@ -271,4 +271,6 @@ namespace ElevationChart
    * \return Указатель на Researcher.
    */
   Researcher* ElevationChartItem::researcher() const { return m_researcher; }
+
+  bool ElevationChartItem::allowEnvelopeCorrection() const { return m_envelope_route.valid(); }
 } // ElevationChart

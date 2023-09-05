@@ -335,6 +335,7 @@ Rectangle {
 
             RoundButton {
                 Layout.fillWidth: true
+                enabled: impl.allowEnvelopeCorrection
                 text: "Применить огибающую"
                 radius: 4
                 font {

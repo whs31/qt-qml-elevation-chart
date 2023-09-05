@@ -77,6 +77,7 @@ namespace ElevationChart
 
     connect(researcher(), &Researcher::researchEnvelopeFinished, this, [this](const Researcher::EnvelopeResult& res){
       m_envelope_route = res.route;
+      emit allowEnvelopeCorrectionChanged();
       m_envelopePathVec = m_envelope_route.toElevationGraph();
       m_envelopeCorridorVec = res.boundPolygon;
 
@@ -99,7 +100,7 @@ namespace ElevationChart
     qDebug() << "<elevation-chart> Route is corrected according to flight metrics";
   }
 
-  [[maybe_unused]] void ElevationChartItem::estimateEnvelope() noexcept
+  [[maybe_unused]] void ElevationChartItem::estimateEnvelope() const noexcept
   {
     qDebug() << "<elevation-chart> Envelope estimation requested";
     researcher()->researchEnvelope(route().toGeoPath(), metrics(), envelope());
@@ -108,6 +109,12 @@ namespace ElevationChart
   [[maybe_unused]] void ElevationChartItem::applyEnvelopeCorrection() noexcept
   {
     qDebug() << "<elevation-chart> Envelope correction requested";
+    if(m_envelope_route.valid())
+      this->setRoute(m_envelope_route);
+    m_envelope_route.clear();
+    emit allowEnvelopeCorrectionChanged();
+    m_envelopeCorridorVec.clear();
+    m_envelopePathVec.clear();
   }
 
   constexpr static uint8_t ENVELOPE_NODE_OPACITY = 100;

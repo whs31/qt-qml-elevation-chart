@@ -43,6 +43,7 @@ namespace ElevationChart
     Q_PROPERTY(bool intersecting READ intersecting WRITE setIntersecting NOTIFY intersectingChanged FINAL)
     Q_PROPERTY(bool valid READ valid WRITE setValid NOTIFY validChanged FINAL)
     Q_PROPERTY(bool matchingMetrics READ matchingMetrics WRITE setMatchingMetrics NOTIFY matchingMetricsChanged FINAL)
+    Q_PROPERTY(bool allowEnvelopeCorrection READ allowEnvelopeCorrection NOTIFY allowEnvelopeCorrectionChanged STORED false FINAL)
 
     Q_PROPERTY(int shrinkMode READ shrinkMode WRITE setShrinkMode NOTIFY shrinkModeChanged FINAL)
     Q_PROPERTY(int providerType READ providerType CONSTANT FINAL)
@@ -98,12 +99,13 @@ namespace ElevationChart
       [[nodiscard]] bool intersecting() const;          void setIntersecting(bool);
       [[nodiscard]] bool valid() const;                 void setValid(bool);
       [[nodiscard]] bool matchingMetrics() const;       void setMatchingMetrics(bool);
+      [[nodiscard]] bool allowEnvelopeCorrection() const;
 
       [[nodiscard]] int shrinkMode() const;             void setShrinkMode(int);
       [[nodiscard]] int providerType() const;
 
       Q_INVOKABLE [[maybe_unused]] void applyMetricsCorrection() noexcept;
-      Q_INVOKABLE [[maybe_unused]] void estimateEnvelope() noexcept;
+      Q_INVOKABLE [[maybe_unused]] void estimateEnvelope() const noexcept;
       Q_INVOKABLE [[maybe_unused]] void applyEnvelopeCorrection() noexcept;
 
     signals:
@@ -118,6 +120,7 @@ namespace ElevationChart
       void metricsChanged();
       void envelopeChanged();
       void shrinkModeChanged();
+      void allowEnvelopeCorrectionChanged();
 
       void updateProfileFinished(const vector<ElevationPoint>& profile);
 
