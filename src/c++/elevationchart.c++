@@ -87,7 +87,6 @@ namespace ElevationChart
         m_envelopeCorridorVec.emplace_back(res.highBound()[i].x(), res.highBound()[i].y());
       }
 
-      qCritical() << m_envelopeCorridorVec.size() << m_envelopePathVec.size();
       this->update();
     });
   }
@@ -127,6 +126,9 @@ namespace ElevationChart
     tree()[MetricsPointNode] = LPVL::utils::createSimpleGeometryNode(palette().warn(), QSGGeometry::DrawPoints, LPVL::utils::GeometryAndMaterial, METRICS_ROUNDING_WIDTH);
     tree()[IntersectionsNode] = LPVL::utils::createSimpleGeometryNode(palette().error(), OpenGLDrawMode::DrawQuads, LPVL::utils::EmptyNode, METRICS_LINE_WIDTH);
     tree()[IntersectionsRouteNode] = LPVL::utils::createSimpleGeometryNode(palette().error(), QSGGeometry::DrawLines, LPVL::utils::GeometryAndMaterial, ROUTE_LINE_WIDTH);
+    tree()[EnvelopeNode] = LPVL::utils::createSimpleGeometryNode(palette().info(), QSGGeometry::DrawLineStrip, LPVL::utils::GeometryAndMaterial, METRICS_LINE_WIDTH);
+    tree()[EnvelopePointNode] = LPVL::utils::createSimpleGeometryNode(palette().info(), QSGGeometry::DrawPoints, LPVL::utils::GeometryAndMaterial, METRICS_ROUNDING_WIDTH);
+    tree()[CorridorNode] = LPVL::utils::createSimpleGeometryNode(palette().info(), OpenGLDrawMode::DrawQuadStrip, LPVL::utils::GeometryAndMaterial, METRICS_LINE_WIDTH);
 
     QSGSimpleMaterial<State>* material = LPVL::FadingGradientShader::createMaterial();
     material->setFlag(QSGMaterial::Blending);
@@ -150,6 +152,9 @@ namespace ElevationChart
     dynamic_cast<QSGFlatColorMaterial*>(tree()[MetricsPointNode]->material())->setColor(palette().warn());
     dynamic_cast<QSGSimpleMaterial<State>*>(tree()[IntersectionsNode]->material())->state()->color = palette().error();
     dynamic_cast<QSGFlatColorMaterial*>(tree()[IntersectionsRouteNode]->material())->setColor(palette().error());
+    dynamic_cast<QSGFlatColorMaterial*>(tree()[EnvelopeNode]->material())->setColor(palette().info());
+    dynamic_cast<QSGFlatColorMaterial*>(tree()[EnvelopePointNode]->material())->setColor(palette().info());
+    dynamic_cast<QSGFlatColorMaterial*>(tree()[CorridorNode]->material())->setColor(palette().info());
   }
 
   void ElevationChartItem::drawCall(QSGNode* node)
@@ -159,6 +164,8 @@ namespace ElevationChart
     this->handleRouteNode();
     this->handleMetricsNode();
     this->handleIntersectionsNode();
+    this->handleEnvelopeNode();
+    this->handleCorridorNode();
   }
 
   void ElevationChartItem::updateProfile() noexcept
@@ -343,7 +350,6 @@ namespace ElevationChart
     }
 
     vector<QSGGeometry::Point2D> gl;
-
     for(const auto& point in t_route)
       gl.push_back(toPixel(point.distance(), point.elevation()));
 
@@ -398,6 +404,36 @@ namespace ElevationChart
 
     for(size_t i = 0; i < gl_x.size(); i++)
       geometry2->vertexDataAsPoint2D()[i] = gl_x.at(i);
+  }
+
+  void ElevationChartItem::handleEnvelopeNode() noexcept
+  {
+    auto geometry1 = tree()[EnvelopeNode]->geometry();
+    auto geometry2 = tree()[EnvelopePointNode]->geometry();
+
+    if(m_envelopePathVec.empty())
+    {
+      geometry1->allocate(0);
+      geometry2->allocate(0);
+      return;
+    }
+
+    vector<QSGGeometry::Point2D> gl;
+    for(const auto& point in m_envelopePathVec)
+      gl.push_back(toPixel(point.distance(), point.elevation()));
+
+    geometry1->allocate(static_cast<int>(gl.size()));
+    geometry2->allocate(static_cast<int>(gl.size()));
+    for(size_t i = 0; i < gl.size(); i++)
+    {
+      geometry1->vertexDataAsPoint2D()[i] = gl[i];
+      geometry2->vertexDataAsPoint2D()[i] = gl[i];
+    }
+  }
+
+  void ElevationChartItem::handleCorridorNode() noexcept
+  {
+
   }
 
   /**
