@@ -79,17 +79,6 @@ namespace ElevationChart
       m_envelope_route = res.route;
       m_envelopePathVec = m_envelope_route.toElevationGraph();
       m_envelopeCorridorVec = res.boundPolygon;
-//      m_envelopePathVec.clear();
-//      m_envelopeCorridorVec.clear();
-//
-//      for(const auto& p in res.routeProfile())
-//        m_envelopePathVec.emplace_back(p.x(), p.y());
-//
-//      for(size_t i = 0; i < res.lowBound().size(); i++)
-//      {
-//        m_envelopeCorridorVec.emplace_back(res.lowBound()[i].x(), res.lowBound()[i].y());
-//        m_envelopeCorridorVec.emplace_back(res.highBound()[i].x(), res.highBound()[i].y());
-//      }
 
       this->update();
     });
