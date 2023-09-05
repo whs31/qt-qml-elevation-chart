@@ -78,7 +78,7 @@ Rectangle {
                     accent: light_theme ? Catpuccin.latte.text.hex : Catpuccin.mocha.text.hex
                     warn: light_theme ? Catpuccin.latte.yellow.hex : Catpuccin.mocha.yellow.hex
                     error: light_theme ? Catpuccin.latte.maroon.hex : Catpuccin.mocha.maroon.hex
-                    info: light_theme ? Catpuccin.latte.lavender.hex : Catpuccin.mocha.lavender.hex
+                    info: light_theme ? Catpuccin.latte.teal.hex : Catpuccin.mocha.teal.hex
 
                     Behavior on background { ColorAnimation { easing.type: Easing.InOutQuad } }
                     Behavior on foreground { ColorAnimation { easing.type: Easing.InOutQuad } }

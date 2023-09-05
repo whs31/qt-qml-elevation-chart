@@ -117,8 +117,12 @@ namespace ElevationChart
     qDebug() << "<elevation-chart> Envelope correction requested";
   }
 
+  constexpr static float CORRIDOR_NODE_OPACITY = .3f;
   void ElevationChartItem::setupChildNodes(QSGNode* node)
   {
+    QColor info2 = palette().info();
+    info2.setAlphaF(CORRIDOR_NODE_OPACITY);
+
     tree()[BackgroundNode] = LPVL::utils::createSimpleGeometryNode(palette().background(), QSGGeometry::DrawTriangles, LPVL::utils::GeometryAndMaterial);
     tree()[ProfileNode] = LPVL::utils::createSimpleGeometryNode(palette().overlay(), OpenGLDrawMode::DrawQuadStrip, LPVL::utils::GeometryAndMaterial);
     tree()[RouteNode] = LPVL::utils::createSimpleGeometryNode(palette().accent(), QSGGeometry::DrawLineStrip, LPVL::utils::GeometryAndMaterial, ROUTE_LINE_WIDTH);
@@ -128,7 +132,7 @@ namespace ElevationChart
     tree()[IntersectionsRouteNode] = LPVL::utils::createSimpleGeometryNode(palette().error(), QSGGeometry::DrawLines, LPVL::utils::GeometryAndMaterial, ROUTE_LINE_WIDTH);
     tree()[EnvelopeNode] = LPVL::utils::createSimpleGeometryNode(palette().info(), QSGGeometry::DrawLineStrip, LPVL::utils::GeometryAndMaterial, METRICS_LINE_WIDTH);
     tree()[EnvelopePointNode] = LPVL::utils::createSimpleGeometryNode(palette().info(), QSGGeometry::DrawPoints, LPVL::utils::GeometryAndMaterial, METRICS_ROUNDING_WIDTH);
-    tree()[CorridorNode] = LPVL::utils::createSimpleGeometryNode(palette().info(), OpenGLDrawMode::DrawQuadStrip, LPVL::utils::GeometryAndMaterial, METRICS_LINE_WIDTH);
+    tree()[CorridorNode] = LPVL::utils::createSimpleGeometryNode(info2, OpenGLDrawMode::DrawQuadStrip, LPVL::utils::GeometryAndMaterial, METRICS_LINE_WIDTH);
 
     QSGSimpleMaterial<State>* material = LPVL::FadingGradientShader::createMaterial();
     material->setFlag(QSGMaterial::Blending);
@@ -145,6 +149,9 @@ namespace ElevationChart
 
   void ElevationChartItem::setupNodeColors(QSGNode* node)
   {
+    QColor info2 = palette().info();
+    info2.setAlphaF(CORRIDOR_NODE_OPACITY);
+
     dynamic_cast<QSGFlatColorMaterial*>(tree()[BackgroundNode]->material())->setColor(palette().background());
     dynamic_cast<QSGFlatColorMaterial*>(tree()[ProfileNode]->material())->setColor(palette().overlay());
     dynamic_cast<QSGFlatColorMaterial*>(tree()[RouteNode]->material())->setColor(palette().accent());
@@ -154,7 +161,7 @@ namespace ElevationChart
     dynamic_cast<QSGFlatColorMaterial*>(tree()[IntersectionsRouteNode]->material())->setColor(palette().error());
     dynamic_cast<QSGFlatColorMaterial*>(tree()[EnvelopeNode]->material())->setColor(palette().info());
     dynamic_cast<QSGFlatColorMaterial*>(tree()[EnvelopePointNode]->material())->setColor(palette().info());
-    dynamic_cast<QSGFlatColorMaterial*>(tree()[CorridorNode]->material())->setColor(palette().info());
+    dynamic_cast<QSGFlatColorMaterial*>(tree()[CorridorNode]->material())->setColor(info2);
   }
 
   void ElevationChartItem::drawCall(QSGNode* node)
@@ -420,7 +427,7 @@ namespace ElevationChart
 
     vector<QSGGeometry::Point2D> gl;
     for(const auto& point in m_envelopePathVec)
-      gl.push_back(toPixel(point.distance(), point.elevation()));
+      gl.push_back(toPixel(point));
 
     geometry1->allocate(static_cast<int>(gl.size()));
     geometry2->allocate(static_cast<int>(gl.size()));
@@ -433,7 +440,21 @@ namespace ElevationChart
 
   void ElevationChartItem::handleCorridorNode() noexcept
   {
+    auto geometry = tree()[CorridorNode]->geometry();
 
+    if(m_envelopeCorridorVec.empty())
+    {
+      geometry->allocate(0);
+      return;
+    }
+
+    vector<QSGGeometry::Point2D> gl;
+    for(const auto& point in m_envelopeCorridorVec)
+      gl.push_back(toPixel(point));
+
+    geometry->allocate(static_cast<int>(gl.size()));
+    for(size_t i = 0; i < gl.size(); i++)
+      geometry->vertexDataAsPoint2D()[i] = gl[i];
   }
 
   /**
@@ -443,7 +464,10 @@ namespace ElevationChart
    * \param b - набор максимальных значений. Если не задан (по умолчанию), то будет использован набор этого экземпляра класса.
    * \return Точка для использования в цикле отрисовки.
    */
-  QSGGeometry::Point2D ElevationChartItem::toPixel(float x, float y, Bounds b) const { return {toPixelX(x, b.x() > 0 ? b.x() : bounds().x()), toPixelY(y, b.y() > 0 ? b.y() : bounds().y()) }; }
+  QSGGeometry::Point2D ElevationChartItem::toPixel(float x, float y, Bounds b) const { return {toPixelX(x, b.x() > 0 ? b.x()
+    : bounds().x()), toPixelY(y, b.y() > 0 ? b.y() : bounds().y()) }; }
+  QSGGeometry::Point2D ElevationChartItem::toPixel(ElevationPoint p, Bounds b) const { return {toPixelX(p.distance(), b.x() > 0 ? b.x()
+    : bounds().x()), toPixelY(p.elevation(), b.y() > 0 ? b.y() : bounds().y()) }; }
 
   /**
    * \brief Вспомогательная функция, преобразующая координаты ElevationPoint в пиксельные только по оси X.

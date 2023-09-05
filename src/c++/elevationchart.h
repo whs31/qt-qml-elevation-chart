@@ -140,6 +140,7 @@ namespace ElevationChart
       void handleCorridorNode() noexcept;
 
       [[nodiscard]] QSGGeometry::Point2D toPixel(float x, float y, Bounds b = Bounds()) const;
+      [[nodiscard]] QSGGeometry::Point2D toPixel(ElevationPoint p, Bounds b = Bounds()) const;
       [[nodiscard]] float toPixelX(float x, float x_max) const;
       [[nodiscard]] float toPixelY(float y, float y_max) const;
 
