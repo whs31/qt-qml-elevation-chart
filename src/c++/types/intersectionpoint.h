@@ -23,6 +23,7 @@ namespace ElevationChart
       [[nodiscard]] bool base() const;                  void setBase(bool);
       [[nodiscard]] Intersection state() const;         void setState(Intersection);
       [[nodiscard]] QGeoCoordinate coordinate() const;  void setCoordinate(const QGeoCoordinate&);
+      [[nodiscard]] QGeoCoordinate toQGeoCoordinate() const;
 
     private:
       bool m_base;
@@ -82,4 +83,6 @@ namespace ElevationChart
 
   /// \brief Задает географическую координату точки.
   inline void IntersectionPoint::setCoordinate(const QGeoCoordinate& x) { m_coordinate = x; }
+
+  inline QGeoCoordinate IntersectionPoint::toQGeoCoordinate() const { return { coordinate().latitude(), coordinate().longitude(), elevation() }; }
 } // ElevationChart

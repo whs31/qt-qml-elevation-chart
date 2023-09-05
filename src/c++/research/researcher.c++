@@ -7,6 +7,7 @@
 
 #include "researcher.h"
 #include <deque>
+#include <iterator>
 #include <QtConcurrent/QtConcurrent>
 #include <DEM/Algorithms>
 
@@ -102,6 +103,13 @@ namespace ElevationChart
     CONCURRENT_RUN_END_WATCHER(m_watcher)
   }
 
+  void pushLH(const IntersectionPoint& l, const IntersectionPoint& h, vector<IntersectionPoint>& inter_vec, vector<ElevationPoint>& ele_vec)
+  {
+    inter_vec.push_back(l);
+    ele_vec.push_back(l);
+    ele_vec.push_back(h);
+  }
+
   void Researcher::researchEnvelope(const QGeoPath& path, const Metrics& metrics, const Envelope& envelope)
   {
     CONCURRENT_RUN [this, path, metrics, envelope] CONCURRENT_ARGS [this, path, metrics, envelope] CONCURRENT_RUN_START
@@ -114,13 +122,11 @@ namespace ElevationChart
         const float ENVELOPE_LBP = envelope.altitude() - envelope.width() / 2.0f;
         const float ENVELOPE_HBP = envelope.altitude() + envelope.width() / 2.0f;
 
-        IntersectionPoint lbp = ground_path.front();
-        lbp.setElevation(lbp.elevation() + ENVELOPE_LBP);
-        low_bound_path.push_back(lbp);
-        res.boundPolygon.push_back(lbp);
-        IntersectionPoint hbp = lbp;
-        hbp.setElevation(hbp.elevation() + ENVELOPE_HBP);
-        res.boundPolygon.push_back(hbp);
+        IntersectionPoint lbp(ground_path.front().distance(), ground_path.front().elevation() + ENVELOPE_LBP, true, ground_path.front().base(),
+                              IntersectionPoint::NonIntersecting, ground_path.front().coordinate());
+        IntersectionPoint hbp(ground_path.front().distance(), ground_path.front().elevation() + ENVELOPE_HBP, true, ground_path.front().base(),
+                              IntersectionPoint::NonIntersecting, ground_path.front().coordinate());
+        pushLH(lbp, hbp, low_bound_path, res.boundPolygon);
 
         if(ground_path.size() > 1)
         {
@@ -132,11 +138,8 @@ namespace ElevationChart
             hbp.setElevation(hbp.elevation() + ENVELOPE_HBP);
 
             if(lbp.base())
-            {
-              low_bound_path.push_back(lbp);
-              res.boundPolygon.push_back(lbp);
-              res.boundPolygon.push_back(hbp);
-            }
+              pushLH(lbp, hbp, low_bound_path, res.boundPolygon);
+
             else
             {
               IntersectionPoint lbp_prev = low_bound_path[low_bound_path.size() - 1];
@@ -147,22 +150,15 @@ namespace ElevationChart
                                                     {lbp.distance(), lbp.elevation()},
                                                     {lbp_next.distance(), lbp_next.elevation()});
               if(angle > BOUND_RATE_ANGLE)
-              {
-                low_bound_path.push_back(lbp);
-                res.boundPolygon.push_back(lbp);
-                res.boundPolygon.push_back(hbp);
-              }
+                pushLH(lbp, hbp, low_bound_path, res.boundPolygon);
             }
           }
 
           lbp = ground_path[ground_path.size() - 1];
           lbp.setElevation(lbp.elevation() + ENVELOPE_LBP);
-          low_bound_path.push_back(lbp);
-          res.boundPolygon.push_back(lbp);
-
           hbp = ground_path[ground_path.size() - 1];
           hbp.setElevation(hbp.elevation() + ENVELOPE_HBP);
-          res.boundPolygon.push_back(hbp);
+          pushLH(lbp, hbp, low_bound_path, res.boundPolygon);
         }
       }
 
@@ -170,100 +166,99 @@ namespace ElevationChart
       deque<IntersectionPoint> delta_bound;
       deque<IntersectionPoint> delta_route;
 
-      if(not low_bound_path.empty())
+      if(low_bound_path.empty() or low_bound_path.size() == 1)
       {
-        IntersectionPoint route_point = low_bound_path.front();
-        route_point.setElevation(route_point.elevation() + envelope.width() / 2.0f);
-        res.route.add(RoutePoint(QGeoCoordinate(route_point.coordinate().latitude(), route_point.coordinate().longitude(), route_point.elevation())));
-        route_path.push_back(route_point);
+        emit researchEnvelopeFinished(std::move(res));
+        return;
+      }
 
-        delta_bound.push_back(low_bound_path.front());
+      IntersectionPoint route_point = low_bound_path.front();
+      route_point.setElevation(route_point.elevation() + envelope.width() / 2.0f);
+      res.route.add(RoutePoint(route_point.toQGeoCoordinate()));
+      route_path.push_back(route_point);
+
+      delta_bound.push_back(low_bound_path.front());
+      delta_route.push_back(route_point);
+
+      for(size_t i = 1; i < low_bound_path.size(); i++)
+      {
+        IntersectionPoint prev_route_point = route_path[route_path.size() - 1];
+        route_point = low_bound_path[i];
+        route_point.setElevation(route_point.elevation() + envelope.width() / 2.0f);
+
+        const float dt = (route_point.distance() - prev_route_point.distance()) / metrics.fallbackVelocity();
+        if(prev_route_point.elevation() < route_point.elevation())
+        {
+          if((route_point.elevation() - prev_route_point.elevation()) / dt > metrics.rateOfClimb())
+            route_point.setElevation(prev_route_point.elevation() + dt * metrics.rateOfClimb());
+        }
+        else if(prev_route_point.elevation() > route_point.elevation())
+        {
+          if((prev_route_point.elevation() - route_point.elevation()) / dt > metrics.rateOfDescend())
+            route_point.setElevation(prev_route_point.elevation() - dt * metrics.rateOfDescend());
+        }
+
+        delta_bound.push_back(low_bound_path[i]);
         delta_route.push_back(route_point);
 
-        if(low_bound_path.size() > 1)
+        bool intersects = false;
+        IntersectionPoint start_drp = delta_route.front();
+        QLineF delta_route_line(start_drp.distance(), start_drp.elevation(), route_point.distance(), route_point.elevation());
+
+        for(size_t j = 1; j < delta_bound.size(); j++)
         {
-          for(size_t i = 1; i < low_bound_path.size(); i++)
+          IntersectionPoint start_delta_lbp = delta_bound[j - 1];
+          IntersectionPoint end_delta_lbp = delta_bound[j];
+          intersects = delta_route_line.intersects({start_delta_lbp.distance(), start_delta_lbp.elevation(),
+                                                          end_delta_lbp.distance(), end_delta_lbp.elevation()},
+                                                          nullptr) == QLineF::BoundedIntersection or
+                       delta_route_line.intersects({start_delta_lbp.distance(), start_delta_lbp.elevation() + envelope.width(),
+                                                          end_delta_lbp.distance(), end_delta_lbp.elevation() + envelope.width()},
+                                                          nullptr) == QLineF::BoundedIntersection;
+        }
+
+        if(intersects)
+        {
+          if(delta_route.size() < 3)
           {
-            IntersectionPoint prev_route_point = route_path[route_path.size() - 1];
-            route_point = low_bound_path[i];
-            route_point.setElevation(route_point.elevation() + envelope.width() / 2.0f);
+            res.route.add(RoutePoint(route_point.toQGeoCoordinate()));
+            route_path.push_back(route_point);
+            delta_bound.pop_front();
+            delta_route.pop_front();
+          }
+          else
+          {
+            prev_route_point = delta_route[delta_route.size() - 2];
+            res.route.add(RoutePoint(prev_route_point.toQGeoCoordinate()));
+            route_path.push_back(prev_route_point);
 
-            float time_delta = (route_point.distance() - prev_route_point.distance()) / metrics.fallbackVelocity();
-            if(prev_route_point.elevation() < route_point.elevation())
-            {
-              if((route_point.elevation() - prev_route_point.elevation()) / time_delta > metrics.rateOfClimb())
-                route_point.setElevation(prev_route_point.elevation() + time_delta * metrics.rateOfClimb());
-            }
-            else if(prev_route_point.elevation() > route_point.elevation())
-            {
-              if((prev_route_point.elevation() - route_point.elevation()) / time_delta > metrics.rateOfDescend())
-                route_point.setElevation(prev_route_point.elevation() - time_delta * metrics.rateOfDescend());
-            }
+            auto it1 = delta_bound.begin();
+            auto it2 = delta_route.begin();
+            std::advance(it1, delta_bound.size() - 2);
+            std::advance(it2, delta_route.size() - 2);
+            delta_bound.erase(delta_bound.begin(), it1);
+            delta_route.erase(delta_route.begin(), it2);
 
-            delta_bound.push_back(low_bound_path[i]);
-            delta_route.push_back(route_point);
-
-            bool intersects = false;
-
-            IntersectionPoint start_drp = delta_route.front();
-            QLineF delta_route_line(start_drp.distance(), start_drp.elevation(), route_point.distance(), route_point.elevation());
-
-            for(size_t j = 1; j < delta_bound.size(); j++)
-            {
-              IntersectionPoint start_delta_lbp = delta_bound[j - 1];
-              IntersectionPoint end_delta_lbp = delta_bound[j];
-
-              QPointF intersection_point;
-              if(delta_route_line.intersects(QLineF(start_delta_lbp.distance(), start_delta_lbp.elevation(), end_delta_lbp.distance(),
-                                                    end_delta_lbp.elevation()), &intersection_point) == QLineF::BoundedIntersection)
-                intersects = true;
-              if(delta_route_line.intersects(QLineF(start_delta_lbp.distance(), start_delta_lbp.elevation() + envelope.width(), end_delta_lbp.distance(),
-                                                    end_delta_lbp.elevation() + envelope.width()), &intersection_point) == QLineF::BoundedIntersection)
-                intersects = true;
-            }
-
-            if(intersects)
-            {
-              if(delta_route.size() < 3)
-              {
-                res.route.add(RoutePoint(QGeoCoordinate(route_point.coordinate().latitude(), route_point.coordinate().longitude(), route_point.elevation())));
-                route_path.push_back(route_point);
-
-                delta_bound.pop_front();
-                delta_route.pop_front();
-              }
-              else
-              {
-                prev_route_point = delta_route[delta_route.size() - 2];
-                res.route.add(RoutePoint(QGeoCoordinate(prev_route_point.coordinate().latitude(), prev_route_point.coordinate().longitude(), prev_route_point.elevation())));
-                route_path.push_back(prev_route_point);
-
-                while(delta_bound.size() > 2)
-                {
-                  delta_bound.pop_front();
-                  delta_route.pop_front();
-                }
-
-                delta_bound.pop_back();
-                delta_route.pop_back();
-                i--;
-              }
-            }
-
-            if(route_point.base() and delta_route.size() > 1)
-            {
-              res.route.add(RoutePoint(QGeoCoordinate(route_point.coordinate().latitude(), route_point.coordinate().longitude(), route_point.elevation())));
-              route_path.push_back(route_point);
-
-              while(delta_bound.size() > 1)
-              {
-                delta_bound.pop_front();
-                delta_route.pop_front();
-              }
-            }
+            delta_bound.pop_back();
+            delta_route.pop_back();
+            i--;
           }
         }
+
+        if(route_point.base() and delta_route.size() > 1)
+        {
+          res.route.add(RoutePoint(route_point.toQGeoCoordinate()));
+          route_path.push_back(route_point);
+
+          auto it1 = delta_bound.begin();
+          auto it2 = delta_route.begin();
+          std::advance(it1, delta_bound.size() - 1);
+          std::advance(it2, delta_route.size() - 1);
+          delta_bound.erase(delta_bound.begin(), it1);
+          delta_route.erase(delta_route.begin(), it2);
+        }
       }
+
       emit researchEnvelopeFinished(std::move(res));
     CONCURRENT_RUN_END_WATCHER(m_watcher2)
   }

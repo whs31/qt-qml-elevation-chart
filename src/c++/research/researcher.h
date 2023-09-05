@@ -51,8 +51,7 @@ namespace ElevationChart
       void researchEnvelopeFinished(EnvelopeResult);
 
     private:
-      auto fillProfile(const QList<QGeoCoordinate>& list, const QGeoPath& path) -> vector<IntersectionPoint>;
-
+      static auto fillProfile(const QList<QGeoCoordinate>& list, const QGeoPath& path) -> vector<IntersectionPoint>;
       static auto createRawGroundPath(const QGeoPath& path) -> vector<IntersectionPoint>;
       static auto createRawGroundPathLegacy(const QGeoPath& path) -> vector<IntersectionPoint>;
       static float angle3point(QPointF a, QPointF b, QPointF c);
