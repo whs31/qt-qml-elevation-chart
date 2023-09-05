@@ -323,60 +323,6 @@ namespace ElevationChart
     return ret;
   }
 
-  auto Researcher::createRawGroundPath(const QGeoPath& path) -> vector<ElevationChart::IntersectionPoint>
-  {
-    QGeoPath raw_ground_geopath;
-    vector<ElevationChart::IntersectionPoint> ret;
-
-    float distance_from_start = 0;
-    for(auto point in path.path())
-    {
-      if(not raw_ground_geopath.isEmpty())
-      {
-        QGeoCoordinate prev_base_geopoint = raw_ground_geopath.coordinateAt(raw_ground_geopath.size() - 1);
-        float distance = SCAN_STEP;
-        QGeoCoordinate prev_delta_geopoint = prev_base_geopoint;
-        while(distance < static_cast<float>(prev_base_geopoint.distanceTo(point)))
-        {
-          QGeoCoordinate delta_geopoint = prev_base_geopoint.atDistanceAndAzimuth(distance, static_cast<float>(prev_base_geopoint.azimuthTo(point)));
-          delta_geopoint.setAltitude(DEM::elevation(delta_geopoint.latitude(), delta_geopoint.longitude()));
-
-          if(prev_delta_geopoint.altitude() == delta_geopoint.altitude())
-          {
-            prev_delta_geopoint = delta_geopoint;
-            distance += SCAN_STEP;
-
-            continue;
-          }
-
-          if(prev_delta_geopoint.altitude() > delta_geopoint.altitude())
-          {
-            raw_ground_geopath.addCoordinate(prev_delta_geopoint);
-            if(raw_ground_geopath.size() > 1)
-              distance_from_start += static_cast<float>(raw_ground_geopath.length(raw_ground_geopath.size() - 2, raw_ground_geopath.size() - 1));
-            ret.emplace_back(distance_from_start, prev_delta_geopoint.altitude(), true, false, ElevationChart::IntersectionPoint::NonIntersecting, prev_delta_geopoint);
-          }
-          else
-          {
-            raw_ground_geopath.addCoordinate(delta_geopoint);
-            if(raw_ground_geopath.size() > 1)
-              distance_from_start += static_cast<float>(raw_ground_geopath.length(raw_ground_geopath.size() - 2, raw_ground_geopath.size() - 1));
-            ret.emplace_back(distance_from_start, delta_geopoint.altitude(), true, false, ElevationChart::IntersectionPoint::NonIntersecting, delta_geopoint);
-          }
-        }
-      }
-
-      point.setAltitude(DEM::elevation(point.latitude(), point.longitude()));
-      raw_ground_geopath.addCoordinate(point);
-      if(raw_ground_geopath.size() > 1)
-        distance_from_start += static_cast<float>(raw_ground_geopath.length(raw_ground_geopath.size() - 2, raw_ground_geopath.size() - 1));
-
-      ret.emplace_back(distance_from_start, point.altitude(), true, true, ElevationChart::IntersectionPoint::NonIntersecting, point);
-    }
-
-    return ret;
-  }
-
   auto Researcher::createRawGroundPathLegacy(const QGeoPath& path) -> vector<IntersectionPoint>
   {
     vector<IntersectionPoint> ret;

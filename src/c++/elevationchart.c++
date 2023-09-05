@@ -110,12 +110,10 @@ namespace ElevationChart
     qDebug() << "<elevation-chart> Envelope correction requested";
   }
 
-  constexpr static float CORRIDOR_NODE_OPACITY = .3f;
+  constexpr static uint8_t ENVELOPE_NODE_OPACITY = 100;
+  constexpr static uint8_t CORRIDOR_NODE_OPACITY = 50;
   void ElevationChartItem::setupChildNodes(QSGNode* node)
   {
-    QColor info2 = palette().info();
-    info2.setAlphaF(CORRIDOR_NODE_OPACITY);
-
     tree()[BackgroundNode] = LPVL::utils::createSimpleGeometryNode(palette().background(), QSGGeometry::DrawTriangles, LPVL::utils::GeometryAndMaterial);
     tree()[ProfileNode] = LPVL::utils::createSimpleGeometryNode(palette().overlay(), OpenGLDrawMode::DrawQuadStrip, LPVL::utils::GeometryAndMaterial);
     tree()[RouteNode] = LPVL::utils::createSimpleGeometryNode(palette().accent(), QSGGeometry::DrawLineStrip, LPVL::utils::GeometryAndMaterial, ROUTE_LINE_WIDTH);
@@ -123,9 +121,9 @@ namespace ElevationChart
     tree()[MetricsPointNode] = LPVL::utils::createSimpleGeometryNode(palette().warn(), QSGGeometry::DrawPoints, LPVL::utils::GeometryAndMaterial, METRICS_ROUNDING_WIDTH);
     tree()[IntersectionsNode] = LPVL::utils::createSimpleGeometryNode(palette().error(), OpenGLDrawMode::DrawQuads, LPVL::utils::EmptyNode, METRICS_LINE_WIDTH);
     tree()[IntersectionsRouteNode] = LPVL::utils::createSimpleGeometryNode(palette().error(), QSGGeometry::DrawLines, LPVL::utils::GeometryAndMaterial, ROUTE_LINE_WIDTH);
-    tree()[EnvelopeNode] = LPVL::utils::createSimpleGeometryNode(palette().info(), QSGGeometry::DrawLineStrip, LPVL::utils::GeometryAndMaterial, METRICS_LINE_WIDTH);
-    tree()[EnvelopePointNode] = LPVL::utils::createSimpleGeometryNode(palette().info(), QSGGeometry::DrawPoints, LPVL::utils::GeometryAndMaterial, METRICS_ROUNDING_WIDTH);
-    tree()[CorridorNode] = LPVL::utils::createSimpleGeometryNode(info2, OpenGLDrawMode::DrawQuadStrip, LPVL::utils::GeometryAndMaterial, METRICS_LINE_WIDTH);
+    tree()[EnvelopeNode] = LPVL::utils::createSimpleGeometryNode(QColor(palette().info().red(), palette().info().green(), palette().info().blue(), ENVELOPE_NODE_OPACITY), QSGGeometry::DrawLineStrip, LPVL::utils::GeometryAndMaterial, METRICS_LINE_WIDTH);
+    tree()[EnvelopePointNode] = LPVL::utils::createSimpleGeometryNode(QColor(palette().info().red(), palette().info().green(), palette().info().blue(), ENVELOPE_NODE_OPACITY), QSGGeometry::DrawPoints, LPVL::utils::GeometryAndMaterial, METRICS_ROUNDING_WIDTH);
+    tree()[CorridorNode] = LPVL::utils::createSimpleGeometryNode(QColor(palette().info().red(), palette().info().green(), palette().info().blue(), CORRIDOR_NODE_OPACITY), OpenGLDrawMode::DrawQuadStrip, LPVL::utils::GeometryAndMaterial, METRICS_LINE_WIDTH);
 
     QSGSimpleMaterial<State>* material = LPVL::FadingGradientShader::createMaterial();
     material->setFlag(QSGMaterial::Blending);
@@ -142,9 +140,6 @@ namespace ElevationChart
 
   void ElevationChartItem::setupNodeColors(QSGNode* node)
   {
-    QColor info2 = palette().info();
-    info2.setAlphaF(CORRIDOR_NODE_OPACITY);
-
     dynamic_cast<QSGFlatColorMaterial*>(tree()[BackgroundNode]->material())->setColor(palette().background());
     dynamic_cast<QSGFlatColorMaterial*>(tree()[ProfileNode]->material())->setColor(palette().overlay());
     dynamic_cast<QSGFlatColorMaterial*>(tree()[RouteNode]->material())->setColor(palette().accent());
@@ -152,9 +147,9 @@ namespace ElevationChart
     dynamic_cast<QSGFlatColorMaterial*>(tree()[MetricsPointNode]->material())->setColor(palette().warn());
     dynamic_cast<QSGSimpleMaterial<State>*>(tree()[IntersectionsNode]->material())->state()->color = palette().error();
     dynamic_cast<QSGFlatColorMaterial*>(tree()[IntersectionsRouteNode]->material())->setColor(palette().error());
-    dynamic_cast<QSGFlatColorMaterial*>(tree()[EnvelopeNode]->material())->setColor(palette().info());
-    dynamic_cast<QSGFlatColorMaterial*>(tree()[EnvelopePointNode]->material())->setColor(palette().info());
-    dynamic_cast<QSGFlatColorMaterial*>(tree()[CorridorNode]->material())->setColor(info2);
+    dynamic_cast<QSGFlatColorMaterial*>(tree()[EnvelopeNode]->material())->setColor(QColor(palette().info().red(), palette().info().green(), palette().info().blue(), ENVELOPE_NODE_OPACITY));
+    dynamic_cast<QSGFlatColorMaterial*>(tree()[EnvelopePointNode]->material())->setColor(QColor(palette().info().red(), palette().info().green(), palette().info().blue(), ENVELOPE_NODE_OPACITY));
+    dynamic_cast<QSGFlatColorMaterial*>(tree()[CorridorNode]->material())->setColor(QColor(palette().info().red(), palette().info().green(), palette().info().blue(), CORRIDOR_NODE_OPACITY));
   }
 
   void ElevationChartItem::drawCall(QSGNode* node)
