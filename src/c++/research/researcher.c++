@@ -384,71 +384,52 @@ namespace ElevationChart
 
   auto Researcher::createRawGroundPathLegacy(const QGeoPath& path) -> vector<IntersectionPoint>
   {
-    QGeoPath rawGroundPathGeo;
-    vector<IntersectionPoint> rawGroundPath;
+    vector<IntersectionPoint> ret;
+    QGeoPath geo;
+    float dfs = 0;
+    for(auto point in path.path())
+    {
+      if(not geo.isEmpty())
+      {
+        QGeoCoordinate previous = geo.coordinateAt(geo.size() - 1);
+        auto azimuth = static_cast<float>(previous.azimuthTo(point));
+        auto distance_to_previous = static_cast<float>(previous.distanceTo(point));
+        float distance = SCAN_STEP;
+        QGeoCoordinate previous_delta = previous;
+        while(distance < distance_to_previous)
+        {
+          QGeoCoordinate dpg = previous.atDistanceAndAzimuth(distance, azimuth);
+          dpg.setAltitude(DEM::elevation(dpg.latitude(), dpg.longitude()));
 
-    qreal distanceFromStart = 0;
-    for (auto point : path.path()) {
-
-      if (rawGroundPathGeo.size()) {
-        QGeoCoordinate prevBasePointGeo = rawGroundPathGeo.coordinateAt(rawGroundPathGeo.size() - 1);
-        qreal azimuth = prevBasePointGeo.azimuthTo(point);
-        qreal distanceFromPrevBasePoint = prevBasePointGeo.distanceTo(point);
-
-        qreal distance = SCAN_STEP;
-        QGeoCoordinate prevDeltaPointGeo = prevBasePointGeo;
-        while (distance < distanceFromPrevBasePoint) {
-          QGeoCoordinate deltaPointGeo = prevBasePointGeo.atDistanceAndAzimuth(distance, azimuth);
-          deltaPointGeo.setAltitude(DEM::elevation(deltaPointGeo.latitude(), deltaPointGeo.longitude()));
-
-          if (prevDeltaPointGeo.altitude() != deltaPointGeo.altitude()) {
-            if (prevDeltaPointGeo.altitude() > deltaPointGeo.altitude()) {
-              rawGroundPathGeo.addCoordinate(prevDeltaPointGeo);
-              int pointCount = rawGroundPathGeo.size();
-              if (pointCount > 1) distanceFromStart += rawGroundPathGeo.length(pointCount - 2, pointCount - 1);
-
-              IntersectionPoint deltaGroundPoint;
-              deltaGroundPoint.setElevation(prevDeltaPointGeo.altitude());
-              deltaGroundPoint.setBase(false);
-              deltaGroundPoint.setDistance(distanceFromStart);
-              deltaGroundPoint.setCoordinate({prevDeltaPointGeo.latitude(), prevDeltaPointGeo.longitude()});
-              rawGroundPath.push_back(deltaGroundPoint);
+          if(previous_delta.altitude() != dpg.altitude())
+          {
+            if(previous_delta.altitude() > dpg.altitude())
+            {
+              geo.addCoordinate(previous_delta);
+              if(geo.size() > 1)
+                dfs += static_cast<float>(geo.length(geo.size() - 2, geo.size() - 1));
+              ret.emplace_back(dfs, static_cast<float>(previous_delta.altitude()), true, false, IntersectionPoint::NonIntersecting, previous_delta);
             }
             else
             {
-              rawGroundPathGeo.addCoordinate(deltaPointGeo);
-              int pointCount = rawGroundPathGeo.size();
-              if (pointCount > 1) distanceFromStart += rawGroundPathGeo.length(pointCount - 2, pointCount - 1);
-
-              IntersectionPoint deltaGroundPoint;
-              deltaGroundPoint.setElevation(deltaPointGeo.altitude());
-              deltaGroundPoint.setBase(false);
-              deltaGroundPoint.setDistance(distanceFromStart);
-              deltaGroundPoint.setCoordinate({deltaPointGeo.latitude(), deltaPointGeo.longitude()});
-              rawGroundPath.push_back(deltaGroundPoint);
+              geo.addCoordinate(dpg);
+              if(geo.size() > 1)
+                dfs += static_cast<float>(geo.length(geo.size() - 2, geo.size() - 1));
+              ret.emplace_back(dfs, static_cast<float>(dpg.altitude()), true, false, IntersectionPoint::NonIntersecting, dpg);
             }
           }
-
-          prevDeltaPointGeo = deltaPointGeo;
+          previous_delta = dpg;
           distance += SCAN_STEP;
         }
       }
-
       point.setAltitude(DEM::elevation(point.latitude(), point.longitude()));
-      rawGroundPathGeo.addCoordinate(point);
-      int pointCount = rawGroundPathGeo.size();
+      geo.addCoordinate(point);
+      int pointCount = geo.size();
       if (pointCount > 1)
-        distanceFromStart += rawGroundPathGeo.length(pointCount - 2, pointCount - 1);
-
-      IntersectionPoint baseGroundPoint;
-      baseGroundPoint.setElevation(point.altitude());
-      baseGroundPoint.setBase(true);
-      baseGroundPoint.setDistance(distanceFromStart);
-      baseGroundPoint.setCoordinate({point.latitude(), point.longitude()});
-      rawGroundPath.push_back(baseGroundPoint);
+        dfs += static_cast<float>(geo.length(pointCount - 2, pointCount - 1));
+      ret.emplace_back(dfs, static_cast<float>(point.altitude()), true, true, IntersectionPoint::NonIntersecting, point);
     }
-
-    return rawGroundPath;
+    return ret;
   }
 
   bool Researcher::busy() const { return m_busy or m_busy2; }
