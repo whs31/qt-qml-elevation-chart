@@ -163,6 +163,8 @@ namespace ElevationChart
       unique_ptr<IElevationDataProvider> m_provider;
       vector<ElevationPoint> m_profile;
       vector<ElevationPoint> m_intersections;
+      vector<ElevationPoint> m_envelopePathVec;
+      vector<ElevationPoint> m_envelopeCorridorVec;
       ShrinkMode m_shrink_mode;
       ProviderType m_provider_type;
       QGeoPath m_metrics_path;

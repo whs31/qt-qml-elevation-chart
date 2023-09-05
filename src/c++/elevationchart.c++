@@ -68,9 +68,15 @@ namespace ElevationChart
     });
 
     connect(this, &ElevationChartItem::updateProfileFinished, this, &ElevationChartItem::receiveProfile);
-    connect(researcher(), &Researcher::researchIntersectionsFinished, this, [this](const vector<ElevationPoint>& vec) {
+    connect(researcher(), &Researcher::researchIntersectionsFinished, this, [this](const vector<ElevationPoint>& vec){
       m_intersections = vec;
       setIntersecting(not vec.empty());
+      this->update();
+    });
+
+    connect(researcher(), &Researcher::researchEnvelopeFinished, this, [this](const Researcher::EnvelopeResult& res){
+      m_envelopePathVec = res.route.toElevationGraph();
+      m_envelopeCorridorVec = res.boundPolygon;
       this->update();
     });
   }
@@ -93,6 +99,7 @@ namespace ElevationChart
   [[maybe_unused]] void ElevationChartItem::estimateEnvelope() noexcept
   {
     qDebug() << "<elevation-chart> Envelope estimation requested";
+    researcher()->researchEnvelope(route().toGeoPath(), metrics(), envelope());
   }
 
   [[maybe_unused]] void ElevationChartItem::applyEnvelopeCorrection() noexcept

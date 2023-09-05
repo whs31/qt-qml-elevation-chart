@@ -10,6 +10,7 @@
 #include <vector>
 #include <QtCore/QObject>
 #include <QtCore/QFutureWatcher>
+#include <QtCore/QPointF>
 #include <QtPositioning/QGeoPath>
 #include "types/elevationpoint.h"
 #include "types/intersectionpoint.h"
@@ -23,16 +24,16 @@ namespace ElevationChart
 {
   class Researcher : public QObject
   {
-    struct EnvelopeResult
-    {
-      Route route;
-      vector<ElevationPoint> boundPolygon;
-    };
-
     Q_OBJECT
     Q_PROPERTY(bool busy READ busy NOTIFY busyChanged FINAL)
 
     public:
+      struct EnvelopeResult
+      {
+        Route route;
+        vector<ElevationPoint> boundPolygon;
+      };
+
       explicit Researcher(QObject* parent = nullptr);
 
       [[nodiscard]] bool busy() const;
@@ -51,6 +52,8 @@ namespace ElevationChart
     private:
       auto fillProfile(const QList<QGeoCoordinate>& list, const QGeoPath& path) -> vector<IntersectionPoint>;
       auto createRawGroundPath(const QGeoPath& path) -> vector<IntersectionPoint>;
+
+      static float angle3point(QPointF a, QPointF b, QPointF c);
 
     private:
       QFutureWatcher<void> m_watcher;
