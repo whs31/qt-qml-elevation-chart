@@ -78,7 +78,7 @@ Rectangle {
                     accent: light_theme ? Catpuccin.latte.text.hex : Catpuccin.mocha.text.hex
                     warn: light_theme ? Catpuccin.latte.yellow.hex : Catpuccin.mocha.yellow.hex
                     error: light_theme ? Catpuccin.latte.maroon.hex : Catpuccin.mocha.maroon.hex
-                    info: light_theme ? Catpuccin.latte.blue.hex : Catpuccin.mocha.blue.hex
+                    info: timer.f ? "transparent" : light_theme ? Catpuccin.latte.blue.hex : Catpuccin.mocha.blue.hex
 
                     Behavior on background { ColorAnimation { easing.type: Easing.InOutQuad } }
                     Behavior on foreground { ColorAnimation { easing.type: Easing.InOutQuad } }
@@ -87,7 +87,16 @@ Rectangle {
                     Behavior on accent { ColorAnimation { easing.type: Easing.InOutQuad } }
                     Behavior on warn { ColorAnimation { easing.type: Easing.InOutQuad } }
                     Behavior on error { ColorAnimation { easing.type: Easing.InOutQuad } }
-                    Behavior on info { ColorAnimation { easing.type: Easing.InOutQuad } }
+                    Behavior on info { ColorAnimation { easing.type: Easing.InOutQuad; duration: 500 } }
+                }
+
+                Timer {
+                    id: timer
+                    property bool f: false
+                    repeat: true
+                    running: true
+                    interval: 500
+                    onTriggered: f = !f
                 }
 
                 //Component.onCompleted: ElevationChartCXXAPI.setSource(impl)
@@ -250,7 +259,7 @@ Rectangle {
                     color: impl.currentBar === 1 ? impl.palette.background : impl.palette.foreground
                 }
 
-                Material.background: impl.currentBar === 1 ? impl.palette.info : impl.palette.overlay2
+                Material.background: impl.currentBar === 1 ? impl.palette.error : impl.palette.overlay2
 
                 onPressed: {
                     if(impl.currentBar !== 1)

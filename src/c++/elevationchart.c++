@@ -9,7 +9,7 @@
 #include <QtConcurrent/QtConcurrent>
 #include <LPVL/Utils>
 #include <LPVL/Materials/FadingGradient>
-#include "scenegraph/envelopeshader.h"
+//#include "scenegraph/envelopeshader.h" // deprecated. maybe in future will be reworked.
 
 #define in :
 
@@ -129,19 +129,13 @@ namespace ElevationChart
     tree()[IntersectionsRouteNode] = LPVL::utils::createSimpleGeometryNode(palette().error(), QSGGeometry::DrawLines, LPVL::utils::GeometryAndMaterial, ROUTE_LINE_WIDTH);
     tree()[EnvelopeNode] = LPVL::utils::createSimpleGeometryNode(QColor(palette().info().red(), palette().info().green(), palette().info().blue(), ENVELOPE_NODE_OPACITY), QSGGeometry::DrawLineStrip, LPVL::utils::GeometryAndMaterial, METRICS_LINE_WIDTH);
     tree()[EnvelopePointNode] = LPVL::utils::createSimpleGeometryNode(QColor(palette().info().red(), palette().info().green(), palette().info().blue(), ENVELOPE_NODE_OPACITY), QSGGeometry::DrawPoints, LPVL::utils::GeometryAndMaterial, METRICS_ROUNDING_WIDTH);
-    tree()[CorridorNode] = LPVL::utils::createSimpleGeometryNode(QColor(palette().info().red(), palette().info().green(), palette().info().blue(), CORRIDOR_NODE_OPACITY), OpenGLDrawMode::DrawQuadStrip, LPVL::utils::EmptyNode, METRICS_LINE_WIDTH);
+    tree()[CorridorNode] = LPVL::utils::createSimpleGeometryNode(QColor(palette().info().red(), palette().info().green(), palette().info().blue(), CORRIDOR_NODE_OPACITY), OpenGLDrawMode::DrawQuadStrip, LPVL::utils::GeometryAndMaterial, METRICS_LINE_WIDTH);
 
     tree()[IntersectionsNode]->setMaterial(LPVL::FadingGradientShader::createMaterial());
     tree()[IntersectionsNode]->setGeometry(new QSGGeometry(QSGGeometry::defaultAttributes_TexturedPoint2D(), 0, 0, QSGGeometry::UnsignedIntType));
     tree()[IntersectionsNode]->setFlags(QSGNode::OwnsGeometry | QSGNode::OwnsMaterial);
     tree()[IntersectionsNode]->material()->setFlag(QSGMaterial::Blending);
     tree()[IntersectionsNode]->geometry()->setDrawingMode(OpenGLDrawMode::DrawQuads);
-
-    tree()[CorridorNode]->setMaterial(GLSL::EnvelopeShader::createMaterial());
-    tree()[CorridorNode]->setGeometry(new QSGGeometry(QSGGeometry::defaultAttributes_TexturedPoint2D(), 0, 0, QSGGeometry::UnsignedIntType));
-    tree()[CorridorNode]->setFlags(QSGNode::OwnsGeometry | QSGNode::OwnsMaterial);
-    tree()[CorridorNode]->material()->setFlag(QSGMaterial::Blending);
-    tree()[CorridorNode]->geometry()->setDrawingMode(OpenGLDrawMode::DrawQuadStrip);
 
     for(const auto&[key, value] : tree())
       node->appendChildNode(value);
@@ -158,7 +152,7 @@ namespace ElevationChart
     dynamic_cast<QSGFlatColorMaterial*>(tree()[IntersectionsRouteNode]->material())->setColor(palette().error());
     dynamic_cast<QSGFlatColorMaterial*>(tree()[EnvelopeNode]->material())->setColor(QColor(palette().info().red(), palette().info().green(), palette().info().blue(), ENVELOPE_NODE_OPACITY));
     dynamic_cast<QSGFlatColorMaterial*>(tree()[EnvelopePointNode]->material())->setColor(QColor(palette().info().red(), palette().info().green(), palette().info().blue(), ENVELOPE_NODE_OPACITY));
-    dynamic_cast<QSGSimpleMaterial<State>*>(tree()[CorridorNode]->material())->state()->color = QColor(palette().info().red(), palette().info().green(), palette().info().blue(), CORRIDOR_NODE_OPACITY);
+    dynamic_cast<QSGFlatColorMaterial*>(tree()[CorridorNode]->material())->setColor(QColor(palette().info().red(), palette().info().green(), palette().info().blue(), CORRIDOR_NODE_OPACITY));
   }
 
   void ElevationChartItem::drawCall(QSGNode* node)
@@ -169,7 +163,7 @@ namespace ElevationChart
     this->handleMetricsNode();
     this->handleIntersectionsNode();
     this->handle2nodes(tree()[EnvelopeNode]->geometry(), tree()[EnvelopePointNode]->geometry(), m_envelopePathVec, m_envelopePathVec.empty());
-    this->handleCorridorNode();
+    this->handle(tree()[CorridorNode]->geometry(), m_envelopeCorridorVec, m_envelopeCorridorVec.empty());
   }
 
   void ElevationChartItem::updateProfile() noexcept
@@ -393,33 +387,6 @@ namespace ElevationChart
 
     for(size_t i = 0; i < gl_x.size(); i++)
       geometry2->vertexDataAsPoint2D()[i] = gl_x.at(i);
-  }
-
-  void ElevationChartItem::handleCorridorNode() noexcept
-  {
-    auto geometry = tree()[CorridorNode]->geometry();
-
-    if(m_envelopeCorridorVec.empty())
-    {
-      geometry->allocate(0);
-      return;
-    }
-
-    // finding min max for gradient trickery
-    auto comp = [](const ElevationPoint& a, const ElevationPoint& b){ return a.elevation() < b.elevation(); };
-    auto mm = std::minmax_element(m_envelopeCorridorVec.cbegin(), m_envelopeCorridorVec.cend(), comp);
-    const float delta = std::abs(mm.second->elevation() - mm.first->elevation());
-
-    vector<QSGGeometry::TexturedPoint2D> gl;
-    for(const auto& point in m_envelopeCorridorVec)
-    {
-      auto p = toPixel(point);
-      gl.emplace_back(QSGGeometry::TexturedPoint2D({p.x, p.y, static_cast<float>(p.x / width()), (point.elevation() - mm.first->elevation()) / delta}));
-    }
-
-    geometry->allocate(static_cast<int>(gl.size()));
-    for(size_t i = 0; i < gl.size(); i++)
-      geometry->vertexDataAsTexturedPoint2D()[i] = gl[i];
   }
 
   void ElevationChartItem::handle(QSGGeometry* geometry, const vector<ElevationPoint>& vec, bool abort_condition)

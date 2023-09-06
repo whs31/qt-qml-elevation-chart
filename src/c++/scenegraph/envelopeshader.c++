@@ -29,6 +29,13 @@ namespace ElevationChart::GLSL
   }
 
   QList<QByteArray> EnvelopeShader::attributes() const { return QList<QByteArray>() << "aVertex" << "aTexCoord"; }
-  void EnvelopeShader::updateState(const State* state, const State*) { program()->setUniformValue(id_color, state->color); }
-  void EnvelopeShader::resolveUniforms() { id_color = program()->uniformLocation("color"); }
+  void EnvelopeShader::updateState(const State* state, const State*)
+  {
+    program()->setUniformValue(id_color, state->color);
+  }
+  void EnvelopeShader::resolveUniforms()
+  {
+    id_color = program()->uniformLocation("color");
+    time = program()->uniformLocation("time");
+  }
 } // ElevationChart::GLSL

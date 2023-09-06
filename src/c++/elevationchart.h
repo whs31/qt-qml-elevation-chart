@@ -140,7 +140,6 @@ namespace ElevationChart
       void handleProfileNode() noexcept;
       void handleMetricsNode() noexcept;
       void handleIntersectionsNode() noexcept;
-      void handleCorridorNode() noexcept;
 
       void handle(QSGGeometry* geometry, const vector<ElevationPoint>& vec, bool abort_condition = false);
       void handle2nodes(QSGGeometry* geometry1, QSGGeometry* geometry2, const vector<ElevationPoint>& vec, bool abort_condition = false);

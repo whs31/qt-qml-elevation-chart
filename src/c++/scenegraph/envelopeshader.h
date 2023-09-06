@@ -21,5 +21,6 @@ namespace ElevationChart::GLSL
 
     private:
       int id_color;
+      int time;
   };
 } // ElevationChart::GLSL
