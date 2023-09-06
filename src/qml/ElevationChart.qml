@@ -78,7 +78,8 @@ Rectangle {
                     accent: light_theme ? Catpuccin.latte.text.hex : Catpuccin.mocha.text.hex
                     warn: light_theme ? Catpuccin.latte.yellow.hex : Catpuccin.mocha.yellow.hex
                     error: light_theme ? Catpuccin.latte.maroon.hex : Catpuccin.mocha.maroon.hex
-                    info: timer.f ? "transparent" : light_theme ? Catpuccin.latte.blue.hex : Catpuccin.mocha.blue.hex
+                    info: light_theme ? Catpuccin.latte.blue.hex : Catpuccin.mocha.blue.hex
+                    corridor: timer.f ? impl.mixAlpha(light_theme ? Catpuccin.latte.teal.hex : Catpuccin.mocha.teal.hex, 0.3) : light_theme ? Catpuccin.latte.blue.hex : Catpuccin.mocha.blue.hex
 
                     Behavior on background { ColorAnimation { easing.type: Easing.InOutQuad } }
                     Behavior on foreground { ColorAnimation { easing.type: Easing.InOutQuad } }
@@ -87,7 +88,8 @@ Rectangle {
                     Behavior on accent { ColorAnimation { easing.type: Easing.InOutQuad } }
                     Behavior on warn { ColorAnimation { easing.type: Easing.InOutQuad } }
                     Behavior on error { ColorAnimation { easing.type: Easing.InOutQuad } }
-                    Behavior on info { ColorAnimation { easing.type: Easing.InOutQuad; duration: 500 } }
+                    Behavior on info { ColorAnimation { easing.type: Easing.InOutQuad } }
+                    Behavior on corridor { ColorAnimation { easing.type: Easing.InOutQuad; duration: 500 } }
                 }
 
                 Timer {

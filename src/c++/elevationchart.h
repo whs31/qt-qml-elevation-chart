@@ -8,8 +8,8 @@
 #include <map>
 #include <QtCore/QPointF>
 #include <QtQuick/QSGGeometry>
-#include <LPVL/BasicPalette>
 #include <LPVL/ScenegraphObject>
+#include "types/palette.h"
 #include "types/route.h"
 #include "types/bounds.h"
 #include "types/metrics.h"
@@ -29,7 +29,7 @@ namespace ElevationChart
   class ElevationChartItem : public LPVL::ScenegraphObject
   {
     Q_OBJECT
-    Q_PROPERTY(LPVL::BasicPalette palette READ palette WRITE setPalette NOTIFY paletteChanged FINAL)
+    Q_PROPERTY(ElevationChart::Palette palette READ palette WRITE setPalette NOTIFY paletteChanged FINAL)
     Q_PROPERTY(ElevationChart::Bounds bounds READ bounds WRITE setBounds NOTIFY boundsChanged)
     Q_PROPERTY(ElevationChart::Route route READ route WRITE setRoute NOTIFY routeChanged FINAL)
     Q_PROPERTY(ElevationChart::RouteModel* model READ model CONSTANT FINAL)
@@ -88,7 +88,7 @@ namespace ElevationChart
 
       [[nodiscard]] Researcher* researcher() const;
 
-      [[nodiscard]] LPVL::BasicPalette palette() const; void setPalette(LPVL::BasicPalette);
+      [[nodiscard]] Palette palette() const;            void setPalette(Palette);
       [[nodiscard]] Bounds bounds() const;              void setBounds(Bounds);
       [[nodiscard]] Route route() const;                void setRoute(const Route&);
       [[nodiscard]] RouteModel* model() const;
@@ -109,6 +109,8 @@ namespace ElevationChart
       Q_INVOKABLE [[maybe_unused]] void applyMetricsCorrection() noexcept;
       Q_INVOKABLE [[maybe_unused]] void estimateEnvelope() const noexcept;
       Q_INVOKABLE [[maybe_unused]] void applyEnvelopeCorrection() noexcept;
+
+      Q_INVOKABLE static QColor mixAlpha(QColor, float a) noexcept;
 
     signals:
       void paletteChanged();
@@ -156,7 +158,7 @@ namespace ElevationChart
       map<NodeTypes, QSGGeometryNode*> m_tree;
 
     private:
-      LPVL::BasicPalette m_palette;
+      Palette m_palette;
       Researcher* m_researcher;
       Bounds m_bounds;
       bool m_missing_tiles;

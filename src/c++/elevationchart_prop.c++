@@ -17,8 +17,8 @@ namespace ElevationChart
    * </table>
    * \see LPVL::BasicPalette
    */
-  LPVL::BasicPalette ElevationChartItem::palette() const { return m_palette; }
-  void ElevationChartItem::setPalette(LPVL::BasicPalette x) {
+  Palette ElevationChartItem::palette() const { return m_palette; }
+  void ElevationChartItem::setPalette(Palette x) {
     m_palette = std::move(x);
     emit paletteChanged();
 

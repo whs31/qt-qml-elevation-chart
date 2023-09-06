@@ -10,25 +10,9 @@
 #include <iterator>
 #include <QtConcurrent/QtConcurrent>
 #include <DEM/Algorithms>
+#include "internal/definitions.h"
 
 using std::deque;
-
-#define in :
-#define CONCURRENT_RUN QFuture<void> future = QtConcurrent::run(
-#define CONCURRENT_ARGS (){ QFuture<void> future_priv = QtConcurrent::run(
-#define CONCURRENT_RUN_START (){
-
-#define CONCURRENT_RUN_START_2(arg1, arg2) QFuture<void> future = QtConcurrent::run([arg1, arg2](){ \
-                                    QFuture<void> future_priv = QtConcurrent::run([arg1, arg2](){
-#define CONCURRENT_RUN_START_3(arg1, arg2, arg3) QFuture<void> future = QtConcurrent::run([arg1, arg2, arg3](){ \
-                                    QFuture<void> future_priv = QtConcurrent::run([arg1, arg2, arg3](){
-
-#define CONCURRENT_RUN_START_4(arg1, arg2, arg3, arg4) QFuture<void> future = QtConcurrent::run([arg1, arg2, arg3, arg4](){ \
-                                    QFuture<void> future_priv = QtConcurrent::run([arg1, arg2, arg3, arg4](){
-
-#define CONCURRENT_RUN_END });});
-#define CONCURRENT_RUN_END_WATCHER(watcher) CONCURRENT_RUN_END \
-                                            watcher.setFuture(future);
 
 constexpr static float SCAN_STEP = 0.5; // Шаг сканирования земной поверхности.
 constexpr static float BOUND_RATE_ANGLE = 5;
