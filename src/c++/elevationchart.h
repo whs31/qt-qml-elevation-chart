@@ -51,6 +51,8 @@ namespace ElevationChart
     constexpr static const float ROUTE_LINE_WIDTH = 5.0f;         ///< Ширина линии пути для отрисовки (px).
     constexpr static const float METRICS_LINE_WIDTH = 3.0f;       ///< Ширина линии пути, скорректированного по ЛТХ для отрисовки (px).
     constexpr static const float METRICS_ROUNDING_WIDTH = 8.0f;   ///< Размер точек для сглаживания ломаной на пути ЛТХ (px).
+    constexpr static uint8_t ENVELOPE_NODE_OPACITY = 100;
+    constexpr static uint8_t CORRIDOR_NODE_OPACITY = 50;
 
     enum NodeTypes
     {
@@ -138,6 +140,7 @@ namespace ElevationChart
       void handleProfileNode() noexcept;
       void handleMetricsNode() noexcept;
       void handleIntersectionsNode() noexcept;
+      void handleCorridorNode() noexcept;
 
       void handle(QSGGeometry* geometry, const vector<ElevationPoint>& vec, bool abort_condition = false);
       void handle2nodes(QSGGeometry* geometry1, QSGGeometry* geometry2, const vector<ElevationPoint>& vec, bool abort_condition = false);
