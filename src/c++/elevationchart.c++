@@ -65,6 +65,8 @@ namespace ElevationChart
     qRegisterMetaType<ElevationChartItem*>("ChartItem*");
     qRegisterMetaType<vector<ElevationPoint>>("vector<ElevationPoint>");
 
+    researcher()->setOptimizeEnvelope(true);
+
     connect(model(), &RouteModel::requireRebuild, this, [this](int index, float new_altitude){
       m_route.at(index).setAltitude(new_altitude);
       emit routeChanged();
