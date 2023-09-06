@@ -9,6 +9,7 @@
 #include <QtConcurrent/QtConcurrent>
 #include <LPVL/Utils>
 #include <LPVL/Materials/FadingGradient>
+#include "scenegraph/envelopeshader.h"
 
 #define in :
 
@@ -136,7 +137,7 @@ namespace ElevationChart
     tree()[IntersectionsNode]->material()->setFlag(QSGMaterial::Blending);
     tree()[IntersectionsNode]->geometry()->setDrawingMode(OpenGLDrawMode::DrawQuads);
 
-    tree()[CorridorNode]->setMaterial(LPVL::FadingGradientShader::createMaterial());
+    tree()[CorridorNode]->setMaterial(GLSL::EnvelopeShader::createMaterial());
     tree()[CorridorNode]->setGeometry(new QSGGeometry(QSGGeometry::defaultAttributes_TexturedPoint2D(), 0, 0, QSGGeometry::UnsignedIntType));
     tree()[CorridorNode]->setFlags(QSGNode::OwnsGeometry | QSGNode::OwnsMaterial);
     tree()[CorridorNode]->material()->setFlag(QSGMaterial::Blending);
@@ -405,16 +406,15 @@ namespace ElevationChart
     }
 
     // finding min max for gradient trickery
-    auto comp = [](const ElevationPoint& a, const ElevationPoint& b){ return a.elevation() > b.elevation(); };
+    auto comp = [](const ElevationPoint& a, const ElevationPoint& b){ return a.elevation() < b.elevation(); };
     auto mm = std::minmax_element(m_envelopeCorridorVec.cbegin(), m_envelopeCorridorVec.cend(), comp);
-    auto min = toPixelY(mm.first->elevation(), static_cast<float>(height()));
-    auto delta = toPixelY(mm.second->elevation(), static_cast<float>(height())) - min;
+    const float delta = std::abs(mm.second->elevation() - mm.first->elevation());
 
     vector<QSGGeometry::TexturedPoint2D> gl;
     for(const auto& point in m_envelopeCorridorVec)
     {
       auto p = toPixel(point);
-      gl.emplace_back(QSGGeometry::TexturedPoint2D({p.x, p.y, static_cast<float>(p.x / width()), static_cast<float>((p.y - min) / delta)}));
+      gl.emplace_back(QSGGeometry::TexturedPoint2D({p.x, p.y, static_cast<float>(p.x / width()), (point.elevation() - mm.first->elevation()) / delta}));
     }
 
     geometry->allocate(static_cast<int>(gl.size()));

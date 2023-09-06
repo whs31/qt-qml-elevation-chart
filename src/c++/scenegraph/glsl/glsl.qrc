@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/elevation-chart">
+        <file>envelope.vert</file>
+        <file>envelope.frag</file>
+    </qresource>
+</RCC>
