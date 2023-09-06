@@ -80,6 +80,7 @@ Rectangle {
                     warn: light_theme ? Catpuccin.latte.yellow.hex : Catpuccin.mocha.yellow.hex
                     error: light_theme ? Catpuccin.latte.maroon.hex : Catpuccin.mocha.maroon.hex
                     info: light_theme ? Catpuccin.latte.blue.hex : Catpuccin.mocha.blue.hex
+                    uav: light_theme ? Catpuccin.latte.rosewater.hex : Catpuccin.mocha.rosewater.hex
                     corridor: timer.f ? impl.mixAlpha(light_theme ? Catpuccin.latte.teal.hex : Catpuccin.mocha.teal.hex, 0.3) : light_theme ? Catpuccin.latte.blue.hex : Catpuccin.mocha.blue.hex
 
                     Behavior on background { ColorAnimation { easing.type: Easing.InOutQuad } }
@@ -90,6 +91,7 @@ Rectangle {
                     Behavior on warn { ColorAnimation { easing.type: Easing.InOutQuad } }
                     Behavior on error { ColorAnimation { easing.type: Easing.InOutQuad } }
                     Behavior on info { ColorAnimation { easing.type: Easing.InOutQuad } }
+                    Behavior on uav { ColorAnimation { easing.type: Easing.InOutQuad } }
                     Behavior on corridor { ColorAnimation { easing.type: Easing.InOutQuad; duration: 500 } }
                 }
 
@@ -114,14 +116,37 @@ Rectangle {
                 }
 
                 RoundButton {
-                    width: 30
-                    height: 30
+                    property bool shown: zoom <= 1.1
+                    opacity: shown ? 1.0 : 0.0
+                    visible: opacity > 0
+                    enabled: visible
+                    width: 40
+                    height: 40
                     x: impl.uavVisualPosition.x - width / 2
                     y: impl.uavVisualPosition.y - height / 2
+                    transform: Scale {
+                        xScale: 1 / zoom
+                        //yScale: 1 / zoom
+                        origin.x: width / 2
+                        origin.y: height / 2
+                    }
+                    icon {
+                        source: "qrc:/elevation-chart/icons/gps.svg"
+                        color: impl.palette.background
+                        width: 40
+                        height: 40
+                    }
+                    layer {
+                        enabled: true
+                        smooth: true
+                        samples: 8
+                    }
+                    rotation: 90 - impl.uavVisualAngle
 
-                    Material.background: impl.palette.info
+                    Material.background: impl.palette.uav
                     Behavior on x { NumberAnimation {} }
                     Behavior on y { NumberAnimation {} }
+                    Behavior on opacity { NumberAnimation { easing.type: Easing.InOutQuad }}
                 }
             }
 

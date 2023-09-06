@@ -49,6 +49,7 @@ namespace ElevationChart
     Q_PROPERTY(int providerType READ providerType CONSTANT FINAL)
 
     Q_PROPERTY(QPointF uavVisualPosition READ uavVisualPosition WRITE setUavVisualPosition NOTIFY uavVisualPositionChanged FINAL)
+    Q_PROPERTY(float uavVisualAngle READ uavVisualAngle WRITE setUavVisualAngle NOTIFY uavVisualAngleChanged FINAL)
 
     constexpr static const float ROUTE_LINE_WIDTH = 5.0f;         ///< Ширина линии пути для отрисовки (px).
     constexpr static const float METRICS_LINE_WIDTH = 3.0f;       ///< Ширина линии пути, скорректированного по ЛТХ для отрисовки (px).
@@ -108,6 +109,7 @@ namespace ElevationChart
       [[nodiscard]] int shrinkMode() const;             void setShrinkMode(int);
       [[nodiscard]] int providerType() const;
       [[nodiscard]] QPointF uavVisualPosition() const;  void setUavVisualPosition(QPointF);
+      [[nodiscard]] float uavVisualAngle() const;       void setUavVisualAngle(float);
 
       Q_INVOKABLE [[maybe_unused]] void applyMetricsCorrection() noexcept;
       Q_INVOKABLE [[maybe_unused]] void estimateEnvelope() const noexcept;
@@ -129,6 +131,7 @@ namespace ElevationChart
       void shrinkModeChanged();
       void allowEnvelopeCorrectionChanged();
       void uavVisualPositionChanged();
+      void uavVisualAngleChanged();
 
       void updateProfileFinished(const vector<ElevationPoint>& profile);
 
@@ -187,6 +190,7 @@ namespace ElevationChart
       QGeoPath m_metrics_path;
       QGeoPath m_envelope_path;
       QPointF m_uav_visual_pos;
+      float m_uav_visual_angle;
   };
 } // ElevationChart
 

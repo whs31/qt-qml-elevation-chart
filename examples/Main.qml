@@ -62,7 +62,7 @@ ApplicationWindow {
                 parent.uavPosition = list[x]
             }
         }
-        Behavior on uavPosition { CoordinateAnimation { } }
+        //Behavior on uavPosition { CoordinateAnimation { } }
     }
 
     Row {

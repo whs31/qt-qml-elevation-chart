@@ -11,13 +11,16 @@ namespace ElevationChart
   {
     Q_GADGET
     Q_PROPERTY(QColor corridor READ corridor WRITE setCorridor FINAL)
+    Q_PROPERTY(QColor uav READ uav WRITE setUav FINAL)
 
     public:
       Palette();
       [[nodiscard]] QColor corridor() const; void setCorridor(const QColor&);
+      [[nodiscard]] QColor uav() const;      void setUav(const QColor&);
 
     private:
       QColor m_corridor;
+      QColor m_uav;
   };
 } // ElevationChart
 
@@ -29,8 +32,12 @@ namespace ElevationChart
   inline Palette::Palette()
     : LPVL::BasicPalette()
     , m_corridor("blue")
+    , m_uav("pink")
   {}
 
   inline QColor Palette::corridor() const { return m_corridor; }
   inline void Palette::setCorridor(const QColor& x) { m_corridor = x; }
+
+  inline QColor Palette::uav() const { return m_uav; }
+  inline void Palette::setUav(const QColor& x) { m_uav = x; }
 } // ElevationChart

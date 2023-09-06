@@ -3,6 +3,8 @@
 //
 
 #include "elevationchart.h"
+#include <cmath>
+#include <QtCore/QtMath>
 
 namespace ElevationChart
 {
@@ -280,7 +282,19 @@ namespace ElevationChart
   void ElevationChartItem::setUavVisualPosition(QPointF x) {
     if(x == m_uav_visual_pos)
       return;
+    QPointF prev = m_uav_visual_pos;
     m_uav_visual_pos = x;
     emit uavVisualPositionChanged();
+
+    this->setUavVisualAngle(static_cast<float>(qRadiansToDegrees(std::atan2(-uavVisualPosition().y() + prev.y(),
+                                                                             uavVisualPosition().x() - prev.x()))));
+  }
+
+  float ElevationChartItem::uavVisualAngle() const { return m_uav_visual_angle; }
+  void ElevationChartItem::setUavVisualAngle(float x) {
+    if(x == m_uav_visual_angle)
+      return;
+    m_uav_visual_angle = x;
+    emit uavVisualAngleChanged();
   }
 } // ElevationChart

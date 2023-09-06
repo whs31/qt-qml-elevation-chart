@@ -52,6 +52,7 @@ namespace ElevationChart
     , m_shrink_mode(ShrinkMode::ShrinkToRouteHeight)
     , m_envelope_route(Route())
     , m_uav_visual_pos(QPointF(0, 0))
+    , m_uav_visual_angle(0)
   {
     switch(providerType())
     {
@@ -276,6 +277,8 @@ namespace ElevationChart
   {
     auto r = route().toGeoPath();
     auto path = r.path();
+    if(path.empty())
+      return;
     float closest_encounter = static_cast<float>(path.front().distanceTo(uavPosition()));
     int index = 0;
     for(int i = 1; i < path.size(); i++)
