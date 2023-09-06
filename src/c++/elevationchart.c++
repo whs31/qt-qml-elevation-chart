@@ -51,6 +51,7 @@ namespace ElevationChart
     , m_bounds(Bounds())
     , m_shrink_mode(ShrinkMode::ShrinkToRouteHeight)
     , m_envelope_route(Route())
+    , m_uav_visual_pos(QPointF(0, 0))
   {
     switch(providerType())
     {
@@ -269,6 +270,25 @@ namespace ElevationChart
     }
     else
       setMatchingMetrics(true);
+  }
+
+  void ElevationChartItem::updateUavVisualPosition() noexcept
+  {
+    auto r = route().toGeoPath();
+    auto path = r.path();
+    float closest_encounter = static_cast<float>(path.front().distanceTo(uavPosition()));
+    int index = 0;
+    for(int i = 1; i < path.size(); i++)
+    {
+      if(path[i].distanceTo(uavPosition()) < closest_encounter)
+      {
+        closest_encounter = static_cast<float>(path[i].distanceTo(uavPosition()));
+        index = i;
+      }
+    }
+
+    this->setUavVisualPosition({ static_cast<float>(width() * (r.length(0, index) + closest_encounter) / r.length(0, r.size() - 1)),
+                                 toPixelY(static_cast<float>(uavPosition().altitude()), bounds().y()) });
   }
 
   void ElevationChartItem::handleBackgroundNode() noexcept

@@ -13,6 +13,7 @@ Rectangle {
     id: ec
     property alias route: impl.route
     property alias palette: impl.palette
+    property alias uavPosition: impl.uavPosition
 
     Material.theme: impl.light_theme ? Material.Light : Material.Dark
     Material.accent: impl.palette.accent
@@ -110,6 +111,17 @@ Rectangle {
                     anchors.fill: parent
                     model: impl.model
                     delegate: Private.ElevationChartPoint { }
+                }
+
+                RoundButton {
+                    width: 30
+                    height: 30
+                    x: impl.uavVisualPosition.x - width / 2
+                    y: impl.uavVisualPosition.y - height / 2
+
+                    Material.background: impl.palette.info
+                    Behavior on x { NumberAnimation {} }
+                    Behavior on y { NumberAnimation {} }
                 }
             }
 

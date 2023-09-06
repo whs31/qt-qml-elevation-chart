@@ -48,6 +48,8 @@ namespace ElevationChart
     Q_PROPERTY(int shrinkMode READ shrinkMode WRITE setShrinkMode NOTIFY shrinkModeChanged FINAL)
     Q_PROPERTY(int providerType READ providerType CONSTANT FINAL)
 
+    Q_PROPERTY(QPointF uavVisualPosition READ uavVisualPosition WRITE setUavVisualPosition NOTIFY uavVisualPositionChanged FINAL)
+
     constexpr static const float ROUTE_LINE_WIDTH = 5.0f;         ///< Ширина линии пути для отрисовки (px).
     constexpr static const float METRICS_LINE_WIDTH = 3.0f;       ///< Ширина линии пути, скорректированного по ЛТХ для отрисовки (px).
     constexpr static const float METRICS_ROUNDING_WIDTH = 8.0f;   ///< Размер точек для сглаживания ломаной на пути ЛТХ (px).
@@ -105,6 +107,7 @@ namespace ElevationChart
 
       [[nodiscard]] int shrinkMode() const;             void setShrinkMode(int);
       [[nodiscard]] int providerType() const;
+      [[nodiscard]] QPointF uavVisualPosition() const;  void setUavVisualPosition(QPointF);
 
       Q_INVOKABLE [[maybe_unused]] void applyMetricsCorrection() noexcept;
       Q_INVOKABLE [[maybe_unused]] void estimateEnvelope() const noexcept;
@@ -125,6 +128,7 @@ namespace ElevationChart
       void envelopeChanged();
       void shrinkModeChanged();
       void allowEnvelopeCorrectionChanged();
+      void uavVisualPositionChanged();
 
       void updateProfileFinished(const vector<ElevationPoint>& profile);
 
@@ -137,6 +141,7 @@ namespace ElevationChart
       Q_SLOT void receiveProfile(const vector<ElevationPoint>& profile) noexcept;
       Q_SLOT void updateBounds() noexcept;
       Q_SLOT void updateMetrics() noexcept;
+      void updateUavVisualPosition() noexcept;
 
       void handleBackgroundNode() noexcept;
       void handleProfileNode() noexcept;
@@ -181,6 +186,7 @@ namespace ElevationChart
       ProviderType m_provider_type;
       QGeoPath m_metrics_path;
       QGeoPath m_envelope_path;
+      QPointF m_uav_visual_pos;
   };
 } // ElevationChart
 

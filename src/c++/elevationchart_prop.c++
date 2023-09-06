@@ -200,6 +200,8 @@ namespace ElevationChart
       return;
     m_uav_position = x;
     emit uavPositionChanged();
+
+    this->updateUavVisualPosition();
   }
 
   /**
@@ -273,4 +275,12 @@ namespace ElevationChart
   Researcher* ElevationChartItem::researcher() const { return m_researcher; }
 
   bool ElevationChartItem::allowEnvelopeCorrection() const { return m_envelope_route.valid(); }
+
+  QPointF ElevationChartItem::uavVisualPosition() const { return m_uav_visual_pos; }
+  void ElevationChartItem::setUavVisualPosition(QPointF x) {
+    if(x == m_uav_visual_pos)
+      return;
+    m_uav_visual_pos = x;
+    emit uavVisualPositionChanged();
+  }
 } // ElevationChart

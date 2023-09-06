@@ -38,6 +38,31 @@ ApplicationWindow {
             QtPositioning.coordinate(60.1, 30.08, 55),
             QtPositioning.coordinate(60.1, 30.1, 70)]))
             : Types.route(QtPositioning.path())
+
+        uavPosition: QtPositioning.coordinate(60, 30.01, 100)
+        Timer {
+            property int x: 0
+            property var list: [QtPositioning.coordinate(60, 30.01, 100),
+                QtPositioning.coordinate(testing_route, 30.01, 50),
+                QtPositioning.coordinate(60.04, 30.01, 120),
+                QtPositioning.coordinate(60.06, 30.01, 70),
+                QtPositioning.coordinate(60.08, 30.01, 69),
+                QtPositioning.coordinate(60.1, 30.02, 56),
+                QtPositioning.coordinate(60.1, 30.04, 110),
+                QtPositioning.coordinate(60.1, 30.06, 45),
+                QtPositioning.coordinate(60.1, 30.08, 55),
+                QtPositioning.coordinate(60.1, 30.1, 70)]
+            running: true
+            repeat: true
+            interval: 1000
+            onTriggered: {
+                x++
+                if(x > 9)
+                    x = 0
+                parent.uavPosition = list[x]
+            }
+        }
+        Behavior on uavPosition { CoordinateAnimation { } }
     }
 
     Row {
