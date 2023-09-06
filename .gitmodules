@@ -1,9 +1,6 @@
 [submodule "libs/DEM"]
 	path = libs/DEM
-	url = ../../developers/map/dem.git
+	url = ../map/dem.git
 [submodule "libs/LPVL"]
 	path = libs/LPVL
-	url = https://github.com/whs31/LPVL.git
-[submodule "libs/libs/LPVL"]
-	path = libs/libs/LPVL
 	url = https://github.com/whs31/LPVL.git
