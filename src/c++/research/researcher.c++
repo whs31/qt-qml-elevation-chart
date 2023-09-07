@@ -216,12 +216,12 @@ namespace ElevationChart
             res.route.add(RoutePoint(prev_route_point.toQGeoCoordinate()));
             route_path.push_back(prev_route_point);
 
-            auto it1 = delta_bound.begin();
-            auto it2 = delta_route.begin();
+            auto it1 = delta_bound.cbegin();
+            auto it2 = delta_route.cbegin();
             std::advance(it1, delta_bound.size() - 2);
             std::advance(it2, delta_route.size() - 2);
-            delta_bound.erase(delta_bound.begin(), it1);
-            delta_route.erase(delta_route.begin(), it2);
+            delta_bound.erase(delta_bound.cbegin(), it1);
+            delta_route.erase(delta_route.cbegin(), it2);
 
             delta_bound.pop_back();
             delta_route.pop_back();
@@ -234,12 +234,12 @@ namespace ElevationChart
           res.route.add(RoutePoint(route_point.toQGeoCoordinate()));
           route_path.push_back(route_point);
 
-          auto it1 = delta_bound.begin();
-          auto it2 = delta_route.begin();
+          auto it1 = delta_bound.cbegin();
+          auto it2 = delta_route.cbegin();
           std::advance(it1, delta_bound.size() - 1);
           std::advance(it2, delta_route.size() - 1);
-          delta_bound.erase(delta_bound.begin(), it1);
-          delta_route.erase(delta_route.begin(), it2);
+          delta_bound.erase(delta_bound.cbegin(), it1);
+          delta_route.erase(delta_route.cbegin(), it2);
         }
       }
 
