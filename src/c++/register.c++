@@ -8,10 +8,13 @@
 #include "elevationchart.h"
 #include "elevationchartapi.h"
 
+inline void initResource() { Q_INIT_RESOURCE(elevationChart); Q_INIT_RESOURCE(elevationChartJs); Q_INIT_RESOURCE(elevationChartRc); }
+
 namespace ElevationChart
 {
   void registerQMLTypes() noexcept
   {
+    initResource();
     #if !defined(Q_OS_WIN) && !defined(CUSTOM_DEBUG_OUTPUT)
     #define CUSTOM_DEBUG_OUTPUT
     qSetMessagePattern("[%{time process}] [%{category}] "
@@ -45,7 +48,7 @@ namespace ElevationChart
   Route TypeFactory::route(const QGeoPath& path, const QVector<float>& velocities)
   {
     auto ret = Route(path);
-    ret.setVelocity(vector(velocities.begin(), velocities.end()), 0);
+    ret.setVelocity(vector<float>(velocities.begin(), velocities.end()), 0);
     return ret;
   }
 } // ElevationChart

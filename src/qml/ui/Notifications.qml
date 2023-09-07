@@ -20,7 +20,7 @@ ListView {
         opacity: 0.8
 
         icon {
-            source: "qrc:/elevation-chart/icons/warning.svg"
+            source: "qrc:/elevationChart/icons/warning.svg"
             color: impl.palette.background
         }
 

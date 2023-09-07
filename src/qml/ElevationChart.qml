@@ -7,7 +7,7 @@ import ElevationChartWidget 3.0
 
 import "private" as Private
 import "ui" as UI
-import "qrc:/elevation-chart/catpuccin.js" as Catpuccin
+import "qrc:/elevationChart/catpuccin.js" as Catpuccin
 
 Rectangle {
     id: ec
@@ -22,8 +22,8 @@ Rectangle {
     Material.background: impl.palette.background
     color: impl.palette.background
 
-    FontLoader { id: font_Main; source: "qrc:/elevation-chart/fonts/Overpass.ttf"; }
-    FontLoader { id: font_Mono; source: "qrc:/elevation-chart/fonts/UbuntuMono.ttf"; }
+    FontLoader { id: font_Main; source: "qrc:/elevationChart/fonts/Overpass.ttf"; }
+    FontLoader { id: font_Mono; source: "qrc:/elevationChart/fonts/UbuntuMono.ttf"; }
 
     layer {
         enabled: true
@@ -131,7 +131,7 @@ Rectangle {
                         origin.y: height / 2
                     }
                     icon {
-                        source: "qrc:/elevation-chart/icons/gps.svg"
+                        source: "qrc:/elevationChart/icons/gps.svg"
                         color: impl.palette.background
                         width: 40
                         height: 40
@@ -276,7 +276,7 @@ Rectangle {
                 id: buttonMetrics
                 radius: 4
                 icon {
-                    source: "qrc:/elevation-chart/icons/inspect-graph.svg"
+                    source: "qrc:/elevationChart/icons/inspect-graph.svg"
                     color: impl.currentBar === 0 ? impl.palette.background : impl.palette.foreground
                 }
 
@@ -294,7 +294,7 @@ Rectangle {
                 id: buttonEnvelope
                 radius: 4
                 icon {
-                    source: "qrc:/elevation-chart/icons/envelope.svg"
+                    source: "qrc:/elevationChart/icons/envelope.svg"
                     color: impl.currentBar === 1 ? impl.palette.background : impl.palette.foreground
                 }
 
@@ -312,7 +312,7 @@ Rectangle {
                 id: buttonSettings
                 radius: 4
                 icon {
-                    source: "qrc:/elevation-chart/icons/settings.svg"
+                    source: "qrc:/elevationChart/icons/settings.svg"
                     color: impl.currentBar === 2 ? impl.palette.background : impl.palette.foreground
                 }
 
@@ -348,7 +348,7 @@ Rectangle {
                     pixelSize: 14
                 }
                 icon {
-                    source: "qrc:/elevation-chart/icons/match.svg"
+                    source: "qrc:/elevationChart/icons/match.svg"
                 }
 
                 Material.background: impl.palette.overlay2
@@ -376,7 +376,7 @@ Rectangle {
                     pixelSize: 14
                 }
                 icon {
-                    source: "qrc:/elevation-chart/icons/resize.svg"
+                    source: "qrc:/elevationChart/icons/resize.svg"
                 }
 
                 Material.background: impl.palette.overlay2
@@ -394,7 +394,7 @@ Rectangle {
                     pixelSize: 14
                 }
                 icon {
-                    source: "qrc:/elevation-chart/icons/polyline.svg"
+                    source: "qrc:/elevationChart/icons/polyline.svg"
                 }
 
                 Material.background: impl.palette.overlay2
@@ -411,7 +411,7 @@ Rectangle {
         ColumnLayout {
             Switch {
                 icon {
-                    source: "qqrc:/elevation-chart/icons/label.svg"
+                    source: "qrc:/elevationChart/icons/label.svg"
                 }
                 font {
                     family: mainfont
@@ -427,7 +427,7 @@ Rectangle {
 
             Button {
                 icon {
-                    source: impl.light_theme ? "qrc:/elevation-chart/icons/light.svg" : "qrc:/elevation-chart/icons/dark.svg"
+                    source: impl.light_theme ? "qrc:/elevationChart/icons/light.svg" : "qrc:/elevationChart/icons/dark.svg"
                 }
                 font {
                     family: mainfont

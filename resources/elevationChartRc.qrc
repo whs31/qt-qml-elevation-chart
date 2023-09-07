@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/elevation-chart">
+    <qresource prefix="/elevationChart">
         <file>fonts/Overpass.ttf</file>
         <file>fonts/UbuntuMono.ttf</file>
         <file>icons/resize.svg</file>

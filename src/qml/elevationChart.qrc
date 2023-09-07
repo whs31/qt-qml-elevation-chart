@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/elevation-chart">
+    <qresource prefix="/elevationChart">
         <file>ElevationChart.qml</file>
         <file>private/ElevationChartPoint.qml</file>
         <file>ui/DecimalInput.qml</file>

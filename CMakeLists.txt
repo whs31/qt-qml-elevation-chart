@@ -40,10 +40,10 @@ add_subdirectory(libs/DEM)
 
 if(MAKE_LIBRARY)
     message("Making library...")
-    set(SRC ${EC_CORE} ${EC_CORE_INCLUDE} resources/elevation-chart-rc.qrc src/qml/elevation-chart.qrc src/js/elevation-chart-js.qrc)
+    set(SRC ${EC_CORE} ${EC_CORE_INCLUDE} resources/elevationChartRc.qrc src/qml/elevationChart.qrc src/js/elevationChartJs.qrc)
 else()
     message("Making test executable...")
-    set(SRC ${EC_CORE} ${EC_CORE_INCLUDE} ${EC_EXAMPLES} resources/elevation-chart-rc.qrc src/qml/elevation-chart.qrc src/js/elevation-chart-js.qrc)
+    set(SRC ${EC_CORE} ${EC_CORE_INCLUDE} ${EC_EXAMPLES} resources/elevationChartRc.qrc src/qml/elevationChart.qrc src/js/elevationChartJs.qrc)
 endif()
 
 if(MAKE_LIBRARY)
