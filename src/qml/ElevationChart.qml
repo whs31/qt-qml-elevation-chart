@@ -68,7 +68,7 @@ Rectangle {
                 anchors.fill: parent
                 visible: opacity > 0
                 enabled: visible
-                opacity: impl.route.valid() && !impl.missingTiles ? 1 : 0
+                opacity: impl.routeValid && !impl.missingTiles ? 1 : 0
                 Behavior on opacity { NumberAnimation { } }
 
                 palette {
