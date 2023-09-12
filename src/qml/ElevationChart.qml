@@ -68,7 +68,7 @@ Rectangle {
                 anchors.fill: parent
                 visible: opacity > 0
                 enabled: visible
-                opacity: impl.route.valid() && !impl.missingTiles ? 1 : 0
+                opacity: impl.routeValid && !impl.missingTiles ? 1 : 0
                 Behavior on opacity { NumberAnimation { } }
 
                 palette {
@@ -339,7 +339,7 @@ Rectangle {
             UI.DecimalInput { description: "Горизонтальная скорость"; defaultText: "75.0"; foregroundColor: impl.palette.foreground; action: Action { onTriggered: impl.metrics.fallbackVelocity = parseFloat(source.text) } }
             RoundButton {
                 Layout.fillWidth: true
-                enabled: !impl.matchingMetrics
+                enabled: !impl.matchingMetrics && impl.routeValid
                 text: "Применить коррекцию по ЛТХ"
                 radius: 4
                 font {
@@ -369,6 +369,7 @@ Rectangle {
             RoundButton {
                 Layout.fillWidth: true
                 text: "Вычислить огибающую"
+                enabled: impl.routeValid
                 radius: 4
                 font {
                     family: mainfont

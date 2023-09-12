@@ -4,6 +4,7 @@
 #include <QtPositioning/QGeoPath>
 #include "routepoint.h"
 #include "elevationpoint.h"
+#define invokable Q_INVOKABLE
 
 using std::vector;
 
@@ -18,27 +19,27 @@ namespace ElevationChart
       explicit Route(const QGeoPath& path, float velocity = 0);
       explicit Route(const vector<RoutePoint>& vec);
 
-      Q_INVOKABLE void add(const ElevationChart::RoutePoint& point);
-      Q_INVOKABLE void add(const QGeoCoordinate& coord, float velocity = 0);
-      Q_INVOKABLE void remove(int index);
-      Q_INVOKABLE void remove(const ElevationChart::RoutePoint& point);
-      Q_INVOKABLE void replace(int index, const ElevationChart::RoutePoint& point);
-      Q_INVOKABLE void clear();
+      invokable void add(const ElevationChart::RoutePoint& point);
+      invokable void add(const QGeoCoordinate& coord, float velocity = 0);
+      invokable void remove(int index);
+      invokable void remove(const ElevationChart::RoutePoint& point);
+      invokable void replace(int index, const ElevationChart::RoutePoint& point);
+      invokable void clear();
 
-      Q_INVOKABLE void set(const QGeoPath& path, float velocity = 0);
+      invokable void set(const QGeoPath& path, float velocity = 0);
       void set(const vector<RoutePoint>& vec);
-      Q_INVOKABLE void setVelocity(float velocity);
-      Q_INVOKABLE void setVelocity(const vector<float>& velocities, float fallback = 0);
+      invokable void setVelocity(float velocity);
+      invokable void setVelocity(const vector<float>& velocities, float fallback = 0);
 
-      Q_INVOKABLE [[nodiscard]] QGeoPath toGeoPath() const;
-      Q_INVOKABLE [[nodiscard]] QVariantList toVariantList() const;
+      invokable [[nodiscard]] QGeoPath toGeoPath() const;
+      invokable [[nodiscard]] QVariantList toVariantList() const;
       [[nodiscard]] auto toElevationGraph() const -> vector<ElevationPoint>;
       [[nodiscard]] auto velocities() const -> vector<float>;
 
-      Q_INVOKABLE [[nodiscard]] int size() const;
-      Q_INVOKABLE ElevationChart::RoutePoint& at(int index);
-      Q_INVOKABLE [[nodiscard]] bool contains(const RoutePoint& point);
-      Q_INVOKABLE [[nodiscard]] bool valid() const;
+      invokable [[nodiscard]] int size() const;
+      invokable ElevationChart::RoutePoint& at(int index);
+      invokable [[nodiscard]] bool contains(const RoutePoint& point);
+      invokable [[nodiscard]] bool valid() const;
 
 
     public:

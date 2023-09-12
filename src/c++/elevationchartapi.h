@@ -52,7 +52,7 @@ namespace ElevationChart
        * как будет вызвана любая другая функция API (кроме valid).
        * \param item - указатель на объект ChartItem.
        */
-      Q_INVOKABLE void setSource(ElevationChart::ElevationChartItem* item);
+      invokable void setSource(ElevationChart::ElevationChartItem* item);
 
       /**
        * \brief Возвращает <tt>true</tt>, если С++ обертка имеет валидный указатель на объект ChartItem.

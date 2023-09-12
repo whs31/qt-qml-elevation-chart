@@ -155,6 +155,7 @@ namespace ElevationChart
   void ElevationChartItem::setRoute(const Route& x) {
     m_route = x;
     emit routeChanged();
+    emit routeValidChanged();
 
     this->updateProfile();
   }
@@ -297,4 +298,6 @@ namespace ElevationChart
     m_uav_visual_angle = x;
     emit uavVisualAngleChanged();
   }
+
+  bool ElevationChartItem::routeValid() const { return m_route.valid(); }
 } // ElevationChart
