@@ -14,6 +14,8 @@ Rectangle {
     property alias route: impl.route
     property alias palette: impl.palette
     property alias uavPosition: impl.uavPosition
+    property ElevationChartImpl implAlias: impl
+
 
     Material.theme: impl.light_theme ? Material.Light : Material.Dark
     Material.accent: impl.palette.accent

@@ -138,6 +138,12 @@ namespace ElevationChart
 
       void updateProfileFinished(const vector<ElevationPoint>& profile);
 
+      void envelopeAccepted(ElevationChart::Route route);
+      void metricsAccepted(ElevationChart::Route route);
+      void pointAccepted(int index, ElevationChart::RoutePoint point);
+      void fuckingSignal();
+
+
     protected:
       void setupChildNodes(QSGNode* node) final;
       void setupNodeColors(QSGNode* node) final;

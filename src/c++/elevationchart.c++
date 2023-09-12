@@ -69,6 +69,7 @@ namespace ElevationChart
 
     connect(model(), &RouteModel::requireRebuild, this, [this](int index, float new_altitude){
       m_route.at(index).setAltitude(new_altitude);
+      emit pointAccepted(index, m_route.at(index));
       emit routeChanged();
       this->updateBounds();
     });
@@ -102,6 +103,7 @@ namespace ElevationChart
     }
 
     this->setRoute(Route(m_metrics_path, metrics().fallbackVelocity()));
+    emit metricsAccepted(Route(m_metrics_path, metrics().fallbackVelocity()));
     qDebug() << "<elevation-chart> Route is corrected according to flight metrics";
   }
 
@@ -116,6 +118,8 @@ namespace ElevationChart
     qDebug() << "<elevation-chart> Envelope correction requested";
     if(m_envelope_route.valid())
       this->setRoute(m_envelope_route);
+    emit envelopeAccepted(m_envelope_route);
+    emit fuckingSignal();
     m_envelope_route.clear();
     emit allowEnvelopeCorrectionChanged();
     m_envelopeCorridorVec.clear();
