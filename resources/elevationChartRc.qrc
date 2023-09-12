@@ -1,0 +1,17 @@
+<RCC>
+    <qresource prefix="/elevationChart">
+        <file>fonts/Overpass.ttf</file>
+        <file>fonts/UbuntuMono.ttf</file>
+        <file>icons/resize.svg</file>
+        <file>icons/match.svg</file>
+        <file>icons/polyline.svg</file>
+        <file>icons/inspect-graph.svg</file>
+        <file>icons/envelope.svg</file>
+        <file>icons/label.svg</file>
+        <file>icons/settings.svg</file>
+        <file>icons/light.svg</file>
+        <file>icons/dark.svg</file>
+        <file>icons/warning.svg</file>
+        <file>icons/gps.svg</file>
+    </qresource>
+</RCC>

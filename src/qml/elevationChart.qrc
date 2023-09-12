@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/elevationChart">
+        <file>ElevationChart.qml</file>
+        <file>private/ElevationChartPoint.qml</file>
+        <file>ui/DecimalInput.qml</file>
+        <file>ui/CollapsiblePanel.qml</file>
+        <file>ui/Notifications.qml</file>
+        <file>ui/LargeWarning.qml</file>
+    </qresource>
+</RCC>

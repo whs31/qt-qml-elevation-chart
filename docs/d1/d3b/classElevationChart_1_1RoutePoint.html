@@ -1,0 +1,823 @@
+<!-- HTML header for doxygen 1.9.6-->
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ru">
+<head>
+  <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=11" />
+  <meta name="generator" content="Doxygen 1.9.7" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Elevation Chart: Класс RoutePoint</title>
+  <link href="../../tabs.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="../../jquery.js"></script>
+  <script type="text/javascript" src="../../dynsections.js"></script>
+  <script type="text/javascript" src="../../doxygen-awesome-darkmode-toggle.js"></script>
+  <script type="text/javascript" src="../../doxygen-awesome-fragment-copy-button.js"></script>
+  <script type="text/javascript" src="../../doxygen-awesome-paragraph-link.js"></script>
+  <script type="text/javascript" src="../../doxygen-awesome-interactive-toc.js"></script>
+  <script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+  </script>
+  <link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+  <link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+  <link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+  <link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+    <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+      <div id="titlearea">
+        <table cellspacing="0" cellpadding="0">
+          <tbody>
+            <tr id="projectrow">
+              <td id="projectlogo"><img alt="Logo" src="../../logo.png" /></td>
+              <td id="projectalign">
+                <div id="projectname">Elevation Chart<span
+                    id="projectnumber">&#160;3.0.0</span>
+                </div>
+                <div id="projectbrief">Виджет профиля высот</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- end header part --><!-- Создано системой Doxygen 1.9.7 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','Поиск');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('d1/d3b/classElevationChart_1_1RoutePoint.html','../../'); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Загрузка...</div>
+<div class="SRStatus" id="Searching">Поиск...</div>
+<div class="SRStatus" id="NoMatches">Не найдено</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Открытые члены</a> &#124;
+<a href="#properties">Свойства</a> &#124;
+<a href="#pri-attribs">Закрытые данные</a> &#124;
+<a href="../../d3/d03/classElevationChart_1_1RoutePoint-members.html">Полный список членов класса</a>  </div>
+  <div class="headertitle"><div class="title">Класс RoutePoint</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p><code>#include &lt;<a class="el" href="../../d2/d15/routepoint_8h_source.html">routepoint.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Открытые члены</h2></td></tr>
+<tr class="memitem:acc479356509268af0729ad62b17fcbda"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d3b/classElevationChart_1_1RoutePoint.html#acc479356509268af0729ad62b17fcbda">RoutePoint</a> ()</td></tr>
+<tr class="separator:acc479356509268af0729ad62b17fcbda"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9c0f3e065b7e6d8147ccb5f6e7e47be"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d3b/classElevationChart_1_1RoutePoint.html#ae9c0f3e065b7e6d8147ccb5f6e7e47be">RoutePoint</a> (double <a class="el" href="../../d1/d3b/classElevationChart_1_1RoutePoint.html#a336b37ee42086dd8848e89c39af0fea4">latitude</a>, double <a class="el" href="../../d1/d3b/classElevationChart_1_1RoutePoint.html#a6b2179bced5805aee7ac729e08473a00">longitude</a>, float elevation=0, float velocity_ms=0)</td></tr>
+<tr class="separator:ae9c0f3e065b7e6d8147ccb5f6e7e47be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6ff78e581f6079fef03ed7f537c5e89"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d3b/classElevationChart_1_1RoutePoint.html#ac6ff78e581f6079fef03ed7f537c5e89">RoutePoint</a> (const QGeoCoordinate &amp;coord, float velocity_ms=0)</td></tr>
+<tr class="separator:ac6ff78e581f6079fef03ed7f537c5e89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0c34e21b196ec16125b5b71252e5b93"><td class="memItemLeft" align="right" valign="top">QGeoCoordinate&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d3b/classElevationChart_1_1RoutePoint.html#ae0c34e21b196ec16125b5b71252e5b93">coordinate</a> () const</td></tr>
+<tr class="separator:ae0c34e21b196ec16125b5b71252e5b93"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa7171f4e68c1c66edf5a58251030a6c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d3b/classElevationChart_1_1RoutePoint.html#aaa7171f4e68c1c66edf5a58251030a6c">setCoordinate</a> (const QGeoCoordinate &amp;)</td></tr>
+<tr class="separator:aaa7171f4e68c1c66edf5a58251030a6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f99e460a793739de2ef6976b2a034d4"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d3b/classElevationChart_1_1RoutePoint.html#a3f99e460a793739de2ef6976b2a034d4">latitude</a> () const</td></tr>
+<tr class="separator:a3f99e460a793739de2ef6976b2a034d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ecc1e48920ff4ae4d61b4fe5b421040"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d3b/classElevationChart_1_1RoutePoint.html#a5ecc1e48920ff4ae4d61b4fe5b421040">setLatitude</a> (double)</td></tr>
+<tr class="separator:a5ecc1e48920ff4ae4d61b4fe5b421040"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00f3340e5829cf7e97f73d9e174d0a57"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d3b/classElevationChart_1_1RoutePoint.html#a00f3340e5829cf7e97f73d9e174d0a57">longitude</a> () const</td></tr>
+<tr class="separator:a00f3340e5829cf7e97f73d9e174d0a57"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34d7c6faeefcc800e6ef256fd61b2619"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d3b/classElevationChart_1_1RoutePoint.html#a34d7c6faeefcc800e6ef256fd61b2619">setLongitude</a> (double)</td></tr>
+<tr class="separator:a34d7c6faeefcc800e6ef256fd61b2619"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ff140fd42e17896b9d5d38ee7d44a3e"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d3b/classElevationChart_1_1RoutePoint.html#a9ff140fd42e17896b9d5d38ee7d44a3e">altitude</a> () const</td></tr>
+<tr class="separator:a9ff140fd42e17896b9d5d38ee7d44a3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae93e1acece0dcd127a6660467a0678c2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d3b/classElevationChart_1_1RoutePoint.html#ae93e1acece0dcd127a6660467a0678c2">setAltitude</a> (float)</td></tr>
+<tr class="separator:ae93e1acece0dcd127a6660467a0678c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af93b053e52d6ea142476827232a181eb"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d3b/classElevationChart_1_1RoutePoint.html#af93b053e52d6ea142476827232a181eb">velocity</a> () const</td></tr>
+<tr class="separator:af93b053e52d6ea142476827232a181eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c387938b3e853c802a903003903c9a8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d3b/classElevationChart_1_1RoutePoint.html#a0c387938b3e853c802a903003903c9a8">setVelocity</a> (float)</td></tr>
+<tr class="separator:a0c387938b3e853c802a903003903c9a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
+Свойства</h2></td></tr>
+<tr class="memitem:af60b46fadcc538d48eecd470357b0e6d"><td class="memItemLeft" align="right" valign="top">QGeoCoordinate&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d3b/classElevationChart_1_1RoutePoint.html#af60b46fadcc538d48eecd470357b0e6d">coordinate</a></td></tr>
+<tr class="separator:af60b46fadcc538d48eecd470357b0e6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a336b37ee42086dd8848e89c39af0fea4"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d3b/classElevationChart_1_1RoutePoint.html#a336b37ee42086dd8848e89c39af0fea4">latitude</a></td></tr>
+<tr class="separator:a336b37ee42086dd8848e89c39af0fea4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b2179bced5805aee7ac729e08473a00"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d3b/classElevationChart_1_1RoutePoint.html#a6b2179bced5805aee7ac729e08473a00">longitude</a></td></tr>
+<tr class="separator:a6b2179bced5805aee7ac729e08473a00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5394f13c90d234792210e9569cc7aea8"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d3b/classElevationChart_1_1RoutePoint.html#a5394f13c90d234792210e9569cc7aea8">altitude</a></td></tr>
+<tr class="separator:a5394f13c90d234792210e9569cc7aea8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aecfeca1289d00fbe5fc76a8dd5295913"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d3b/classElevationChart_1_1RoutePoint.html#aecfeca1289d00fbe5fc76a8dd5295913">velocity</a></td></tr>
+<tr class="separator:aecfeca1289d00fbe5fc76a8dd5295913"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Закрытые данные</h2></td></tr>
+<tr class="memitem:afba888338c980dcb17c6304ef336402e"><td class="memItemLeft" align="right" valign="top">QGeoCoordinate&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d3b/classElevationChart_1_1RoutePoint.html#afba888338c980dcb17c6304ef336402e">m_coordinate</a></td></tr>
+<tr class="separator:afba888338c980dcb17c6304ef336402e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a903f6c600031d463c61fdc691acdc410"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d3b/classElevationChart_1_1RoutePoint.html#a903f6c600031d463c61fdc691acdc410">m_velocity</a></td></tr>
+<tr class="separator:a903f6c600031d463c61fdc691acdc410"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Подробное описание</h2>
+<div class="textblock"><p>Точка пути <a class="el" href="../../de/d39/classElevationChart_1_1Route.html" title="Набор последовательных точек на карте.">Route</a> на карте. </p>
+<p>Представляет собой объект, хранящий координаты точки, ее высоту и скорость в метрах в секунду.</p>
+<dl class="section note"><dt>Заметки</dt><dd>Класс зарегистрирован как гаджет и может использоваться в качестве Q_PROPERTY как в C++, так и в QML. </dd></dl>
+<dl class="section see"><dt>См. также</dt><dd><a class="el" href="../../de/d39/classElevationChart_1_1Route.html" title="Набор последовательных точек на карте.">Route</a> </dd></dl>
+
+<p class="definition">См. определение в файле <a class="el" href="../../d2/d15/routepoint_8h_source.html">routepoint.h</a> строка <a class="el" href="../../d2/d15/routepoint_8h_source.html#l00008">8</a></p>
+</div><h2 class="groupheader">Конструктор(ы)</h2>
+<a id="acc479356509268af0729ad62b17fcbda" name="acc479356509268af0729ad62b17fcbda"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc479356509268af0729ad62b17fcbda">&#9670;&#160;</a></span>RoutePoint() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d1/d3b/classElevationChart_1_1RoutePoint.html">RoutePoint</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Создает точку с невалидными координатами и нулевой скоростью. </p>
+
+<p class="definition">См. определение в файле <a class="el" href="../../d2/d15/routepoint_8h_source.html">routepoint.h</a> строка <a class="el" href="../../d2/d15/routepoint_8h_source.html#l00052">52</a></p>
+
+</div>
+</div>
+<a id="ae9c0f3e065b7e6d8147ccb5f6e7e47be" name="ae9c0f3e065b7e6d8147ccb5f6e7e47be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9c0f3e065b7e6d8147ccb5f6e7e47be">&#9670;&#160;</a></span>RoutePoint() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d1/d3b/classElevationChart_1_1RoutePoint.html">RoutePoint</a> </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>latitude</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>longitude</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>elevation</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>velocity_ms</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Создает точку с указанными координатами, высотой и скоростью. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">latitude</td><td>- широта точки. </td></tr>
+    <tr><td class="paramname">longitude</td><td>- долгота точки. </td></tr>
+    <tr><td class="paramname">elevation</td><td>- высота точки в метрах. <em>По умолчанию равна нулю.</em> </td></tr>
+    <tr><td class="paramname">velocity_ms</td><td>- скорость точки в метрах в секунду. <em>По умолчанию равна нулю.</em> </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">См. определение в файле <a class="el" href="../../d2/d15/routepoint_8h_source.html">routepoint.h</a> строка <a class="el" href="../../d2/d15/routepoint_8h_source.html#l00064">64</a></p>
+
+</div>
+</div>
+<a id="ac6ff78e581f6079fef03ed7f537c5e89" name="ac6ff78e581f6079fef03ed7f537c5e89"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac6ff78e581f6079fef03ed7f537c5e89">&#9670;&#160;</a></span>RoutePoint() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d1/d3b/classElevationChart_1_1RoutePoint.html">RoutePoint</a> </td>
+          <td>(</td>
+          <td class="paramtype">const QGeoCoordinate &amp;&#160;</td>
+          <td class="paramname"><em>coord</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>velocity_ms</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Создает точку с заданной скоростью из объекта QGeoCoordinate. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">coord</td><td>- координаты, включая высоту в метрах. </td></tr>
+    <tr><td class="paramname">velocity_ms</td><td>- скорость точки в метрах в секунду. <em>По умолчанию равна нулю.</em> </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">См. определение в файле <a class="el" href="../../d2/d15/routepoint_8h_source.html">routepoint.h</a> строка <a class="el" href="../../d2/d15/routepoint_8h_source.html#l00074">74</a></p>
+
+</div>
+</div>
+<h2 class="groupheader">Методы</h2>
+<a id="ae0c34e21b196ec16125b5b71252e5b93" name="ae0c34e21b196ec16125b5b71252e5b93"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0c34e21b196ec16125b5b71252e5b93">&#9670;&#160;</a></span>coordinate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QGeoCoordinate coordinate </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../d2/d15/routepoint_8h_source.html">routepoint.h</a> строка <a class="el" href="../../d2/d15/routepoint_8h_source.html#l00089">89</a></p>
+
+</div>
+</div>
+<a id="aaa7171f4e68c1c66edf5a58251030a6c" name="aaa7171f4e68c1c66edf5a58251030a6c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa7171f4e68c1c66edf5a58251030a6c">&#9670;&#160;</a></span>setCoordinate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void setCoordinate </td>
+          <td>(</td>
+          <td class="paramtype">const QGeoCoordinate &amp;&#160;</td>
+          <td class="paramname"><em>x</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../d2/d15/routepoint_8h_source.html">routepoint.h</a> строка <a class="el" href="../../d2/d15/routepoint_8h_source.html#l00090">90</a></p>
+
+</div>
+</div>
+<a id="a3f99e460a793739de2ef6976b2a034d4" name="a3f99e460a793739de2ef6976b2a034d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f99e460a793739de2ef6976b2a034d4">&#9670;&#160;</a></span>latitude()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double latitude </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../d2/d15/routepoint_8h_source.html">routepoint.h</a> строка <a class="el" href="../../d2/d15/routepoint_8h_source.html#l00102">102</a></p>
+
+</div>
+</div>
+<a id="a5ecc1e48920ff4ae4d61b4fe5b421040" name="a5ecc1e48920ff4ae4d61b4fe5b421040"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ecc1e48920ff4ae4d61b4fe5b421040">&#9670;&#160;</a></span>setLatitude()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void setLatitude </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>x</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../d2/d15/routepoint_8h_source.html">routepoint.h</a> строка <a class="el" href="../../d2/d15/routepoint_8h_source.html#l00103">103</a></p>
+
+</div>
+</div>
+<a id="a00f3340e5829cf7e97f73d9e174d0a57" name="a00f3340e5829cf7e97f73d9e174d0a57"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a00f3340e5829cf7e97f73d9e174d0a57">&#9670;&#160;</a></span>longitude()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double longitude </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../d2/d15/routepoint_8h_source.html">routepoint.h</a> строка <a class="el" href="../../d2/d15/routepoint_8h_source.html#l00115">115</a></p>
+
+</div>
+</div>
+<a id="a34d7c6faeefcc800e6ef256fd61b2619" name="a34d7c6faeefcc800e6ef256fd61b2619"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34d7c6faeefcc800e6ef256fd61b2619">&#9670;&#160;</a></span>setLongitude()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void setLongitude </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>x</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../d2/d15/routepoint_8h_source.html">routepoint.h</a> строка <a class="el" href="../../d2/d15/routepoint_8h_source.html#l00116">116</a></p>
+
+</div>
+</div>
+<a id="a9ff140fd42e17896b9d5d38ee7d44a3e" name="a9ff140fd42e17896b9d5d38ee7d44a3e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ff140fd42e17896b9d5d38ee7d44a3e">&#9670;&#160;</a></span>altitude()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float altitude </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../d2/d15/routepoint_8h_source.html">routepoint.h</a> строка <a class="el" href="../../d2/d15/routepoint_8h_source.html#l00128">128</a></p>
+
+</div>
+</div>
+<a id="ae93e1acece0dcd127a6660467a0678c2" name="ae93e1acece0dcd127a6660467a0678c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae93e1acece0dcd127a6660467a0678c2">&#9670;&#160;</a></span>setAltitude()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void setAltitude </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>x</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../d2/d15/routepoint_8h_source.html">routepoint.h</a> строка <a class="el" href="../../d2/d15/routepoint_8h_source.html#l00129">129</a></p>
+
+</div>
+</div>
+<a id="af93b053e52d6ea142476827232a181eb" name="af93b053e52d6ea142476827232a181eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af93b053e52d6ea142476827232a181eb">&#9670;&#160;</a></span>velocity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float velocity </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../d2/d15/routepoint_8h_source.html">routepoint.h</a> строка <a class="el" href="../../d2/d15/routepoint_8h_source.html#l00141">141</a></p>
+
+</div>
+</div>
+<a id="a0c387938b3e853c802a903003903c9a8" name="a0c387938b3e853c802a903003903c9a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0c387938b3e853c802a903003903c9a8">&#9670;&#160;</a></span>setVelocity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void setVelocity </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>x</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../d2/d15/routepoint_8h_source.html">routepoint.h</a> строка <a class="el" href="../../d2/d15/routepoint_8h_source.html#l00142">142</a></p>
+
+</div>
+</div>
+<h2 class="groupheader">Данные класса</h2>
+<a id="afba888338c980dcb17c6304ef336402e" name="afba888338c980dcb17c6304ef336402e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afba888338c980dcb17c6304ef336402e">&#9670;&#160;</a></span>m_coordinate</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QGeoCoordinate m_coordinate</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../d2/d15/routepoint_8h_source.html">routepoint.h</a> строка <a class="el" href="../../d2/d15/routepoint_8h_source.html#l00029">29</a></p>
+
+</div>
+</div>
+<a id="a903f6c600031d463c61fdc691acdc410" name="a903f6c600031d463c61fdc691acdc410"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a903f6c600031d463c61fdc691acdc410">&#9670;&#160;</a></span>m_velocity</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float m_velocity</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../d2/d15/routepoint_8h_source.html">routepoint.h</a> строка <a class="el" href="../../d2/d15/routepoint_8h_source.html#l00030">30</a></p>
+
+</div>
+</div>
+<h2 class="groupheader">Полный список свойств</h2>
+<a id="af60b46fadcc538d48eecd470357b0e6d" name="af60b46fadcc538d48eecd470357b0e6d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af60b46fadcc538d48eecd470357b0e6d">&#9670;&#160;</a></span>coordinate</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">coordinate</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">read</span><span class="mlabel">write</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Координата точки. </p>
+<p>Представлена в виде QGeoCoordinate. Хранит широту, долготу и высоту в метрах. </p><a class="anchor" id="multi_row"></a>
+<table class="doxtable">
+<caption>Связанные функции</caption>
+<tr>
+<th>Чтение </th><th>Запись </th><th>Оповещение </th></tr>
+<tr>
+<td><em>coordinate</em> </td><td><em>setCoordinate</em></td><td><em>&ndash;</em> </td></tr>
+</table>
+
+<p class="definition">См. определение в файле <a class="el" href="../../d2/d15/routepoint_8h_source.html">routepoint.h</a> строка <a class="el" href="../../d2/d15/routepoint_8h_source.html#l00001">1</a></p>
+
+</div>
+</div>
+<a id="a336b37ee42086dd8848e89c39af0fea4" name="a336b37ee42086dd8848e89c39af0fea4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a336b37ee42086dd8848e89c39af0fea4">&#9670;&#160;</a></span>latitude</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">latitude</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">read</span><span class="mlabel">write</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Широта точки. </p>
+<a class="anchor" id="multi_row"></a>
+<table class="doxtable">
+<caption>Связанные функции</caption>
+<tr>
+<th>Чтение </th><th>Запись </th><th>Оповещение </th></tr>
+<tr>
+<td><em>latitude</em> </td><td><em>setLatitude</em> </td><td><em>&ndash;</em> </td></tr>
+</table>
+
+<p class="definition">См. определение в файле <a class="el" href="../../d2/d15/routepoint_8h_source.html">routepoint.h</a> строка <a class="el" href="../../d2/d15/routepoint_8h_source.html#l00001">1</a></p>
+
+</div>
+</div>
+<a id="a6b2179bced5805aee7ac729e08473a00" name="a6b2179bced5805aee7ac729e08473a00"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b2179bced5805aee7ac729e08473a00">&#9670;&#160;</a></span>longitude</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">longitude</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">read</span><span class="mlabel">write</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Широта точки. </p>
+<a class="anchor" id="multi_row"></a>
+<table class="doxtable">
+<caption>Связанные функции</caption>
+<tr>
+<th>Чтение </th><th>Запись </th><th>Оповещение </th></tr>
+<tr>
+<td><em>longitude</em> </td><td><em>setLongitude</em> </td><td><em>&ndash;</em> </td></tr>
+</table>
+
+<p class="definition">См. определение в файле <a class="el" href="../../d2/d15/routepoint_8h_source.html">routepoint.h</a> строка <a class="el" href="../../d2/d15/routepoint_8h_source.html#l00001">1</a></p>
+
+</div>
+</div>
+<a id="a5394f13c90d234792210e9569cc7aea8" name="a5394f13c90d234792210e9569cc7aea8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5394f13c90d234792210e9569cc7aea8">&#9670;&#160;</a></span>altitude</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">altitude</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">read</span><span class="mlabel">write</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Высота точки в метрах. </p>
+<a class="anchor" id="multi_row"></a>
+<table class="doxtable">
+<caption>Связанные функции</caption>
+<tr>
+<th>Чтение </th><th>Запись </th><th>Оповещение </th></tr>
+<tr>
+<td><em>altitude</em> </td><td><em>setAltitude</em> </td><td><em>&ndash;</em> </td></tr>
+</table>
+
+<p class="definition">См. определение в файле <a class="el" href="../../d2/d15/routepoint_8h_source.html">routepoint.h</a> строка <a class="el" href="../../d2/d15/routepoint_8h_source.html#l00001">1</a></p>
+
+</div>
+</div>
+<a id="aecfeca1289d00fbe5fc76a8dd5295913" name="aecfeca1289d00fbe5fc76a8dd5295913"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aecfeca1289d00fbe5fc76a8dd5295913">&#9670;&#160;</a></span>velocity</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">velocity</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">read</span><span class="mlabel">write</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Скорость в точке в метрах в секунду. </p>
+<a class="anchor" id="multi_row"></a>
+<table class="doxtable">
+<caption>Связанные функции</caption>
+<tr>
+<th>Чтение </th><th>Запись </th><th>Оповещение </th></tr>
+<tr>
+<td><em>velocity</em> </td><td><em>setVelocity</em> </td><td><em>&ndash;</em> </td></tr>
+</table>
+
+<p class="definition">См. определение в файле <a class="el" href="../../d2/d15/routepoint_8h_source.html">routepoint.h</a> строка <a class="el" href="../../d2/d15/routepoint_8h_source.html#l00001">1</a></p>
+
+</div>
+</div>
+<hr/>Объявления и описания членов класса находятся в файле:<ul>
+<li><a class="el" href="../../d2/d15/routepoint_8h_source.html">routepoint.h</a></li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../d6/d7f/namespaceElevationChart.html">ElevationChart</a></li><li class="navelem"><a class="el" href="../../d1/d3b/classElevationChart_1_1RoutePoint.html">RoutePoint</a></li>
+    <li class="footer">Создано системой <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+  </ul>
+</div>
+</body>
+</html>

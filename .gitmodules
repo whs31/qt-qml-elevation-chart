@@ -1,3 +1,6 @@
-[submodule "submodule/RouteTools"]
-	path = submodule/RouteTools
-	url = ../routetools
+[submodule "libs/DEM"]
+	path = libs/DEM
+	url = ../../map/dem.git
+[submodule "libs/LPVL"]
+	path = libs/LPVL
+	url = https://github.com/whs31/LPVL.git

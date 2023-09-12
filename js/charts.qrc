@@ -1,7 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file>ElevationWidget.qml</file>
-        <file>elevation-chart/private/ElevationPoint.qml</file>
-        <file>shared/GUIFreezeIndicator.qml</file>
-    </qresource>
-</RCC>

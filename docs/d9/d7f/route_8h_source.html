@@ -1,0 +1,196 @@
+<!-- HTML header for doxygen 1.9.6-->
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ru">
+<head>
+  <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=11" />
+  <meta name="generator" content="Doxygen 1.9.7" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Elevation Chart: Исходный файл route.h</title>
+  <link href="../../tabs.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="../../jquery.js"></script>
+  <script type="text/javascript" src="../../dynsections.js"></script>
+  <script type="text/javascript" src="../../doxygen-awesome-darkmode-toggle.js"></script>
+  <script type="text/javascript" src="../../doxygen-awesome-fragment-copy-button.js"></script>
+  <script type="text/javascript" src="../../doxygen-awesome-paragraph-link.js"></script>
+  <script type="text/javascript" src="../../doxygen-awesome-interactive-toc.js"></script>
+  <script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+  </script>
+  <link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+  <link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+  <link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+  <link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+    <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+      <div id="titlearea">
+        <table cellspacing="0" cellpadding="0">
+          <tbody>
+            <tr id="projectrow">
+              <td id="projectlogo"><img alt="Logo" src="../../logo.png" /></td>
+              <td id="projectalign">
+                <div id="projectname">Elevation Chart<span
+                    id="projectnumber">&#160;3.0.0</span>
+                </div>
+                <div id="projectbrief">Виджет профиля высот</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- end header part --><!-- Создано системой Doxygen 1.9.7 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','Поиск');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('d9/d7f/route_8h_source.html','../../'); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Загрузка...</div>
+<div class="SRStatus" id="Searching">Поиск...</div>
+<div class="SRStatus" id="NoMatches">Не найдено</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">route.h</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;QtPositioning/QGeoPath&gt;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;routepoint.h&quot;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;elevationpoint.h&quot;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keyword">using </span>std::vector;</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d6/d7f/namespaceElevationChart.html">ElevationChart</a></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>{</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="../../de/d39/classElevationChart_1_1Route.html">   12</a></span>  <span class="keyword">class </span><a class="code hl_class" href="../../de/d39/classElevationChart_1_1Route.html">Route</a></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>  {</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    Q_GADGET</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>      <a class="code hl_function" href="../../de/d39/classElevationChart_1_1Route.html#a3217b23c395387673a26be3c38a27a1c">Route</a>();</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>      <span class="keyword">explicit</span> <a class="code hl_function" href="../../de/d39/classElevationChart_1_1Route.html#a3217b23c395387673a26be3c38a27a1c">Route</a>(<span class="keyword">const</span> QGeoPath&amp; path, <span class="keywordtype">float</span> velocity = 0);</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>      <span class="keyword">explicit</span> <a class="code hl_function" href="../../de/d39/classElevationChart_1_1Route.html#a3217b23c395387673a26be3c38a27a1c">Route</a>(<span class="keyword">const</span> vector&lt;RoutePoint&gt;&amp; vec);</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>      Q_INVOKABLE <span class="keywordtype">void</span> <a class="code hl_function" href="../../de/d39/classElevationChart_1_1Route.html#a7d763bcc9426e7cc6db46e4bb28fc9d3">add</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../d1/d3b/classElevationChart_1_1RoutePoint.html">ElevationChart::RoutePoint</a>&amp; point);</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>      Q_INVOKABLE <span class="keywordtype">void</span> <a class="code hl_function" href="../../de/d39/classElevationChart_1_1Route.html#a7d763bcc9426e7cc6db46e4bb28fc9d3">add</a>(<span class="keyword">const</span> QGeoCoordinate&amp; coord, <span class="keywordtype">float</span> velocity = 0);</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>      Q_INVOKABLE <span class="keywordtype">void</span> <a class="code hl_function" href="../../de/d39/classElevationChart_1_1Route.html#a2ad1aa316f278b2e9fa8121504749652">remove</a>(<span class="keywordtype">int</span> index);</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>      Q_INVOKABLE <span class="keywordtype">void</span> <a class="code hl_function" href="../../de/d39/classElevationChart_1_1Route.html#a2ad1aa316f278b2e9fa8121504749652">remove</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../d1/d3b/classElevationChart_1_1RoutePoint.html">ElevationChart::RoutePoint</a>&amp; point);</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>      Q_INVOKABLE <span class="keywordtype">void</span> <a class="code hl_function" href="../../de/d39/classElevationChart_1_1Route.html#af046a0c133978f10313af64410f445b6">replace</a>(<span class="keywordtype">int</span> index, <span class="keyword">const</span> <a class="code hl_class" href="../../d1/d3b/classElevationChart_1_1RoutePoint.html">ElevationChart::RoutePoint</a>&amp; point);</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>      Q_INVOKABLE <span class="keywordtype">void</span> <a class="code hl_function" href="../../de/d39/classElevationChart_1_1Route.html#ac8bb3912a3ce86b15842e79d0b421204">clear</a>();</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>      Q_INVOKABLE <span class="keywordtype">void</span> <a class="code hl_function" href="../../de/d39/classElevationChart_1_1Route.html#a41b074dbf0e326eebcba52896613a732">set</a>(<span class="keyword">const</span> QGeoPath&amp; path, <span class="keywordtype">float</span> velocity = 0);</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>      <span class="keywordtype">void</span> <a class="code hl_function" href="../../de/d39/classElevationChart_1_1Route.html#a41b074dbf0e326eebcba52896613a732">set</a>(<span class="keyword">const</span> vector&lt;RoutePoint&gt;&amp; vec);</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>      Q_INVOKABLE <span class="keywordtype">void</span> <a class="code hl_function" href="../../de/d39/classElevationChart_1_1Route.html#a1a9ce050c037704e1593eea62867339d">setVelocity</a>(<span class="keywordtype">float</span> velocity);</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>      Q_INVOKABLE <span class="keywordtype">void</span> <a class="code hl_function" href="../../de/d39/classElevationChart_1_1Route.html#a1a9ce050c037704e1593eea62867339d">setVelocity</a>(<span class="keyword">const</span> vector&lt;float&gt;&amp; <a class="code hl_function" href="../../de/d39/classElevationChart_1_1Route.html#a7d7c937c3db3de31637b89220351a1ed">velocities</a>, <span class="keywordtype">float</span> fallback = 0);</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>      Q_INVOKABLE [[nodiscard]] QGeoPath <a class="code hl_function" href="../../de/d39/classElevationChart_1_1Route.html#a2ac0c1be855674fe64bc8dcdad9d1dbc">toGeoPath</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>      Q_INVOKABLE [[nodiscard]] QVariantList <a class="code hl_function" href="../../de/d39/classElevationChart_1_1Route.html#ab14f16812544053a3388d9bbccc2f124">toVariantList</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>      [[nodiscard]] <span class="keyword">auto</span> <a class="code hl_function" href="../../de/d39/classElevationChart_1_1Route.html#a00ee27e4c825100d447083e5ea410895">toElevationGraph</a>() <span class="keyword">const</span> -&gt; vector&lt;ElevationPoint&gt;;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>      [[nodiscard]] <span class="keyword">auto</span> <a class="code hl_function" href="../../de/d39/classElevationChart_1_1Route.html#a7d7c937c3db3de31637b89220351a1ed">velocities</a>() <span class="keyword">const</span> -&gt; vector&lt;float&gt;;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>      Q_INVOKABLE [[nodiscard]] <span class="keywordtype">int</span> <a class="code hl_function" href="../../de/d39/classElevationChart_1_1Route.html#af9593d4a5ff4274efaf429cb4f9e57cc">size</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>      Q_INVOKABLE [[nodiscard]] <a class="code hl_class" href="../../d1/d3b/classElevationChart_1_1RoutePoint.html">RoutePoint</a>&amp; <a class="code hl_function" href="../../de/d39/classElevationChart_1_1Route.html#a78c68b8609f5e4a7aed9e2901e679332">at</a>(<span class="keywordtype">int</span> index);</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>      Q_INVOKABLE [[nodiscard]] <span class="keywordtype">bool</span> <a class="code hl_function" href="../../de/d39/classElevationChart_1_1Route.html#aa415781c7b03016cbc196c4ef5d73971">contains</a>(<span class="keyword">const</span> <a class="code hl_class" href="../../d1/d3b/classElevationChart_1_1RoutePoint.html">RoutePoint</a>&amp; point);</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>      Q_INVOKABLE [[nodiscard]] <span class="keywordtype">bool</span> <a class="code hl_function" href="../../de/d39/classElevationChart_1_1Route.html#a315419f26d3c59fa143b49b90a019049">valid</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>      <span class="keyword">static</span> <a class="code hl_class" href="../../de/d39/classElevationChart_1_1Route.html">Route</a> <a class="code hl_function" href="../../de/d39/classElevationChart_1_1Route.html#af7ed81fe2ab389e64488a4a06f66500b">fromGeoPath</a>(<span class="keyword">const</span> QGeoPath&amp; path, <span class="keywordtype">float</span> velocity = 0);</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>      <span class="keyword">static</span> <a class="code hl_class" href="../../de/d39/classElevationChart_1_1Route.html">Route</a> <a class="code hl_function" href="../../de/d39/classElevationChart_1_1Route.html#a981383732495440769ce54a3a3cfc9e6">fromPointsVector</a>(<span class="keyword">const</span> vector&lt;RoutePoint&gt;&amp; vec);</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>      vector&lt;RoutePoint&gt; m_vec;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  };</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>} <span class="comment">// ElevationChart</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="preprocessor">#include &lt;QtCore/QMetaType&gt;</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>Q_DECLARE_METATYPE(<a class="code hl_class" href="../../de/d39/classElevationChart_1_1Route.html">ElevationChart::Route</a>)</div>
+<div class="ttc" id="aclassElevationChart_1_1RoutePoint_html"><div class="ttname"><a href="../../d1/d3b/classElevationChart_1_1RoutePoint.html">ElevationChart::RoutePoint</a></div><div class="ttdoc">Точка пути Route на карте.</div><div class="ttdef"><b>Definition</b> <a href="../../d2/d15/routepoint_8h_source.html#l00008">routepoint.h:9</a></div></div>
+<div class="ttc" id="aclassElevationChart_1_1Route_html"><div class="ttname"><a href="../../de/d39/classElevationChart_1_1Route.html">ElevationChart::Route</a></div><div class="ttdoc">Набор последовательных точек на карте.</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d7f/route_8h_source.html#l00012">route.h:13</a></div></div>
+<div class="ttc" id="aclassElevationChart_1_1Route_html_a00ee27e4c825100d447083e5ea410895"><div class="ttname"><a href="../../de/d39/classElevationChart_1_1Route.html#a00ee27e4c825100d447083e5ea410895">ElevationChart::Route::toElevationGraph</a></div><div class="ttdeci">auto toElevationGraph() const -&gt; vector&lt; ElevationPoint &gt;</div><div class="ttdoc">Преобразует путь в вектор точек ElevationPoint.</div><div class="ttdef"><b>Definition</b> <a href="../../db/d1c/route_8c_09_09_source.html#l00210">route.c++:210</a></div></div>
+<div class="ttc" id="aclassElevationChart_1_1Route_html_a1a9ce050c037704e1593eea62867339d"><div class="ttname"><a href="../../de/d39/classElevationChart_1_1Route.html#a1a9ce050c037704e1593eea62867339d">ElevationChart::Route::setVelocity</a></div><div class="ttdeci">Q_INVOKABLE void setVelocity(float velocity)</div><div class="ttdoc">Задает константную общую скорость каждой точке в пути.</div><div class="ttdef"><b>Definition</b> <a href="../../db/d1c/route_8c_09_09_source.html#l00112">route.c++:112</a></div></div>
+<div class="ttc" id="aclassElevationChart_1_1Route_html_a2ac0c1be855674fe64bc8dcdad9d1dbc"><div class="ttname"><a href="../../de/d39/classElevationChart_1_1Route.html#a2ac0c1be855674fe64bc8dcdad9d1dbc">ElevationChart::Route::toGeoPath</a></div><div class="ttdeci">Q_INVOKABLE QGeoPath toGeoPath() const</div><div class="ttdoc">Преобразует путь в QGeoPath и возвращает его.</div><div class="ttdef"><b>Definition</b> <a href="../../db/d1c/route_8c_09_09_source.html#l00148">route.c++:148</a></div></div>
+<div class="ttc" id="aclassElevationChart_1_1Route_html_a2ad1aa316f278b2e9fa8121504749652"><div class="ttname"><a href="../../de/d39/classElevationChart_1_1Route.html#a2ad1aa316f278b2e9fa8121504749652">ElevationChart::Route::remove</a></div><div class="ttdeci">Q_INVOKABLE void remove(int index)</div><div class="ttdoc">Удаляет из пути точку по индексу.</div><div class="ttdef"><b>Definition</b> <a href="../../db/d1c/route_8c_09_09_source.html#l00059">route.c++:59</a></div></div>
+<div class="ttc" id="aclassElevationChart_1_1Route_html_a315419f26d3c59fa143b49b90a019049"><div class="ttname"><a href="../../de/d39/classElevationChart_1_1Route.html#a315419f26d3c59fa143b49b90a019049">ElevationChart::Route::valid</a></div><div class="ttdeci">Q_INVOKABLE bool valid() const</div><div class="ttdoc">Возвращает true, если путь корректный.</div><div class="ttdef"><b>Definition</b> <a href="../../db/d1c/route_8c_09_09_source.html#l00191">route.c++:191</a></div></div>
+<div class="ttc" id="aclassElevationChart_1_1Route_html_a3217b23c395387673a26be3c38a27a1c"><div class="ttname"><a href="../../de/d39/classElevationChart_1_1Route.html#a3217b23c395387673a26be3c38a27a1c">ElevationChart::Route::Route</a></div><div class="ttdeci">Route()</div><div class="ttdoc">Создает пустой путь.</div><div class="ttdef"><b>Definition</b> <a href="../../db/d1c/route_8c_09_09_source.html#l00015">route.c++:15</a></div></div>
+<div class="ttc" id="aclassElevationChart_1_1Route_html_a41b074dbf0e326eebcba52896613a732"><div class="ttname"><a href="../../de/d39/classElevationChart_1_1Route.html#a41b074dbf0e326eebcba52896613a732">ElevationChart::Route::set</a></div><div class="ttdeci">Q_INVOKABLE void set(const QGeoPath &amp;path, float velocity=0)</div><div class="ttdoc">Задает путь из QGeoPath с константной скоростью точек.</div><div class="ttdef"><b>Definition</b> <a href="../../db/d1c/route_8c_09_09_source.html#l00095">route.c++:95</a></div></div>
+<div class="ttc" id="aclassElevationChart_1_1Route_html_a78c68b8609f5e4a7aed9e2901e679332"><div class="ttname"><a href="../../de/d39/classElevationChart_1_1Route.html#a78c68b8609f5e4a7aed9e2901e679332">ElevationChart::Route::at</a></div><div class="ttdeci">Q_INVOKABLE RoutePoint &amp; at(int index)</div><div class="ttdoc">Возвращает точку, лежащую по индексу, или пустую точку, если индекс невалидный.</div><div class="ttdef"><b>Definition</b> <a href="../../db/d1c/route_8c_09_09_source.html#l00174">route.c++:174</a></div></div>
+<div class="ttc" id="aclassElevationChart_1_1Route_html_a7d763bcc9426e7cc6db46e4bb28fc9d3"><div class="ttname"><a href="../../de/d39/classElevationChart_1_1Route.html#a7d763bcc9426e7cc6db46e4bb28fc9d3">ElevationChart::Route::add</a></div><div class="ttdeci">Q_INVOKABLE void add(const ElevationChart::RoutePoint &amp;point)</div><div class="ttdoc">Добавляет в конец пути точку.</div><div class="ttdef"><b>Definition</b> <a href="../../db/d1c/route_8c_09_09_source.html#l00044">route.c++:44</a></div></div>
+<div class="ttc" id="aclassElevationChart_1_1Route_html_a7d7c937c3db3de31637b89220351a1ed"><div class="ttname"><a href="../../de/d39/classElevationChart_1_1Route.html#a7d7c937c3db3de31637b89220351a1ed">ElevationChart::Route::velocities</a></div><div class="ttdeci">auto velocities() const -&gt; vector&lt; float &gt;</div><div class="ttdoc">Возвращает массив скоростей всех точек пути.</div><div class="ttdef"><b>Definition</b> <a href="../../db/d1c/route_8c_09_09_source.html#l00232">route.c++:232</a></div></div>
+<div class="ttc" id="aclassElevationChart_1_1Route_html_a981383732495440769ce54a3a3cfc9e6"><div class="ttname"><a href="../../de/d39/classElevationChart_1_1Route.html#a981383732495440769ce54a3a3cfc9e6">ElevationChart::Route::fromPointsVector</a></div><div class="ttdeci">static Route fromPointsVector(const vector&lt; RoutePoint &gt; &amp;vec)</div><div class="ttdoc">Создает путь из данного вектора точек.</div><div class="ttdef"><b>Definition</b> <a href="../../db/d1c/route_8c_09_09_source.html#l00205">route.c++:205</a></div></div>
+<div class="ttc" id="aclassElevationChart_1_1Route_html_aa415781c7b03016cbc196c4ef5d73971"><div class="ttname"><a href="../../de/d39/classElevationChart_1_1Route.html#aa415781c7b03016cbc196c4ef5d73971">ElevationChart::Route::contains</a></div><div class="ttdeci">Q_INVOKABLE bool contains(const RoutePoint &amp;point)</div><div class="ttdoc">Возвращает true, если путь содержит указанную точку.</div><div class="ttdef"><b>Definition</b> <a href="../../db/d1c/route_8c_09_09_source.html#l00180">route.c++:180</a></div></div>
+<div class="ttc" id="aclassElevationChart_1_1Route_html_ab14f16812544053a3388d9bbccc2f124"><div class="ttname"><a href="../../de/d39/classElevationChart_1_1Route.html#ab14f16812544053a3388d9bbccc2f124">ElevationChart::Route::toVariantList</a></div><div class="ttdeci">Q_INVOKABLE QVariantList toVariantList() const</div><div class="ttdoc">Преобразует путь в QVariantList и возвращает его.</div><div class="ttdef"><b>Definition</b> <a href="../../db/d1c/route_8c_09_09_source.html#l00161">route.c++:161</a></div></div>
+<div class="ttc" id="aclassElevationChart_1_1Route_html_ac8bb3912a3ce86b15842e79d0b421204"><div class="ttname"><a href="../../de/d39/classElevationChart_1_1Route.html#ac8bb3912a3ce86b15842e79d0b421204">ElevationChart::Route::clear</a></div><div class="ttdeci">Q_INVOKABLE void clear()</div><div class="ttdoc">Очищает путь.</div><div class="ttdef"><b>Definition</b> <a href="../../db/d1c/route_8c_09_09_source.html#l00086">route.c++:86</a></div></div>
+<div class="ttc" id="aclassElevationChart_1_1Route_html_af046a0c133978f10313af64410f445b6"><div class="ttname"><a href="../../de/d39/classElevationChart_1_1Route.html#af046a0c133978f10313af64410f445b6">ElevationChart::Route::replace</a></div><div class="ttdeci">Q_INVOKABLE void replace(int index, const ElevationChart::RoutePoint &amp;point)</div><div class="ttdoc">Заменяет точку по индексу.</div><div class="ttdef"><b>Definition</b> <a href="../../db/d1c/route_8c_09_09_source.html#l00080">route.c++:80</a></div></div>
+<div class="ttc" id="aclassElevationChart_1_1Route_html_af7ed81fe2ab389e64488a4a06f66500b"><div class="ttname"><a href="../../de/d39/classElevationChart_1_1Route.html#af7ed81fe2ab389e64488a4a06f66500b">ElevationChart::Route::fromGeoPath</a></div><div class="ttdeci">static Route fromGeoPath(const QGeoPath &amp;path, float velocity=0)</div><div class="ttdoc">Создает путь из данного QGeoPath с константной скоростью точек.</div><div class="ttdef"><b>Definition</b> <a href="../../db/d1c/route_8c_09_09_source.html#l00199">route.c++:199</a></div></div>
+<div class="ttc" id="aclassElevationChart_1_1Route_html_af9593d4a5ff4274efaf429cb4f9e57cc"><div class="ttname"><a href="../../de/d39/classElevationChart_1_1Route.html#af9593d4a5ff4274efaf429cb4f9e57cc">ElevationChart::Route::size</a></div><div class="ttdeci">Q_INVOKABLE int size() const</div><div class="ttdoc">Возвращает количество точек в пути.</div><div class="ttdef"><b>Definition</b> <a href="../../db/d1c/route_8c_09_09_source.html#l00141">route.c++:141</a></div></div>
+<div class="ttc" id="anamespaceElevationChart_html"><div class="ttname"><a href="../../d6/d7f/namespaceElevationChart.html">ElevationChart</a></div><div class="ttdoc">Пространство имен для виджета профиля высот.</div><div class="ttdef"><b>Definition</b> <a href="../../df/dcc/elevationchart_8c_09_09_source.html#l00015">elevationchart.c++:16</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="../../dir_fcb2a60e1810a51543a3cc3a113d0956.html">c++</a></li><li class="navelem"><a class="el" href="../../dir_aaec6c757664ae85866b648db831d32b.html">types</a></li><li class="navelem"><b>route.h</b></li>
+    <li class="footer">Создано системой <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+  </ul>
+</div>
+</body>
+</html>

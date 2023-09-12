@@ -1,0 +1,7 @@
+<map id="TileStorage" name="TileStorage">
+<area shape="rect" id="Node000001" title="Хранилище тайлов профилей высот." alt="" coords="132,118,226,147"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,201,52"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="131,62,171,116,167,119,126,66"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="225,14,285,43"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="248,58,228,96,202,119,199,115,224,92,244,55"/>
+</map>

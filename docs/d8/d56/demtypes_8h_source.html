@@ -1,0 +1,205 @@
+<!-- HTML header for doxygen 1.9.6-->
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ru">
+<head>
+  <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=11" />
+  <meta name="generator" content="Doxygen 1.9.7" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Elevation Chart: Исходный файл demtypes.h</title>
+  <link href="../../tabs.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="../../jquery.js"></script>
+  <script type="text/javascript" src="../../dynsections.js"></script>
+  <script type="text/javascript" src="../../doxygen-awesome-darkmode-toggle.js"></script>
+  <script type="text/javascript" src="../../doxygen-awesome-fragment-copy-button.js"></script>
+  <script type="text/javascript" src="../../doxygen-awesome-paragraph-link.js"></script>
+  <script type="text/javascript" src="../../doxygen-awesome-interactive-toc.js"></script>
+  <script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+  </script>
+  <link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+  <link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+  <link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+  <link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+    <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+      <div id="titlearea">
+        <table cellspacing="0" cellpadding="0">
+          <tbody>
+            <tr id="projectrow">
+              <td id="projectlogo"><img alt="Logo" src="../../logo.png" /></td>
+              <td id="projectalign">
+                <div id="projectname">Elevation Chart<span
+                    id="projectnumber">&#160;3.0.0</span>
+                </div>
+                <div id="projectbrief">Виджет профиля высот</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- end header part --><!-- Создано системой Doxygen 1.9.7 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','Поиск');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('d8/d56/demtypes_8h_source.html','../../'); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Загрузка...</div>
+<div class="SRStatus" id="Searching">Поиск...</div>
+<div class="SRStatus" id="NoMatches">Не найдено</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">demtypes.h</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">/* ---------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment"> * DEM - Digital Elevation Model Library</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment"> * Copyright (C) 2023 radar-mms</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment"> * http://uav.radar-mms.com/gitlab</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment"> * ---------------------------------------------------------------------- */</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d7/de2/namespaceDEM.html">DEM</a></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>{</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="../../d0/dab/structDEM_1_1GraphPoint.html">   12</a></span>  <span class="keyword">struct </span><a class="code hl_struct" href="../../d0/dab/structDEM_1_1GraphPoint.html">GraphPoint</a></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>  {</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    <a class="code hl_function" href="../../d0/dab/structDEM_1_1GraphPoint.html#a93e7bab66bd61be23ab6c598c5ae97b4">GraphPoint</a>();</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    <a class="code hl_function" href="../../d0/dab/structDEM_1_1GraphPoint.html#a93e7bab66bd61be23ab6c598c5ae97b4">GraphPoint</a>(<span class="keywordtype">float</span> d, <span class="keywordtype">float</span> h);</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="../../d0/dab/structDEM_1_1GraphPoint.html#a06f14a9abd47b91465f895d5259cdc1b">   17</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="../../d0/dab/structDEM_1_1GraphPoint.html#a06f14a9abd47b91465f895d5259cdc1b">distance</a>;          </div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="../../d0/dab/structDEM_1_1GraphPoint.html#a1c921d7f2f6a29b15d709c49d2df1797">   18</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="../../d0/dab/structDEM_1_1GraphPoint.html#a1c921d7f2f6a29b15d709c49d2df1797">elevation</a>;         </div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>  };</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="../../d6/dc5/structDEM_1_1IntersectionPoint.html">   21</a></span>  <span class="keyword">struct </span><a class="code hl_struct" href="../../d6/dc5/structDEM_1_1IntersectionPoint.html">IntersectionPoint</a></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  {</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="../../d6/dc5/structDEM_1_1IntersectionPoint.html#a03b7725142aecb37a210680305db877d">   24</a></span>    <span class="keyword">enum</span> <a class="code hl_enumeration" href="../../d6/dc5/structDEM_1_1IntersectionPoint.html#a03b7725142aecb37a210680305db877d">Intersection</a></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    {</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="../../d6/dc5/structDEM_1_1IntersectionPoint.html#a03b7725142aecb37a210680305db877da47446761c29e529c4750003b710e5158">   26</a></span>      <a class="code hl_enumvalue" href="../../d6/dc5/structDEM_1_1IntersectionPoint.html#a03b7725142aecb37a210680305db877da47446761c29e529c4750003b710e5158">NonIntersecting</a>,        </div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="../../d6/dc5/structDEM_1_1IntersectionPoint.html#a03b7725142aecb37a210680305db877da41ff79bbf1af367e2ed1b0a583ce7cea">   27</a></span>      <a class="code hl_enumvalue" href="../../d6/dc5/structDEM_1_1IntersectionPoint.html#a03b7725142aecb37a210680305db877da41ff79bbf1af367e2ed1b0a583ce7cea">IntersectingIn</a>,         </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="../../d6/dc5/structDEM_1_1IntersectionPoint.html#a03b7725142aecb37a210680305db877da0102e4c2d7fa5ee301b1e65bb3c92687">   28</a></span>      <a class="code hl_enumvalue" href="../../d6/dc5/structDEM_1_1IntersectionPoint.html#a03b7725142aecb37a210680305db877da0102e4c2d7fa5ee301b1e65bb3c92687">IntersectingOut</a>,        </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>      <a class="code hl_enumvalue" href="../../d6/dc5/structDEM_1_1IntersectionPoint.html#a03b7725142aecb37a210680305db877da95f1d9c9e8088fd4efc8cbba0c33c17e">InsideGround</a>            </div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="../../d6/dc5/structDEM_1_1IntersectionPoint.html#a03b7725142aecb37a210680305db877da95f1d9c9e8088fd4efc8cbba0c33c17e">   30</a></span>    };</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <a class="code hl_function" href="../../d6/dc5/structDEM_1_1IntersectionPoint.html#aa0d61f7d20aa4451ef531bbd00e81d57">IntersectionPoint</a>();</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <a class="code hl_function" href="../../d6/dc5/structDEM_1_1IntersectionPoint.html#aa0d61f7d20aa4451ef531bbd00e81d57">IntersectionPoint</a>(<span class="keywordtype">double</span> <a class="code hl_variable" href="../../d6/dc5/structDEM_1_1IntersectionPoint.html#a2b13d276aee0d9fd646c8fa3647e869b">altitude</a>, <span class="keywordtype">double</span> <a class="code hl_variable" href="../../d6/dc5/structDEM_1_1IntersectionPoint.html#a79b8e036dca6911e3295a47d99f21f43">distance</a>, <span class="keywordtype">bool</span> <a class="code hl_variable" href="../../d6/dc5/structDEM_1_1IntersectionPoint.html#a4e70be014a5cb1c71753acb92c55de45">base</a>, <a class="code hl_enumeration" href="../../d6/dc5/structDEM_1_1IntersectionPoint.html#a03b7725142aecb37a210680305db877d">Intersection</a> <a class="code hl_variable" href="../../d6/dc5/structDEM_1_1IntersectionPoint.html#a868e86f477197b8e3fef6d2ec7bbbb82">state</a>);</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="../../d6/dc5/structDEM_1_1IntersectionPoint.html#a2b13d276aee0d9fd646c8fa3647e869b">   35</a></span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="../../d6/dc5/structDEM_1_1IntersectionPoint.html#a2b13d276aee0d9fd646c8fa3647e869b">altitude</a>;          </div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="../../d6/dc5/structDEM_1_1IntersectionPoint.html#a79b8e036dca6911e3295a47d99f21f43">   36</a></span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="../../d6/dc5/structDEM_1_1IntersectionPoint.html#a79b8e036dca6911e3295a47d99f21f43">distance</a>;          </div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="../../d6/dc5/structDEM_1_1IntersectionPoint.html#a4e70be014a5cb1c71753acb92c55de45">   37</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="../../d6/dc5/structDEM_1_1IntersectionPoint.html#a4e70be014a5cb1c71753acb92c55de45">base</a>;                </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="../../d6/dc5/structDEM_1_1IntersectionPoint.html#a868e86f477197b8e3fef6d2ec7bbbb82">   38</a></span>    <a class="code hl_enumeration" href="../../d6/dc5/structDEM_1_1IntersectionPoint.html#a03b7725142aecb37a210680305db877d">Intersection</a> <a class="code hl_variable" href="../../d6/dc5/structDEM_1_1IntersectionPoint.html#a868e86f477197b8e3fef6d2ec7bbbb82">state</a>;       </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  };</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>} <span class="comment">// DEM</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d7/de2/namespaceDEM.html">DEM</a></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>{</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="../../d0/dab/structDEM_1_1GraphPoint.html#a93e7bab66bd61be23ab6c598c5ae97b4">   52</a></span>  <span class="keyword">inline</span> <a class="code hl_function" href="../../d0/dab/structDEM_1_1GraphPoint.html#a93e7bab66bd61be23ab6c598c5ae97b4">GraphPoint::GraphPoint</a>()</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    : distance(0)</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    , <a class="code hl_function" href="../../d7/de2/namespaceDEM.html#a8e1e7109e84087ca9cc0299754b16377">elevation</a>(0)</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  {}</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="../../d0/dab/structDEM_1_1GraphPoint.html#aba3655c03b8635bdc401adad24594a65">   62</a></span>  <span class="keyword">inline</span> <a class="code hl_function" href="../../d0/dab/structDEM_1_1GraphPoint.html#a93e7bab66bd61be23ab6c598c5ae97b4">GraphPoint::GraphPoint</a>(<span class="keywordtype">float</span> d, <span class="keywordtype">float</span> h)</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    : distance(d)</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    , <a class="code hl_function" href="../../d7/de2/namespaceDEM.html#a8e1e7109e84087ca9cc0299754b16377">elevation</a>(h)</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  {}</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno"><a class="line" href="../../d6/dc5/structDEM_1_1IntersectionPoint.html#aa0d61f7d20aa4451ef531bbd00e81d57">   76</a></span>  <span class="keyword">inline</span> <a class="code hl_function" href="../../d6/dc5/structDEM_1_1IntersectionPoint.html#aa0d61f7d20aa4451ef531bbd00e81d57">IntersectionPoint::IntersectionPoint</a>()</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    : altitude(0)</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    , distance(0)</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    , base(false)</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    , state(NonIntersecting)</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  {}</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno"><a class="line" href="../../d6/dc5/structDEM_1_1IntersectionPoint.html#a9a3e0db7d6a9500ce6709097f3fe5f49">   91</a></span>  <span class="keyword">inline</span> <a class="code hl_function" href="../../d6/dc5/structDEM_1_1IntersectionPoint.html#aa0d61f7d20aa4451ef531bbd00e81d57">IntersectionPoint::IntersectionPoint</a>(<span class="keywordtype">double</span> altitude, <span class="keywordtype">double</span> distance, <span class="keywordtype">bool</span> base, <a class="code hl_enumeration" href="../../d6/dc5/structDEM_1_1IntersectionPoint.html#a03b7725142aecb37a210680305db877d">Intersection</a> state)</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    : altitude(altitude)</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    , distance(distance)</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    , base(base)</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    , state(state)</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  {}</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>} <span class="comment">// DEM</span></div>
+<div class="ttc" id="anamespaceDEM_html"><div class="ttname"><a href="../../d7/de2/namespaceDEM.html">DEM</a></div><div class="ttdoc">Пространство имен библиотеки DEM.</div><div class="ttdef"><b>Definition</b> <a href="../../d7/dd2/demalgorithms_8h_source.html#l00022">demalgorithms.h:23</a></div></div>
+<div class="ttc" id="anamespaceDEM_html_a8e1e7109e84087ca9cc0299754b16377"><div class="ttname"><a href="../../d7/de2/namespaceDEM.html#a8e1e7109e84087ca9cc0299754b16377">DEM::elevation</a></div><div class="ttdeci">int16_t elevation(double latitude, double longitude)</div><div class="ttdoc">Возвращает высоту рельефа в метрах в точке на карте.</div><div class="ttdef"><b>Definition</b> <a href="../../d7/dfd/demalgorithms_8cpp_source.html#l00087">demalgorithms.cpp:87</a></div></div>
+<div class="ttc" id="astructDEM_1_1GraphPoint_html"><div class="ttname"><a href="../../d0/dab/structDEM_1_1GraphPoint.html">DEM::GraphPoint</a></div><div class="ttdoc">Точка на графике профиля высот.</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d56/demtypes_8h_source.html#l00012">demtypes.h:13</a></div></div>
+<div class="ttc" id="astructDEM_1_1GraphPoint_html_a06f14a9abd47b91465f895d5259cdc1b"><div class="ttname"><a href="../../d0/dab/structDEM_1_1GraphPoint.html#a06f14a9abd47b91465f895d5259cdc1b">DEM::GraphPoint::distance</a></div><div class="ttdeci">float distance</div><div class="ttdoc">Расстояние точки от нуля в метрах.</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d56/demtypes_8h_source.html#l00017">demtypes.h:17</a></div></div>
+<div class="ttc" id="astructDEM_1_1GraphPoint_html_a1c921d7f2f6a29b15d709c49d2df1797"><div class="ttname"><a href="../../d0/dab/structDEM_1_1GraphPoint.html#a1c921d7f2f6a29b15d709c49d2df1797">DEM::GraphPoint::elevation</a></div><div class="ttdeci">float elevation</div><div class="ttdoc">Высота точки в метрах.</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d56/demtypes_8h_source.html#l00018">demtypes.h:18</a></div></div>
+<div class="ttc" id="astructDEM_1_1GraphPoint_html_a93e7bab66bd61be23ab6c598c5ae97b4"><div class="ttname"><a href="../../d0/dab/structDEM_1_1GraphPoint.html#a93e7bab66bd61be23ab6c598c5ae97b4">DEM::GraphPoint::GraphPoint</a></div><div class="ttdeci">GraphPoint()</div><div class="ttdoc">Создает пустую точку на графике с координатами [0, 0].</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d56/demtypes_8h_source.html#l00052">demtypes.h:52</a></div></div>
+<div class="ttc" id="astructDEM_1_1IntersectionPoint_html"><div class="ttname"><a href="../../d6/dc5/structDEM_1_1IntersectionPoint.html">DEM::IntersectionPoint</a></div><div class="ttdoc">Точка пересечения на графике профиля высот.</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d56/demtypes_8h_source.html#l00021">demtypes.h:22</a></div></div>
+<div class="ttc" id="astructDEM_1_1IntersectionPoint_html_a03b7725142aecb37a210680305db877d"><div class="ttname"><a href="../../d6/dc5/structDEM_1_1IntersectionPoint.html#a03b7725142aecb37a210680305db877d">DEM::IntersectionPoint::Intersection</a></div><div class="ttdeci">Intersection</div><div class="ttdoc">Перечисление состояний пересечения с землей.</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d56/demtypes_8h_source.html#l00024">demtypes.h:25</a></div></div>
+<div class="ttc" id="astructDEM_1_1IntersectionPoint_html_a03b7725142aecb37a210680305db877da0102e4c2d7fa5ee301b1e65bb3c92687"><div class="ttname"><a href="../../d6/dc5/structDEM_1_1IntersectionPoint.html#a03b7725142aecb37a210680305db877da0102e4c2d7fa5ee301b1e65bb3c92687">DEM::IntersectionPoint::IntersectingOut</a></div><div class="ttdeci">@ IntersectingOut</div><div class="ttdoc">Точка пересекается с землей. Следующая точка не пересекается с землей.</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d56/demtypes_8h_source.html#l00028">demtypes.h:28</a></div></div>
+<div class="ttc" id="astructDEM_1_1IntersectionPoint_html_a03b7725142aecb37a210680305db877da41ff79bbf1af367e2ed1b0a583ce7cea"><div class="ttname"><a href="../../d6/dc5/structDEM_1_1IntersectionPoint.html#a03b7725142aecb37a210680305db877da41ff79bbf1af367e2ed1b0a583ce7cea">DEM::IntersectionPoint::IntersectingIn</a></div><div class="ttdeci">@ IntersectingIn</div><div class="ttdoc">Точка пересекается с землей. Предыдущая точка не пересекалась с землей.</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d56/demtypes_8h_source.html#l00027">demtypes.h:27</a></div></div>
+<div class="ttc" id="astructDEM_1_1IntersectionPoint_html_a03b7725142aecb37a210680305db877da47446761c29e529c4750003b710e5158"><div class="ttname"><a href="../../d6/dc5/structDEM_1_1IntersectionPoint.html#a03b7725142aecb37a210680305db877da47446761c29e529c4750003b710e5158">DEM::IntersectionPoint::NonIntersecting</a></div><div class="ttdeci">@ NonIntersecting</div><div class="ttdoc">Точка не пересекается с землей.</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d56/demtypes_8h_source.html#l00026">demtypes.h:26</a></div></div>
+<div class="ttc" id="astructDEM_1_1IntersectionPoint_html_a03b7725142aecb37a210680305db877da95f1d9c9e8088fd4efc8cbba0c33c17e"><div class="ttname"><a href="../../d6/dc5/structDEM_1_1IntersectionPoint.html#a03b7725142aecb37a210680305db877da95f1d9c9e8088fd4efc8cbba0c33c17e">DEM::IntersectionPoint::InsideGround</a></div><div class="ttdeci">@ InsideGround</div><div class="ttdoc">Точка лежит внутри рельефа. Соседние точки пересекаются с землей либо лежат внутри рельефа.</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d56/demtypes_8h_source.html#l00030">demtypes.h:29</a></div></div>
+<div class="ttc" id="astructDEM_1_1IntersectionPoint_html_a2b13d276aee0d9fd646c8fa3647e869b"><div class="ttname"><a href="../../d6/dc5/structDEM_1_1IntersectionPoint.html#a2b13d276aee0d9fd646c8fa3647e869b">DEM::IntersectionPoint::altitude</a></div><div class="ttdeci">double altitude</div><div class="ttdoc">Высота точки в метрах.</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d56/demtypes_8h_source.html#l00035">demtypes.h:35</a></div></div>
+<div class="ttc" id="astructDEM_1_1IntersectionPoint_html_a4e70be014a5cb1c71753acb92c55de45"><div class="ttname"><a href="../../d6/dc5/structDEM_1_1IntersectionPoint.html#a4e70be014a5cb1c71753acb92c55de45">DEM::IntersectionPoint::base</a></div><div class="ttdeci">bool base</div><div class="ttdoc">Является ли точка базовой (исходной) точкой пути, или она появилась в результате пересечения с рельеф...</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d56/demtypes_8h_source.html#l00037">demtypes.h:37</a></div></div>
+<div class="ttc" id="astructDEM_1_1IntersectionPoint_html_a79b8e036dca6911e3295a47d99f21f43"><div class="ttname"><a href="../../d6/dc5/structDEM_1_1IntersectionPoint.html#a79b8e036dca6911e3295a47d99f21f43">DEM::IntersectionPoint::distance</a></div><div class="ttdeci">double distance</div><div class="ttdoc">Расстояние точки от нуля в метрах.</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d56/demtypes_8h_source.html#l00036">demtypes.h:36</a></div></div>
+<div class="ttc" id="astructDEM_1_1IntersectionPoint_html_a868e86f477197b8e3fef6d2ec7bbbb82"><div class="ttname"><a href="../../d6/dc5/structDEM_1_1IntersectionPoint.html#a868e86f477197b8e3fef6d2ec7bbbb82">DEM::IntersectionPoint::state</a></div><div class="ttdeci">Intersection state</div><div class="ttdoc">Состояние пересечения.</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d56/demtypes_8h_source.html#l00038">demtypes.h:38</a></div></div>
+<div class="ttc" id="astructDEM_1_1IntersectionPoint_html_aa0d61f7d20aa4451ef531bbd00e81d57"><div class="ttname"><a href="../../d6/dc5/structDEM_1_1IntersectionPoint.html#aa0d61f7d20aa4451ef531bbd00e81d57">DEM::IntersectionPoint::IntersectionPoint</a></div><div class="ttdeci">IntersectionPoint()</div><div class="ttdoc">Создает пустую точку пересечения с координатами [0, 0].</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d56/demtypes_8h_source.html#l00076">demtypes.h:76</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_6719ab1f1f7655efc2fa43f7eb574fd1.html">libs</a></li><li class="navelem"><a class="el" href="../../dir_b83377dfc26108537404dba33a05369e.html">DEM</a></li><li class="navelem"><a class="el" href="../../dir_2545e7c1163bcdccbd95685988228587.html">src</a></li><li class="navelem"><a class="el" href="../../dir_b1b3cf79f5640e74a2aa9c8a78906152.html">algorithms</a></li><li class="navelem"><b>demtypes.h</b></li>
+    <li class="footer">Создано системой <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+  </ul>
+</div>
+</body>
+</html>

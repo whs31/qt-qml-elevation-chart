@@ -1,0 +1,174 @@
+<!-- HTML header for doxygen 1.9.6-->
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ru">
+<head>
+  <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=11" />
+  <meta name="generator" content="Doxygen 1.9.7" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Elevation Chart: Исходный файл demalgorithms.h</title>
+  <link href="../../tabs.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="../../jquery.js"></script>
+  <script type="text/javascript" src="../../dynsections.js"></script>
+  <script type="text/javascript" src="../../doxygen-awesome-darkmode-toggle.js"></script>
+  <script type="text/javascript" src="../../doxygen-awesome-fragment-copy-button.js"></script>
+  <script type="text/javascript" src="../../doxygen-awesome-paragraph-link.js"></script>
+  <script type="text/javascript" src="../../doxygen-awesome-interactive-toc.js"></script>
+  <script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+  </script>
+  <link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+  <link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+  <link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+  <link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="../../doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+    <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+      <div id="titlearea">
+        <table cellspacing="0" cellpadding="0">
+          <tbody>
+            <tr id="projectrow">
+              <td id="projectlogo"><img alt="Logo" src="../../logo.png" /></td>
+              <td id="projectalign">
+                <div id="projectname">Elevation Chart<span
+                    id="projectnumber">&#160;3.0.0</span>
+                </div>
+                <div id="projectbrief">Виджет профиля высот</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- end header part --><!-- Создано системой Doxygen 1.9.7 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','Поиск');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('d7/dd2/demalgorithms_8h_source.html','../../'); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Загрузка...</div>
+<div class="SRStatus" id="Searching">Поиск...</div>
+<div class="SRStatus" id="NoMatches">Не найдено</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">demalgorithms.h</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">/* ---------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment"> * DEM - Digital Elevation Model Library</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment"> * Copyright (C) 2023 radar-mms</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment"> * http://uav.radar-mms.com/gitlab</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment"> * ---------------------------------------------------------------------- */</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;utility&gt;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;cstdint&gt;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;demtypes.h&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keyword">using </span>std::vector;</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keyword">using </span>std::pair;</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keyword">class </span>QGeoCoordinate;</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keyword">class </span>QGeoPath;</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">class </span>QGeoPolygon;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="../../d7/de2/namespaceDEM.html">   22</a></span><span class="keyword">namespace </span><a class="code hl_namespace" href="../../d7/de2/namespaceDEM.html">DEM</a></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>{</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    <span class="keyword">auto</span> <a class="code hl_function" href="../../d7/de2/namespaceDEM.html#a701056bcbb22e4a3ea40395a157915f6">findMinMaxAltitude</a>(<span class="keyword">const</span> QGeoPolygon&amp;) -&gt; pair&lt;double, double&gt;;</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    [[deprecated(<span class="stringliteral">&quot;This method is legacy code from old Elevation/RouteTools and will be removed in future.&quot;</span>)]]</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <span class="keywordtype">double</span> <a class="code hl_function" href="../../d7/de2/namespaceDEM.html#a06e7b714c369fddaa3d9e85572eea936">findNearestIntersectionAtLine</a>(<span class="keyword">const</span> QGeoCoordinate&amp; a, <span class="keyword">const</span> QGeoCoordinate&amp; b);</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <span class="keyword">auto</span> <a class="code hl_function" href="../../d7/de2/namespaceDEM.html#ae168487abe0bdb0cf5a47a95576fcc70">findAllIntersectionsAtPolyline</a>(<span class="keyword">const</span> QGeoPath&amp;) -&gt; vector&lt;IntersectionPoint&gt;;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="../../d7/de2/namespaceDEM.html#a97322a5605935f25207bbbe90da575cd">loadTile</a>(int8_t latitude, int16_t longitude);</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="../../d7/de2/namespaceDEM.html#a9a400a6f5ecc2c4fd5a963d7faedc65e">loadTiles</a>(int8_t minLatitude, int16_t minLongitude, int8_t maxLatitude, int16_t maxLongitude);</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="../../d7/de2/namespaceDEM.html#a9a400a6f5ecc2c4fd5a963d7faedc65e">loadTiles</a>(<span class="keyword">const</span> QGeoPath &amp; _path);</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    int16_t <a class="code hl_function" href="../../d7/de2/namespaceDEM.html#a8e1e7109e84087ca9cc0299754b16377">elevation</a>(<span class="keywordtype">double</span> latitude, <span class="keywordtype">double</span> longitude);</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="comment">/*</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="comment">     * это метод for charts, в нем по мимо построения применяется сглаживание(геотиф имеет дискрету, на протяжении который будет одинаковая высота(тут решается данная проблема))</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="comment">     * нужно переписать и адаптировать.</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="comment">     *</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="comment">     * построение антенны и профиля высот должно строится из одного профиля высот .</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="comment">    */</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keyword">auto</span> <a class="code hl_function" href="../../d7/de2/namespaceDEM.html#a9c32bccaecfede026550811398449f72">buildProfile</a>(<span class="keyword">const</span> QGeoPath&amp; path, uint8_t discrete = 10) -&gt; vector&lt;pair&lt;uint32_t, int16_t&gt;&gt;;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>} <span class="comment">// DEM</span></div>
+<div class="ttc" id="anamespaceDEM_html"><div class="ttname"><a href="../../d7/de2/namespaceDEM.html">DEM</a></div><div class="ttdoc">Пространство имен библиотеки DEM.</div><div class="ttdef"><b>Definition</b> <a href="../../d7/dd2/demalgorithms_8h_source.html#l00022">demalgorithms.h:23</a></div></div>
+<div class="ttc" id="anamespaceDEM_html_a06e7b714c369fddaa3d9e85572eea936"><div class="ttname"><a href="../../d7/de2/namespaceDEM.html#a06e7b714c369fddaa3d9e85572eea936">DEM::findNearestIntersectionAtLine</a></div><div class="ttdeci">double findNearestIntersectionAtLine(const QGeoCoordinate &amp;a, const QGeoCoordinate &amp;b)</div><div class="ttdoc">Находит высоту в метрах ближайшего пересечения на пути между координатами.</div><div class="ttdef"><b>Definition</b> <a href="../../d7/dfd/demalgorithms_8cpp_source.html#l00039">demalgorithms.cpp:39</a></div></div>
+<div class="ttc" id="anamespaceDEM_html_a701056bcbb22e4a3ea40395a157915f6"><div class="ttname"><a href="../../d7/de2/namespaceDEM.html#a701056bcbb22e4a3ea40395a157915f6">DEM::findMinMaxAltitude</a></div><div class="ttdeci">auto findMinMaxAltitude(const QGeoPolygon &amp;) -&gt; pair&lt; double, double &gt;</div><div class="ttdoc">Находит минимальную и максимальную высоту рельефа на указанном полигоне.</div><div class="ttdef"><b>Definition</b> <a href="../../d7/dfd/demalgorithms_8cpp_source.html#l00024">demalgorithms.cpp:24</a></div></div>
+<div class="ttc" id="anamespaceDEM_html_a8e1e7109e84087ca9cc0299754b16377"><div class="ttname"><a href="../../d7/de2/namespaceDEM.html#a8e1e7109e84087ca9cc0299754b16377">DEM::elevation</a></div><div class="ttdeci">int16_t elevation(double latitude, double longitude)</div><div class="ttdoc">Возвращает высоту рельефа в метрах в точке на карте.</div><div class="ttdef"><b>Definition</b> <a href="../../d7/dfd/demalgorithms_8cpp_source.html#l00087">demalgorithms.cpp:87</a></div></div>
+<div class="ttc" id="anamespaceDEM_html_a97322a5605935f25207bbbe90da575cd"><div class="ttname"><a href="../../d7/de2/namespaceDEM.html#a97322a5605935f25207bbbe90da575cd">DEM::loadTile</a></div><div class="ttdeci">bool loadTile(int8_t latitude, int16_t longitude)</div><div class="ttdoc">Загружает в память выбранный тайл карты высот.</div><div class="ttdef"><b>Definition</b> <a href="../../d7/dfd/demalgorithms_8cpp_source.html#l00064">demalgorithms.cpp:64</a></div></div>
+<div class="ttc" id="anamespaceDEM_html_a9a400a6f5ecc2c4fd5a963d7faedc65e"><div class="ttname"><a href="../../d7/de2/namespaceDEM.html#a9a400a6f5ecc2c4fd5a963d7faedc65e">DEM::loadTiles</a></div><div class="ttdeci">void loadTiles(int8_t minLatitude, int16_t minLongitude, int8_t maxLatitude, int16_t maxLongitude)</div><div class="ttdoc">Загружает в память выбранную прямоугольную область тайлов.</div><div class="ttdef"><b>Definition</b> <a href="../../d7/dfd/demalgorithms_8cpp_source.html#l00073">demalgorithms.cpp:73</a></div></div>
+<div class="ttc" id="anamespaceDEM_html_a9c32bccaecfede026550811398449f72"><div class="ttname"><a href="../../d7/de2/namespaceDEM.html#a9c32bccaecfede026550811398449f72">DEM::buildProfile</a></div><div class="ttdeci">auto buildProfile(const QGeoPath &amp;path, uint8_t discrete=10) -&gt; vector&lt; pair&lt; uint32_t, int16_t &gt; &gt;</div><div class="ttdoc">Строит профиль высот рельефа для выбранной ломаной прямой на карте.</div><div class="ttdef"><b>Definition</b> <a href="../../d7/dfd/demalgorithms_8cpp_source.html#l00121">demalgorithms.cpp:121</a></div></div>
+<div class="ttc" id="anamespaceDEM_html_ae168487abe0bdb0cf5a47a95576fcc70"><div class="ttname"><a href="../../d7/de2/namespaceDEM.html#ae168487abe0bdb0cf5a47a95576fcc70">DEM::findAllIntersectionsAtPolyline</a></div><div class="ttdeci">auto findAllIntersectionsAtPolyline(const QGeoPath &amp;) -&gt; vector&lt; IntersectionPoint &gt;</div><div class="ttdoc">Возвращает массив точек пересечения для ломаной прямой.</div><div class="ttdef"><b>Definition</b> <a href="../../d7/dfd/demalgorithms_8cpp_source.html#l00052">demalgorithms.cpp:52</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_6719ab1f1f7655efc2fa43f7eb574fd1.html">libs</a></li><li class="navelem"><a class="el" href="../../dir_b83377dfc26108537404dba33a05369e.html">DEM</a></li><li class="navelem"><a class="el" href="../../dir_2545e7c1163bcdccbd95685988228587.html">src</a></li><li class="navelem"><a class="el" href="../../dir_b1b3cf79f5640e74a2aa9c8a78906152.html">algorithms</a></li><li class="navelem"><b>demalgorithms.h</b></li>
+    <li class="footer">Создано системой <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+  </ul>
+</div>
+</body>
+</html>

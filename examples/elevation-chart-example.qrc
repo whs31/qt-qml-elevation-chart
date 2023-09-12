@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/elevation-chart"/>
+    <qresource prefix="/">
+        <file>Main.qml</file>
+    </qresource>
+</RCC>
