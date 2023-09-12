@@ -41,6 +41,9 @@ namespace ElevationChart
       invokable [[nodiscard]] bool contains(const RoutePoint& point);
       invokable [[nodiscard]] bool valid() const;
 
+      bool operator==(const Route& rhs);
+      bool operator!=(const Route& rhs);
+
 
     public:
       static Route fromGeoPath(const QGeoPath& path, float velocity = 0);

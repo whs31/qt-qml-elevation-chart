@@ -190,6 +190,24 @@ namespace ElevationChart
    */
   bool Route::valid() const { return not m_vec.empty(); }
 
+  bool Route::operator==(const Route &rhs)
+  {
+    if(rhs.m_vec.size() != this->m_vec.size()) {
+      return false;
+    }
+    for (int i = 0 ; i < this->m_vec.size(); ++i) {
+      if (this->m_vec.at(i) != rhs.m_vec.at(i)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  bool Route::operator!=(const Route &rhs)
+  {
+    return not (*this == rhs);
+  }
+
   /**
    * \brief Создает путь из данного QGeoPath с константной скоростью точек.
    * \param path - набор координат с высотой.

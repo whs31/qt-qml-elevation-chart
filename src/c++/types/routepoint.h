@@ -25,6 +25,9 @@ namespace ElevationChart
       [[nodiscard]] float altitude() const;               void setAltitude(float);
       [[nodiscard]] float velocity() const;               void setVelocity(float);
 
+      bool operator==(const RoutePoint& rhs);
+      bool operator!=(const RoutePoint& rhs);
+
     private:
       QGeoCoordinate m_coordinate;
       float m_velocity;
@@ -140,4 +143,14 @@ namespace ElevationChart
    */
   inline float RoutePoint::velocity() const { return m_velocity; }
   inline void RoutePoint::setVelocity(float x) { if(not qIsNaN(x)) m_velocity = x; }
+
+  inline bool RoutePoint::operator==(const RoutePoint &rhs)
+  {
+      return (this->m_coordinate == rhs.m_coordinate and qFuzzyCompare(this->velocity(), rhs.velocity()));
+  }
+
+  inline bool RoutePoint::operator!=(const RoutePoint &rhs)
+  {
+      return not (*this == rhs);
+  }
 } // ElevationChart
