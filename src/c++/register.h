@@ -19,8 +19,8 @@ namespace ElevationChart
     public:
       explicit TypeFactory(QObject* parent = nullptr);
 
-      Q_INVOKABLE static ElevationChart::RoutePoint routePoint(double latitude, double longitude, float elevation = 0, float velocity = 0);
-      Q_INVOKABLE static ElevationChart::Route route(const QGeoPath& path, float velocity = 0);
-      Q_INVOKABLE static ElevationChart::Route route(const QGeoPath& path, const QVector<float>& velocities);
+      invokable static ElevationChart::RoutePoint routePoint(double latitude, double longitude, float elevation = 0, float velocity = 0);
+      invokable static ElevationChart::Route route(const QGeoPath& path, float velocity = 0);
+      invokable static ElevationChart::Route route(const QGeoPath& path, const QVector<float>& velocities);
   };
 } // ElevationChart
