@@ -4,6 +4,7 @@
 
 #pragma once
 
+#define invokable Q_INVOKABLE
 #define in :
 #define CONCURRENT_RUN QFuture<void> future = QtConcurrent::run(
 #define CONCURRENT_ARGS (){ QFuture<void> future_priv = QtConcurrent::run(

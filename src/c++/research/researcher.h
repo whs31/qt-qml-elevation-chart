@@ -27,6 +27,11 @@ namespace ElevationChart
   {
     Q_OBJECT
     Q_PROPERTY(bool busy READ busy NOTIFY busyChanged FINAL)
+    Q_PROPERTY(bool optimizeEnvelope READ optimizeEnvelope WRITE setOptimizeEnvelope NOTIFY optimizeEnvelopeChanged FINAL)
+
+    constexpr static const float ANGLE_DIFF_THRESHOLD_LOW = 5.0f;  // degrees
+    constexpr static const float ANGLE_DIFF_THRESHOLD_HIGH = 10.0f; // degrees
+    constexpr static const float DISTANCE_DIFF_THRESHOLD = 100.0f; // meters
 
     public:
       struct EnvelopeResult
@@ -38,14 +43,17 @@ namespace ElevationChart
       explicit Researcher(QObject* parent = nullptr);
 
       [[nodiscard]] bool busy() const;
+      [[nodiscard]] bool optimizeEnvelope() const;      void setOptimizeEnvelope(bool);
 
       Q_SLOT void researchIntersections(const QGeoPath& path);
       Q_SLOT void researchEnvelope(const QGeoPath& path, const Metrics& metrics, const Envelope& envelope);
+      void optimizeResearchedEnvelope(const EnvelopeResult&);
 
       static QGeoPath plotGeopathProfile(const QGeoPath& path);
 
     signals:
       void busyChanged();
+      void optimizeEnvelopeChanged();
 
       void researchIntersectionsFinished(vector<ElevationPoint>);
       void researchEnvelopeFinished(EnvelopeResult);
@@ -60,5 +68,9 @@ namespace ElevationChart
       QFutureWatcher<void> m_watcher2;
       bool m_busy;
       bool m_busy2;
+      bool m_optimize_envelope;
   };
 } // ElevationChart
+
+#include <QtCore/QMetaType>
+Q_DECLARE_METATYPE(ElevationChart::Researcher*)

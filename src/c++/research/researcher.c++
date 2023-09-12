@@ -20,9 +20,10 @@ constexpr static float BOUND_RATE_ANGLE = 5;
 namespace ElevationChart
 {
   Researcher::Researcher(QObject* parent)
-      : QObject(parent)
-        , m_busy(false)
-        , m_busy2(false)
+    : QObject(parent)
+    , m_busy(false)
+    , m_busy2(false)
+    , m_optimize_envelope(true)
   {
     qRegisterMetaType<vector<IntersectionPoint>>("vector<IntersectionPoint>");
     qRegisterMetaType<EnvelopeResult>("EnvelopeResult");
@@ -82,7 +83,6 @@ namespace ElevationChart
           result.emplace_back(point.distance(), point.elevation());
         }
       }
-
       emit researchIntersectionsFinished(std::move(result));
     CONCURRENT_RUN_END_WATCHER(m_watcher)
   }
@@ -216,12 +216,12 @@ namespace ElevationChart
             res.route.add(RoutePoint(prev_route_point.toQGeoCoordinate()));
             route_path.push_back(prev_route_point);
 
-            auto it1 = delta_bound.begin();
-            auto it2 = delta_route.begin();
+            auto it1 = delta_bound.cbegin();
+            auto it2 = delta_route.cbegin();
             std::advance(it1, delta_bound.size() - 2);
             std::advance(it2, delta_route.size() - 2);
-            delta_bound.erase(delta_bound.begin(), it1);
-            delta_route.erase(delta_route.begin(), it2);
+            delta_bound.erase(delta_bound.cbegin(), it1);
+            delta_route.erase(delta_route.cbegin(), it2);
 
             delta_bound.pop_back();
             delta_route.pop_back();
@@ -234,17 +234,43 @@ namespace ElevationChart
           res.route.add(RoutePoint(route_point.toQGeoCoordinate()));
           route_path.push_back(route_point);
 
-          auto it1 = delta_bound.begin();
-          auto it2 = delta_route.begin();
+          auto it1 = delta_bound.cbegin();
+          auto it2 = delta_route.cbegin();
           std::advance(it1, delta_bound.size() - 1);
           std::advance(it2, delta_route.size() - 1);
-          delta_bound.erase(delta_bound.begin(), it1);
-          delta_route.erase(delta_route.begin(), it2);
+          delta_bound.erase(delta_bound.cbegin(), it1);
+          delta_route.erase(delta_route.cbegin(), it2);
         }
+      }
+
+      if(optimizeEnvelope())
+      {
+        this->optimizeResearchedEnvelope(res);
+        return;
       }
 
       emit researchEnvelopeFinished(std::move(res));
     CONCURRENT_RUN_END_WATCHER(m_watcher2)
+  }
+
+  void Researcher::optimizeResearchedEnvelope(const ElevationChart::Researcher::EnvelopeResult& x)
+  {
+    auto res = x;
+    qDebug() << "<elevation-chart> Researcher is requested to optimize" << res.route.size() << "point route";
+    for(size_t i = 1; i < res.route.size(); i++)
+    {
+      RoutePoint previous = res.route.at(static_cast<int>(i - 1));
+      RoutePoint current = res.route.at(static_cast<int>(i));
+      float distance_diff = static_cast<float>(previous.coordinate().distanceTo(current.coordinate()));
+      auto angle_diff = std::abs(static_cast<float>(180.0f * std::atan2(current.altitude() - previous.altitude(), distance_diff) / M_PI));
+
+      if((distance_diff < DISTANCE_DIFF_THRESHOLD and angle_diff < ANGLE_DIFF_THRESHOLD_HIGH)
+         or (distance_diff > DISTANCE_DIFF_THRESHOLD and angle_diff < ANGLE_DIFF_THRESHOLD_LOW))
+        res.route.remove(static_cast<int>(i));
+    }
+
+    qDebug() << "<elevation-chart> Researcher finished, route optimized to" << res.route.size() << "point route";
+    emit researchEnvelopeFinished(std::move(res));
   }
 
   QGeoPath Researcher::plotGeopathProfile(const QGeoPath& path)
@@ -358,6 +384,14 @@ namespace ElevationChart
   }
 
   bool Researcher::busy() const { return m_busy or m_busy2; }
+
+  bool Researcher::optimizeEnvelope() const { return m_optimize_envelope; }
+  void Researcher::setOptimizeEnvelope(bool x) {
+    if(x == m_optimize_envelope)
+      return;
+    m_optimize_envelope = x;
+    emit optimizeEnvelopeChanged();
+  }
 
   float Researcher::angle3point(QPointF a, QPointF b, QPointF c)
   {

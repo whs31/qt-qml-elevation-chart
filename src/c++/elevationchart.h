@@ -42,6 +42,7 @@ namespace ElevationChart
     Q_PROPERTY(bool missingTiles READ missingTiles WRITE setMissingTiles NOTIFY missingTilesChanged FINAL)
     Q_PROPERTY(bool intersecting READ intersecting WRITE setIntersecting NOTIFY intersectingChanged FINAL)
     Q_PROPERTY(bool valid READ valid WRITE setValid NOTIFY validChanged FINAL)
+    Q_PROPERTY(bool routeValid READ routeValid NOTIFY routeValidChanged STORED false FINAL)
     Q_PROPERTY(bool matchingMetrics READ matchingMetrics WRITE setMatchingMetrics NOTIFY matchingMetricsChanged FINAL)
     Q_PROPERTY(bool allowEnvelopeCorrection READ allowEnvelopeCorrection NOTIFY allowEnvelopeCorrectionChanged STORED false FINAL)
 
@@ -103,6 +104,7 @@ namespace ElevationChart
       [[nodiscard]] bool missingTiles() const;          void setMissingTiles(bool);
       [[nodiscard]] bool intersecting() const;          void setIntersecting(bool);
       [[nodiscard]] bool valid() const;                 void setValid(bool);
+      [[nodiscard]] bool routeValid() const;
       [[nodiscard]] bool matchingMetrics() const;       void setMatchingMetrics(bool);
       [[nodiscard]] bool allowEnvelopeCorrection() const;
 
@@ -111,11 +113,11 @@ namespace ElevationChart
       [[nodiscard]] QPointF uavVisualPosition() const;  void setUavVisualPosition(QPointF);
       [[nodiscard]] float uavVisualAngle() const;       void setUavVisualAngle(float);
 
-      Q_INVOKABLE [[maybe_unused]] void applyMetricsCorrection() noexcept;
-      Q_INVOKABLE [[maybe_unused]] void estimateEnvelope() const noexcept;
-      Q_INVOKABLE [[maybe_unused]] void applyEnvelopeCorrection() noexcept;
+      invokable [[maybe_unused]] void applyMetricsCorrection() noexcept;
+      invokable [[maybe_unused]] void estimateEnvelope() const noexcept;
+      invokable [[maybe_unused]] void applyEnvelopeCorrection() noexcept;
 
-      Q_INVOKABLE static QColor mixAlpha(QColor, float a) noexcept;
+      invokable static QColor mixAlpha(QColor, float a) noexcept;
 
     signals:
       void paletteChanged();
@@ -123,6 +125,7 @@ namespace ElevationChart
       void missingTilesChanged();
       void intersectingChanged();
       void validChanged();
+      void routeValidChanged();
       void matchingMetricsChanged();
       void routeChanged();
       void uavPositionChanged();
