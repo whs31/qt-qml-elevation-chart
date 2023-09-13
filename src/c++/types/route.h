@@ -4,6 +4,7 @@
 #include <QtPositioning/QGeoPath>
 #include "routepoint.h"
 #include "elevationpoint.h"
+#include <QDebug>
 #define invokable Q_INVOKABLE
 
 using std::vector;
@@ -43,6 +44,13 @@ namespace ElevationChart
 
       bool operator==(const Route& rhs);
       bool operator!=(const Route& rhs);
+      operator QString() {
+          QString result;
+          for (int i = 0; i < m_vec.size(); ++i){
+              result += m_vec.at(i) + " ";
+          }
+          return result;
+      };
 
 
     public:

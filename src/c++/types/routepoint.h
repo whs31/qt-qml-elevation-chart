@@ -28,6 +28,10 @@ namespace ElevationChart
       bool operator==(const RoutePoint& rhs);
       bool operator!=(const RoutePoint& rhs);
 
+      operator QString() {
+          return m_coordinate.toString() + "\t" + m_velocity;
+      }
+
     private:
       QGeoCoordinate m_coordinate;
       float m_velocity;

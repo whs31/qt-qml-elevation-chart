@@ -458,4 +458,13 @@ Rectangle {
         visible: opacity > 0
         Behavior on opacity { NumberAnimation { } }
     }
+
+
+    function setRoute(newRoute) {
+        if(impl.route === newRoute) {
+            console.log("!!!SS!!!\t\t")
+            return;
+        }
+        impl.route = newRoute;
+    }
 }
