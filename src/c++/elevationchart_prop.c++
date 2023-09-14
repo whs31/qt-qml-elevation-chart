@@ -205,6 +205,7 @@ namespace ElevationChart
     emit uavPositionChanged();
 
     this->updateUavVisualPosition();
+    this->updateAxes();
   }
 
   /**
@@ -231,6 +232,9 @@ namespace ElevationChart
     m_envelope = x;
     emit envelopeChanged();
   }
+
+  AxisModel* ElevationChartItem::yRelativeModel() const { return m_y_relative_model; }
+  AxisModel* ElevationChartItem::yAbsoluteModel() const { return m_y_absolute_model; }
 
   /**
    * \property ElevationChartItem::shrinkMode

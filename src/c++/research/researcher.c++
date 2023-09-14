@@ -260,9 +260,8 @@ namespace ElevationChart
     qDebug() << "<elevation-chart> Researcher is requested to optimize" << res.route.size() << "point route";
     for(size_t i = 1; i < res.route.size(); i++)
     {
-//        if(res.route.at(i).base()) {
-//          continue;
-//        }
+      if(res.route.at(i).base())
+        continue;
       RoutePoint previous = res.route.at(static_cast<int>(i - 1));
       RoutePoint current = res.route.at(static_cast<int>(i));
       float distance_diff = static_cast<float>(previous.coordinate().distanceTo(current.coordinate()));

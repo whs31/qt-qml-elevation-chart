@@ -17,6 +17,7 @@
 #include "provider/demdataprovider.h"
 #include "internal/routemodel.h"
 #include "internal/notificationmodel.h"
+#include "internal/axismodel.h"
 #include "research/researcher.h"
 
 using std::unique_ptr;
@@ -38,6 +39,8 @@ namespace ElevationChart
     Q_PROPERTY(QGeoCoordinate uavPosition READ uavPosition WRITE setUavPosition NOTIFY uavPositionChanged FINAL)
     Q_PROPERTY(ElevationChart::Metrics metrics READ metrics WRITE setMetrics NOTIFY metricsChanged FINAL)
     Q_PROPERTY(ElevationChart::Envelope envelope READ envelope WRITE setEnvelope NOTIFY envelopeChanged FINAL)
+    Q_PROPERTY(ElevationChart::AxisModel* yRelativeModel READ yRelativeModel CONSTANT FINAL)
+    Q_PROPERTY(ElevationChart::AxisModel* yAbsoluteModel READ yAbsoluteModel CONSTANT FINAL)
 
     Q_PROPERTY(bool missingTiles READ missingTiles WRITE setMissingTiles NOTIFY missingTilesChanged FINAL)
     Q_PROPERTY(bool intersecting READ intersecting WRITE setIntersecting NOTIFY intersectingChanged FINAL)
@@ -100,6 +103,8 @@ namespace ElevationChart
       [[nodiscard]] QGeoCoordinate uavPosition() const; void setUavPosition(const QGeoCoordinate&);
       [[nodiscard]] Metrics metrics() const;            void setMetrics(const Metrics&);
       [[nodiscard]] Envelope envelope() const;          void setEnvelope(const Envelope&);
+      [[nodiscard]] AxisModel* yRelativeModel() const;
+      [[nodiscard]] AxisModel* yAbsoluteModel() const;
 
       [[nodiscard]] bool missingTiles() const;          void setMissingTiles(bool);
       [[nodiscard]] bool intersecting() const;          void setIntersecting(bool);
@@ -151,6 +156,7 @@ namespace ElevationChart
       Q_SLOT void updateProfile() noexcept;
       Q_SLOT void receiveProfile(const vector<ElevationPoint>& profile) noexcept;
       Q_SLOT void updateBounds() noexcept;
+      Q_SLOT void updateAxes() noexcept;
       Q_SLOT void updateMetrics() noexcept;
       void updateUavVisualPosition() noexcept;
 
@@ -187,6 +193,8 @@ namespace ElevationChart
       QGeoCoordinate m_uav_position;
       Metrics m_metrics;
       Envelope m_envelope;
+      AxisModel* m_y_relative_model;
+      AxisModel* m_y_absolute_model;
       unique_ptr<IElevationDataProvider> m_provider;
       vector<ElevationPoint> m_profile;
       vector<ElevationPoint> m_intersections;

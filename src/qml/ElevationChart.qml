@@ -214,27 +214,84 @@ Rectangle {
         }
     }
 
-    Rectangle {
-        width: 3
-        height: flick.height
-        anchors {
-            left: flick.left
-            bottom: flick.bottom
-        }
-        color: impl.palette.foreground
-    }
-
     Repeater {
+        visible: opacity > 0
+        enabled: visible
+        opacity: impl.routeValid && !impl.missingTiles ? 1 : 0
         anchors {
-            left: parent.left
-            right: flick.left
+            right: flick.right
             bottom: flick.bottom
             top: parent.top
         }
+        width: 200
+        model: impl.yAbsoluteModel
         delegate: Rectangle {
-            height: 3
-            color: impl.palette.foreground
+            required property real elevation
+            required property string prefix
+            required property real pixelOffset
+
+            height: 2
+            width: 50
+            visible: impl.routeValid && !impl.missingTiles ? 1 : 0
+            y: pixelOffset
+            x: ec.width - width
+            color: impl.palette.overlay2
+
+            Text {
+                text: `${Number(elevation).toFixed(0)} ${prefix}`
+                color: impl.palette.overlay2
+                anchors {
+                    bottom: parent.top
+                    bottomMargin: 3
+                    right: parent.right
+                }
+                font {
+                    family: mainfont
+                    weight: Font.Bold
+                }
+            }
         }
+        Behavior on opacity { NumberAnimation {} }
+    }
+
+    Repeater {
+        visible: opacity > 0
+        enabled: visible
+        opacity: impl.routeValid && !impl.missingTiles ? 1 : 0
+        anchors {
+            right: parent.left
+            bottom: flick.bottom
+            top: parent.top
+        }
+        width: 200
+        model: impl.yRelativeModel
+        delegate: Rectangle {
+            required property real elevation
+            required property string prefix
+            required property real pixelOffset
+
+            height: 2
+            width: 50
+            visible: impl.routeValid && !impl.missingTiles ? 1 : 0
+            y: pixelOffset
+            x: 0
+            color: impl.palette.overlay2
+
+            Text {
+                text: `${Number(elevation).toFixed(0)} ${prefix}`
+                color: impl.palette.overlay2
+                anchors {
+                    bottom: parent.top
+                    bottomMargin: 3
+                    left: parent.left
+                }
+                font {
+                    family: mainfont
+                    weight: Font.Bold
+                }
+            }
+        }
+        Behavior on opacity { NumberAnimation {} }
     }
 
     UI.LargeWarning { shown: impl.missingTiles && impl.route.valid(); txt: "Отсутствуют профили высот"; col: impl.palette.overlay; anchors.centerIn: parent }

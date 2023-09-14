@@ -44,9 +44,11 @@ namespace ElevationChart
     , m_route(Route())
     , m_model(new RouteModel(this))
     , m_notifications(new NotificationModel(this))
-    , m_uav_position(QGeoCoordinate(60, 30))
+    , m_uav_position(QGeoCoordinate(60, 30, 100))
     , m_metrics(Metrics())
     , m_envelope(Envelope())
+    , m_y_relative_model(new AxisModel(this))
+    , m_y_absolute_model(new AxisModel(this))
     , m_provider_type(ProviderType::DEMProvider)
     , m_bounds(Bounds())
     , m_shrink_mode(ShrinkMode::ShrinkToRouteHeight)
@@ -206,6 +208,8 @@ namespace ElevationChart
     if(m_profile.empty())
       return;
 
+    this->updateAxes();
+
     researcher()->researchIntersections(route().toGeoPath());
 
     setBounds({ m_profile.back().distance(), 0 });
@@ -221,6 +225,23 @@ namespace ElevationChart
 
     this->updateMetrics();
     this->update();
+  }
+
+  void ElevationChartItem::updateAxes() noexcept
+  {
+    yAbsoluteModel()->clear();
+    yRelativeModel()->clear();
+
+    float exponent = std::floor(std::log10(bounds().y()));
+    auto spacing = (float)std::pow(10, exponent);
+    auto rounded_bound = spacing * 10;
+    bool km = rounded_bound > 5'000;
+    for(float i = 0; i < rounded_bound; i += spacing)
+      yAbsoluteModel()->add(km ? i / 1'000 : i, km, toPixelY(i, bounds().y()));
+
+    float delta = static_cast<float>(rounded_bound - uavPosition().altitude());
+    for(float i = (float)uavPosition().altitude(); i < delta; i += spacing)
+      yRelativeModel()->add(km ? (i - (float)uavPosition().altitude()) / 1'000 : i - (float)uavPosition().altitude(), km, toPixelY(i, bounds().y()));
   }
 
   void ElevationChartItem::updateMetrics() noexcept
