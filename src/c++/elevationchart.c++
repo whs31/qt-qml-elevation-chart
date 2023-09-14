@@ -60,7 +60,7 @@ namespace ElevationChart
     {
       case ProviderType::RandomProvider: m_provider = std::make_unique<RandomDataProvider>(); break;
       case ProviderType::DEMProvider: m_provider = std::make_unique<DEMDataProvider>(); break;
-      default: throw std::runtime_error("Weird shit happened, requiring investigation!");
+      default: throw std::runtime_error("ElevationChart.ElevationChartItem.ctor: weird shit happened, requiring investigation!");
     }
 
     this->setFlag(ItemHasContents);
@@ -68,29 +68,10 @@ namespace ElevationChart
     qRegisterMetaType<vector<ElevationPoint>>("vector<ElevationPoint>");
 
     researcher()->setOptimizeEnvelope(true);
-
-    connect(model(), &RouteModel::requireRebuild, this, [this](int index, float new_altitude){
-      m_route.at(index).setAltitude(new_altitude);
-      emit pointAccepted(index, m_route.at(index));
-      emit routeChanged();
-      this->updateBounds();
-    });
-
+    connect(model(), &RouteModel::requireRebuild, this, &ElevationChartItem::updateIndividualPoint);
     connect(this, &ElevationChartItem::updateProfileFinished, this, &ElevationChartItem::receiveProfile);
-    connect(researcher(), &Researcher::researchIntersectionsFinished, this, [this](const vector<ElevationPoint>& vec){
-      m_intersections = vec;
-      setIntersecting(not vec.empty());
-      this->update();
-    });
-
-    connect(researcher(), &Researcher::researchEnvelopeFinished, this, [this](const Researcher::EnvelopeResult& res){
-      m_envelope_route = res.route;
-      emit allowEnvelopeCorrectionChanged();
-      m_envelopePathVec = m_envelope_route.toElevationGraph();
-      m_envelopeCorridorVec = res.boundPolygon;
-
-      this->update();
-    });
+    connect(researcher(), &Researcher::researchIntersectionsFinished, this, &ElevationChartItem::updateIntersections);
+    connect(researcher(), &Researcher::researchEnvelopeFinished, this, &ElevationChartItem::updateEnvelope);
   }
 
   /**
@@ -242,6 +223,31 @@ namespace ElevationChart
     float delta = static_cast<float>(rounded_bound - uavPosition().altitude());
     for(float i = (float)uavPosition().altitude(); i < delta; i += spacing)
       yRelativeModel()->add(km ? (i - (float)uavPosition().altitude()) / 1'000 : i - (float)uavPosition().altitude(), km, toPixelY(i, bounds().y()));
+  }
+
+  void ElevationChartItem::updateIndividualPoint(int index, float alt) noexcept
+  {
+    m_route.at(index).setAltitude(alt);
+    emit pointAccepted(index, m_route.at(index));
+    emit routeChanged();
+    this->updateBounds();
+  }
+
+  void ElevationChartItem::updateIntersections(const vector<ElevationChart::ElevationPoint>& x) noexcept
+  {
+    m_intersections = x;
+    setIntersecting(not x.empty());
+    this->update();
+  }
+
+  void ElevationChartItem::updateEnvelope(const Researcher::EnvelopeResult& x) noexcept
+  {
+    m_envelope_route = x.route;
+    emit allowEnvelopeCorrectionChanged();
+    m_envelopePathVec = m_envelope_route.toElevationGraph();
+    m_envelopeCorridorVec = x.boundPolygon;
+
+    this->update();
   }
 
   void ElevationChartItem::updateMetrics() noexcept

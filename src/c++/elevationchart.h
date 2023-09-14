@@ -157,6 +157,9 @@ namespace ElevationChart
       Q_SLOT void receiveProfile(const vector<ElevationPoint>& profile) noexcept;
       Q_SLOT void updateBounds() noexcept;
       Q_SLOT void updateAxes() noexcept;
+      Q_SLOT void updateIndividualPoint(int index, float alt) noexcept;
+      Q_SLOT void updateIntersections(const vector<ElevationPoint>&) noexcept;
+      Q_SLOT void updateEnvelope(const Researcher::EnvelopeResult&) noexcept;
       Q_SLOT void updateMetrics() noexcept;
       void updateUavVisualPosition() noexcept;
 
