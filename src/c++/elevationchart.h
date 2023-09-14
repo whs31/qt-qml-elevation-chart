@@ -27,6 +27,7 @@ class QSGGeometryNode;
 
 namespace ElevationChart
 {
+  class Analyzer;
   class ElevationChartItem : public LPVL::ScenegraphObject
   {
     Q_OBJECT
@@ -60,6 +61,8 @@ namespace ElevationChart
     constexpr static const float METRICS_ROUNDING_WIDTH = 8.0f;   ///< Размер точек для сглаживания ломаной на пути ЛТХ (px).
     constexpr static uint8_t ENVELOPE_NODE_OPACITY = 100;
     constexpr static uint8_t CORRIDOR_NODE_OPACITY = 50;
+
+    friend class Analyzer;
 
     enum NodeTypes
     {

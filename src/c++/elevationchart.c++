@@ -9,6 +9,7 @@
 #include <LPVL/Utils>
 #include <LPVL/Materials/FadingGradient>
 #include "internal/definitions.h"
+#include "research/analyzer.h"
 //#include "scenegraph/envelopeshader.h" // deprecated. maybe in future will be reworked.
 
 #define in :
@@ -181,50 +182,8 @@ namespace ElevationChart
       model()->add(point);
   }
 
-  void ElevationChartItem::updateBounds() noexcept
-  {
-    if(not route().valid())
-      return;
-
-    if(m_profile.empty())
-      return;
-
-    this->updateAxes();
-
-    researcher()->researchIntersections(route().toGeoPath());
-
-    setBounds({ m_profile.back().distance(), 0 });
-    auto path = route().toGeoPath().path();
-    for(const auto& coordinate in path)
-      if(coordinate.altitude() > bounds().y())
-        setBounds({bounds().x(), static_cast<float>(coordinate.altitude())});
-
-    if(shrinkMode() == ShrinkToProfileHeight)
-      setBounds({bounds().x(), std::max(bounds().y(), std::max_element(m_profile.cbegin(), m_profile.cend(),
-                 [](const ElevationPoint& a, const ElevationPoint& b){ return a.elevation() < b.elevation();
-                 })->elevation())});
-
-    this->updateMetrics();
-    this->update();
-  }
-
-  void ElevationChartItem::updateAxes() noexcept
-  {
-    yAbsoluteModel()->clear();
-    yRelativeModel()->clear();
-
-    float exponent = std::floor(std::log10(bounds().y()));
-    auto spacing = (float)std::pow(10, exponent);
-    auto rounded_bound = spacing * 10;
-    bool km = rounded_bound > 5'000;
-    for(float i = 0; i < rounded_bound; i += spacing)
-      yAbsoluteModel()->add(km ? i / 1'000 : i, km, toPixelY(i, bounds().y()));
-
-    float delta = static_cast<float>(rounded_bound - uavPosition().altitude());
-    for(float i = (float)uavPosition().altitude(); i < delta; i += spacing)
-      yRelativeModel()->add(km ? (i - (float)uavPosition().altitude()) / 1'000 : i - (float)uavPosition().altitude(), km, toPixelY(i, bounds().y()));
-  }
-
+  void ElevationChartItem::updateBounds() noexcept { Analyzer::analyzeBounds(this); }
+  void ElevationChartItem::updateAxes() noexcept { Analyzer::analyzeAxes(this); }
   void ElevationChartItem::updateIndividualPoint(int index, float alt) noexcept
   {
     m_route.at(index).setAltitude(alt);
@@ -249,82 +208,8 @@ namespace ElevationChart
 
     this->update();
   }
-
-  void ElevationChartItem::updateMetrics() noexcept
-  {
-    bool matching_metrics = true;
-
-    QGeoPath correct_path;
-    QGeoPath route_path = route().toGeoPath();
-    if(route_path.isEmpty())
-      return;
-
-    auto velocities = route().velocities();
-
-    correct_path.addCoordinate(route_path.path().first());
-    for(int i = 1; i < route_path.path().size(); i++)
-    {
-      const bool fallback = velocities.at(i) == 0;
-      const auto dx = static_cast<float>(route_path.path().at(i).distanceTo(route_path.path().at(i - 1)));
-      const auto dy = static_cast<float>(route_path.path().at(i).altitude() - correct_path.path().at(i - 1).altitude());
-      const float dy_min = fallback ? metrics().rateOfDescend() * dx / metrics().fallbackVelocity() : metrics().rateOfDescend() * dx / velocities.at(i);
-      const float dy_max = fallback ? metrics().rateOfClimb() * dx / metrics().fallbackVelocity() : metrics().rateOfClimb() * dx / velocities.at(i);
-
-      auto result = route_path.path().at(i);
-
-      // correct case
-      if((dy >= 0 and dy < dy_max) or (dy <= 0 and abs(dy) < dy_min))
-      {
-        correct_path.addCoordinate(result);
-        continue;
-      }
-
-      // climbs too fast
-      else if(dy > 0 and dy > dy_max)
-      {
-        result.setAltitude(correct_path.path().at(i - 1).altitude() + dy_max);
-        matching_metrics = false;
-      }
-
-      // descends too fast
-      else if(dy < 0 and abs(dy) > dy_min)
-      {
-        result.setAltitude(correct_path.path().at(i - 1).altitude() - dy_min);
-        matching_metrics = false;
-      }
-
-      correct_path.addCoordinate(result);
-    }
-
-    if(not matching_metrics)
-    {
-      setMatchingMetrics(false);
-      m_metrics_path = correct_path;
-    }
-    else
-      setMatchingMetrics(true);
-  }
-
-  void ElevationChartItem::updateUavVisualPosition() noexcept
-  {
-    auto r = route().toGeoPath();
-    auto path = r.path();
-    if(path.empty())
-      return;
-    float closest_encounter = static_cast<float>(path.front().distanceTo(uavPosition()));
-    int index = 0;
-    for(int i = 1; i < path.size(); i++)
-    {
-      if(path[i].distanceTo(uavPosition()) < closest_encounter)
-      {
-        closest_encounter = static_cast<float>(path[i].distanceTo(uavPosition()));
-        index = i;
-      }
-    }
-
-    this->setUavVisualPosition({ static_cast<float>(width() * (r.length(0, index) + closest_encounter) / r.length(0, r.size() - 1)),
-                                 toPixelY(static_cast<float>(uavPosition().altitude()), bounds().y()) });
-  }
+  void ElevationChartItem::updateMetrics() noexcept { Analyzer::analyzeMetrics(this); }
+  void ElevationChartItem::updateUavVisualPosition() noexcept { Analyzer::analyzeUavPosition(this); }
 
   void ElevationChartItem::handleBackgroundNode() noexcept
   {
