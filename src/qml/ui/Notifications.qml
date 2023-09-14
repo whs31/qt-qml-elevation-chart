@@ -25,6 +25,8 @@ ListView {
         }
 
         radius: 5
+        palette.button: major ? impl.palette.error : impl.palette.warn
+        palette.buttonText: impl.palette.background
         Material.background: major ? impl.palette.error : impl.palette.warn
         Material.foreground: impl.palette.background
         Material.elevation: 200

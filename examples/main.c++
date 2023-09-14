@@ -41,7 +41,7 @@ int main(int argc, char* argv[])
     ElevationChart::registerQMLTypes();
 
     qputenv("QT_QUICK_CONTROLS_MATERIAL_VARIANT", "Dense");
-    QQuickStyle::setStyle("Material");
+    QQuickStyle::setStyle("Fusion");
 
     QQmlEngine engine;
     QObject::connect(&engine, &QQmlEngine::quit, qApp, &QCoreApplication::quit);

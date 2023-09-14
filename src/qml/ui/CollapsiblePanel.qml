@@ -24,6 +24,7 @@ Pane {
         leftMargin: offset
     }
 
+    palette.window: impl.palette.overlay2
     Material.background: impl.palette.overlay2
     Material.elevation: 200
 }

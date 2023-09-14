@@ -9,9 +9,15 @@ RoundButton {
     required property bool valid
 
     Material.background: impl.palette.accent
+    palette.button: impl.palette.accent
 
-    width: 25
-    height: 25
+    width: 13
+    height: 13
+    padding: 0
+    leftInset: 0
+    rightInset: 0
+    topInset: 0
+    bottomInset: 0
     transform: Scale {
         xScale: 1 / zoom
         //yScale: 1 / zoom
@@ -25,7 +31,7 @@ RoundButton {
     onPressYChanged: impl.model.move(index, -pressY)
 
     component TT : ToolTip { id: control;
-        property string txt: "Tooltip";
+        property string txt: "Tooltip"
 
         visible: parent.hovered || parent.pressed
         font {

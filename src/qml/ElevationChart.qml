@@ -8,16 +8,24 @@ import ElevationChartWidget 3.0
 import "private" as Private
 import "ui" as UI
 import "qrc:/elevationChart/catpuccin.js" as Catpuccin
+import "qrc:/elevationChart/gruvbox.js" as Gruvbox
 
 Rectangle {
+    enum ThemeSelect {
+        Catpuccin,
+        Gruvbox
+    }
+
     id: ec
+    property bool lightmode: false
+    property int currentTheme: ElevationChart.ThemeSelect.Gruvbox
     property alias route: impl.route
     property alias palette: impl.palette
     property alias uavPosition: impl.uavPosition
     property ElevationChartImpl implAlias: impl
 
 
-    Material.theme: impl.light_theme ? Material.Light : Material.Dark
+    Material.theme: lightmode ? Material.Light : Material.Dark
     Material.accent: impl.palette.accent
     Material.primary: impl.palette.accent
     Material.foreground: impl.palette.foreground
@@ -65,6 +73,18 @@ Rectangle {
             }
 
             ElevationChartImpl {
+                property int currentBar: -1
+
+                function lm(a, b) {
+                    if(lightmode) return a
+                    else return b
+                }
+
+                function selectp(a, b) {
+                    if(currentTheme === ElevationChart.ThemeSelect.Catpuccin) return a
+                    else return b
+                }
+
                 id: impl
                 z: dragArea.z + 1
                 anchors.fill: parent
@@ -74,16 +94,17 @@ Rectangle {
                 Behavior on opacity { NumberAnimation { } }
 
                 palette {
-                    background: light_theme ? Catpuccin.latte.base.hex : Catpuccin.mocha.base.hex
-                    foreground: light_theme ? Catpuccin.latte.subtext1.hex : Catpuccin.mocha.subtext1.hex
-                    overlay: light_theme ? Catpuccin.latte.surface2.hex : Catpuccin.mocha.surface0.hex
-                    overlay2: light_theme ? Catpuccin.latte.overlay0.hex : Catpuccin.mocha.surface1.hex
-                    accent: light_theme ? Catpuccin.latte.text.hex : Catpuccin.mocha.text.hex
-                    warn: light_theme ? Catpuccin.latte.yellow.hex : Catpuccin.mocha.yellow.hex
-                    error: light_theme ? Catpuccin.latte.maroon.hex : Catpuccin.mocha.maroon.hex
-                    info: light_theme ? Catpuccin.latte.blue.hex : Catpuccin.mocha.blue.hex
-                    uav: light_theme ? Catpuccin.latte.rosewater.hex : Catpuccin.mocha.rosewater.hex
-                    corridor: timer.f ? impl.mixAlpha(light_theme ? Catpuccin.latte.teal.hex : Catpuccin.mocha.teal.hex, 0.3) : light_theme ? Catpuccin.latte.blue.hex : Catpuccin.mocha.blue.hex
+                    background: selectp(lm(Catpuccin.latte.base.hex, Catpuccin.mocha.base.hex), Gruvbox.theme.background1)
+                    foreground: selectp(lm(Catpuccin.latte.subtext1.hex, Catpuccin.mocha.subtext1.hex), Gruvbox.theme.foreground1)
+                    overlay: selectp(lm(Catpuccin.latte.surface2.hex, Catpuccin.mocha.surface2.hex), Gruvbox.theme.background4)
+                    overlay2: selectp(lm(Catpuccin.latte.overlay0.hex, Catpuccin.mocha.overlay0.hex), Gruvbox.theme.foreground4)
+                    accent: selectp(lm(Catpuccin.latte.text.hex, Catpuccin.mocha.text.hex), Gruvbox.theme.foreground0)
+                    warn: selectp(lm(Catpuccin.latte.yellow.hex, Catpuccin.mocha.yellow.hex), Gruvbox.theme.yellow)
+                    error: selectp(lm(Catpuccin.latte.maroon.hex, Catpuccin.mocha.maroon.hex), Gruvbox.theme.red)
+                    info: selectp(lm(Catpuccin.latte.blue.hex, Catpuccin.mocha.blue.hex), Gruvbox.theme.blue)
+                    uav: selectp(lm(Catpuccin.latte.rosewater.hex, Catpuccin.mocha.rosewater.hex), Gruvbox.theme.yellow)
+                    corridor: timer.f ? selectp(lm(Catpuccin.latte.teal.hex, Catpuccin.mocha.teal.hex), Gruvbox.theme.aqua)
+                                      : selectp(lm(Catpuccin.latte.blue.hex, Catpuccin.mocha.blue.hex), Gruvbox.theme.blue)
 
                     Behavior on background { ColorAnimation { easing.type: Easing.InOutQuad } }
                     Behavior on foreground { ColorAnimation { easing.type: Easing.InOutQuad } }
@@ -106,11 +127,6 @@ Rectangle {
                     onTriggered: f = !f
                 }
 
-                //Component.onCompleted: ElevationChartCXXAPI.setSource(impl)
-
-                property int currentBar: -1
-                property bool light_theme: false
-
                 Repeater {
                     anchors.fill: parent
                     model: impl.model
@@ -122,8 +138,13 @@ Rectangle {
                     opacity: shown ? 1.0 : 0.0
                     visible: opacity > 0
                     enabled: visible
-                    width: 40
-                    height: 40
+                    width: 23
+                    height: 23
+                    padding: 3
+                    leftInset: 0
+                    rightInset: 0
+                    topInset: 0
+                    bottomInset: 0
                     x: impl.uavVisualPosition.x - width / 2
                     y: impl.uavVisualPosition.y - height / 2
                     transform: Scale {
@@ -135,8 +156,6 @@ Rectangle {
                     icon {
                         source: "qrc:/elevationChart/icons/gps.svg"
                         color: impl.palette.background
-                        width: 40
-                        height: 40
                     }
                     layer {
                         enabled: true
@@ -146,6 +165,7 @@ Rectangle {
                     rotation: 90 - impl.uavVisualAngle
 
                     Material.background: impl.palette.uav
+                    palette.button: impl.palette.uav
                     Behavior on x { NumberAnimation {} }
                     Behavior on y { NumberAnimation {} }
                     Behavior on opacity { NumberAnimation { easing.type: Easing.InOutQuad }}
@@ -283,6 +303,8 @@ Rectangle {
                 }
 
                 Material.background: impl.currentBar === 0 ? impl.palette.warn : impl.palette.overlay2
+                palette.button: impl.currentBar === 0 ? impl.palette.warn : impl.palette.overlay2
+                palette.buttonText: impl.palette.foreground
 
                 onPressed: {
                     if(impl.currentBar !== 0)
@@ -301,6 +323,8 @@ Rectangle {
                 }
 
                 Material.background: impl.currentBar === 1 ? impl.palette.error : impl.palette.overlay2
+                palette.button: impl.currentBar === 1 ? impl.palette.error : impl.palette.overlay2
+                palette.buttonText: impl.palette.foreground
 
                 onPressed: {
                     if(impl.currentBar !== 1)
@@ -319,6 +343,8 @@ Rectangle {
                 }
 
                 Material.background: impl.currentBar === 2 ? impl.palette.accent : impl.palette.overlay2
+                palette.button: impl.currentBar === 2 ? impl.palette.accent : impl.palette.overlay2
+                palette.buttonText: impl.palette.foreground
 
                 onPressed: {
                     if(impl.currentBar !== 2)
@@ -354,6 +380,8 @@ Rectangle {
                 }
 
                 Material.background: impl.palette.overlay2
+                palette.button: impl.palette.overlay2
+                palette.buttonText: impl.palette.foreground
 
                 onPressed: impl.applyMetricsCorrection()
             }
@@ -383,6 +411,8 @@ Rectangle {
                 }
 
                 Material.background: impl.palette.overlay2
+                palette.button: impl.palette.overlay2
+                palette.buttonText: impl.palette.foreground
                 onPressed: impl.estimateEnvelope()
             }
 
@@ -401,6 +431,8 @@ Rectangle {
                 }
 
                 Material.background: impl.palette.overlay2
+                palette.button: impl.palette.overlay2
+                palette.buttonText: impl.palette.foreground
                 onPressed: impl.applyEnvelopeCorrection()
             }
         }
@@ -425,12 +457,14 @@ Rectangle {
                 checked: true
 
                 Material.background: impl.palette.overlay2
+                palette.button: impl.palette.overlay2
+                palette.buttonText: impl.palette.foreground
                 onCheckedChanged: showIndexes = checked
             }
 
             Button {
                 icon {
-                    source: impl.light_theme ? "qrc:/elevationChart/icons/light.svg" : "qrc:/elevationChart/icons/dark.svg"
+                    source: ec.lightmode ? "qrc:/elevationChart/icons/light.svg" : "qrc:/elevationChart/icons/dark.svg"
                 }
                 font {
                     family: mainfont
@@ -440,7 +474,7 @@ Rectangle {
                 flat: true
                 Layout.fillWidth: true
                 text: "Переключить тему"
-                onPressed: impl.light_theme = !impl.light_theme
+                onPressed: ec.lightmode = !ec.lightmode
             }
         }
     }

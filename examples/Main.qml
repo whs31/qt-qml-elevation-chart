@@ -4,8 +4,8 @@ import QtQuick.Controls 2.15
 import QtQuick.Controls.Material 2.15
 import QtPositioning 5.15
 import ElevationChartWidget 3.0
-import "qrc:/elevation-chart"
-import "qrc:/elevation-chart/catpuccin.js" as Catpuccin
+import "qrc:/elevationChart"
+import "qrc:/elevationChart/catpuccin.js" as Catpuccin
 
 ApplicationWindow {
     id: root
