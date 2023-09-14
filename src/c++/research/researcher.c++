@@ -232,6 +232,7 @@ namespace ElevationChart
         if(route_point.base() and delta_route.size() > 1)
         {
           res.route.add(RoutePoint(route_point.toQGeoCoordinate()));
+          res.route.at(res.route.size() - 1).setBase(true);
           route_path.push_back(route_point);
 
           auto it1 = delta_bound.cbegin();
@@ -259,6 +260,9 @@ namespace ElevationChart
     qDebug() << "<elevation-chart> Researcher is requested to optimize" << res.route.size() << "point route";
     for(size_t i = 1; i < res.route.size(); i++)
     {
+//        if(res.route.at(i).base()) {
+//          continue;
+//        }
       RoutePoint previous = res.route.at(static_cast<int>(i - 1));
       RoutePoint current = res.route.at(static_cast<int>(i));
       float distance_diff = static_cast<float>(previous.coordinate().distanceTo(current.coordinate()));

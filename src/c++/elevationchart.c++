@@ -119,7 +119,6 @@ namespace ElevationChart
     if(m_envelope_route.valid())
       this->setRoute(m_envelope_route);
     emit envelopeAccepted(m_envelope_route);
-    emit fuckingSignal();
     m_envelope_route.clear();
     emit allowEnvelopeCorrectionChanged();
     m_envelopeCorridorVec.clear();

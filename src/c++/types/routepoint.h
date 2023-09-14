@@ -13,17 +13,19 @@ namespace ElevationChart
     Q_PROPERTY(double longitude READ longitude WRITE setLongitude STORED false FINAL)
     Q_PROPERTY(float altitude READ altitude WRITE setAltitude STORED false FINAL)
     Q_PROPERTY(float velocity READ velocity WRITE setVelocity FINAL)
+    Q_PROPERTY(bool base READ base WRITE setBase FINAL)
 
     public:
       RoutePoint();
       RoutePoint(double latitude, double longitude, float elevation = 0, float velocity_ms = 0);
       explicit RoutePoint(const QGeoCoordinate& coord, float velocity_ms = 0);
 
-      [[nodiscard]] QGeoCoordinate coordinate() const;    void setCoordinate(const QGeoCoordinate&);
-      [[nodiscard]] double latitude() const;              void setLatitude(double);
-      [[nodiscard]] double longitude() const;             void setLongitude(double);
-      [[nodiscard]] float altitude() const;               void setAltitude(float);
-      [[nodiscard]] float velocity() const;               void setVelocity(float);
+      [[nodiscard]] QGeoCoordinate coordinate() const;      void setCoordinate(const QGeoCoordinate&);
+      [[nodiscard]] double latitude() const;                void setLatitude(double);
+      [[nodiscard]] double longitude() const;               void setLongitude(double);
+      [[nodiscard]] float altitude() const;                 void setAltitude(float);
+      [[nodiscard]] float velocity() const;                 void setVelocity(float);
+      [[nodiscard]] bool base() const;                      void setBase(bool newBase);
 
       bool operator==(const RoutePoint& rhs);
       bool operator!=(const RoutePoint& rhs);
@@ -32,10 +34,18 @@ namespace ElevationChart
           return m_coordinate.toString() + "\t" + m_velocity;
       }
 
-    private:
+
+  private:
       QGeoCoordinate m_coordinate;
       float m_velocity;
+      bool m_base;
   };
+
+
+
+
+
+
 } // ElevationChart
 
 Q_DECLARE_METATYPE(ElevationChart::RoutePoint)
@@ -59,6 +69,7 @@ namespace ElevationChart
   inline RoutePoint::RoutePoint()
     : m_coordinate({0, 0, 0})
     , m_velocity(0)
+    , m_base(false)
   {}
 
   /**
@@ -71,6 +82,7 @@ namespace ElevationChart
   inline RoutePoint::RoutePoint(double latitude, double longitude, float elevation, float velocity_ms)
     : m_coordinate(latitude, longitude, elevation)
     , m_velocity(velocity_ms)
+    , m_base(false)
   {}
 
   /**
@@ -148,13 +160,10 @@ namespace ElevationChart
   inline float RoutePoint::velocity() const { return m_velocity; }
   inline void RoutePoint::setVelocity(float x) { if(not qIsNaN(x)) m_velocity = x; }
 
-  inline bool RoutePoint::operator==(const RoutePoint &rhs)
-  {
-      return (this->m_coordinate == rhs.m_coordinate and qFuzzyCompare(this->velocity(), rhs.velocity()));
-  }
+  inline bool RoutePoint::base() const  { return m_base; }
+  inline void RoutePoint::setBase(bool newBase) { m_base = newBase; }
 
-  inline bool RoutePoint::operator!=(const RoutePoint &rhs)
-  {
-      return not (*this == rhs);
-  }
-} // ElevationChart
+  inline bool RoutePoint::operator==(const RoutePoint &rhs) { return (this->m_coordinate == rhs.m_coordinate and qFuzzyCompare(this->velocity(), rhs.velocity())); }
+  inline bool RoutePoint::operator!=(const RoutePoint &rhs) { return not (*this == rhs); }
+
+  } // ElevationChart

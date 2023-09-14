@@ -141,7 +141,6 @@ namespace ElevationChart
       void envelopeAccepted(ElevationChart::Route route);
       void metricsAccepted(ElevationChart::Route route);
       void pointAccepted(int index, ElevationChart::RoutePoint point);
-      void fuckingSignal();
 
 
     protected:
