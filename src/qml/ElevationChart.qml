@@ -481,6 +481,7 @@ Rectangle {
             }
 
             Item { Layout.fillWidth: true }
+            UI.Notifications { id: notifications }
         }
     }
 
@@ -510,15 +511,6 @@ Rectangle {
         enabled: shown
         opacity: shown ? 1 : 0
         Behavior on opacity { NumberAnimation { } }
-    }
-
-    UI.Notifications {
-        id: notifications
-        anchors {
-            top: parent.top
-            right: parent.right
-            margins: 10
-        }
     }
 
     ProgressBar {

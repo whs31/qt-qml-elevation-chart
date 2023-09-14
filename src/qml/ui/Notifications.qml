@@ -7,16 +7,17 @@ ListView {
     add: Transition { NumberAnimation { property: "scale"; from: 0; to: 1; duration: 400; easing.type: Easing.OutCubic; } }
     remove: Transition { NumberAnimation { property: "scale"; from: 1; to: 0; duration: 500; easing.type: Easing.OutCubic; } }
 
-    width: 400
+    Layout.preferredHeight: parent.height
     height: parent.height
     interactive: false
     layoutDirection: Qt.RightToLeft
+    orientation: Qt.Horizontal
     model: impl.notifications
     delegate: RoundButton {
         required property bool major
         required property string details
 
-        anchors.right: parent ? parent.right : undefined
+        //anchors.right: parent ? parent.right : undefined
         opacity: 0.8
 
         icon {
