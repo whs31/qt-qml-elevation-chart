@@ -101,8 +101,8 @@ namespace ElevationChart
       source->yAbsoluteModel()->add(km ? i / 1'000 : i, km, source->toPixelY(i, source->bounds().y()));
 
     float delta = static_cast<float>(rounded_bound - source->uavPosition().altitude());
-    for(float i = (float)source->uavPosition().altitude(); i < delta; i += spacing)
-      source->yRelativeModel()->add(km ? (i - (float)source->uavPosition().altitude()) / 1'000 : i - (float)source->uavPosition().altitude(),
+    for(float i = source->m_stored_uav_height; i < delta; i += spacing)
+      source->yRelativeModel()->add(km ? (i - source->m_stored_uav_height) / 1'000 : i - source->m_stored_uav_height,
                             km, source->toPixelY(i, source->bounds().y()));
   }
 

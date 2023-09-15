@@ -124,6 +124,7 @@ namespace ElevationChart
       invokable [[maybe_unused]] void applyMetricsCorrection() noexcept;
       invokable [[maybe_unused]] void estimateEnvelope() const noexcept;
       invokable [[maybe_unused]] void applyEnvelopeCorrection() noexcept;
+      invokable [[maybe_unused]] void setUavRelativeHeight() noexcept;
 
       invokable static QColor mixAlpha(QColor, float a) noexcept;
 
@@ -213,6 +214,7 @@ namespace ElevationChart
       QGeoPath m_envelope_path;
       QPointF m_uav_visual_pos;
       float m_uav_visual_angle;
+      float m_stored_uav_height;
   };
 } // ElevationChart
 

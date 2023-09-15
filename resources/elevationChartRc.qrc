@@ -13,5 +13,6 @@
         <file>icons/dark.svg</file>
         <file>icons/warning.svg</file>
         <file>icons/gps.svg</file>
+        <file>icons/altitude.svg</file>
     </qresource>
 </RCC>

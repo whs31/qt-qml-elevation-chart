@@ -310,16 +310,17 @@ Rectangle {
             anchors.fill: parent
 
             RoundButton {
-                id: buttonMetrics
                 radius: 4
                 icon {
                     source: "qrc:/elevationChart/icons/inspect-graph.svg"
-                    color: impl.currentBar === 0 ? impl.palette.background : impl.palette.foreground
+                    color: impl.palette.foreground
                 }
+                text: "ЛТХ"
 
                 Layout.preferredHeight: 45
-                Material.background: impl.currentBar === 0 ? impl.palette.warn : impl.palette.overlay2
-                palette.button: impl.currentBar === 0 ? impl.palette.warn : impl.palette.overlay2
+                Material.background: impl.palette.overlay2
+                Material.foreground: impl.palette.foreground
+                palette.button: impl.palette.overlay2
                 palette.buttonText: impl.palette.foreground
 
                 onPressed: panelMetrics.visible = true
@@ -358,16 +359,17 @@ Rectangle {
             }
 
             RoundButton {
-                id: buttonEnvelope
                 radius: 4
                 icon {
                     source: "qrc:/elevationChart/icons/envelope.svg"
-                    color: impl.currentBar === 1 ? impl.palette.background : impl.palette.foreground
+                    color: impl.palette.foreground
                 }
+                text: "Огибающая"
 
                 Layout.preferredHeight: 45
-                Material.background: impl.currentBar === 1 ? impl.palette.error : impl.palette.overlay2
-                palette.button: impl.currentBar === 1 ? impl.palette.error : impl.palette.overlay2
+                Material.background: impl.palette.overlay2
+                Material.foreground: impl.palette.foreground
+                palette.button: impl.palette.overlay2
                 palette.buttonText: impl.palette.foreground
 
                 onPressed: panelEnvelope.visible = true
@@ -424,16 +426,17 @@ Rectangle {
             }
 
             RoundButton {
-                id: buttonSettings
                 radius: 4
                 icon {
                     source: "qrc:/elevationChart/icons/settings.svg"
-                    color: impl.currentBar === 2 ? impl.palette.background : impl.palette.foreground
+                    color: impl.palette.foreground
                 }
+                text: "Параметры"
 
                 Layout.preferredHeight: 45
-                Material.background: impl.currentBar === 2 ? impl.palette.accent : impl.palette.overlay2
-                palette.button: impl.currentBar === 2 ? impl.palette.accent : impl.palette.overlay2
+                Material.background: impl.palette.overlay2
+                Material.foreground: impl.palette.foreground
+                palette.button: impl.palette.overlay2
                 palette.buttonText: impl.palette.foreground
 
                 onPressed: panelSettings.visible = true
@@ -475,6 +478,57 @@ Rectangle {
                             Layout.fillWidth: true
                             text: "Переключить тему"
                             onPressed: ec.lightmode = !ec.lightmode
+                        }
+                    }
+                }
+            }
+
+            RoundButton {
+                radius: 4
+                icon {
+                    source: "qrc:/elevationChart/icons/altitude.svg"
+                    color: impl.palette.foreground
+                }
+                text: "Установить высоту"
+
+                Layout.preferredHeight: 45
+                Material.background: impl.palette.overlay2
+                Material.foreground: impl.palette.foreground
+                palette.button: impl.palette.overlay2
+                palette.buttonText: impl.palette.foreground
+
+                onPressed: dialogApproval.visible = true
+
+                UI.CollapsiblePanel {
+                    id: dialogApproval
+                    width: 380
+                    height: 80
+
+                    ColumnLayout {
+                        Label {
+                            Layout.fillWidth: true
+                            text: "Вы уверены, что хотите установить отн. высоту БПЛА?"
+                        }
+
+                        RowLayout {
+                            Layout.fillWidth: true
+
+                            Button {
+                                flat: true
+                                Layout.fillWidth: true
+                                text: "Да"
+                                onPressed: {
+                                    impl.setUavRelativeHeight()
+                                    dialogApproval.visible = false
+                                }
+                            }
+
+                            Button {
+                                flat: true
+                                Layout.fillWidth: true
+                                text: "Нет"
+                                onPressed: dialogApproval.visible = false
+                            }
                         }
                     }
                 }

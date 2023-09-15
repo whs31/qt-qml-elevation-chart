@@ -56,6 +56,7 @@ namespace ElevationChart
     , m_envelope_route(Route())
     , m_uav_visual_pos(QPointF(0, 0))
     , m_uav_visual_angle(0)
+    , m_stored_uav_height(0)
   {
     switch(providerType())
     {
@@ -107,6 +108,12 @@ namespace ElevationChart
     emit allowEnvelopeCorrectionChanged();
     m_envelopeCorridorVec.clear();
     m_envelopePathVec.clear();
+  }
+
+  [[maybe_unused]] void ElevationChartItem::setUavRelativeHeight() noexcept
+  {
+    m_stored_uav_height = static_cast<float>(uavPosition().altitude());
+    qDebug() << "<elevation-chart> UAV relative height set to" << m_stored_uav_height << "meters";
   }
 
   void ElevationChartItem::setupChildNodes(QSGNode* node)
