@@ -230,21 +230,24 @@ Rectangle {
             required property real elevation
             required property string prefix
             required property real pixelOffset
+            required property bool minor
 
             height: 2
-            width: 50
+            width: minor ? 20 : 50
             visible: impl.routeValid && !impl.missingTiles ? 1 : 0
             y: pixelOffset
-            x: ec.width - width
+            x: 0
             color: impl.palette.overlay2
 
             Text {
+                enabled: !minor
+                visible: !minor
                 text: `${Number(elevation).toFixed(0)} ${prefix}`
                 color: impl.palette.overlay2
                 anchors {
                     bottom: parent.top
                     bottomMargin: 3
-                    right: parent.right
+                    left: parent.left
                 }
                 font {
                     family: mainfont
@@ -270,15 +273,18 @@ Rectangle {
             required property real elevation
             required property string prefix
             required property real pixelOffset
+            required property bool minor
 
             height: 2
-            width: 50
+            width: minor ? 20 : 50
             visible: impl.routeValid && !impl.missingTiles ? 1 : 0
             y: pixelOffset
-            x: 0
+            x: ec.width - width
             color: impl.palette.overlay2
 
             Text {
+                enabled: !minor
+                visible: !minor
                 text: `${Number(elevation).toFixed(0)} ${prefix}`
                 color: impl.palette.overlay2
                 anchors {

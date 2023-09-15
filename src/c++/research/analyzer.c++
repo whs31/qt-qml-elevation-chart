@@ -97,13 +97,15 @@ namespace ElevationChart
     auto spacing = (float)std::pow(10, exponent);
     auto rounded_bound = spacing * 10;
     bool km = rounded_bound > 5'000;
-    for(float i = 0; i < rounded_bound; i += spacing)
-      source->yAbsoluteModel()->add(km ? i / 1'000 : i, km, source->toPixelY(i, source->bounds().y()));
+    int j = -1;
+    for(float i = 0; i < rounded_bound; i += (spacing / 10))
+      source->yAbsoluteModel()->add(km ? i / 1'000 : i, km, source->toPixelY(i, source->bounds().y()), ++j % 10 != 0);
 
     float delta = static_cast<float>(rounded_bound - source->uavPosition().altitude());
-    for(float i = source->m_stored_uav_height; i < delta; i += spacing)
+    int k = -1;
+    for(float i = source->m_stored_uav_height; i < delta; i += spacing / 10)
       source->yRelativeModel()->add(km ? (i - source->m_stored_uav_height) / 1'000 : i - source->m_stored_uav_height,
-                            km, source->toPixelY(i, source->bounds().y()));
+                                    km, source->toPixelY(i, source->bounds().y()), ++k % 10 != 0);
   }
 
   void Analyzer::analyzeBounds(ElevationChartItem* source) noexcept

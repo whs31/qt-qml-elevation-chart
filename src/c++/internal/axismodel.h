@@ -25,17 +25,19 @@ namespace ElevationChart
         Index = Qt::UserRole + 1,
         Elevation,
         Prefix,
-        PixelOffset
+        PixelOffset,
+        Minor
       };
 
       struct AxisDelegate
       {
         AxisDelegate();
-        AxisDelegate(float elevation, QString prefix, float pixel_offset);
+        AxisDelegate(float elevation, QString prefix, float pixel_offset, bool minor);
 
         float elevation;
         QString prefix;
         float pixel_offset;
+        bool minor;
       };
 
       explicit AxisModel(QObject* parent = nullptr);
@@ -43,7 +45,7 @@ namespace ElevationChart
       [[nodiscard]] int rowCount(const QModelIndex& parent = QModelIndex()) const override;
       [[nodiscard]] QVariant data(const QModelIndex& index, int role) const override;
 
-      void add(float elevation, bool km, float px_offset);
+      void add(float elevation, bool km, float px_offset, bool minor = false);
       void clear();
 
     protected:

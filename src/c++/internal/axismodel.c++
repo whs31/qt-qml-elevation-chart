@@ -11,12 +11,14 @@ namespace ElevationChart
     : elevation(0)
     , prefix(PREFIX_METERS)
     , pixel_offset(0)
+    , minor(false)
   {}
 
-  AxisModel::AxisDelegate::AxisDelegate(float elevation, QString prefix, float pixel_offset)
+  AxisModel::AxisDelegate::AxisDelegate(float elevation, QString prefix, float pixel_offset, bool minor)
     : elevation(elevation)
     , prefix(std::move(prefix))
     , pixel_offset(pixel_offset)
+    , minor(minor)
   {}
 
 
@@ -35,6 +37,7 @@ namespace ElevationChart
       case Elevation: return QVariant::fromValue(m_storage[index.row()].elevation);
       case Prefix: return QVariant::fromValue(m_storage[index.row()].prefix);
       case PixelOffset: return QVariant::fromValue(m_storage[index.row()].pixel_offset);
+      case Minor: return QVariant::fromValue(m_storage[index.row()].minor);
 
       default: return MODEL_READ_ERROR;
     }
@@ -47,13 +50,14 @@ namespace ElevationChart
     roles[Elevation] = "elevation";
     roles[Prefix] = "prefix";
     roles[PixelOffset] = "pixelOffset";
+    roles[Minor] = "minor";
     return roles;
   }
 
-  void AxisModel::add(float elevation, bool km, float px_offset)
+  void AxisModel::add(float elevation, bool km, float px_offset, bool minor)
   {
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
-    m_storage.emplace_back(elevation, km ? PREFIX_KILOMETERS : PREFIX_METERS, px_offset);
+    m_storage.emplace_back(elevation, km ? PREFIX_KILOMETERS : PREFIX_METERS, px_offset, minor);
     endInsertRows();
   }
 
