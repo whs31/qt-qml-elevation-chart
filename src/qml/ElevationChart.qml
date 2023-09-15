@@ -517,7 +517,7 @@ Rectangle {
         anchors {
             horizontalCenter: parent.horizontalCenter
             top: parent.top
-            topMargin: 30
+            topMargin: 70
         }
         width: 500
         indeterminate: true
