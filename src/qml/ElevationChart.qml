@@ -232,11 +232,11 @@ Rectangle {
             required property real pixelOffset
             required property bool minor
 
-            height: 2
+            height: minor ? 1.5 : 2
             width: minor ? 20 : 50
             visible: impl.routeValid && !impl.missingTiles ? 1 : 0
             y: pixelOffset
-            x: 0
+            x: ec.width - width
             color: impl.palette.overlay2
 
             Text {
@@ -275,11 +275,11 @@ Rectangle {
             required property real pixelOffset
             required property bool minor
 
-            height: 2
+            height: minor ? 1.5 : 2
             width: minor ? 20 : 50
             visible: impl.routeValid && !impl.missingTiles ? 1 : 0
             y: pixelOffset
-            x: ec.width - width
+            x: 0
             color: impl.palette.overlay2
 
             Text {

@@ -103,7 +103,7 @@ namespace ElevationChart
 
     float delta = static_cast<float>(rounded_bound - source->uavPosition().altitude());
     int k = -1;
-    for(float i = source->m_stored_uav_height; i < delta; i += spacing / 10)
+    for(float i = source->m_stored_uav_height - spacing * 2; i < delta; i += spacing / 10)
       source->yRelativeModel()->add(km ? (i - source->m_stored_uav_height) / 1'000 : i - source->m_stored_uav_height,
                                     km, source->toPixelY(i, source->bounds().y()), ++k % 10 != 0);
   }
@@ -117,9 +117,7 @@ namespace ElevationChart
       return;
 
     source->updateAxes();
-
     source->researcher()->researchIntersections(source->route().toGeoPath());
-
     source->setBounds({ source->m_profile.back().distance(), 0 });
     auto path = source->route().toGeoPath().path();
     for(const auto& coordinate in path)
